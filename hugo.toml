@@ -6,4 +6,26 @@ theme = "m10c"
 [params]
   author = "POLO XUE"
   description = "技术生活随笔记录"
-  readmore = true
+  menu_item_separator = "<br/>"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "首页"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "coder"
+    name = "编程杂谈"
+    url = "/posts/coder"
+    weight = 2
+  [[menu.main]]
+    identifier = "trader"
+    name = "交易人生"
+    url = "/posts/trader"
+    weight = 3
+  [[menu.main]]
+    identifier = "about"
+    name = "关于我"
+    url = "/about/"
+    weight = 4
