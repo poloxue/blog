@@ -6,3 +6,4 @@ theme = "m10c"
 [params]
   author = "POLO XUE"
   description = "技术生活随笔记录"
+  readmore = true
