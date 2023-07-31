@@ -1,4 +1,4 @@
-baseURL = 'http://poloxue.github.io/'
+baseURL = 'https://poloxue.github.io/'
 languageCode = 'zh-cn'
 title = "POLOXUE's 博客频道"
 theme = "m10c"
