@@ -1,16 +1,9 @@
 ---
-title: "The Guide for Go Http Client"
+title: "Go 的 Http 请求系统指南"
 date: 2023-07-31T16:37:17+08:00
 draft: false
 ---
 
----
-title: "Go 的 Http 请求系统指南"
-date: 2019-06-28T12:44:45+08:00
-url: /go/go-net-http-guideline
-draft: false
-tags: ["Go", "Go 爬虫", "爬虫"]
----
 
 前几天在 "知乎想法" 谈到了一个话题，如何模仿学习，举了通过 net/http client 模仿 Pyhton 的requests的例子。但并未实践，难道想法真的只能是想法吗？当然不是，于是我决定先暂停一周 GO 笔记，来实践下自己的想法。
 
