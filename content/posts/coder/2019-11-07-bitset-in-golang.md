@@ -22,13 +22,13 @@ draft: false
 
 比如一个 bitset 集合最初可能只包含 1、2、4 几个元素，只要一个 int64 就能表示。如下：
 
-![](https://blogimg.poloxue.com/0015-go-bitset-implement-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/bitset-in-golang-01.png)
 
 但如果再增加了一个元素，比如 64（一个 int64 的表示范围是 0-63），这已经超出了一个 int64 能表示的范围。该怎么办？
 
 一个 int64 无法表示，那就用多个呗。此时的结构如下：
 
-![](https://blogimg.poloxue.com/0015-go-bitset-implement-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/bitset-in-golang-02.png)
 
 一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 `BitSet`，如下：
 
@@ -56,7 +56,7 @@ func (set *BitSet) Size() int {
 
 先看下 `BitSet` 的二进制位的分布情况。
 
-![](https://blogimg.poloxue.com/0015-go-bitset-implement-03.png?v=1)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/bitset-in-golang-03.png)
 
 类似行列的效果，假设用 `index` 表示行（索引），`pos` 表示列（位置）。切片索引从 0 到 n，n 与集合中的最大元素有关。
 
@@ -443,7 +443,7 @@ differenceSet.size = differenceSet.computeSize()
 
 再看下 bitset 的结构，如下：
 
-![](https://blogimg.poloxue.com/0015-go-bitset-implement-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/bitset-in-golang-02.png)
 
 上面的集合中，第一行 `int64` 的第一个元素是 1，尾部有一位被置零。通过观察发现，前面有几个 0，第一个元素就是什么值。
 
