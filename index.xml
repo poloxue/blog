@@ -60,4 +60,4 @@ $ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动�
 目标：每分钟向/tmp/time.txt文件下写入当前时间 新建crontab任务 $ crontab -e // 打开crontab任务编辑 * * * * * date &amp;gt;&amp;gt; /tmp/time.txt 静静等待几分钟 $ cat /tmp/time.txt Do 29. Dez 22:45:01 CST 2016 Do 29. Dez 22:46:01 CST 2016 Do 29. Dez 22:47:01 CST 2016 从上面结果看出，每分钟执行了date并写入到/tmp/time.txt。 简单示例演示成功。下面从细节深入说明crontab使用。
 使用选项 上面的实验中使用了crontab命令的-e选项。我们来看看crontab命令中有哪些选项?
 -e 选项 表示打开当前用户的crontab任务列表配置文件。当然也可以直接打开，路径通常是在/var/spool/cron/下，文件以用户名命名，如/var/spool/cron/root。不过，采用-e方式打开，福利是可以帮助我们自动检查任务配置符合规则。
--u 选项 指定某用户的任务列表，很好理解。比如我当前是root用户，想操作poloxue用户的任务列表。如下：</description></item></channel></rss>
+-u 选项 指定某用户的任务列表，很好理解。比如我当前是root用户，想操作poloxue用户的任务列表。如下：</description></item><item><title/><link>https://www.poloxue.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/about/</guid><description>关于我 POLOXUE - 十三年编程经验的程序员一枚。</description></item></channel></rss>
