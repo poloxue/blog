@@ -8,6 +8,7 @@ theme = "m10c"
   avatar = "./avatar.webp"
   description = "技术生活随笔记录"
   menu_item_separator = "<br/>"
+  comment = true
 
 [menu]
   [[menu.main]]
