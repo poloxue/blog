@@ -2,6 +2,7 @@
 title: "Go 如何实现 HTTP 文件上传"
 date: 2019-12-10T15:25:18+08:00
 draft: false
+comment: true
 ---
 
 早前写过一篇文章，[Go HTTP 请求 QuickStart](https://juejin.im/post/5ce242c2f265da1b6e6574de "Go HTTP 请求 QuickStart")。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。

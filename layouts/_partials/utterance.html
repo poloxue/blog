@@ -1,4 +1,4 @@
-{{ with .Site.Params.comment }}
-<div style="max-width: 100%" class="utterances utterances-frame"></div>
+{{ if .Page.Params.comment }}
+<div class="utterances"></div>
 <script src="https://utteranc.es/client.js" repo="poloxue/comments" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async></script>
 {{ end }}
