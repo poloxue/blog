@@ -80,11 +80,23 @@ TV 本身并没有把限制时间周期的选项，我们可以选择分钟级�
 
 ## 报警设置
 
-TV 支持警报通知的设置，即图中的 Alert，通过它，可以设置基于价格、指标或趋势线的报警功能，如 BTC 价格突破关键点位 20000，趋势线突破，或者指标金叉死叉等。点击 Alert，配置页面如下所示：
+TV 支持警报通知的设置，即菜单中的 Alert。借助这个能力，可设置基于价格、指标或趋势线的报警功能，如 BTC 价格突破关键点位 20000，趋势线突破，或者指标金叉死叉等。点击 Alert，配置页面如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-07.png)
+
+Settings 是报警的规则配置，如图中的价格的阈值报警规则的设置界面。Notifications 是设置通知的规则，如是 app 通知（TV 有 mobile app）、弹框、邮件通知、声音提示、发送邮件等，此外，对于 pro 及以上用户，还支持 webhook，基于它实现实盘交易。
 
 ## 重放功能
 
-还有 Replay 重放功能，可以帮助交易员回测自己的想法。这两个工具还是挺重要的，后面会介绍它们的使用方法。
+重放功能，即菜单中的 Replay，使人工回测想法成为现实，训练自己操盘能力的工具。遗憾的是，普通用户只能进行日线级别的重放，好像还有 bar 的数量限制。
+
+效果图如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-08.gif)
+
+回测速度的快慢是可控的，也可将重放暂时，仔细分析盘面再执行下一步的操作。
+
+> 补充，除了提供 Replay 手动回测，TV 还支持针对自动化量化回测的 Pine script，可快速测试诸如 Moving Average ，RSI 等常见策略。
 
 # 区域 2 画图工具
 
