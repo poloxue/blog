@@ -2,9 +2,12 @@ baseURL = "https://www.poloxue.com"
 languageCode = "zh-cn"
 title = "POLOXUE's 博客频道"
 theme = "m10c"
+copyright = "2023 Polo Xue All rights reserved"
+
 
 [params]
   author = "POLO XUE"
+  email = "poloxue123@gmail.com"
   avatar = "./avatar.webp"
   description = "技术生活随笔记录"
   menu_item_separator = "<br/>"
