@@ -29,3 +29,14 @@ h5 {
     padding: 10px 30px;
     border: 1px #555 solid;
 }
+
+.post-content table {
+    width: 100%;
+    border: 1px #555 solid;
+    border-spacing: 0px;
+    th, td {
+        padding: 5px 10px;
+        border: 1px #555 solid;
+    }
+}
+
