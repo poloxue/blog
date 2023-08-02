@@ -8,9 +8,11 @@
           <span class="posts-list-item-description">
             {{ partial "icon.html" (dict "ctx" $ "name" "calendar") }}
             {{ .PublishDate.Format "Jan 2, 2006" }}
-            <span class="posts-list-item-separator">-</span>
+            <span class="posts-list-item-separator"></span>
             {{ partial "icon.html" (dict "ctx" $ "name" "clock") }}
             {{ .ReadingTime }} min read 
+            <span class="posts-list-item-separator"></span>
+            {{ partial "icon.html" (dict "ctx" $ "name" "eye") }} {{ partial "pageviews.html" . }}
           </span>
           <!-- <div>{{- .Summary -}}</div> -->
           <!-- <a href="{{ .Permalink }}">Read More ...</a> -->
