@@ -67,4 +67,11 @@ $ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动�
 目标：每分钟向/tmp/time.txt文件下写入当前时间 新建crontab任务 $ crontab -e // 打开crontab任务编辑 * * * * * date &amp;gt;&amp;gt; /tmp/time.txt 静静等待几分钟 $ cat /tmp/time.txt Do 29. Dez 22:45:01 CST 2016 Do 29. Dez 22:46:01 CST 2016 Do 29. Dez 22:47:01 CST 2016 从上面结果看出，每分钟执行了date并写入到/tmp/time.txt。 简单示例演示成功。下面从细节深入说明crontab使用。
 使用选项 上面的实验中使用了crontab命令的-e选项。我们来看看crontab命令中有哪些选项?
 -e 选项 表示打开当前用户的crontab任务列表配置文件。当然也可以直接打开，路径通常是在/var/spool/cron/下，文件以用户名命名，如/var/spool/cron/root。不过，采用-e方式打开，福利是可以帮助我们自动检查任务配置符合规则。
--u 选项 指定某用户的任务列表，很好理解。比如我当前是root用户，想操作poloxue用户的任务列表。如下：</description></item><item><title/><link>https://www.poloxue.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/about/</guid><description>关于我 POLOXUE - 十三年编程经验的程序员一枚。</description></item></channel></rss>
+-u 选项 指定某用户的任务列表，很好理解。比如我当前是root用户，想操作poloxue用户的任务列表。如下：</description></item><item><title>循序渐进 MySQL 事务隔离级别</title><link>https://www.poloxue.com/posts/coder/2016-12-10-isolation-in-mysql/</link><pubDate>Sat, 10 Dec 2016 18:14:45 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2016-12-10-isolation-in-mysql/</guid><description>本篇文章的重点在于总结MYSQL事务。
+什么是事务 事务简言之就是一组 SQL 执行要么全部成功，要么全部失败。MYSQL 的事务在存储引擎层实现。
+事务都有 ACID 特性：
+原子性（Atomicity）：一个事务必须被视为一个不可分割的单元； 一致性（Consistency）：数据库总是从一种状态切换到另一种状态； 隔离性（Isolation）：通常来说，事务在提交前对于其他事务不可见； 持久性（Durablity）：一旦事务提交，所做修改永久保存数据库； 事务最常用的例子就是银行转账。假设 polo 需给 lynn 转账1000元，如下步骤：
+确认 polo 账户余额高于1000元； 从 polo 的账户余额减去1000元； 将 lynn 的账户余额增加1000元； SQL语句如下:
+mysql&amp;gt; BEGIN; mysql&amp;gt; SELECT balance FROM bank_account WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance-1000 WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance+1000 WHERE uid=10002; mysql&amp;gt; COMMIT; mysql 启动事务可使用 BEGIN 或 START TRANSACTION；上述三个步骤执行在一个事务中就能够保证数据的完整性，要么全部成功，要么全部失败。
+MYSQL 提供两种事务型引擎：Innodb 和 NDBCluster。默认采用自动提交模式，执行一条语句自动 COMMIT。通过 AUTOCOMMIT 变量可启用或者禁用自动提交模式：
+mysql&amp;gt; SHOW VARIABLES LIKE &amp;#34;AUTOCOMMIT&amp;#34;; +---------------+-------+ | Variable_name | Value | +---------------+-------+ | autocommit | ON | +---------------+-------+ 1 row in set (0.</description></item><item><title/><link>https://www.poloxue.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/about/</guid><description>关于我 POLOXUE - 十三年编程经验的程序员一枚。</description></item></channel></rss>
