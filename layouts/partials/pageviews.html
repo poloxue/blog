@@ -1,5 +1,6 @@
 {{ if .Page.Params.show_pageviews | default true }}
 <span id="{{ .File.UniqueID }}" title="{{ i18n "article.page_views" }}">0 views</span> 
+<script data-goatcounter="https://poloxue.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
   var r = new XMLHttpRequest();
   r.addEventListener('load', function() {
