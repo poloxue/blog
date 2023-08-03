@@ -46,7 +46,22 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。
-r.Body 被读取后需要关闭，可以defer来做这件事。内容的读取可通过 ioutil.ReadAll实现。</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/coder/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-06-03-set-in-golang/</guid><description>今天来聊一下 Go 如何使用 set，本文将会涉及 set 和 bitset 两种数据结构。
+r.Body 被读取后需要关闭，可以defer来做这件事。内容的读取可通过 ioutil.ReadAll实现。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/coder/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
+注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
+NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
+一个示例，如下：
+package main import ( &amp;#34;net/http&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;strconv&amp;#34; ) func write(w http.ResponseWriter, data []byte) { _, _ = w.Write(data) } func count(w http.ResponseWriter, r *http.Request) { write([]byte(strconv.Itoa(runtime.NumGoroutine()))) } func main() { http.HandleFunc(&amp;#34;/_count&amp;#34;, count) http.ListenAndServe(&amp;#34;:6080&amp;#34;, nil) } 功能很简单，设置 _count 路由请求处理函数 count，它负责输出服务当前 goroutine 数量。启动服务后访问 localhost:6080/_count 即可。
+但只是一个数值，我们就能确认是否泄露了吗？
+首先，如果这个数值很大，是不是就能说明出现了泄露。我的答案是否。理由很简单，高并发情况下的 goroutine 数量肯定很高的，但并非出现了泄露，可能只是当前的服务的承载能力还不够。我们可以在数量基础上引入时间，即如果 goroutine 随着时间增加，数量在不断上升，而基本没有下降，基本可以确定存在泄露。我们可以定时采集不同时刻的数据来分析。</description></item><item><title>如何防止你的 Goroutine 泄露</title><link>https://www.poloxue.com/posts/coder/2019-06-10-prevent-goroutine-from-leaking/</link><pubDate>Mon, 10 Jun 2019 13:40:37 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-06-10-prevent-goroutine-from-leaking/</guid><description>今天简单谈谈，Go 如何防止 goroutine 泄露。
+概述 Go 的并发模型与其他语言不同，虽说它简化了并发程序的开发难度，但如果不了解使用方法，常常会遇到 goroutine 泄露的问题。虽然 goroutine 是轻量级的线程，占用资源很少，但如果一直得不到释放并且还在不断创建新协程，毫无疑问是有问题的，并且是要在程序运行几天，甚至更长的时间才能发现的问题。
+对于上面描述的问题，我觉得可以从两方面入手解决，如下：
+一是预防，要做到预防，我们就需要了解什么样的代码会产生泄露，以及了解正确的写法是如何的；
+二是监控，虽说预防减少了泄露产生的概率，但没有人敢说自己不犯错，因而，通常我们还需要一些监控手段进一步保证程序的健壮性；
+接下来，我将会分两篇文章分别从这两个角度进行介绍，今天先谈第一点。
+如何监控泄露 本文主要集中在第一点上，但为了更好的演示效果，可以先介绍一个最简单的监控方式。通过 runtime.NumGoroutine() 获取当前运行中的 goroutine 数量，通过它确认是否发生泄漏。它的使用非常简单，就不为它专门写个例子了。
+一个简单的例子 语言级别的并发支持是 Go 的一大优势，但这个优势也很容易被滥用。通常我们在开始 Go 并发学习时，常常听别人说，Go 的并发非常简单，在调用函数前加上 go 关键词便可启动 goroutine，即一个并发单元，但很多人可能只听到了这句话，然后就出现了类似下面的代码：
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func sayHello() { for { fmt.Println(&amp;#34;Hello gorotine&amp;#34;) time.Sleep(time.Second) } } func main() { defer func() { fmt.Println(&amp;#34;the number of goroutines: &amp;#34;, runtime.NumGoroutine()) }() go sayHello() fmt.Println(&amp;#34;Hello main&amp;#34;) } 对 Go 比较熟悉的话，很容易发现这段代码的问题，sayHello 是个死循环，没有如何退出机制，因此也就没有任何办法释放创建的 goroutine。我们通过在 main 函数最前面的 defer 实现在函数退出时打印当前运行中的 goroutine 数量，毫无意外，它的输出如下：</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/coder/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-06-03-set-in-golang/</guid><description>今天来聊一下 Go 如何使用 set，本文将会涉及 set 和 bitset 两种数据结构。
 注：花了点时间，将这个专题录制成了视频，上B 站查看 视频。
 Go 的数据结构 Go 内置的数据结构并不多。工作中，我们最常用的两种数据结构分别是 slice 和 map，即切片和映射。 其实，Go 中也有数组，切片的底层就是数组，只不过因为切片的存在，我们平时很少使用它。
 除了 Go 内置的数据结构，还有一些数据结构是由 Go 的官方 container 包提供，如 heap 堆、list 双向链表和ring 回环链表。但今天我们不讲它们，这些数据结构，对于熟手来说，看看文档就会使用了。
