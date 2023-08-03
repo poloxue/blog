@@ -1,15 +1,9 @@
 ---
-title: "2019 04 15 Install Golang"
-date: 2023-08-03T14:19:58+08:00
-draft: true
----
-
----
 title: "详细聊聊如何安装 Go"
 date: 2019-04-15T20:05:26+08:00
-url: /go/how-to-install-go
 draft: false
 tags: ["Go"]
+comment: true
 ---
 
 本篇文章进入 Go 的开发环境搭建系列。
