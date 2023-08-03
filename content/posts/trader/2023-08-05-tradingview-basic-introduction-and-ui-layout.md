@@ -1,7 +1,7 @@
 ---
 title: "TradingView 基础入门"
 date: 2023-08-01T17:29:19+08:00
-tags: ["tradingview"]
+tags: ["交易", "tradingview"]
 comment: true
 draft: false
 ---
@@ -105,17 +105,23 @@ Settings 是报警的规则配置，如图中的价格的阈值报警规则的�
 
 最常用的画图工具。基于线条或者通道形式，确认价格趋势。
 
-TV 提供了多种不同的工具，基本的线条就有 Trend Line（线段）、Extend Line（直线），射线（Ray Line）等。其他还有平行通道、回归线通道、三角形等趋势识别手段。
+TV 提供了多种不同的工具，基本的线条就有 Trend Line（线段）、Extend Line（直线），射线（Ray Line）等。其他还有平行通道、线性回归线通道、三角形等趋势识别手段。
 
-这类的画图工具有一个其他分类工具不支持的能力，可以基于它设置报警规则，如 close bar 突破趋势线或通道时报警，如果与 webhook 打通，还能实现自动交易与手动交易的相结合的交易方式，画图就能实现自动化交易，听起来就是很酷。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-11.png)
+
+这类别的画图工还有一个其他分类的工具不支持的能力，可以基于它设置报警规则，如 close bar 突破趋势线或通道时报警，如果与 webhook 打通，还能实现自动交易与手动交易的相结合的交易方式。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-10.jpg)
+
+只需要实现这个 交易 API 服务（一个简单的 web 接口服务，转发 tradingview 发送过来的交易信号），就能通过画图进行自动化交易了，听着是不是就很酷。
 
 ## 斐波拉契和江恩
 
-利用这一类别的工具，能快速绘制出基于斐波拉契公式或江恩的理论的价格档位，默认采用标准的公式，也支持配置化修改档位的数值。
-
-动图如下：
+用这类工具，能快速绘制出基于斐波拉契公式或江恩理论的档位，默认采用的是标准公式，也可通过配置修改默认数值。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-09.gif)
+
+上面的效果图是使用斐波拉契判断近期回调点位置的例子。按市场强度，不同的市场结构，预测回调的位置有 0.618、0.5、0.384 几个档位。
 
 ## 形态识别
 
