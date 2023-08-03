@@ -33,9 +33,7 @@ rsc.io/sampler@v1.3.0 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c
 
 文档中给出的包关系图：
 
-<center>
-<img src="https://blogimg.poloxue.com/0014-go-mod-graph-visible-02.png">
-</center>
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/golang-module-visualization-02.png)
 
 看到这张图的时候，眼睛瞬间就亮了，图形化就是优秀，不同依赖之间的关系一目了然。这不就是我想要的效果吗？666，点个赞。
 
@@ -108,9 +106,7 @@ node [shape=box];
 
 效果如下：
 
-<center>
-<img src="https://blogimg.poloxue.com/0014-go-mod-graph-visible-03.png"/>
-</center>
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/golang-module-visualization-03.png)
 
 绘制一个依赖关系图竟然这么简单。
 
@@ -339,7 +335,7 @@ $ go mod graph | modv | dot -T png | open -f -a /Applications/Preview.app
 
 如果执行成功，将看到如下的效果：
 
-![](https://blogimg.poloxue.com/0014-go-mod-graph-visible-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/golang-module-visualization-04.png)
 
 完美地展示了各个模块之间的依赖关系。
 

@@ -172,7 +172,7 @@ MAILTO=root
 
 下面是这个工具的截图
 
-![crontab_tool.png](https://blogimg.poloxue.com/0004-crontab-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/crontab-from-scratch-01.png)
 
 从上面看出，我们输入的语句解析结果为每天的04：05执行任务。下面有这样一行文字“next at 2016-12-31 04:05:00”，告诉了我们最近一次的执行时间。
 
@@ -230,7 +230,7 @@ crontab使用中常会遇到各种坑。下面列出编者在使用中曾遇到�
 ```
 下面直接使用前面介绍的在线解析工具分析此语句，如下
 
-![crontab_time.png](https://blogimg.poloxue.com/0004-crontab-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/crontab-from-scratch-02.png)
 
 解析结果显示语句执行时间为每月的1至7日和每星期一。可以看到最近执行时间是“next at 2017-01-01 00:00:00”，这个时间也并非星期一。
 
