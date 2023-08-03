@@ -1,10 +1,9 @@
 ---
 title: "TradingView 基础入门"
 date: 2023-08-01T17:29:19+08:00
-draft: true
 tags: ["tradingview"]
 comment: true
-description: "本文是 TradingView （以下简称 TV）教程的起始篇，将主要聚焦于 TV 的基础使用。"
+draft: false
 ---
 
 本文是 TradingView （以下简称 TV）教程的起始篇，将主要聚焦于 TV 的基础使用。
@@ -84,7 +83,7 @@ TV 支持警报通知的设置，即菜单中的 Alert。借助这个能力，�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-07.png)
 
-Settings 是报警的规则配置，如图中的价格的阈值报警规则的设置界面。Notifications 是设置通知的规则，如是 app 通知（TV 有 mobile app）、弹框、邮件通知、声音提示、发送邮件等，此外，对于 pro 及以上用户，还支持 webhook，基于它实现实盘交易。
+Settings 是报警的规则配置，如图中的价格的阈值报警规则的设置界面。Notifications 是设置通知的规则，如是 app 通知（TV 有 mobile app）、弹框、邮件通知、声音提示、发送邮件等，此外，对于 pro 及以上用户，还基于 webhook 进行实盘交易。
 
 ## 重放功能
 
@@ -94,13 +93,41 @@ Settings 是报警的规则配置，如图中的价格的阈值报警规则的�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-08.gif)
 
-回测速度的快慢是可控的，也可将重放暂时，仔细分析盘面再执行下一步的操作。
+回测速度的快慢是可控的，也可将暂时重放，在经过仔细地盘面分析后再执行下一步的操作。
 
 > 补充，除了提供 Replay 手动回测，TV 还支持针对自动化量化回测的 Pine script，可快速测试诸如 Moving Average ，RSI 等常见策略。
 
 # 区域 2 画图工具
 
-画图工具位于界面布局的左侧栏，可以看到，TV 提供了丰富的作图工具，如基本的趋势线就有很多分类，其他还有如与斐波拉契相关的工具、盈亏比分析工具、形态识别。
+画图工具位于 chart 左侧栏，可以看到，TV 提供了不同种类的作图工具，按功能的相似度大概分为 8 大类。
+
+## 趋势线类
+
+最常用的画图工具。基于线条或者通道形式，确认价格趋势。
+
+TV 提供了多种不同的工具，基本的线条就有 Trend Line（线段）、Extend Line（直线），射线（Ray Line）等。其他还有平行通道、回归线通道、三角形等趋势识别手段。
+
+这类的画图工具有一个其他分类工具不支持的能力，可以基于它设置报警规则，如 close bar 突破趋势线或通道时报警，如果与 webhook 打通，还能实现自动交易与手动交易的相结合的交易方式，画图就能实现自动化交易，听起来就是很酷。
+
+## 斐波拉契和江恩
+
+利用这一类别的工具，能快速绘制出基于斐波拉契公式或江恩的理论的价格档位，默认采用标准的公式，也支持配置化修改档位的数值。
+
+动图如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-09.gif)
+
+## 形态识别
+
+支持常见的形态识别，如头肩顶（底）、三角形，还有艾略特波浪形态与周期类形态；
+
+预测与度量，
+
+几何图形，
+
+## 标注
+
+箭头、文字和 Icon 是最后的三类工具，这里将它们统一归于标注一类说明。
 
 # 区域 3 图表区域
 
@@ -108,7 +135,7 @@ Settings 是报警的规则配置，如图中的价格的阈值报警规则的�
 
 # 区域 4 标的、报警列表、新闻等
 
-# 区域 5 选股、脚本编辑回测与交易面板
+# 区域 5 选股、脚本与交易面板
 
 这个区域就叫
 
@@ -118,4 +145,5 @@ Settings 是报警的规则配置，如图中的价格的阈值报警规则的�
 - [A Beginner’s Guide to TradingView | Binance Academy](https://academy.binance.com/en/articles/a-beginner-s-guide-to-tradingview)
 - [How to Use TradingView Drawing Tool](https://www.youtube.com/watch?v=W-_b0wuRahs)
 - [How to Draw on TradingView: A Comprehensive Guide](https://www.financialtechwiz.com/post/how-to-draw-on-tradingview)
+- [Drawing Tools on TradignView](https://www.tradingview.com/support/solutions/43000703396-drawing-tools/)
 
