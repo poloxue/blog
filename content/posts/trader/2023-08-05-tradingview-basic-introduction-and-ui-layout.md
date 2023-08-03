@@ -76,7 +76,7 @@ TV 本身并没有把限制时间周期的选项，我们可以选择分钟级�
 
 ## 价格线
 
-价格线样式默认是蜡烛线，TV 提供的价格线支持样式种类丰富，如 Bars、蜡烛线（K 线）、Heikin Ashi、Hollow candles、Line、Renko、Kagi 等等。这里不多解释了。
+价格线样式默认是蜡烛线，TV 提供的价格线支持样式种类丰富，如 Bars、蜡烛线（K 线）、Heikin Ashi、Hollow candles、Line、Renko、Kagi 等等。每种线样式都有各自不同的生成规则。常用的主要是蜡烛线。其他类型可自行查阅资料，这里不多解释了。
 
 ## 报警设置
 
@@ -100,7 +100,7 @@ Settings 是报警的规则配置，如图中的价格的阈值报警规则的�
 
 # 区域 2 画图工具
 
-TV 提供了丰富的作图工具，诸如基本的趋势线就有很有分类，其他还有诸如与斐波拉契相关的各种工具，盈亏比分析，常见的形态识别。这也是它如此受到交易者的优势之一。
+画图工具位于界面布局的左侧栏，可以看到，TV 提供了丰富的作图工具，如基本的趋势线就有很多分类，其他还有如与斐波拉契相关的工具、盈亏比分析工具、形态识别。
 
 # 区域 3 图表区域
 
@@ -116,5 +116,6 @@ TV 提供了丰富的作图工具，诸如基本的趋势线就有很有分类�
 
 - [The Ultimate TRADINGVIEW TUTORIAL for BEGINNERS in 2023 | Step by Step Guide - YouTube](https://www.youtube.com/watch?v=pWF3AkPzLrE)
 - [A Beginner’s Guide to TradingView | Binance Academy](https://academy.binance.com/en/articles/a-beginner-s-guide-to-tradingview)
-
+- [How to Use TradingView Drawing Tool](https://www.youtube.com/watch?v=W-_b0wuRahs)
+- [How to Draw on TradingView: A Comprehensive Guide](https://www.financialtechwiz.com/post/how-to-draw-on-tradingview)
 
