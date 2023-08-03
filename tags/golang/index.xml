@@ -10,7 +10,15 @@ Content-Type 是什么？
 提交表单 文件上传可以理解为是提交表单的特例，先通过表单提交这个简单的例子介绍下整个流程。
 如下是表单提交的 HTTP 请求文本。
 POST http://httpbin.org/post HTTP/1.1 Content-Type: application/x-www-form-urlencoded username=poloxue&amp;amp;password=123456 Content-Type 是 application/x-www-form-urlencoded，数据通过 urlencoded 方式组织。
-先用 html 的 form 表单实现。如下：</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/coder/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
+先用 html 的 form 表单实现。如下：</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/coder/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
+概述 开发一个命令行工具，视复杂程度，一般要选择一个合适的命令行解析库，简单的需求用 Go 标准库 flag 就够了，flag 的使用非常简单。
+当然，除了标准库 flag 外，也有不少的第三方库。比如，为了替代 flag 而生的 pflag，它支持 POSIX 风格的命令行解析。关于 POSIX 风格，本文末尾有个简单的介绍。
+更多与命令行处理相关的库，可以打开 awesome-go#command-line 命令行一节查看，star 最多的是 spf13/cobra 和 urfave/cli ，与 flag / pflag 相比，它们更加复杂，是一个完全的全功能的框架。
+有兴趣都可以了解下。
+目标案例 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
+举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management by go）。
+命令行的帮助信息如下：
+NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments...] VERSION: 0.0.1 COMMANDS: list list go versions install install a go version info show go version info use select a version uninstall uninstall a go version get get the latest code uninstall uninstall a go version help, h Shows a list of commands or help for one command GLOBAL OPTIONS: --help, -h show help --version, -v print the version 这个命令不仅包含了全局的选项，还有 8 个子命令，部分子命令支持参数和选项。暂时，子命令的选项参数先不列出来了，实现时再看。</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/coder/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
 为何开发 为什么会想到开发这个工具？主要有两点原因：
 一是最近经常看到大家在社区讨论 Go Module。于是，我也花了一些时间研究了下。期间，遇到了一个需求，如何清晰地识别模块中依赖项之间的关系。一番了解后，发现了 go mod graph。
 效果如下：
