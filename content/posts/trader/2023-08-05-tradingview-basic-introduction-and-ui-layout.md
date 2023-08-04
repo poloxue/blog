@@ -3,7 +3,7 @@ title: "TradingView 基础入门"
 date: 2023-08-01T17:29:19+08:00
 tags: ["交易", "tradingview"]
 comment: true
-draft: false
+draft: true
 ---
 
 本文是 TradingView （以下简称 TV）教程的起始篇，将主要聚焦于 TV 的基础使用。
