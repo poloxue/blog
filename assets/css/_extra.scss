@@ -1,5 +1,9 @@
 @import "components/utterance";
 
+body {
+    font-family: 'Segoe UI',SegoeUI,'Microsoft YaHei',微软雅黑,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 h1 {
     font-size: 1.5em;
 }
@@ -40,3 +44,6 @@ h5 {
     }
 }
 
+.post-content strong {
+    color: #d9d9d9;
+}
