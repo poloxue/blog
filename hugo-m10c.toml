@@ -10,8 +10,7 @@ copyright = "2023 Polo Xue All rights reserved"
   email = "poloxue123@gmail.com"
   avatar = "/avatar.webp"
   description = "技术生活随笔记录"
-  wpm = 250
-  maxTags = 7
+  menu_item_separator = "<br/>"
 
 [menu]
   [[menu.main]]

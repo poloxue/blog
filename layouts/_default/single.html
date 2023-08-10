@@ -1,32 +1,28 @@
-{{ define "main" }}
-  <article class="post">
-    <header class="post-header">
-      <h1 class ="post-title">{{ .Title }}</h1>
-      {{- if ne .Type "page" }}
-      <div class="post-meta">
-        <div>
-          <span>{{ partial "icon.html" (dict "ctx" $ "name" "calendar") }} {{ .PublishDate.Format "Jan 2, 2006" }}&nbsp;</span>
-          <span>{{ partial "icon.html" (dict "ctx" $ "name" "clock") }} {{ .ReadingTime }} min read &nbsp;</span>
-          <span>{{ partial "icon.html" (dict "ctx" $ "name" "eye") }} {{ partial "pageviews.html" . }} &nbsp;</span>
-          <span>
-            {{- with .Params.tags }}
-            {{ partial "icon.html" (dict "ctx" $ "name" "tag") }}
-            {{- range . -}}
-              {{ with $.Site.GetPage (printf "/%s/%s" "tags" . ) }}
-                <a class="tag" href="{{ .Permalink }}">{{ .Title }}</a>
-              {{- end }}
-            {{- end }}
-          </span>
-        </div>
-        {{- end }}
-      </div>
-      {{- end }}
-    </header>
-    <div class="post-content">
-      {{ .Content }}
-    </div>
-    <div class="post-footer">
-      {{ partial "utterance.html" . }}
-    </div>
-  </article>
-{{ end }}
+<!DOCTYPE html>
+<html>
+{{ partial "header.html" . }}
+
+<body>
+	{{ if and (gt .WordCount 400 ) (or (eq .Site.Params.toc "floating") (eq .Site.Params.toc "both") )}}
+	<div class="container-wide wrapper">
+		{{ partial "head.html" . }}
+
+		{{ partial "content_floating_toc.html" . }}
+	</div>
+	{{ else }}
+	<div class="container wrapper">
+		{{ partial "head.html" . }}
+
+		{{ partial "content_static.html" . }}
+
+        {{ partial "utterance.html" . }}
+	</div>
+	{{ end }}
+
+	{{ partial "footer.html" . }}
+	{{ if and (gt .WordCount 400 ) (or (eq .Site.Params.toc "floating") (eq .Site.Params.toc "both") )}}
+	{{ partial "toc_script.html" . }}
+	{{ end }}
+</body>
+
+</html>
