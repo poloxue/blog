@@ -1,4 +1,4 @@
-baseURL = "https://www.poloxue.com"
+baseURL = "https://www.poloxue.com/"
 languageCode = "zh-cn"
 title = "POLOXUE's 博客频道"
 theme = "ink-free"
