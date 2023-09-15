@@ -1,7 +1,7 @@
 ---
-title: "快速搭建一个免费的博客站点"
+title: "iTerm2 启动时进入 Tmux 模式"
 date: 2023-07-31T15:06:02+08:00
-draft: false
+draft: true
 comment: true
 ---
 
