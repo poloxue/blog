@@ -39,6 +39,15 @@ blockquote {
 }
 
 
+table th {
+  color: #333;
+  background-color: #ababab;
+}
+
+table th, table tr {
+  border: 1px solid #eee;
+}
+
 .utterances {
     max-width: 100%;
 }
