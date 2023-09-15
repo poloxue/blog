@@ -31,6 +31,16 @@ copyright = "2023 Polo Xue All rights reserved"
     url = "/posts/trader"
     weight = 3
   [[menu.main]]
+    identifier = "translator"
+    name = "技术译文"
+    url = "/posts/translator"
+    weight = 3
+  [[menu.main]]
+    identifier = "trader"
+    name = "英语学习"
+    url = "/posts/english"
+    weight = 3
+  [[menu.main]]
     identifier = "about"
     name = "关于我"
     url = "/about/"

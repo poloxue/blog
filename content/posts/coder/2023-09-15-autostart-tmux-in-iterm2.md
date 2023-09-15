@@ -1,6 +1,6 @@
 ---
 title: "iTerm2 启动时进入 Tmux 模式"
-date: 2023-07-31T15:06:02+08:00
+date: 2023-09-15T15:06:02+08:00
 draft: false
 comment: true
 ---
