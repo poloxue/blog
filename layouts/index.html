@@ -2,8 +2,6 @@
 <html {{- if (eq .Site.Params.mode "dark" ) -}}class="dark" {{ end }}>
 {{ partial "header.html" . }}
 
-{{ template "_internal/goatcounter.html" . }}
-
 <body>
 	<div class="container wrapper">
 		{{ partial "head.html" . }}

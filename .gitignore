@@ -2,3 +2,4 @@
 *.swp
 resources/_gen/*
 drafts/*
+.DS_Store
