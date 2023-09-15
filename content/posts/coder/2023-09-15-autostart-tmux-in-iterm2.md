@@ -1,7 +1,7 @@
 ---
 title: "快速搭建一个免费的博客站点"
 date: 2023-07-31T15:06:02+08:00
-draft: true
+draft: false
 comment: true
 ---
 
