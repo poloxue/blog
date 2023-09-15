@@ -5,12 +5,15 @@ draft: false
 comment: true
 ---
 
-
 介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
+
+我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
+
+非常简单！
 
 **核心脚本介绍**
 
-一段非常简单的 bash 脚本:
+首先，一段 bash 脚本:
 
 ```bash
 tmux ls && read -p "Select a session<default>:" tmux_session && tmux attach -t ${tmux_session:-default} || tmux new -s ${tmux_session:-default}
