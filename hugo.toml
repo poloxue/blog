@@ -36,7 +36,7 @@ copyright = "2023 Polo Xue All rights reserved"
     url = "/posts/translator"
     weight = 3
   [[menu.main]]
-    identifier = "trader"
+    identifier = "english"
     name = "英语学习"
     url = "/posts/english"
     weight = 3
