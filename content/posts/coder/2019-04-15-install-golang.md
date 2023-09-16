@@ -2,7 +2,7 @@
 title: "详细聊聊如何安装 Go"
 date: 2019-04-15T20:05:26+08:00
 draft: false
-tags: ["Go"]
+tags: ["golang"]
 comment: true
 ---
 
