@@ -118,19 +118,23 @@ bind-key    -T prefix       s                    choose-tree -Zs
 
 那么，接下来的问题是，如何配置到 iTerm2 启动命令呢？
 
-因为这个命令必须在 tmux 模式下运行。如何做？通过 `tmux attach\; <other commands running on tmux mode>`  即可实现。完整命令如下：
+因为这个命令必须在 tmux 模式下运行。如何做？通过 `tmux attach\; <other commands running on tmux mode>`  即可实现。
+
+完整命令如下：
 
 ```zsh
 $ tmux attach\; choose-tree -zS
 ```
 
-将上面的语句配置到你的 iTerm2 启动时执行即可。
+试着在非 tmux 模式下测试下这段代码，看看是否能成功拉起菜单。确认没有问题后，将上面的语句配置到你的 iTerm2 启动时执行即可。
 
-为了防止首次进入没有 session，进一步优化，创建默认的 default 会话窗口。完整 shell 代码如下：
+最后，为了防止首次进入没有 session，进一步优化，创建默认的 default 会话窗口。
+
+完整 shell 代码如下：
 
 ```bash
 $ tmux attach\; choose-tree -Zs || read -p "Create a default session?(Y/N)" anwser && [[ "${anwser}" == "Y" ]] && tmux new -t default
 ```
 
-不过，这里有个缺点，默认 q 只能退出菜单，终端还是在 tmux 模式会话中。
+但这里还有个缺点，默认 q 只能退出菜单，终端还是在 tmux 模式会话中，还要多一步 detach 才能退出，这算是和我们一般认为的步骤不太一样的地址吧。
 
