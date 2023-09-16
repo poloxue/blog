@@ -92,4 +92,45 @@ Please select a session <Index or Name>(default):
 
 这里只是一个小 demo，tmux ls 的输入还有其他格式化变量，有兴趣可以继续扩展。代码片段 [github 地址](https://gist.github.com/poloxue/37d3d79b35964ab8d885296b84ab4b5a)。
 
+总体上的体验还不错，但如果使用自带的功能，岂不是更好？继续探索吧。
+
+**使用 tmux 内置菜单树**
+
+进入 tmux 模式后，默认可以用快捷键 prefix-key + s 启动 tmux 选择菜单：
+
+```zsh
+hello: 1 windows (created Tue Sep 12 17:13:54 2023) (group hello) (attached)
+default: 1 windows (created Wed Sep 13 19:54:36 2023) (group default)
+```
+
+而且可以使用 jk 移动选择菜单。这个有没有办法在 iTerm2 启动时直接启动呢？想法很好，实现起来也不难。
+
+首先，通过 `tmux list-keys` 检查 prefix-key + s 绑定的命令 tmux 命令。
+
+```zsh
+$ tmux list-keys
+...
+bind-key    -T prefix       s                    choose-tree -Zs
+...
+```
+
+通过 `choose-tree -Zs` 即可拉起菜单。在 tmux 模式下，使用 `tmux choose-tree -Zs` 测试一下效果，选择窗口成功拉起。
+
+那么，接下来的问题是，如何配置到 iTerm2 启动命令呢？
+
+因为这个命令必须在 tmux 模式下运行。如何做？通过 `tmux attach\; <other commands running on tmux mode>`  即可实现。完整命令如下：
+
+```zsh
+$ tmux attach\; choose-tree -zS
+```
+
+将上面的语句配置到你的 iTerm2 启动时执行即可。
+
+为了防止首次进入没有 session，进一步优化，创建默认的 default 会话窗口。完整 shell 代码如下：
+
+```bash
+$ tmux attach\; choose-tree -Zs || read -p "Create a default session?(Y/N)" anwser && [[ "${anwser}" == "Y" ]] && tmux new -t default
+```
+
+不过，这里有个缺点，默认 q 只能退出菜单，终端还是在 tmux 模式会话中。
 
