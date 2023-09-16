@@ -110,7 +110,10 @@ map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特�
 最近，刚答过一个关于 Go 环境变量的问题，查看回答。其中对每个变量的作用进行了比较细致的描述。
 如何实现 现在，我要实现我自己电脑上的两个版本的 Go 自由切换，该如何做呢？
 假设它们分别位于 ~/.goversions/sdk/ 目录下的 go1.11/ 和 go1.13/。我现在要启用 go 1.11，运行如下命令即可：
-$ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.goversions/sdk/go1.11/。Go 相关的工具链，源码，标准库都在这个目录下。</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/coder/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
+$ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.goversions/sdk/go1.11/。Go 相关的工具链，源码，标准库都在这个目录下。</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/coder/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
+本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
+概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
+$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go &amp;lt;command&amp;gt; [arguments] go &amp;lt;命令&amp;gt; [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/coder/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
 我们知道，编写任何语言的代码都离不开两样工具，语言开发包和代码编辑工具。
 今天先来聊聊如何安装 Go。
 我们或许都会觉得这种事非常简单，不值得写篇文章介绍。最初我也是这么想的。但深入了解下来，渐渐感觉这也是一件很有意思的事情。
@@ -130,7 +133,36 @@ macos
 在macos上，我们可使用pkg文件或homebrew安装go。
 pkg的安装方式与windows的setup.exe/msi的类似，下载软件然后按导航 &amp;ldquo;下一步&amp;rdquo; &amp;ldquo;下一步&amp;rdquo; 即可完成。
 来说说如何使用homebrew安装。和yum和apt-get不同，homebrew并非mac系统自带，我们需要先安装。进入homebrew官网，页面顶部便说明了安装的方式，命令如下：
-/usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.</description></item><item><title>一文精通 crontab 从入门到出坑</title><link>https://www.poloxue.com/posts/coder/2016-12-31-crontab-from-scratch/</link><pubDate>Sat, 31 Dec 2016 18:01:00 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2016-12-31-crontab-from-scratch/</guid><description>此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。
+/usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.</description></item><item><title>为什么要学 Go</title><link>https://www.poloxue.com/posts/coder/2019-04-08-why-learn-go/</link><pubDate>Mon, 08 Apr 2019 17:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-08-why-learn-go/</guid><description>新学一门语言，大家都想先弄清楚为什么要学它？玩知乎一段时间更是让我感受深刻，诸如
+为什么要学习Python？ 为什么要学习C？ 为什么要学习Java？ 之类问题经常出现在眼前。以前学语言时倒没怎么关心过这类问题。今年公司由于新业务需要开始全面从PHP转型到Golang。所以我学习它也就是为了工资。额？不能这么俗气，还是具体想想自己为什么要学习Golang吧。
+作为一名golang新人，在写这篇文章时我搜罗到不少golang的优秀资料，在文章最后分享出来。
+大势所趋 趋势如此，这应该是多数朋友开始学习它的原因。追涨杀跌，这是大多数人喜欢的操作手法。
+何以证明这个趋势呢？
+首先，我的亲生经历是听到看到golang这个词的频率越来越高，不过，这个太难量化了。来介绍一款工具，google trend，即google趋势。它是google利用自身优势，通过对搜索关键词进行统计分析，根据单词频率分析特定时期某类事物发展趋势的一款分析工具。
+我们可以用 google 趋势来分析一下近年来 golang 的发展趋势，点击链接。
+先看看时间线上的表现，历史的变化趋势：
+可以看出，从2015年到2019年golang的发展趋势一直处在稳定上升阶段；
+不过我们会想，这只能说明golang在世界上整体趋势表现较好，但在中国是否一样火热。这个大可不必担心，google趋势中也有区域的统计信息：
+可以看出，Golang在世界区域的分布情况，前五名分别是，中国、新加坡、圣赫勒拿、韩国、香港。其中，Golang在中国的流行程度简直就是一骑绝尘、遥遥领先。
+注：如果想分析中国各城市的表现情况，可以点击地图就可进入特定国家进行分析。
+除了google趋势，还可以来看看在TIOBE语言排行榜上的表现。点击链接
+额？怎么才十六名，好紧张、好难过，难道学错语言了吗？不对，得找几个理由安慰下自己。
+Golang是一门非常年轻的语言，仅用十年时间就从世界上数以千计的编程语言中脱颖而出，发展速度迅猛。诸如Java、Python、PHP、Javascript都和我一样处在了奔三的路上，近30载的发展才有当前的生态与地位；
+Golang在2018年的最好成绩曾到达过前十名，这个成绩足以说明golang的流行程度。而且排名存在浮动也是很正常的事情，Golang这些年稳步的发展趋势还不能给我们足够的信心吗？
+通过以上的数据分析，我们得到了一些结论，不过感觉说服力不足，有种空喊口号 &amp;ldquo;我们能赢&amp;rdquo; 的感觉。趋势很好，就认为稳赢，显然这是很不合理的。所以，我们还需要分析一些更层次的原因。
+核心成员 为什么要了解核心成员呢？核心成员某种意义上是语言的招牌。就像投资，肯定选择相信巴菲特，而不是你。
+Golang的核心开发组成员由一群大神级人物组成。其中，最核心的三人分别是Ken Thompson、Rob Pike、Robert Griesemer。
+Robert Griesemer，参与开发了 Java HotSpot 虚拟机和Javascript的Chrome V8引擎；
+Ken Thompson，C和B语言的设计者、Unix创始人之一，操作系统Plan 9的主要作者，1983年图灵奖得主；
+Rob Pike，UTF8的主要设计者，与Ken Tompson为贝尔实验室的同事，共同参与了Plan9。而且Golang的logo，据说是囊地鼠，英文gopher，就是Rob Pike的妻子设计的；
+都是如此这般牛人坐镇，可见golang的层次已经高出其他语言很多个台阶了。
+背景历史 清楚它的产生背景与发展历史，才能更好了解它的特性与使用场景。
+首先，Golang诞生于google。有了大厂庇护，才好开挂。google曾经一直有个传统，允许员工自由支配本属于工作时间的20%来用于创新实践，这为google带来很多开创性的项目，其中就包括Golang。但听说，前几年该传统已经被取消了。
+Golang早起的讨论由前面介绍的三位大牛发起，针对性分析了当时的环境背景。
+首先，当时传统的编程语言通常都会有如下一些缺点：
+学习成本太高，如C++，为准确表达作者思想，我们要花费大量时间学习语言； 编译速度太慢，代码的编写、预处理、编译与运行流程花费时间太长； 缺乏类型检查，主要指诸如python、php等解释性语言，这常会导致一些低级错误发生； 而且计算机领域相比于前些年也发生了很多变化，比如： 计算机硬件发展迅速，软件已经不能充分发挥它们的优势，比如多CPU； 语言越来越复杂，要么并发与性能不佳，要么风格不够优雅且不统一； 人力成本越高越贵，项目的迭代周期越来越短； 针对如上的各种情况，于是在2007年，他们正式开始着手Golang的设计与开发，并在2009年的11月正式发布。我们列举下，接下来一段时间，Golang发展中几个关键节点。
+2012年3月，正式发布1.0版，走向成熟； 2015年8月，发布了1.5版，实现自编译，移除最后残余的 &amp;ldquo;C代码&amp;rdquo;； 更新迭代速度多，基本保持了每半年更新一个版本；
+2017年2月，发布1.8版 2017年8月，发布1.9版 2018年2月，发布1.10版 2018年8月，发布1.11版 2019年2月，发布1.12版 如此给力的团队与稳定的版本迭代速度，某种程度也促成了golang快速发展。</description></item><item><title>一文精通 crontab 从入门到出坑</title><link>https://www.poloxue.com/posts/coder/2016-12-31-crontab-from-scratch/</link><pubDate>Sat, 31 Dec 2016 18:01:00 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2016-12-31-crontab-from-scratch/</guid><description>此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。
 我的理解，后台任务通常分为两种：常驻和定时。之前的文章《pm2进程管理工具使用总结》主要针对的是常驻任务。今天来谈谈 crontab，主要针对的是定时任务。
 实验环境： centos7
 介绍crontab crontab的服务进程名为crond，英文意为周期任务。顾名思义，crontab在Linux主要用于周期定时任务管理。通常安装操作系统后，默认已启动crond服务。crontab可理解为cron_table，表示cron的任务列表。类似crontab的工具还有at和anacrontab，但具体使用场景不同，可参见附录《让你学会Linux计划任务》一文了解更多。
