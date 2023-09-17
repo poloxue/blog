@@ -175,19 +175,23 @@ plugins=(golang git autocd)
 
 #### 提示主题
 
-oh-my-zsh 的提示主题可提升终端视觉体验，如提示主题可方便你查看当前所在目录，用户名、主机名等。这些皆可配置，通过内置插件即可实现。如何启用 oh-my-zsh 提示主题？你可以在 theme/ 目录下或 GitHub 主题页面上找到可用的主题。
+oh-my-zsh 的提示主题可提升终端视觉体验，如方便地查看当前所在目录、用户名、主机名等。这些通过内置插件即可实现。
 
-编辑 `.zshrc`，设置 `ZSH_THEME` 为你的目标主题，如下：
+那么，如何启用 oh-my-zsh 提示主题？
+
+首先，你可在 `~/.oh-my-zsh/themes/` 目录或 [GitHub 主题](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes) 页面上查看你想配置的主题。假设，确认选择名为 `simple` 主题，编辑 `.zshrc`，设置 `ZSH_THEME` 变量。
+
+配置如下所示：
 
 ```bash
 ZSH_THEME="simple"
 ```
 
-打开一个新的终端，将会有提示信息的主题已经变了。
+重启打开一个新的终端，将会有提示信息的主题已经变了。
 
 其他主题推荐：[powerlevel10k](https://github.com/romkatv/powerlevel10k/blob/master/README.md#oh-my-zsh) 和 [oh-my-posh](https://ohmyposh.dev/docs/themes)
 
-> 译注：本人在用的就是 powerlevel10k 主题。
+> 译注：本人在用的就是 powerlevel10k 主题。但它不是内置主题，要单独安装。
 
 ### 语法高亮
 
@@ -228,7 +232,7 @@ bindkey -M viins '^e' edit-command-line
 bindkey -M vicmd '^e' edit-command-line
 ```
 
-> 译注：作者这里介绍如何自定义 vi-mode，但其实 oh-my-zsh 内置了 `vi-mode` 插件，阅读 [readme: vi-mode plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode) 了解它更多功能。github 也能其他开源的 zsh-vi-mode 插件，没有去体验，猜测比内置的功能更强大。
+> 译注：作者这里介绍如何自定义 vi-mode，但其实 oh-my-zsh 内置了 `vi-mode` 插件，阅读 [readme: vi-mode plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode) 了解它更多功能。github 还有其他开源的 zsh-vi-mode 插件，没有去体验，猜测比内置的功能更强大。
 
 ### 历史记录
 
@@ -242,17 +246,21 @@ setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 ```
 
+说明如下：
+
 - 行 1：设置保留历史记录最大行数；
 - 行 2：设置文件中历史记录最大行数；
 - 行 3：使用多个 zsh 时，追加到历史文件而不是替换；
 - 行 4: 直接追加历史记录而非等待 shell 退出；
 - 行 5：允许使用不同终端输入的命令；如果同时使用多个终端，这个配置非常有用；
 
-如下命令将输出历史命令的记录。注意，它不会保存任何输入但未执行的命令。
+如何输出历史记录？使用 `history` 命令即可，如下所示：
 
 ```bash
 history
 ```
+
+注意，它不会保存任何只是输入但未执行的命令。
 
 输出最后 10 行命令：
 
@@ -312,7 +320,7 @@ echo $fpath
 
 Fzf 是一个模糊匹配查找器，可与 zsh 完美配合。通过 key-binding 或使用 fzf-tab 插件实现命令或目录的补全。
 
-开始安装。
+让我们开始安装。
 
 首先，这个插件要在 zshrc 的最后加载。因此，我们无法用 oh-my-zsh 来管理这个插件。
 
@@ -334,7 +342,7 @@ echo 'source ~/.config/zsh/fzf-tab/fzf-tab.plugin.zsh' >> ~/.config/zsh/.zshrc
 
 > 译注：文中缺少了一个步骤，还需要安装 `fzf` 命令, macos 安装： `brew install fzf`。
 
-> 译注：这个插件交互体验不错，但整体体验下来感觉不如 [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) 操作快捷，先不启动了，大家可以试个人情况而定。
+> 译注：这个插件交互体验不错，但整体感觉下来不如 [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) 操作快捷，先不启动了，大家可以试个人情况而定。另外，在测试过程中，我发现，`zsh-autosuggestions` 与 `fzf-tab` 似乎是无法同时启用的。
 
 ### 使用 zsh-autocomplete
 
@@ -351,20 +359,141 @@ mv ~/.zshrc ~/zshrc
 mv ~/.config/zsh/.zshrc ~/.config/zsh/zshrc
 ```
 
-下载插件：
+下载并安装插件：
 
 ```bash
 # Change your directory to ~/.config/zsh first, create if not exists
 mkdir -p ~/.config/zsh 
-cd ~/.config/zsh
+cd ~/
 git clone https://github.com/marlonrichert/zsh-autocomplete
 mv zsh-autocomplete/.zshrc ~/
 ```
 
+源码仓库中的 .zshrc，未设置插件路径。建议进入 `~/.zshrc` 手动设置或使用 sed 命令更改：
+
+```bash
+sed -i 's|/path/to|~/.config/zsh/zsh-autocomplete|g' ~/.zshrc
+```
+
+> 译注：有两个问题。
+> 1. zsh-autocomplete 源码最新版目录下无 `.zshrc`，要 checkout 到 `22.01.21` tag 下，才能继续.
+> 2. sed 在 macos 下存在兼容性问题，要加上 -e 选项，才能正常工作。
+
+> 译注：读了下 [zsh-autocomplete 说明文档](https://github.com/marlonrichert/zsh-autocomplete/tree/main)，其中，没有 oh-my-zsh 的安装说明。
+
+重新打开终端，输入查看效果：
+
+![](https://linuxopsys.com/wp-content/uploads/2023/03/how-to-use-zsh-instead-of-bash-19032023-04.gif)
+
 ### 按键绑定
 
-### 终端模拟器窗口标题
+Key Bindings，即按键绑定，它让 zsh 给你带来更加丝滑的体验，诸如实现将按键绑定到特定功能、启动程序、复制粘贴等。注意，部分组合键可能无效，shell 捕捉按键的能力是有限的。
+
+要注意的是，在 zsh 中进行按键绑定，要用 ASCII 方式表示按键。
+
+如下代码，将 TAB 绑定到 fzf-tab 插件，从而在 vi 插入模式，通过 `Tab` 调用 `fzf` 实现补全。
+
+```bash
+bindkey -M viins '^I' fzf-tab-complete
+```
+
+> 译注：
+> Ctrl+I 与 Tab 在按键效果上等通。虽然这里绑定的是 Ctrl+I，但也等同于绑定 Tab。其他类情况还有，Ctrl+M 等同于 Enter，Ctrl+H 等同于 `backspace` 等。更多查看 [bash 快捷键](https://ostechnix.com/list-useful-bash-keyboard-shortcuts/)。
+
+oh-my-zsh 或其他插件提供的功能函数，都可以通过这种方式绑定到相应的快捷键。
+
+### 窗口标题
+
+Shell 一般会提供设置窗口标题的能力。如当使用如 Alt+Tab 切换窗口时，可通过标题快速发现目标。我们可以通过查看窗口标题来确认终端当前目录。
+
+注意，窗口标题的位置，或功能上在不同环境下可能有所差异，因为每个环境有自己的实现。
+
+有一种方法可以通过使用 .zshrc 中的函数来动态更改窗口标题。代码实现不多解释啊了，但放心在你的 .zshrc 中使用：
+
+```zsh
+case "$TERM" in (rxvt|rxvt-*|st|st-*|*xterm*|(dt|k|E)term)
+    local term_title () { print -n "\e]0;${(j: :q)@}\a" }
+    precmd () {
+      local DIR="$(print -P '[%c]')"
+      term_title "$DIR" "st"
+    }
+    preexec () {
+      local DIR="$(print -P '[%c]%#')"
+      local CMD="${(j:\n:)${(f)1}}"
+      #term_title "$DIR" "$CMD" use this if you want directory in command, below only prints program name
+	  term_title "$CMD"
+    }
+  ;;
+esac
+```
+
+这段代码会将当前工作目录名作为窗口标题，效果如下：
+
+![](https://linuxopsys.com/wp-content/uploads/2023/03/how-to-use-zsh-instead-of-bash-20032023-06.png)
+
+> 译注：在 iTerm2 下，这段代码还需要一些特殊处理，才能生效。具体细节可查看这个回答 [Change iTerm2 window and tab titles in zsh](https://superuser.com/questions/292652/change-iterm2-window-and-tab-titles-in-zsh)
+
+
 
 ### Zsh 命令
 
+在 zsh 下，有一些特定命令可用于提高你的工作效率。
+
+十六进制数转十进制：
+
+```zsh
+$ echo $((16#ff))
+255
+```
+
+十进制转十六进制：
+
+```zsh
+$ echo $(([##16]255))
+FF
+```
+
+打印 ASCII 字符整数值：
+
+```bash
+$ echo $((#\a)) 
+97
+```
+
+字符串拆分为数组：
+
+```bash
+$ echo "${(@f)$(echo hello\nworld)}"
+hello world
+```
+
+自定义分隔符拆分字符串为数组：
+
+```bash
+$ echo "${(s._.)$(echo hello_world_linux)}"
+hello world linux
+```
+
+以上用 _ 分隔这段字符串。
+
+请注意，您可以使用 '.' 或 ':' 作为分隔符。
+
+示例：
+
+- (s.:.): 分割字符串是 `:`
+- (s:.:)：分割字符串是 `.`
+
+如下为译者补充示例：
+
+```bash
+echo "${(s.:.)$(echo hello:world.linux)}"
+hello world.linux
+$ echo "${(s:.:)$(echo hello:world.linux)}"
+hello:world linux
+```
+
 ## 总结
+
+从本文可知，zsh 提供了相当多的能力，初看可能略感复杂。但如果你坚持使用，它将会成为你日常工作中不可获取的工具。
+
+
