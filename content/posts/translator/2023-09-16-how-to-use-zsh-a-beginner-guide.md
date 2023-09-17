@@ -1,7 +1,7 @@
 ---
 title: "从 0 开始：教你如何配置 zsh【译】【zsh.1】"
 date: 2023-09-17T15:06:02+08:00
-draft: true
+draft: false
 comment: true
 tags: ["zsh"]
 ---
