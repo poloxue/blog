@@ -8,6 +8,19 @@ body {
   max-width: 800px;
 }
 
+#TableOfContents ul {
+  list-style-position: unset;
+}
+
+.section-nav #TableOfContents a {
+  color: #666;
+}
+
+.section-nav {
+  padding-left: 10px;
+  margin-left: 5px;
+}
+
 h1 {
   font-size: 1.5em;
 }
@@ -39,6 +52,12 @@ blockquote {
   font-style: normal;
 }
 
+.highlight {
+  border-radius: 0.2em; 
+}
+code {
+  font-size: 1.2em;
+}
 
 table th {
   color: #333;
