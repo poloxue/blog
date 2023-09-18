@@ -16,7 +16,7 @@ Martini 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架
 概要 本系列不仅能让你了解 Go 中 Web 开发的最佳实践，还会让你了解其他常见问题的解决方案及如何正确运用。
 第 1 部分：简介 第 2 部分：Go 中间件：最佳实践和示例 第 3 部分：中间件数据共享 第 4 部分：第三方路由 第 5 部分：使用 MongoDB 实现 JSON-API 附加福利：上传文件到 s3 框架该具备什么能力 市面主要有两种类型的 Web 框架。
 一种是内置所有功能，类似 Rails 的框架，能帮你快速构建与引导项目。Go 中类似框架有：Beego 和 Revel。
-另一种，类似于 Sinatra 的框架，提供路由和一些内置功能，但不会提供 ORM 等功能。 多数 Go 框架都采用了这种风格，如 Martini、Goji、gocraft/web 等。</description></item><item><title>powermock: 一个支持能力的 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</link><pubDate>Sat, 17 Jul 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</guid><description>本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
+另一种，类似于 Sinatra 的框架，提供路由和一些内置功能，但不会提供 ORM 等功能。 多数 Go 框架都采用了这种风格，如 Martini、Goji、gocraft/web 等。</description></item><item><title>powermock: 一个支持 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</link><pubDate>Sat, 17 Jul 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</guid><description>本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
 背景 我所在公司正处在一个高速发展的阶段，各产品线齐头并进。而我所在的部门主要负责核心能力建设与增长类业务，属于所有产品线的最下游。
 业务部门希望在新产品部署产线后，我们能快速的配合。这就导致了一个非常尴尬的局面，产品确定上线时间，处在产品上线的最后阶段的我们，如果有任何异常，都可能导致上线时间被压缩。
 如何防止这类情况？简单来说，就是如何防止因依赖导致项目开发的不可预期。
