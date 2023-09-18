@@ -23,7 +23,21 @@ Martini 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架
 概要 本系列不仅能让你了解 Go 中 Web 开发的最佳实践，还会让你了解其他常见问题的解决方案及如何正确运用。
 第 1 部分：简介 第 2 部分：Go 中间件：最佳实践和示例 第 3 部分：中间件数据共享 第 4 部分：第三方路由 第 5 部分：使用 MongoDB 实现 JSON-API 附加福利：上传文件到 s3 框架该具备什么能力 市面主要有两种类型的 Web 框架。
 一种是内置所有功能，类似 Rails 的框架，能帮你快速构建与引导项目。Go 中类似框架有：Beego 和 Revel。
-另一种，类似于 Sinatra 的框架，提供路由和一些内置功能，但不会提供 ORM 等功能。 多数 Go 框架都采用了这种风格，如 Martini、Goji、gocraft/web 等。</description></item><item><title>Go 如何实现 HTTP 文件上传</title><link>https://www.poloxue.com/posts/coder/2019-12-10-golang-http-upload-file/</link><pubDate>Tue, 10 Dec 2019 15:25:18 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-12-10-golang-http-upload-file/</guid><description>早前写过一篇文章，Go HTTP 请求 QuickStart。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
+另一种，类似于 Sinatra 的框架，提供路由和一些内置功能，但不会提供 ORM 等功能。 多数 Go 框架都采用了这种风格，如 Martini、Goji、gocraft/web 等。</description></item><item><title>powermock: 一个支持能力的 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</link><pubDate>Sat, 17 Jul 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</guid><description>本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
+背景 我所在公司正处在一个高速发展的阶段，各产品线齐头并进。而我所在的部门主要负责核心能力建设与增长类业务，属于所有产品线的最下游。
+业务部门希望在新产品部署产线后，我们能快速的配合。这就导致了一个非常尴尬的局面，产品确定上线时间，处在产品上线的最后阶段的我们，如果有任何异常，都可能导致上线时间被压缩。
+如何防止这类情况？简单来说，就是如何防止因依赖导致项目开发的不可预期。
+一个常见拉新活动的业务图为例，如下：
+用户场景是，假设一名用户通过我的邀请码完成平台注册，并且完成首次购物，他才能算作我的成功邀请用户，我才能得到我想要的奖励。
+一个简单的拉新活动，因为服务拆分，需要同时依赖于两个服务才可以能完成这一个活动的开发。我们的核心诉求是测试我们自己开发的邀请活动。而用户和订单服务，一方面不在测试范围之内，另一方面，这些服务是其他团队开发，在测试环境的稳定性没人保证，会成为开发排期的瓶颈，而且如果是并行开发，这些服务可能还没有完成。
+如果有一个服务，能够实现依赖服务协议，方便我们尽可能的穷举依赖服务的各种场景，让我们不需要时时刻刻的依赖上游服务，是不是就能解决这个问题？
+选型 基于这些困惑和一段时间的摸索，团队成员提出了一套新的解决思路，基于 Mock 方式解决问题。确定了这个思想，接下来就是如何实施了。
+通常服务间的依赖可分两类，一类是由被依赖方主动触发的消息，二类是由依赖方主动发起的调用。消息类依赖主要容易 mock，而服务间的调用 mock 相对复杂。
+当前的微服务架构下，gRPC 是主流的服务间调用的协议，Mock Server 必然需要支持，经过一番寻找，在市面上发现了最近 bilibili 的开源实现方案 powermock。
+这个工具的开源看时间在 2021 年 5 份刚刚开源，powermock 同时支持 HTTP 与 gRPC 协议接口的 Mock，提供灵活的插件功能。面向对象包括前后端（HTTP、gRPC）、测试等对 Mock 有需求的所有人员。
+当前这个项目的 star 为 5，顺手 star 加到了 6。虽然 star 有点少，但鉴于其特性的确是我想要的功能，肯定是要尝试一下的。powermock 最吸引我的地方在于，代码简单，易于阅读，二次开发方便。而且，对于 gRPC 的支持是一个亮点。市面上的 Mock Server 主要都是面向 HTTP 的接口，面向前端。
+架构 为便于针对 powermock 二次开发，通过阅读源码，我整理出 powermock 的主体架构，如下所示：
+从上图可以看出， powermock 本身是一个 server，提供了 HTTP 和 gRPC 两种接入方式，即通过它可以 mock HTTP 和 gRPC 两种服务。</description></item><item><title>Go 如何实现 HTTP 文件上传</title><link>https://www.poloxue.com/posts/coder/2019-12-10-golang-http-upload-file/</link><pubDate>Tue, 10 Dec 2019 15:25:18 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-12-10-golang-http-upload-file/</guid><description>早前写过一篇文章，Go HTTP 请求 QuickStart。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
 最近，尝试录成它的视频，访问地址。发现当时写得挺详细的，发现当时虽然写得比较详细，但也只是介绍用法，可能不知其所以然。比如文件上传那部分，如果不了解 http 文件上传协议 RFC 1867，就很难搞懂为什么代码这么写。
 今天，就以这个话题为基础，介绍下 Go 如何实现文件上传。
 相关代码请访问 httpdemo/post。本文视频地址：Go 上传文件
@@ -174,18 +188,4 @@ Golang早起的讨论由前面介绍的三位大牛发起，针对性分析了�
 确认 polo 账户余额高于1000元； 从 polo 的账户余额减去1000元； 将 lynn 的账户余额增加1000元； SQL语句如下:
 mysql&amp;gt; BEGIN; mysql&amp;gt; SELECT balance FROM bank_account WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance-1000 WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance+1000 WHERE uid=10002; mysql&amp;gt; COMMIT; mysql 启动事务可使用 BEGIN 或 START TRANSACTION；上述三个步骤执行在一个事务中就能够保证数据的完整性，要么全部成功，要么全部失败。
 MYSQL 提供两种事务型引擎：Innodb 和 NDBCluster。默认采用自动提交模式，执行一条语句自动 COMMIT。通过 AUTOCOMMIT 变量可启用或者禁用自动提交模式：
-mysql&amp;gt; SHOW VARIABLES LIKE &amp;#34;AUTOCOMMIT&amp;#34;; +---------------+-------+ | Variable_name | Value | +---------------+-------+ | autocommit | ON | +---------------+-------+ 1 row in set (0.</description></item><item><title>powermock: 一个支持能力的 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</guid><description>本文主要介绍的如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
-背景 我所在公司正处在一个高速发展的阶段，各产品线齐头并进。而我所在的部门主要负责核心能力建设与增长类业务，属于所有产品线的最下游。
-业务部门希望在新产品部署产线后，我们能快速的配合。这就导致了一个非常尴尬的局面，产品确定上线时间，处在产品上线的最后阶段的我们，如果有任何异常，都可能导致上线时间被压缩。
-如何防止这类情况？简单来说，就是如何防止因依赖导致项目开发的不可预期。
-一个常见拉新活动的业务图为例，如下：
-用户场景是，假设一名用户通过我的邀请码完成平台注册，并且完成首次购物，他才能算作我的成功邀请用户，我才能得到我想要的奖励。
-一个简单的拉新活动，因为服务拆分，需要同时依赖于两个服务才可以能完成这一个活动的开发。我们的核心诉求是测试我们自己开发的邀请活动。而用户和订单服务，一方面不在测试范围之内，另一方面，这些服务是其他团队开发，在测试环境的稳定性没人保证，会成为开发排期的瓶颈，而且如果是并行开发，这些服务可能还没有完成。
-如果有一个服务，能够实现依赖服务协议，方便我们尽可能的穷举依赖服务的各种场景，让我们不需要时时刻刻的依赖上游服务，是不是就能解决这个问题？
-选型 基于这些困惑和一段时间的摸索，团队成员提出了一套新的解决思路，基于 Mock 方式解决问题。确定了这个思想，接下来就是如何实施了。
-通常服务间的依赖可分两类，一类是由被依赖方主动触发的消息，二类是由依赖方主动发起的调用。消息类依赖主要容易 mock，而服务间的调用 mock 相对复杂。
-当前的微服务架构下，gRPC 是主流的服务间调用的协议，Mock Server 必然需要支持，经过一番寻找，在市面上发现了最近 bilibili 的开源实现方案 powermock。
-这个工具的开源看时间在 2021 年 5 份刚刚开源，powermock 同时支持 HTTP 与 gRPC 协议接口的 Mock，提供灵活的插件功能。面向对象包括前后端（HTTP、gRPC）、测试等对 Mock 有需求的所有人员。
-当前这个项目的 star 为 5，顺手 star 加到了 6。虽然 star 有点少，但鉴于其特性的确是我想要的功能，肯定是要尝试一下的。powermock 最吸引我的地方在于，代码简单，易于阅读，二次开发方便。而且，对于 gRPC 的支持是一个亮点。市面上的 Mock Server 主要都是面向 HTTP 的接口，面向前端。
-架构 为便于针对 powermock 二次开发，通过阅读源码，我整理出 powermock 的主体架构，如下所示：
-从上图可以看出， powermock 本身是一个 server，提供了 HTTP 和 gRPC 两种接入方式，即通过它可以 mock HTTP 和 gRPC 两种服务。</description></item></channel></rss>
+mysql&amp;gt; SHOW VARIABLES LIKE &amp;#34;AUTOCOMMIT&amp;#34;; +---------------+-------+ | Variable_name | Value | +---------------+-------+ | autocommit | ON | +---------------+-------+ 1 row in set (0.</description></item></channel></rss>
