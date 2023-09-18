@@ -1,5 +1,5 @@
 ---
-title: "什么是 zsh？我是否应该使用 zsh"
+title: "什么是 zsh？我是否应该使用 zsh【译】【zsh.2】"
 date: 2023-09-18T14:06:02+08:00
 draft: false
 comment: true
