@@ -256,7 +256,7 @@ redis:
 
 重启 Mock 服务之后，再次 load apis 配置信息。
 
-```redis
+```bash
 127.0.0.1:6379> keys *
 1) "/mockserver/hello_example_gRPC"
 2) "/mockserver/__REVISION__"
@@ -324,7 +324,7 @@ hello world!* Closing connection 0
 
 还是以一个真实的场景为例吧，一个简单的用户服务的 proto 接口定义。
 
-```proto3
+```proto
 syntax = "proto3";
 
 package examples.user.api;
@@ -365,7 +365,7 @@ message GetUserResponse {
 }
 ```
 
-如上一共三个接口，分别是用户注册、设置详情以及获取用户信息。我们按 快速开始 中的步骤把 proto 的 go 文件编译，配置等准备完成。
+共三个接口，分别是用户注册、设置详情以及获取用户信息。我们按 快速开始 中的步骤把 proto 的 go 文件编译，配置等准备完成。
 
 #### 场景一 特定 ID 返回特定用户信息
 
