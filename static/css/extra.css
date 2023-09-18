@@ -4,8 +4,8 @@ body {
   background: #f5f5d8;
 }
 
-.container, .container .post, .container .post .highlight {
-  max-width: 800px;
+.container-wide {
+  max-width: 1000px;
 }
 
 #TableOfContents ul {

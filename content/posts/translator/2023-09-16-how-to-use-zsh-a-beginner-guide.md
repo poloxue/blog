@@ -363,7 +363,6 @@ mv ~/.config/zsh/.zshrc ~/.config/zsh/zshrc
 
 ```bash
 # Change your directory to ~/.config/zsh first, create if not exists
-mkdir -p ~/.config/zsh 
 cd ~/
 git clone https://github.com/marlonrichert/zsh-autocomplete
 mv zsh-autocomplete/.zshrc ~/
