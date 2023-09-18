@@ -141,10 +141,10 @@
 </span></span><span style=display:flex><span>  <span style=color:#f92672>password</span>: <span style=color:#e6db74>&#34;&#34;</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>db</span>: <span style=color:#ae81ff>0</span>
 </span></span><span style=display:flex><span>  <span style=color:#f92672>prefix</span>: <span style=color:#ae81ff>/mockserver/</span>
-</span></span></code></pre></div><p>重启 Mock 服务之后，再次 load apis 配置信息。</p><pre tabindex=0><code class=language-redis data-lang=redis>127.0.0.1:6379&gt; keys *
-1) &#34;/mockserver/hello_example_gRPC&#34;
-2) &#34;/mockserver/__REVISION__&#34;
-</code></pre><p>通过 redis 持久化存储的 Mock 规则的好处不言而喻。</p><p>不断补充依赖服务在正式场景下的规则，逐步完成一个与真实场景几近相同的 Mock Server，无论是开发人员效率，还是自动化测试的场景覆盖都有极大的提升。</p><h3 id=http-mock>HTTP Mock</h3><p>前面介绍的都是 gRPC 接口的 Mock，作为后端开发的我肯定更加关心的这个。如果是前端更关心的肯定是 HTTP 接口的 Mock。apis 的 Mock 也非常简单。</p><p>配置目标，无论什么情况下，都返回消息 &ldquo;hello world&rdquo;，在 apis.yaml 中新增如下配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>uniqueKey</span>: <span style=color:#e6db74>&#34;hello_example_http&#34;</span>
+</span></span></code></pre></div><p>重启 Mock 服务之后，再次 load apis 配置信息。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>127.0.0.1:6379&gt; keys *
+</span></span><span style=display:flex><span>1<span style=color:#f92672>)</span> <span style=color:#e6db74>&#34;/mockserver/hello_example_gRPC&#34;</span>
+</span></span><span style=display:flex><span>2<span style=color:#f92672>)</span> <span style=color:#e6db74>&#34;/mockserver/__REVISION__&#34;</span>
+</span></span></code></pre></div><p>通过 redis 持久化存储的 Mock 规则的好处不言而喻。</p><p>不断补充依赖服务在正式场景下的规则，逐步完成一个与真实场景几近相同的 Mock Server，无论是开发人员效率，还是自动化测试的场景覆盖都有极大的提升。</p><h3 id=http-mock>HTTP Mock</h3><p>前面介绍的都是 gRPC 接口的 Mock，作为后端开发的我肯定更加关心的这个。如果是前端更关心的肯定是 HTTP 接口的 Mock。apis 的 Mock 也非常简单。</p><p>配置目标，无论什么情况下，都返回消息 &ldquo;hello world&rdquo;，在 apis.yaml 中新增如下配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>uniqueKey</span>: <span style=color:#e6db74>&#34;hello_example_http&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#f92672>path</span>: <span style=color:#e6db74>&#34;/hello&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#f92672>method</span>: <span style=color:#e6db74>&#34;GET&#34;</span>
 </span></span><span style=display:flex><span><span style=color:#f92672>cases</span>:
@@ -176,45 +176,45 @@
 </span></span><span style=display:flex><span>&lt; 
 </span></span><span style=display:flex><span>* Connection <span style=color:#75715e>#0 to host localhost left intact</span>
 </span></span><span style=display:flex><span>hello world!* Closing connection <span style=color:#ae81ff>0</span>
-</span></span></code></pre></div><p>至此，一个 HTTP 接口的 Mock 已经完成。</p><h3 id=高级配置>高级配置</h3><p>前面的内容主要介绍如何快速上手这个新的 Mock Server。但在真实场景下，伪造数据场景复杂，只返回固定的信息肯定不满足我们的要求。</p><p>如何处理呢？这就需要 apis.yaml 支持更多的高级 Mock 规则。</p><h4 id=前置准备>前置准备</h4><p>还是以一个真实的场景为例吧，一个简单的用户服务的 proto 接口定义。</p><pre tabindex=0><code class=language-proto3 data-lang=proto3>syntax = &#34;proto3&#34;;
-
-package examples.user.api;
-option go_package = &#34;github.com/poloxue/mock/examples/user/apis&#34;;
-
-service User {
-  rpc Register(GetUserRequest) returns(GetUserResponse);
-  rpc SetUserDetail(SetUserDetailRequest) returns(SetUserDetailRequest);
-  rpc GetUser(GetUserRequest) returns(GetUserResponse);
-}
-
-message RegisterRequest {
-  string mobile = 1;
-  string password = 2;
-}
-
-message RegisterResponse {
-  int32 status = 1;
-}
-
-message SetUserDetailRequest {
-  int64 id = 1;
-  string mobile = 2;
-  string username = 3;
-  string email = 4;
-}
-
-message GetUserRequest {
-  int64 id = 1;
-  string mobile = 2;
-}
-
-message GetUserResponse {
-  int64 id = 1;
-  string mobile = 2;
-    string username = 3;
-    string email = 4;
-}
-</code></pre><p>如上一共三个接口，分别是用户注册、设置详情以及获取用户信息。我们按 快速开始 中的步骤把 proto 的 go 文件编译，配置等准备完成。</p><h4 id=场景一-特定-id-返回特定用户信息>场景一 特定 ID 返回特定用户信息</h4><p>如果 id 为 1000 的情况，返回用户信息如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span></code></pre></div><p>至此，一个 HTTP 接口的 Mock 已经完成。</p><h3 id=高级配置>高级配置</h3><p>前面的内容主要介绍如何快速上手这个新的 Mock Server。但在真实场景下，伪造数据场景复杂，只返回固定的信息肯定不满足我们的要求。</p><p>如何处理呢？这就需要 apis.yaml 支持更多的高级 Mock 规则。</p><h4 id=前置准备>前置准备</h4><p>还是以一个真实的场景为例吧，一个简单的用户服务的 proto 接口定义。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-proto data-lang=proto><span style=display:flex><span>syntax <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;proto3&#34;</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#f92672>package</span> examples<span style=color:#f92672>.</span>user.api;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>option</span> go_package <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;github.com/poloxue/mock/examples/user/apis&#34;</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>service</span> User {<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>rpc</span> Register(GetUserRequest) <span style=color:#66d9ef>returns</span>(GetUserResponse);<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>rpc</span> SetUserDetail(SetUserDetailRequest) <span style=color:#66d9ef>returns</span>(SetUserDetailRequest);<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>rpc</span> GetUser(GetUserRequest) <span style=color:#66d9ef>returns</span>(GetUserResponse);<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>message</span> <span style=color:#a6e22e>RegisterRequest</span> {<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> mobile <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> password <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>message</span> <span style=color:#a6e22e>RegisterResponse</span> {<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>int32</span> status <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>message</span> <span style=color:#a6e22e>SetUserDetailRequest</span> {<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>int64</span> id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> mobile <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> username <span style=color:#f92672>=</span> <span style=color:#ae81ff>3</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> email <span style=color:#f92672>=</span> <span style=color:#ae81ff>4</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>message</span> <span style=color:#a6e22e>GetUserRequest</span> {<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>int64</span> id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> mobile <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>message</span> <span style=color:#a6e22e>GetUserResponse</span> {<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>int64</span> id <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>  <span style=color:#66d9ef>string</span> mobile <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#66d9ef>string</span> username <span style=color:#f92672>=</span> <span style=color:#ae81ff>3</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>    <span style=color:#66d9ef>string</span> email <span style=color:#f92672>=</span> <span style=color:#ae81ff>4</span>;<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>}<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><p>共三个接口，分别是用户注册、设置详情以及获取用户信息。我们按 快速开始 中的步骤把 proto 的 go 文件编译，配置等准备完成。</p><h4 id=场景一-特定-id-返回特定用户信息>场景一 特定 ID 返回特定用户信息</h4><p>如果 id 为 1000 的情况，返回用户信息如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
 </span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>1000</span>,
 </span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;mobile&#34;</span>: <span style=color:#e6db74>&#34;15300000001&#34;</span>,
 </span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;username&#34;</span>: <span style=color:#e6db74>&#34;poloxue&#34;</span>,
