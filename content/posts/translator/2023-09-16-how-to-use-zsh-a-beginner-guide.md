@@ -52,7 +52,7 @@ Fedora
 sudo dnf install zsh
 ```
 
-> 译注：从 2019 后，macOS 的默认 shell 从 bash 更新到了 zsh，无需安装，以往版本可通过 `brew install zsh` 安装。
+> 译注：从 2019 后，macOS 的默认 shell 从 bash 更新到了 zsh，无需安装，以往版本可通过 `brew install zsh` 安装。推荐阅读：[什么是 zsh？我该使用 zsh 吗？]
 
 ### 设置zsh为默认shell
 
