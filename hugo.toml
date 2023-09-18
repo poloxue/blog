@@ -22,26 +22,26 @@ copyright = "2023 Polo Xue All rights reserved"
     weight = 1
   [[menu.main]]
     identifier = "coder"
-    name = "编程杂谈"
+    name = "编程"
     url = "/posts/coder"
     weight = 2
   [[menu.main]]
     identifier = "trader"
-    name = "交易人生"
+    name = "交易"
     url = "/posts/trader"
     weight = 3
   [[menu.main]]
     identifier = "translator"
-    name = "技术译文"
+    name = "译文"
     url = "/posts/translator"
     weight = 3
   [[menu.main]]
     identifier = "english"
-    name = "英语学习"
+    name = "英语"
     url = "/posts/english"
     weight = 3
   [[menu.main]]
     identifier = "about"
-    name = "关于我"
+    name = "About"
     url = "/about/"
     weight = 4
