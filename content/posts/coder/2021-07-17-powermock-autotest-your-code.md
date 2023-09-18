@@ -1,5 +1,5 @@
 ---
-title: "powermock: 一个支持能力的 gRPC 的 Mock Server"
+title: "powermock: 一个支持 gRPC 的 Mock Server"
 comment: true
 date: "2021-07-17T20:33:14+08:00"
 draft: false
