@@ -1,11 +1,12 @@
 ---
 title: "powermock: 一个支持能力的 gRPC 的 Mock Server"
 comment: true
+date: "2021-07-17T20:33:14+08:00"
 draft: false
 tags: ["golang"]
 ---
 
-本文主要介绍的如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
+本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
 
 ## 背景
 
