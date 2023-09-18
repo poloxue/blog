@@ -14,4 +14,8 @@ zsh 是什么？ zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 
 zsh 的优势 zsh 和 bash 都是非常流行的 Unix-like shell，它们有着很多相似的功能特性。但相对于 bash，zsh 有这些差异化优势：
 更优秀的命令行补全能力； 配置化能力更强； 更现代的语法； 改进的错误报告； 模拟 bash； 用户社区不断壮大，更新频繁； 体验更好的按键 支持vi模式等 安装 zsh Linux 系统下的安装非常简单。
 Debian:
-sudo apt install zsh Arch Linux:</description></item></channel></rss>
+sudo apt install zsh Arch Linux:</description></item><item><title/><link>https://www.poloxue.com/posts/translator/2023-09-20-learn-how-to-use-neovim-as-an-ide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-20-learn-how-to-use-neovim-as-an-ide/</guid><description>译文：Learn How To Use NeoVim As an IDE
+Many years ago I tried NeoVim, I was horrified by the amount of setup needed and I ran.
+I ran to the comfor of my regular VS Code. An IDE that worked, looked good and had the most features I wanted.
+Now, I thought I was effective in VS Code, but then I decided to give NeoVim a try again.
+Some might ask, why spend a few hours setting up an IDE when you can have a complete working one in a minute, I agree.</description></item></channel></rss>
