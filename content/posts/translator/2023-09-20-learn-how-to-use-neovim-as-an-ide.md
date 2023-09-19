@@ -1,4 +1,6 @@
-译文：[Learn How To Use NeoVim As an IDE](https://programmingpercy.tech/blog/learn-how-to-use-neovim-as-ide/)
+---
+draft: true
+---
 
 Many years ago I tried NeoVim, I was horrified by the amount of setup needed and I ran.
 
