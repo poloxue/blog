@@ -59,7 +59,7 @@ bash: kdkjflajfks: command not found
 
 Shell 虽然是为命令行而设计的，但适当的使用鼠标，会带给你更好的体验。如使用鼠标进行滚动与复制粘贴，能进行快速的定位与拷贝。
 
-## 关于专注的几句话...
+## 窗口聚焦...
 
 当安装 Linux 和其 Window Manager（如 Gnome 或 KDE）时，默认配置在某些方面的行为类似旧版 OS。
 
