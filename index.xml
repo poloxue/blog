@@ -7,23 +7,24 @@ bash（全称 Bourne Again Shell，最初由 Steve Bourne 开发，它是 sh，�
 首先引入眼帘的是 shell 提示符，多数情况下，提示符的组成包含用户名和机器名称，并以 $ 结尾，效果如下：
 [me@linuxbox me]$ 赞！让我们输入一些无用字符，
 如下所示：
-[me@linuxbox me]$ kdkjflajfks 输入 &amp;ldquo;Enter&amp;rdquo; 确认。我们将收到一条 &amp;ldquo;error message&amp;rdquo;。</description></item><item><title>什么是 zsh？我是否应该使用 zsh【译】【zsh.2】</title><link>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</guid><description>译：What is Zsh? Should I Use it?
-我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
+[me@linuxbox me]$ kdkjflajfks 输入 &amp;ldquo;Enter&amp;rdquo; 确认。我们将收到一条 &amp;ldquo;error message&amp;rdquo;。</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
 zsh 为什么如此受欢迎？我们是否应该使用它呢？
 什么是 zsh？ “Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。
 Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。
 如今，Zsh 俨然已经是一个庞大的开源项目（非 Paul Falstad 维护），拥有一个有大量用户和贡献者的社区。而且，自 2019 年以来，它成为了 Apple macOS 的默认 Shell。
 bash vs zsh 这两个项目都还在积极开发中。这使它们在功能上越发接近，但差异不可能完全消除。默认，zsh 更强大且更容易自定义，而某些功能， Bash 需要一些额外的脚本（插件）才能实现。
 zsh 优于 Bash 的主要功能是：
-zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；</description></item><item><title>从 0 开始：教你如何配置 zsh【译】【zsh.1】</title><link>https://www.poloxue.com/posts/translator/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description>译：How to Use Zsh: A Beginer&amp;rsquo;s Guide
-本文将介绍如何使用 zsh 来提升命令行的操作效率。
-你是否每天都在与命令行打交道？如果答案是 &amp;ldquo;Yes&amp;rdquo;，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。
-zsh 是什么？ zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。
+zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；</description></item><item><title>从 0 开始：教你如何配置 zsh</title><link>https://www.poloxue.com/posts/translator/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description>本文将介绍如何使用 zsh 来提升命令行的操作效率。
+你是否每天都在与命令行打交道？
+如果答案是 &amp;ldquo;Yes&amp;rdquo;，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。
+zsh 是什么？ zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。
+它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。
 再者，相较于 bash，zsh 现在社区更加活跃，是一个还在成长中的项目。
 zsh 的优势 zsh 和 bash 都是非常流行的 Unix-like shell，它们有着很多相似的功能特性。但相对于 bash，zsh 有这些差异化优势：
 更优秀的命令行补全能力； 配置化能力更强； 更现代的语法； 改进的错误报告； 模拟 bash； 用户社区不断壮大，更新频繁； 体验更好的按键 支持vi模式等 安装 zsh Linux 系统下的安装非常简单。
 Debian:
-sudo apt install zsh Arch Linux:</description></item><item><title>小 Sheldon 如何撩妹</title><link>https://www.poloxue.com/posts/english/2023-09-15-sheldon-01/</link><pubDate>Fri, 15 Sep 2023 16:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/english/2023-09-15-sheldon-01/</guid><description>A: I&amp;rsquo;m afraid we have a bigger problem.
+sudo apt install zsh Arch Linux:
+sudo pacman -S zsh Fedora</description></item><item><title>小 Sheldon 如何撩妹</title><link>https://www.poloxue.com/posts/english/2023-09-15-sheldon-01/</link><pubDate>Fri, 15 Sep 2023 16:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/english/2023-09-15-sheldon-01/</guid><description>A: I&amp;rsquo;m afraid we have a bigger problem.
 B: What are you talking about?
 A: I&amp;rsquo;m a scientist and I have to follow the data wherever it leads whether I like it or not.
 B: Get to the point
