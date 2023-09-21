@@ -1,11 +1,9 @@
 ---
-title: "什么是 zsh？我是否应该使用 zsh【译】【zsh.2】"
+title: "什么是 zsh？我是否应该使用 zsh"
 date: 2023-09-18T14:06:02+08:00
 draft: false
 comment: true
 ---
-
-译：[What is Zsh? Should I Use it?](https://linuxhandbook.com/why-zsh/#:~:text=Zsh%20is%20more%20powerful%20and,more%20advanced%20features%20shipped%20in)
 
 我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
 
@@ -70,6 +68,5 @@ zsh 能增强你的 CLI 终端使用体验，而且，只需简单安装即可�
 
 请安装开始你的探索吧。我相信，你会发现它的强大。或许，最终它会成为你的默认 shell。
 
-
-
+译：[What is Zsh? Should I Use it?](https://linuxhandbook.com/why-zsh/#:~:text=Zsh%20is%20more%20powerful%20and,more%20advanced%20features%20shipped%20in)
 

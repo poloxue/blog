@@ -1,20 +1,22 @@
 ---
-title: "从 0 开始：教你如何配置 zsh【译】【zsh.1】"
+title: "从 0 开始：教你如何配置 zsh"
 date: 2023-09-17T15:06:02+08:00
 draft: false
 comment: true
 tags: ["zsh"]
 ---
 
-译：[How to Use Zsh: A Beginer's Guide](https://linuxopsys.com/topics/use-zsh)
-
 本文将介绍如何使用 zsh 来提升命令行的操作效率。
 
-你是否每天都在与命令行打交道？如果答案是 "Yes"，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。
+你是否每天都在与命令行打交道？
+
+如果答案是 "Yes"，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。
 
 ## zsh 是什么？
 
-zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。
+zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。
+
+它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。
 
 再者，相较于 bash，zsh 现在社区更加活跃，是一个还在成长中的项目。
 
@@ -495,4 +497,4 @@ hello:world linux
 
 从本文可知，zsh 提供了相当多的能力，初看可能略感复杂。但如果你坚持使用，它将会成为你日常工作中不可获取的工具。
 
-
+译：[How to Use Zsh: A Beginer's Guide](https://linuxopsys.com/topics/use-zsh)
