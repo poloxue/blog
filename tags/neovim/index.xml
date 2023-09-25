@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>neovim on POLOXUE's 博客频道</title><link>https://www.poloxue.com/tags/neovim/</link><description>Recent content in neovim on POLOXUE's 博客频道</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>2023 Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 25 Sep 2023 15:06:02 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/neovim/index.xml" rel="self" type="application/rss+xml"/><item><title>Vim 小技巧：高效利用 vim 的行号</title><link>https://www.poloxue.com/posts/coder/2023-09-25-vim-tips-how-to-use-number/</link><pubDate>Mon, 25 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2023-09-25-vim-tips-how-to-use-number/</guid><description>我们知道，Vim 支持配置是否显示行号，对这个行号认知，我们一般指的是绝对行号。其实 Vim 支持配置两种行号模式：number（绝对行号） 和 relativenumber（相对行号）。
+今天，基于 vim 行号介绍一个提升其使用效率的小技巧，混合使用 number 和 relativenumber。
+绝对行号 number 绝对行号 number，我们基本都熟悉怎么使用。效果图如下所示：
+通过 set number 显示行号。默认开启的话，配置到 Vim 配置文件中即可。
+其他命令：
+&amp;#34; 显示行号 set nu &amp;#34; set number 的缩写形式 &amp;#34; 隐藏行号 set nonumber &amp;#34; 无缩写 set nonu &amp;#34; 缩写形式 基于行号 number，实现的一些快捷操作，如：
+基于行的快速跳转 10G 或 :10，快速跳转到第 10 行； 粘贴指定范围文本 :10,20y 或删除 :10,20d； 替换指定范围文本 :10,20s/hello/world/g； 相对行号 relativenumber 在谈相对行号前，其实 Vim 另外一种行间跳转方式：基于相对位置，可使用如 10k 或 10l 向上向下快速跳转，是一种适合在屏幕范围快速跳转的方式。
+但它缺点是，要数这个相对位置，如上图中，假设要从 vim.o.shiftwidth = true 跳转到 vim.o.autoindent=true ，可使用 :13 或者通过 6l（向下跳转 6 行）实现，第二种方式快速计算相对行号，使用 13-7 = 6，有一个计算过程，并不方便。</description></item></channel></rss>

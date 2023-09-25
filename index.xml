@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's 博客频道</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's 博客频道</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>2023 Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 19 Sep 2023 14:06:02 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>什么是 Shell</title><link>https://www.poloxue.com/posts/translator/2023-09-19-what-is-shell/</link><pubDate>Tue, 19 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-19-what-is-shell/</guid><description>何为 Shell? 简言之，shell 是一个键盘命令和操作系统间的搬运工，将用户输入交给系统执行的程序。曾几何时，它是 Linux 等类 Unix 系统上唯一的操作方式。如今，除了 Shell 等命令行界面 (CLI) ，我们还有了图形用户界面 (GUI)。
-bash（全称 Bourne Again Shell，最初由 Steve Bourne 开发，它是 sh，初版 Unix Shell 的增强版本，是绝大多数 unix-like 系统的默认 shell。其比较著名的 Shell 还有 ksh、tcsh 和 zsh。
-何为 Terminal？ Terminal，&amp;ldquo;终端&amp;rdquo;，一个称为 Terminal Emulator（&amp;ldquo;终端模拟器&amp;rdquo;）的程序，通过窗口实现与 Shell 交互。常见的 Linux 发行版支持的 Terminal 有 gnome-terminal、konsole、xterm、rxvt、konsole、nxterm、eterm 等。
-启动终端 Window Manager（窗口管理器），通常会支持从菜单启动终端。
-请通过它打开你的程序列表，找到一个看起来像终端的图标。无论什么终端，它的核心能力一定是访问 shell。当然，每个 terminal 会有自己的特色，选择一款你偏爱的。
-键盘测试 让我们尝试在终端输入一些字符。
-首先引入眼帘的是 shell 提示符，多数情况下，提示符的组成包含用户名和机器名称，并以 $ 结尾，效果如下：
-[me@linuxbox me]$ 赞！让我们输入一些无用字符，
-如下所示：
-[me@linuxbox me]$ kdkjflajfks 输入 &amp;ldquo;Enter&amp;rdquo; 确认。我们将收到一条 &amp;ldquo;error message&amp;rdquo;。</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's 博客频道</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's 博客频道</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>2023 Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 25 Sep 2023 15:06:02 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Vim 小技巧：高效利用 vim 的行号</title><link>https://www.poloxue.com/posts/coder/2023-09-25-vim-tips-how-to-use-number/</link><pubDate>Mon, 25 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2023-09-25-vim-tips-how-to-use-number/</guid><description>我们知道，Vim 支持配置是否显示行号，对这个行号认知，我们一般指的是绝对行号。其实 Vim 支持配置两种行号模式：number（绝对行号） 和 relativenumber（相对行号）。
+今天，基于 vim 行号介绍一个提升其使用效率的小技巧，混合使用 number 和 relativenumber。
+绝对行号 number 绝对行号 number，我们基本都熟悉怎么使用。效果图如下所示：
+通过 set number 显示行号。默认开启的话，配置到 Vim 配置文件中即可。
+其他命令：
+&amp;#34; 显示行号 set nu &amp;#34; set number 的缩写形式 &amp;#34; 隐藏行号 set nonumber &amp;#34; 无缩写 set nonu &amp;#34; 缩写形式 基于行号 number，实现的一些快捷操作，如：
+基于行的快速跳转 10G 或 :10，快速跳转到第 10 行； 粘贴指定范围文本 :10,20y 或删除 :10,20d； 替换指定范围文本 :10,20s/hello/world/g； 相对行号 relativenumber 在谈相对行号前，其实 Vim 另外一种行间跳转方式：基于相对位置，可使用如 10k 或 10l 向上向下快速跳转，是一种适合在屏幕范围快速跳转的方式。
+但它缺点是，要数这个相对位置，如上图中，假设要从 vim.o.shiftwidth = true 跳转到 vim.o.autoindent=true ，可使用 :13 或者通过 6l（向下跳转 6 行）实现，第二种方式快速计算相对行号，使用 13-7 = 6，有一个计算过程，并不方便。</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/translator/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
 zsh 为什么如此受欢迎？我们是否应该使用它呢？
 什么是 zsh？ “Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。
 Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。
