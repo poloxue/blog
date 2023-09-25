@@ -64,7 +64,7 @@ set nornu " set norelativenumber 的缩写形式
 
 ## 按模式切换
 
-有人提出一种将 `number` 和 `relativenumber` 结合使用的方式：在 `Insert` 模式下使用绝对行号，在其他模式下使用相对行号。猜测原因是，相对行号主要还是在非常输入模式下使用。
+有人提出一种将 `number` 和 `relativenumber` 结合使用的方式：在 `Insert` 模式下使用绝对行号，在其他模式下使用相对行号。猜测原因是，相对行号主要还是在非 `Insert` 模式下使用。
 
 这样的效果就能同时兼顾 `number` 和 `relativenumber`。
 
