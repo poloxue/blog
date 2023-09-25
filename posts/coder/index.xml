@@ -4,8 +4,8 @@
 通过 set number 显示行号。默认开启的话，配置到 Vim 配置文件中即可。
 其他命令：
 &amp;#34; 显示行号 set nu &amp;#34; set number 的缩写形式 &amp;#34; 隐藏行号 set nonumber &amp;#34; 无缩写 set nonu &amp;#34; 缩写形式 基于行号 number，实现的一些快捷操作，如：
-基于行的快速跳转 10G 或 :10，快速跳转到第 10 行； 粘贴指定范围文本 :10,20y 或删除 :10,20d； 替换指定范围文本 :10,20s/hello/world/g； 相对行号 relativenumber 在谈相对行号前，其实 Vim 另外一种行间跳转方式：基于相对位置，可使用如 10k 或 10l 向上向下快速跳转，是一种适合在屏幕范围快速跳转的方式。
-但它缺点是，要数这个相对位置，如上图中，假设要从 vim.o.shiftwidth = true 跳转到 vim.o.autoindent=true ，可使用 :13 或者通过 6l（向下跳转 6 行）实现，第二种方式快速计算相对行号，使用 13-7 = 6，有一个计算过程，并不方便。</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/coder/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
+基于行的快速跳转 10G 或 :10，快速跳转到第 10 行； 粘贴指定范围文本 :10,20y 或删除 :10,20d； 替换指定范围文本 :10,20s/hello/world/g； 注：set numberwidth=4 可配置行号所在的列的默认宽度为 4，如果行号数值达到 5 位数，将会自动扩展到 5 位。另外说明，不同于 Vim 的默认值是 2，Neovim 的默认宽度也是 4。
+相对行号 relativenumber 在谈相对行号前，其实 Vim 另外一种行间跳转方式：基于相对位置，可使用如 10k 或 10l 向上向下快速跳转，是一种适合在屏幕范围快速跳转的方式。</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/coder/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
 我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
 非常简单！
 核心脚本介绍
