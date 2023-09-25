@@ -118,6 +118,5 @@ local keymap = vim.api.nvim_set_keymap
 keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
 ```
 
-
 ## 插件管理
 
