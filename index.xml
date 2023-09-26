@@ -5,7 +5,7 @@ nvim-golang main.go nvim-python main.py nvim-cpp main.cpp 提到这，不由地�
 如何实现呢？进入正题吧。
 几年前，写过一篇关于 &amp;ldquo;Golang 多环境管理 GVM&amp;rdquo; 的文章。本质上，要实现这种多环境隔离，一般都是通过环境变量实现。查了些资料，Neovim 其实也不例外。
 方案 1：基于 XDG 配置 Neovim 的目录遵循 XDG 目录规范。具体是什么意思呢？
-XDG 本质是一套规范，定义了一组环境便令，用于说明应用程序储存信息目录的一套标准。熟悉 Linux 的朋友应该了解，我们以往一直习惯于把应用的配置以 .xxx 的形式放在用户的 $HOME 目录，导致 $HOME 下的点隐藏文件泛滥，而这套规范的出现，使我们轻易目标目标。
+XDG 本质是一套规范，定义了一组环境变量，用于说明应用程序储存信息目录的一套标准。熟悉 Linux 的朋友应该了解，我们以往一直习惯于把应用的配置以 .xxx 的形式放在用户的 $HOME 目录，导致 $HOME 下的点隐藏文件泛滥，而这套规范的出现，使我们轻易实现目标。
 就以 Neovim 为例：
 Neovim 的配置文件存放默认存放在 $XDG_CONFIG_HOME/nvim，数据目录默认在 $XDG_DATA_HOME/nvim，状态数据目录默认在 $XDG_STATE_HOME/nvim，缓存数据目录默认在 $XDG_CACHE_HOME/nvim。
 通过修改 XDG 环境变量，即可实现环境隔离。
