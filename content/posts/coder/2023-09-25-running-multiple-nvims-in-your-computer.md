@@ -227,13 +227,15 @@ NVIM_APPNAME=python nvim $@
 
 测试效果，启动 nvim-python 已无需重新加载插件。
 
+## 代码复用
+
 另外一个优化点，是否可以将 `nvim-basic-ide` 的能力作为基础共享，在此基础上配置 `goalng` 和 `python` 各自的配置。
 
 额？好像 `LunarVim` 支持这个能力，它已经把用户配置从核心 IDE 基础配置中摘除出来了。
 
 它的基本思路是在核心配置中引入用户定义配置。
 
-简单来说就是主配置目录下的 `init.lua` 通过一个变量 `LUNARVIM_CONFIG_DIR` 实现 `require` 用户配置 `config.lua` 实现多环境。
+简单来说就是主配置目录下的 `init.lua` 通过一个变量 `LUNARVIM_CONFIG_DIR` 实现 `require` 用户配置 `config.lua` 实现多环境。实现代码在 [bootstrap.lua](https://github.com/LunarVim/LunarVim/blob/master/lua/lvim/bootstrap.lua) 文件中。
 
 以 golang 环境为例，一个别名搞定：
 
