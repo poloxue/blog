@@ -1,5 +1,5 @@
 ---
-title: "Neovim 配置隔离-实现多语言支持"
+title: "Neovim 配置隔离-实现多语言环境支持"
 date: 2023-09-25T15:06:02+08:00
 draft: false
 comment: true
@@ -244,7 +244,8 @@ NVIM_APPNAME=python nvim $@
 
 另外，还有一个优化点，可以将 `nvim-basic-ide` 的能力作为基础共享，在此基础上配置 `goalng` 和 `python` 各自的配置。
 
-额？好像 `LunarVim` 可以支持这个这个能力，它已经把用户配置从核心 IDE 基础配置中摘除出来了。
+额？好像 `LunarVim` 支持这个能力，它已经把用户配置从核心 IDE 基础配置中摘除出来了。
 
 好了，不扯太远了。有机会再介绍吧。
 
+[原文地址](https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/)
