@@ -164,7 +164,7 @@ NVIM_APPNAME=golang nvim $@
 
 启动 `nvim-golang` 查看效果。
 
-## 插件与代码复用
+## 插件复用
 
 最后，还有一个问题，即配置的过程中，可能已经有朋友发现，插件会重复多次下载。这是因为，默认插件在下载位置位于 `$XDG_DATA_HOME/$NVIM_APPNAME` 下，故而不同的 `$XDG_DATA_HOME` 或 `NVIM_APPNAME` 都会导致下载插件所在位置的不同。
 
@@ -227,6 +227,12 @@ NVIM_APPNAME=python nvim $@
 
 测试效果，启动 nvim-python 已无需重新加载插件。
 
+> 另外一个优化点，是否可以将 `nvim-basic-ide` 的能力作为基础共享，在此基础上配置 `goalng` 和 `python` 各自的配置。
+>
+> 额？好像 `LunarVim` 支持这个能力，它已经把用户配置从核心 IDE 基础配置中摘除出来了。
+>
+> 好了，不扯太远了。有机会再看看 LunarVim 的多环境配置吧。
+
 ## 最后
 
 关于配置隔离的思路，到此就已经全部介绍完了。
@@ -242,10 +248,5 @@ NVIM_APPNAME=python nvim $@
 
 有兴趣都可以尝试下有什么差异。
 
-另外，还有一个优化点，可以将 `nvim-basic-ide` 的能力作为基础共享，在此基础上配置 `goalng` 和 `python` 各自的配置。
-
-额？好像 `LunarVim` 支持这个能力，它已经把用户配置从核心 IDE 基础配置中摘除出来了。
-
-好了，不扯太远了。有机会再介绍吧。
 
 [原文地址](https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/)
