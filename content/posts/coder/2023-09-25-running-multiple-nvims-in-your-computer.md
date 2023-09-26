@@ -249,4 +249,4 @@ NVIM_APPNAME=python nvim $@
 有兴趣都可以尝试下有什么差异。
 
 
-[原文地址](https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/)
+博文地址：[Neovim 配置隔离-实现多语言环境支持](https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/)
