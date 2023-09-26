@@ -260,7 +260,7 @@ alias lvim-golang="LUNARVIM_CONFIG_DIR=${HOME}.config/lvims/golang lvim @"
 - [kickstart](https://github.com/nvim-lua/kickstart.nvim)，所有配置一个文件搞定；
 - [neovim-basic-ide](https://github.com/LunarVim/nvim-basic-ide): 本文测试所用，LunarVim 开发者维护的一个基础配置；
 - [LazyVim](https://github.com/LazyVim/LazyVim.git): 提供 IDE 所需的基本配置；
-- 还有 [NvChad](https://github.com/NvChad/NvChad) 等，甚至一些个人也会开源自己的配置；
+- 还有 [NvChad](https://github.com/NvChad/NvChad) 、[AstroNvim](https://github.com/AstroNvim/AstroNvim) 等，甚至一些个人也会开源自己的配置；
 
 有兴趣都可以尝试下有什么差异。
 
