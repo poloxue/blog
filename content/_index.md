@@ -1,4 +1,4 @@
 ---
-title: "POLOXUE's 博客频道"
+title: "POLOXUE's BLOG"
 ---
 

@@ -3,7 +3,7 @@ title: "如何防止你的 Goroutine 泄露(二)"
 date: 2019-06-17T13:41:42+08:00
 draft: false
 comment: true
-tags: ["Go"]
+tags: ["Golang"]
 ---
 
 上篇[文章](https://zhuanlan.zhihu.com/p/74090074)说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。

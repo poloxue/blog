@@ -1,6 +1,6 @@
 baseURL = "https://www.poloxue.com/"
 languageCode = "zh-cn"
-title = "POLOXUE's 博客频道"
+title = "POLOXUE's BLOG"
 theme = "ink-free"
 copyright = "2023 Polo Xue All rights reserved"
 
@@ -17,31 +17,21 @@ copyright = "2023 Polo Xue All rights reserved"
 [menu]
   [[menu.main]]
     identifier = "home"
-    name = "首页"
+    name = "HOME"
     url = "/"
     weight = 1
   [[menu.main]]
-    identifier = "coder"
-    name = "编程"
-    url = "/posts/coder"
+    identifier = "posts"
+    name = "POSTS"
+    url = "/posts"
     weight = 2
   [[menu.main]]
-    identifier = "trader"
-    name = "交易"
-    url = "/posts/trader"
-    weight = 3
-  [[menu.main]]
-    identifier = "translator"
-    name = "译文"
-    url = "/posts/translator"
-    weight = 3
-  [[menu.main]]
-    identifier = "english"
-    name = "英语"
-    url = "/posts/english"
-    weight = 3
+    identifier = "tags"
+    name = "TAGS"
+    url = "/tags"
+    weight = 2
   [[menu.main]]
     identifier = "about"
-    name = "About"
+    name = "ABOUT"
     url = "/about/"
     weight = 4
