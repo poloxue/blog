@@ -35,3 +35,30 @@ copyright = "2023 Polo Xue All rights reserved"
     name = "ABOUT"
     url = "/about/"
     weight = 4
+
+[[params.social]]
+name = "Github"
+icon = "github"
+url = "https://github.com/poloxue/"
+
+[[params.social]]
+name = "RSS"
+icon = "rss"
+url = "/index.xml"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true
+    style = "github"
+    tabWidth = 4
+
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = true
+    startLevel = 2 
