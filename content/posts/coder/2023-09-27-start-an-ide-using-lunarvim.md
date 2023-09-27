@@ -1,7 +1,7 @@
 ---
 title: "基于 LunarVim 搭建不同编程语言 IDE"
 date: "2023-09-27T15:22:23+08:00"
-draft: true
+draft: false
 comment: true
 tags: ["neovim", "vim"]
 ---
@@ -20,7 +20,7 @@ Python
 
 ## 前言
 
-本文将用几行命令快速安装 Neovim IDE，完成不同编程语言的环境搭建。不涉及到个人配置，将完全基于 LunarVim 作者维护的配置实现。
+本文将用几行命令快速安装 Neovim IDE，完成不同编程语言的环境搭建。尽量不涉及到自定义配置，将完全基于 LunarVim 作者维护的配置实现。
 
 两个 Github 核心仓库，分别是：
 
@@ -82,6 +82,12 @@ alias lv-go="LUNARVIM_CONFIG_DIR=~/.config/lvims/golang lvim "
 git clone https://github.com/Lunarvim/starter.lvim --branch go-ide ~/.config/lvims/golang
 ```
 
+下载完成，记得在原有的 config.lua 中的新增一行配置，如下所示;
+
+```lua
+lvim.format_on_save.enabled = true
+```
+
 运行 `lv-go` 开启 Go 项目。
 
 首次进入，通过 `Mason` 安装一些 Go 相关的工具，如下：
@@ -111,5 +117,13 @@ git clone https://github.com/Lunarvim/starter.lvim --branch python-ide ~/.config
 
 运行 `lv-py` 开启 Python 项目。效果图如下：
 
-
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-05.gif)
+
+php IDE 的安装就不详细说了，类似步骤。另外，starter.lvim 支持编程语言很多，按需要取用。
+
+ ## 最后说明
+
+本文只是快速使用体验教程，如希望更深入了解，可自行查看配置。诸如了解它的快捷键如何使用，只有直接看配置才能知道。另外，这里的配置基本都支持 dap 能力，即调试能力。
+
+由于，这些配置的使用细则都没有提供文档，而且既然已经用 neovim 了。至少还是要能看懂和写写配置的，不然是没有办法用好 Neovim 的，更谈不上，个人偏好的配置自定义。
+
