@@ -3,6 +3,7 @@ title: "什么是 zsh？我是否应该使用 zsh"
 date: 2023-09-18T14:06:02+08:00
 draft: false
 comment: true
+tags: ["bash", "zsh", "shell"]
 ---
 
 我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
