@@ -5,7 +5,7 @@ body {
 }
 
 .container-wide {
-  border: 1px solid;
+  max-width: 1000px;
 }
 
 #TableOfContents ul {
