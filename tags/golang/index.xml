@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang on POLOXUE's 博客频道</title><link>https://www.poloxue.com/tags/golang/</link><description>Recent content in golang on POLOXUE's 博客频道</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>2023 Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 28 Oct 2021 13:35:05 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>从头构建 Go Web 框架（二）：中间件</title><link>https://www.poloxue.com/posts/coder/2021-10-28-build-your-own-webframework-in-golang-part-2/</link><pubDate>Thu, 28 Oct 2021 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2021-10-28-build-your-own-webframework-in-golang-part-2/</guid><description>本文是构建 Go Web 框架的第二篇，目标是介绍中间件的最佳实践，访问原文。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/golang/</link><description>Recent content in golang on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>2023 Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 28 Oct 2021 13:35:05 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>从头构建 Go Web 框架（二）：中间件</title><link>https://www.poloxue.com/posts/2021-10-28-build-your-own-webframework-in-golang-part-2/</link><pubDate>Thu, 28 Oct 2021 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2021-10-28-build-your-own-webframework-in-golang-part-2/</guid><description>本文是构建 Go Web 框架的第二篇，目标是介绍中间件的最佳实践，访问原文。
 译文如下：
 在编写 Go Web 应用时，代码重复是大多数开发者将会遇到的第一个问题。
 为什么呢？
@@ -6,7 +6,7 @@
 本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第二篇：
 第 1 部分：简介 第 2 部分：Go 中间件：最佳实践和示例 第 3 部分：中间件数据共享 第 4 部分：第三方路由 第 5 部分：使用 MongoDB 实现 JSON-API 附加福利：上传文件到 s3 基础入门 首先，使用 net/http 包创建一个简单版本的 HTTP Server 应用。
 代码如下：
-import ( &amp;#34;net/http&amp;#34; &amp;#34;fmt&amp;#34; ) func handler(w http.ResponseWriter, r *http.Request) { fmt.Fprintf(w, &amp;#34;Welcome!&amp;#34;) } func main() { http.HandleFunc(&amp;#34;/&amp;#34;, handler) http.ListenAndServe(&amp;#34;:8080&amp;#34;, nil) } 阅读以上代码，我们看出 http.</description></item><item><title>从头构建 Go Web 框架（一）：介绍</title><link>https://www.poloxue.com/posts/coder/2021-10-23-build-your-own-webframework-in-golang/</link><pubDate>Sat, 23 Oct 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2021-10-23-build-your-own-webframework-in-golang/</guid><description>本文写于 2014 年，对于 golang 十几年的发展历程而言，这已经是古董级别的一篇文章了，但通用的思想概念依然没有变。
+import ( &amp;#34;net/http&amp;#34; &amp;#34;fmt&amp;#34; ) func handler(w http.ResponseWriter, r *http.Request) { fmt.Fprintf(w, &amp;#34;Welcome!&amp;#34;) } func main() { http.HandleFunc(&amp;#34;/&amp;#34;, handler) http.ListenAndServe(&amp;#34;:8080&amp;#34;, nil) } 阅读以上代码，我们看出 http.</description></item><item><title>从头构建 Go Web 框架（一）：介绍</title><link>https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/</link><pubDate>Sat, 23 Oct 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/</guid><description>本文写于 2014 年，对于 golang 十几年的发展历程而言，这已经是古董级别的一篇文章了，但通用的思想概念依然没有变。
 我希望通过这个系列文章，让大家都现有的 Go Web 框架能有更深的认识。
 访问：原文地址，译文如下：
 Martini 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架，且现在依旧是如此。但必须指出的是，它不符合常规习惯，非常慢，概念也有不足。它教了我们一堆错误的做法。但因为它上手容易，许多开发人员仍在使用。
@@ -16,7 +16,7 @@ Martini 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架
 概要 本系列不仅能让你了解 Go 中 Web 开发的最佳实践，还会让你了解其他常见问题的解决方案及如何正确运用。
 第 1 部分：简介 第 2 部分：Go 中间件：最佳实践和示例 第 3 部分：中间件数据共享 第 4 部分：第三方路由 第 5 部分：使用 MongoDB 实现 JSON-API 附加福利：上传文件到 s3 框架该具备什么能力 市面主要有两种类型的 Web 框架。
 一种是内置所有功能，类似 Rails 的框架，能帮你快速构建与引导项目。Go 中类似框架有：Beego 和 Revel。
-另一种，类似于 Sinatra 的框架，提供路由和一些内置功能，但不会提供 ORM 等功能。 多数 Go 框架都采用了这种风格，如 Martini、Goji、gocraft/web 等。</description></item><item><title>powermock: 一个支持 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</link><pubDate>Sat, 17 Jul 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2021-07-17-powermock-autotest-your-code/</guid><description>本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
+另一种，类似于 Sinatra 的框架，提供路由和一些内置功能，但不会提供 ORM 等功能。 多数 Go 框架都采用了这种风格，如 Martini、Goji、gocraft/web 等。</description></item><item><title>powermock: 一个支持 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/2021-07-17-powermock-autotest-your-code/</link><pubDate>Sat, 17 Jul 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/2021-07-17-powermock-autotest-your-code/</guid><description>本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
 背景 我所在公司正处在一个高速发展的阶段，各产品线齐头并进。而我所在的部门主要负责核心能力建设与增长类业务，属于所有产品线的最下游。
 业务部门希望在新产品部署产线后，我们能快速的配合。这就导致了一个非常尴尬的局面，产品确定上线时间，处在产品上线的最后阶段的我们，如果有任何异常，都可能导致上线时间被压缩。
 如何防止这类情况？简单来说，就是如何防止因依赖导致项目开发的不可预期。
@@ -30,7 +30,7 @@ Martini 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架
 这个工具的开源看时间在 2021 年 5 份刚刚开源，powermock 同时支持 HTTP 与 gRPC 协议接口的 Mock，提供灵活的插件功能。面向对象包括前后端（HTTP、gRPC）、测试等对 Mock 有需求的所有人员。
 当前这个项目的 star 为 5，顺手 star 加到了 6。虽然 star 有点少，但鉴于其特性的确是我想要的功能，肯定是要尝试一下的。powermock 最吸引我的地方在于，代码简单，易于阅读，二次开发方便。而且，对于 gRPC 的支持是一个亮点。市面上的 Mock Server 主要都是面向 HTTP 的接口，面向前端。
 架构 为便于针对 powermock 二次开发，通过阅读源码，我整理出 powermock 的主体架构，如下所示：
-从上图可以看出， powermock 本身是一个 server，提供了 HTTP 和 gRPC 两种接入方式，即通过它可以 mock HTTP 和 gRPC 两种服务。</description></item><item><title>Go 如何实现 HTTP 文件上传</title><link>https://www.poloxue.com/posts/coder/2019-12-10-golang-http-upload-file/</link><pubDate>Tue, 10 Dec 2019 15:25:18 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-12-10-golang-http-upload-file/</guid><description>早前写过一篇文章，Go HTTP 请求 QuickStart。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
+从上图可以看出， powermock 本身是一个 server，提供了 HTTP 和 gRPC 两种接入方式，即通过它可以 mock HTTP 和 gRPC 两种服务。</description></item><item><title>Go 如何实现 HTTP 文件上传</title><link>https://www.poloxue.com/posts/2019-12-10-golang-http-upload-file/</link><pubDate>Tue, 10 Dec 2019 15:25:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-12-10-golang-http-upload-file/</guid><description>早前写过一篇文章，Go HTTP 请求 QuickStart。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
 最近，尝试录成它的视频，访问地址。发现当时写得挺详细的，发现当时虽然写得比较详细，但也只是介绍用法，可能不知其所以然。比如文件上传那部分，如果不了解 http 文件上传协议 RFC 1867，就很难搞懂为什么代码这么写。
 今天，就以这个话题为基础，介绍下 Go 如何实现文件上传。
 相关代码请访问 httpdemo/post。本文视频地址：Go 上传文件
@@ -42,7 +42,7 @@ Content-Type 是什么？
 提交表单 文件上传可以理解为是提交表单的特例，先通过表单提交这个简单的例子介绍下整个流程。
 如下是表单提交的 HTTP 请求文本。
 POST http://httpbin.org/post HTTP/1.1 Content-Type: application/x-www-form-urlencoded username=poloxue&amp;amp;password=123456 Content-Type 是 application/x-www-form-urlencoded，数据通过 urlencoded 方式组织。
-先用 html 的 form 表单实现。如下：</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/coder/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
+先用 html 的 form 表单实现。如下：</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
 概述 开发一个命令行工具，视复杂程度，一般要选择一个合适的命令行解析库，简单的需求用 Go 标准库 flag 就够了，flag 的使用非常简单。
 当然，除了标准库 flag 外，也有不少的第三方库。比如，为了替代 flag 而生的 pflag，它支持 POSIX 风格的命令行解析。关于 POSIX 风格，本文末尾有个简单的介绍。
 更多与命令行处理相关的库，可以打开 awesome-go#command-line 命令行一节查看，star 最多的是 spf13/cobra 和 urfave/cli ，与 flag / pflag 相比，它们更加复杂，是一个完全的全功能的框架。
@@ -50,7 +50,7 @@ POST http://httpbin.org/post HTTP/1.1 Content-Type: application/x-www-form-urlen
 目标案例 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
 举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management by go）。
 命令行的帮助信息如下：
-NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments...] VERSION: 0.0.1 COMMANDS: list list go versions install install a go version info show go version info use select a version uninstall uninstall a go version get get the latest code uninstall uninstall a go version help, h Shows a list of commands or help for one command GLOBAL OPTIONS: --help, -h show help --version, -v print the version 这个命令不仅包含了全局的选项，还有 8 个子命令，部分子命令支持参数和选项。暂时，子命令的选项参数先不列出来了，实现时再看。</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/coder/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
+NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments...] VERSION: 0.0.1 COMMANDS: list list go versions install install a go version info show go version info use select a version uninstall uninstall a go version get get the latest code uninstall uninstall a go version help, h Shows a list of commands or help for one command GLOBAL OPTIONS: --help, -h show help --version, -v print the version 这个命令不仅包含了全局的选项，还有 8 个子命令，部分子命令支持参数和选项。暂时，子命令的选项参数先不列出来了，实现时再看。</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
 为何开发 为什么会想到开发这个工具？主要有两点原因：
 一是最近经常看到大家在社区讨论 Go Module。于是，我也花了一些时间研究了下。期间，遇到了一个需求，如何清晰地识别模块中依赖项之间的关系。一番了解后，发现了 go mod graph。
 效果如下：
@@ -61,12 +61,19 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 但 &amp;hellip;，随之而来的问题是，go mod 没这个能力啊。怎么办？
 如何实现 先看看是不是已经有人做了这件事了。网上搜了下，没找到。那是不是能自己实现？应该可以借鉴下 dep 的思路吧？
 如下是 dep 依赖实现可视化的方式：
-# linux $ sudo apt-get install graphviz $ dep status -dot | dot -T png | display # macOS $ brew install graphviz $ dep status -dot | dot -T png | open -f -a /Applications/Preview.</description></item><item><title>Go 的 Http 请求系统指南</title><link>https://www.poloxue.com/posts/coder/2019-09-10-the-guide-for-go-http-client/</link><pubDate>Tue, 10 Sep 2019 16:37:17 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-09-10-the-guide-for-go-http-client/</guid><description>前几天在 &amp;ldquo;知乎想法&amp;rdquo; 谈到了一个话题，如何模仿学习，举了通过 net/http client 模仿 Pyhton 的requests的例子。但并未实践，难道想法真的只能是想法吗？当然不是，于是我决定先暂停一周 GO 笔记，来实践下自己的想法。
+# linux $ sudo apt-get install graphviz $ dep status -dot | dot -T png | display # macOS $ brew install graphviz $ dep status -dot | dot -T png | open -f -a /Applications/Preview.</description></item><item><title>Go 的 Http 请求系统指南</title><link>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</link><pubDate>Tue, 10 Sep 2019 16:37:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</guid><description>前几天在 &amp;ldquo;知乎想法&amp;rdquo; 谈到了一个话题，如何模仿学习，举了通过 net/http client 模仿 Pyhton 的requests的例子。但并未实践，难道想法真的只能是想法吗？当然不是，于是我决定先暂停一周 GO 笔记，来实践下自己的想法。
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。
-r.Body 被读取后需要关闭，可以defer来做这件事。内容的读取可通过 ioutil.ReadAll实现。</description></item><item><title>如何防止你的 Goroutine 泄露</title><link>https://www.poloxue.com/posts/coder/2019-06-10-prevent-goroutine-from-leaking/</link><pubDate>Mon, 10 Jun 2019 13:40:37 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-06-10-prevent-goroutine-from-leaking/</guid><description>今天简单谈谈，Go 如何防止 goroutine 泄露。
+r.Body 被读取后需要关闭，可以defer来做这件事。内容的读取可通过 ioutil.ReadAll实现。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
+注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
+NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
+一个示例，如下：
+package main import ( &amp;#34;net/http&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;strconv&amp;#34; ) func write(w http.ResponseWriter, data []byte) { _, _ = w.Write(data) } func count(w http.ResponseWriter, r *http.Request) { write([]byte(strconv.Itoa(runtime.NumGoroutine()))) } func main() { http.HandleFunc(&amp;#34;/_count&amp;#34;, count) http.ListenAndServe(&amp;#34;:6080&amp;#34;, nil) } 功能很简单，设置 _count 路由请求处理函数 count，它负责输出服务当前 goroutine 数量。启动服务后访问 localhost:6080/_count 即可。
+但只是一个数值，我们就能确认是否泄露了吗？
+首先，如果这个数值很大，是不是就能说明出现了泄露。我的答案是否。理由很简单，高并发情况下的 goroutine 数量肯定很高的，但并非出现了泄露，可能只是当前的服务的承载能力还不够。我们可以在数量基础上引入时间，即如果 goroutine 随着时间增加，数量在不断上升，而基本没有下降，基本可以确定存在泄露。我们可以定时采集不同时刻的数据来分析。</description></item><item><title>如何防止你的 Goroutine 泄露</title><link>https://www.poloxue.com/posts/2019-06-10-prevent-goroutine-from-leaking/</link><pubDate>Mon, 10 Jun 2019 13:40:37 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-10-prevent-goroutine-from-leaking/</guid><description>今天简单谈谈，Go 如何防止 goroutine 泄露。
 概述 Go 的并发模型与其他语言不同，虽说它简化了并发程序的开发难度，但如果不了解使用方法，常常会遇到 goroutine 泄露的问题。虽然 goroutine 是轻量级的线程，占用资源很少，但如果一直得不到释放并且还在不断创建新协程，毫无疑问是有问题的，并且是要在程序运行几天，甚至更长的时间才能发现的问题。
 对于上面描述的问题，我觉得可以从两方面入手解决，如下：
 一是预防，要做到预防，我们就需要了解什么样的代码会产生泄露，以及了解正确的写法是如何的；
@@ -74,14 +81,14 @@ r.Body 被读取后需要关闭，可以defer来做这件事。内容的读取�
 接下来，我将会分两篇文章分别从这两个角度进行介绍，今天先谈第一点。
 如何监控泄露 本文主要集中在第一点上，但为了更好的演示效果，可以先介绍一个最简单的监控方式。通过 runtime.NumGoroutine() 获取当前运行中的 goroutine 数量，通过它确认是否发生泄漏。它的使用非常简单，就不为它专门写个例子了。
 一个简单的例子 语言级别的并发支持是 Go 的一大优势，但这个优势也很容易被滥用。通常我们在开始 Go 并发学习时，常常听别人说，Go 的并发非常简单，在调用函数前加上 go 关键词便可启动 goroutine，即一个并发单元，但很多人可能只听到了这句话，然后就出现了类似下面的代码：
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func sayHello() { for { fmt.Println(&amp;#34;Hello gorotine&amp;#34;) time.Sleep(time.Second) } } func main() { defer func() { fmt.Println(&amp;#34;the number of goroutines: &amp;#34;, runtime.NumGoroutine()) }() go sayHello() fmt.Println(&amp;#34;Hello main&amp;#34;) } 对 Go 比较熟悉的话，很容易发现这段代码的问题，sayHello 是个死循环，没有如何退出机制，因此也就没有任何办法释放创建的 goroutine。我们通过在 main 函数最前面的 defer 实现在函数退出时打印当前运行中的 goroutine 数量，毫无意外，它的输出如下：</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/coder/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-06-03-set-in-golang/</guid><description>今天来聊一下 Go 如何使用 set，本文将会涉及 set 和 bitset 两种数据结构。
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func sayHello() { for { fmt.Println(&amp;#34;Hello gorotine&amp;#34;) time.Sleep(time.Second) } } func main() { defer func() { fmt.Println(&amp;#34;the number of goroutines: &amp;#34;, runtime.NumGoroutine()) }() go sayHello() fmt.Println(&amp;#34;Hello main&amp;#34;) } 对 Go 比较熟悉的话，很容易发现这段代码的问题，sayHello 是个死循环，没有如何退出机制，因此也就没有任何办法释放创建的 goroutine。我们通过在 main 函数最前面的 defer 实现在函数退出时打印当前运行中的 goroutine 数量，毫无意外，它的输出如下：</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</guid><description>今天来聊一下 Go 如何使用 set，本文将会涉及 set 和 bitset 两种数据结构。
 注：花了点时间，将这个专题录制成了视频，上B 站查看 视频。
 Go 的数据结构 Go 内置的数据结构并不多。工作中，我们最常用的两种数据结构分别是 slice 和 map，即切片和映射。 其实，Go 中也有数组，切片的底层就是数组，只不过因为切片的存在，我们平时很少使用它。
 除了 Go 内置的数据结构，还有一些数据结构是由 Go 的官方 container 包提供，如 heap 堆、list 双向链表和ring 回环链表。但今天我们不讲它们，这些数据结构，对于熟手来说，看看文档就会使用了。
 我们今天将来聊的是 set 和 bitset。据我所知，其他一些语言，比如 Java，是有这两种数据结构。但 Go 当前还没有以任何形式提供。
 实现思路 先来看一篇文章，访问地址 2 basic set implementations 阅读。文中介绍了两种 go 实现 set 的思路， 分别是 map 和 bitset。
 有兴趣可以读读这篇文章，我们接下来具体介绍下。
-map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/coder/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些思考，并给大家介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
+map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些思考，并给大家介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
 背景介绍 Go 的版本管理，并非包的依赖管理。平时的工作中，很多时候并不会遇到这样的需求，所以可能并不是很明白它的价值。
 简单说下我写这篇文章的背景吧。
 最近几周，Go 最重要的一则消息应该莫过 9月份 Go 1.13 的正式发布。它的相关升级可查看 Go 1.13 正式发布，看看都有哪些值得关注的特性 或官方 Go 1.13 Relase Notes。
@@ -92,10 +99,10 @@ map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特�
 最近，刚答过一个关于 Go 环境变量的问题，查看回答。其中对每个变量的作用进行了比较细致的描述。
 如何实现 现在，我要实现我自己电脑上的两个版本的 Go 自由切换，该如何做呢？
 假设它们分别位于 ~/.goversions/sdk/ 目录下的 go1.11/ 和 go1.13/。我现在要启用 go 1.11，运行如下命令即可：
-$ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.goversions/sdk/go1.11/。Go 相关的工具链，源码，标准库都在这个目录下。</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/coder/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
+$ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.goversions/sdk/go1.11/。Go 相关的工具链，源码，标准库都在这个目录下。</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
 本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
 概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
-$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go &amp;lt;command&amp;gt; [arguments] go &amp;lt;命令&amp;gt; [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/coder/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
+$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go &amp;lt;command&amp;gt; [arguments] go &amp;lt;命令&amp;gt; [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
 我们知道，编写任何语言的代码都离不开两样工具，语言开发包和代码编辑工具。
 今天先来聊聊如何安装 Go。
 我们或许都会觉得这种事非常简单，不值得写篇文章介绍。最初我也是这么想的。但深入了解下来，渐渐感觉这也是一件很有意思的事情。
@@ -115,7 +122,7 @@ macos
 在macos上，我们可使用pkg文件或homebrew安装go。
 pkg的安装方式与windows的setup.exe/msi的类似，下载软件然后按导航 &amp;ldquo;下一步&amp;rdquo; &amp;ldquo;下一步&amp;rdquo; 即可完成。
 来说说如何使用homebrew安装。和yum和apt-get不同，homebrew并非mac系统自带，我们需要先安装。进入homebrew官网，页面顶部便说明了安装的方式，命令如下：
-/usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.</description></item><item><title>为什么要学 Go</title><link>https://www.poloxue.com/posts/coder/2019-04-08-why-learn-go/</link><pubDate>Mon, 08 Apr 2019 17:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2019-04-08-why-learn-go/</guid><description>新学一门语言，大家都想先弄清楚为什么要学它？玩知乎一段时间更是让我感受深刻，诸如
+/usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.</description></item><item><title>为什么要学 Go</title><link>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</link><pubDate>Mon, 08 Apr 2019 17:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</guid><description>新学一门语言，大家都想先弄清楚为什么要学它？玩知乎一段时间更是让我感受深刻，诸如
 为什么要学习Python？ 为什么要学习C？ 为什么要学习Java？ 之类问题经常出现在眼前。以前学语言时倒没怎么关心过这类问题。今年公司由于新业务需要开始全面从PHP转型到Golang。所以我学习它也就是为了工资。额？不能这么俗气，还是具体想想自己为什么要学习Golang吧。
 作为一名golang新人，在写这篇文章时我搜罗到不少golang的优秀资料，在文章最后分享出来。
 大势所趋 趋势如此，这应该是多数朋友开始学习它的原因。追涨杀跌，这是大多数人喜欢的操作手法。

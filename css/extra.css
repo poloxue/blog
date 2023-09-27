@@ -1,11 +1,11 @@
 body {
   font-family: "Iowan Old Style", "Ovo", "Hoefler Text", Georgia, "Times New Roman", "TIBch", "Source Han Sans", "PingFangSC-Regular", "Hiragino Sans GB", "STHeiti", "Microsoft Yahei", "Droid Sans Fallback", "WenQuanYi Micro Hei", sans-serif;
   letter-spacing: 1px;
-  background: #f5f5d8;
+  background: #ffffff;
 }
 
 .container-wide {
-  max-width: 1000px;
+  border: 1px solid;
 }
 
 #TableOfContents ul {
