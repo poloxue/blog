@@ -5,14 +5,15 @@ Python
 前言 本文将用几行命令快速安装 Neovim IDE，完成不同编程语言的环境搭建。尽量不涉及到自定义配置，将完全基于 LunarVim 作者维护的配置实现。
 两个 Github 核心仓库，分别是：
 lunarvim/lunarvim，是 LunarVim 的核心仓库，集成配置 IDE 所需的核心能力； lunarvim/starter.lvim，这个仓库是 Lunarvim 针对不同编程语言的配置实现； starter.lvim 以分支形式保不同语言的配置，具体自行查看仓库。
-总体上，两者关系如下图：
-Lunarvim 通过 LUNARVIM_CONFIG_DIR 变量（图中变量名错误）决定配置文件目录。
+为了测试方便，介绍 LunarVim 提供的一个能力，通过 Lunarvim 通过 LUNARVIM_CONFIG_DIR 变量决定配置文件目录。
+注：图中变量名写错了，懒的改了。
+接下来的测试，我会将不同语言的配置，放到不同的目录中。
+要将这些配置合并，还需要自定义配置，大改 Lunarvim 的 configlua 代码，而且会不易维护。
 安装 LunarVim 提供了安装脚本，使用如下命令安装即可。
 LV_BRANCH=&amp;#39;release-1.3/neovim-0.9&amp;#39; bash &amp;lt;(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh) 安装过程中要下载一些依赖，如 pynvim，cargo 之类的，如果已经安装可选择 no。
 注：部分语言环境和命令要提前安装。如 python，make, git 等
 如果要 dev icon 支持，安装 Nerd 字体，macOS 安装命令如下：
-brew tab homebrew/cask-fonts brew install --cask font-hack-nerd-font 安装成功，将终端字体更新为 Hack Nerd Font 相关字体。
-如下所示，以 iTerm2 为例：</description></item><item><title>Neovim 配置隔离-实现多语言环境支持</title><link>https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/</link><pubDate>Mon, 25 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/</guid><description>本文将介绍如何实现 Neovim 的配置隔离，实现不同编程语言使用不同的编辑器配置。
+brew tab homebrew/cask-fonts brew install --cask font-hack-nerd-font 安装成功，将终端字体更新为 Hack Nerd Font 相关字体。</description></item><item><title>Neovim 配置隔离-实现多语言环境支持</title><link>https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/</link><pubDate>Mon, 25 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/</guid><description>本文将介绍如何实现 Neovim 的配置隔离，实现不同编程语言使用不同的编辑器配置。
 背景说明 近段时间，一直在学习如何高效使用 Neovim。不断配置的过程中想到，Neovim 是否支持配置隔离，不同用途不同配置。最直接的体现，我希望把 Python 和 Golang 的编辑开发环境的配置隔离。
 类似如下效果：
 nvim-golang main.go nvim-python main.py nvim-cpp main.cpp 提到这，不由地想到了 Jetbrain 全家桶，针对不同编程语言开发了各自的 IDE，如 goland，pycharm，webstorm、clion 等。猜测原因，或许是为了多赚钱，另一方面，不同语言一定有个性化配置，隔离能减少耦合。
