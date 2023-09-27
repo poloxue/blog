@@ -497,4 +497,4 @@ hello:world linux
 
 从本文可知，zsh 提供了相当多的能力，初看可能略感复杂。但如果你坚持使用，它将会成为你日常工作中不可获取的工具。
 
-译：[How to Use Zsh: A Beginer's Guide](https://linuxopsys.com/topics/use-zsh)
+我的博文：[从 0 开始：教你如何配置 zsh](http://localhost:1313/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/),译：[How to Use Zsh: A Beginer's Guide](https://linuxopsys.com/topics/use-zsh)
