@@ -92,6 +92,8 @@ git clone https://github.com/Lunarvim/starter.lvim --branch go-ide ~/.config/lvi
 lvim.format_on_save.enabled = true
 ```
 
+实现保存后的通过 `goimports` 和 `gofumpt` 实现代码的自动格式化。
+
 运行 `lv-go` 开启 Go 项目。
 
 首次进入，通过 `Mason` 安装一些 Go 相关的工具，如下：
