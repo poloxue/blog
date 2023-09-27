@@ -42,7 +42,20 @@ Content-Type 是什么？
 提交表单 文件上传可以理解为是提交表单的特例，先通过表单提交这个简单的例子介绍下整个流程。
 如下是表单提交的 HTTP 请求文本。
 POST http://httpbin.org/post HTTP/1.1 Content-Type: application/x-www-form-urlencoded username=poloxue&amp;amp;password=123456 Content-Type 是 application/x-www-form-urlencoded，数据通过 urlencoded 方式组织。
-先用 html 的 form 表单实现。如下：</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
+先用 html 的 form 表单实现。如下：</description></item><item><title>如何评价 Golang 开源库 Cobra</title><link>https://www.poloxue.com/posts/2019-12-03-what-is-cobra/</link><pubDate>Tue, 03 Dec 2019 05:30:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-12-03-what-is-cobra/</guid><description>问题：如何评价 Cobra （Golang 库）？
+项目地址：https://github.com/spf13/cobra
+事实上，这个库是 k8s、hugo 等开源项目都在用的库。它可用于创建命令行应用。
+命令行应用 一般写命令行应用，如果要求不是太多，直接用 flag 标准库就够了，毕竟像 Go 命令也是通过 flag 包实现的，完全能够驾驭。
+前段时间还写了篇文章，结果发现，似乎没人对这个话题感兴趣。
+文章地址：Go 命令行解析 flag 包之通过子命令实现看 go 命令源码
+命令行应用可以和 web 应用做类比，就像 web 只有路由，就可以实现一个复杂的 web 应用，同样 flag 提供的基本功能，也足够写出非常复杂的应用了。
+但不是任何人都想去了解 flag，或者裸写一个命令行应用。
+为什么呢？
+因为命令行的有些内容还要处理，比如，
+默认没有子命令的一套实现规范， 不支持参数校验； 不支持帮助信息模板配置。 没有对一些标准提供默认支持，如 POSIX 标准，没有 -v，&amp;ndash;version 和 -h、&amp;ndash;help 的默认支持等。 一套完整的命令行框架应用就要这些能力，能提供一套最佳实践。Cobra 就是这样一套框架。
+Cobra Cobra 支持的功能非常多，一些非常出名的开源项目，比如 k8s、hugo 等都在使用它。我之前读过它的文档。
+github 的说明已经介绍了它的很多能力，比如支持子命令，posix 规范的 Flag，嵌套的子命令，支持全局、局部和级联的选项，支持 bash 自动补全，便捷的参数校验。
+Easy subcommand-based CLIs: app server, app fetch, etc. Fully POSIX-compliant flags (including short &amp;amp; long versions) Nested subcommands Global, local and cascading flags Easy generation of applications &amp;amp; commands with cobra init appname &amp;amp; cobra add cmdname Intelligent suggestions (app srver.</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
 概述 开发一个命令行工具，视复杂程度，一般要选择一个合适的命令行解析库，简单的需求用 Go 标准库 flag 就够了，flag 的使用非常简单。
 当然，除了标准库 flag 外，也有不少的第三方库。比如，为了替代 flag 而生的 pflag，它支持 POSIX 风格的命令行解析。关于 POSIX 风格，本文末尾有个简单的介绍。
 更多与命令行处理相关的库，可以打开 awesome-go#command-line 命令行一节查看，star 最多的是 spf13/cobra 和 urfave/cli ，与 flag / pflag 相比，它们更加复杂，是一个完全的全功能的框架。
