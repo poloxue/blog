@@ -1,9 +1,9 @@
 ---
 title: "从头构建 Go Web 框架（一）：介绍"
 date: "2021-10-23T20:33:14+08:00"
-tags: ["Golang"]
 comment: true
 draft: false
+tags: ["Golang"]
 ---
 
 本文写于 2014 年，对于 golang 十几年的发展历程而言，这已经是古董级别的一篇文章了，但通用的思想概念依然没有变。

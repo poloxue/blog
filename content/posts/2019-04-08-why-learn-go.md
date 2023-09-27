@@ -2,6 +2,7 @@
 title: "为什么要学 Go"
 date: 2019-04-08T17:31:32+08:00
 draft: false
+comment: true
 tags: ["golang"]
 ---
 

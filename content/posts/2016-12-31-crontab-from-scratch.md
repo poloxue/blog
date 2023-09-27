@@ -3,6 +3,7 @@ title: "一文精通 crontab 从入门到出坑"
 date: 2016-12-31T18:01:00+08:00
 draft: false
 comment: true
+tags: ["crontab"]
 ---
 
 此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。

@@ -1,9 +1,9 @@
 ---
 title: "从头构建 Go Web 框架（二）：中间件"
 date: 2021-10-28T13:35:05+08:00
-tags: ["Golang"]
 comment: true
 draft: false
+tags: ["Golang"]
 ---
 
 本文是构建 Go Web 框架的第二篇，目标是介绍中间件的最佳实践，[访问原文](https://www.nicolasmerouze.com/middlewares-golang-best-practices-examples)。
