@@ -7,5 +7,5 @@ zsh 是什么？ zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 
 zsh 的优势 zsh 和 bash 都是非常流行的 Unix-like shell，它们有着很多相似的功能特性。但相对于 bash，zsh 有这些差异化优势：
 更优秀的命令行补全能力； 配置化能力更强； 更现代的语法； 改进的错误报告； 模拟 bash； 用户社区不断壮大，更新频繁； 体验更好的按键 支持vi模式等 安装 zsh Linux 系统下的安装非常简单。
 Debian:
-sudo apt install zsh Arch Linux:
-sudo pacman -S zsh Fedora</description></item></channel></rss>
+1 sudo apt install zsh Arch Linux:
+1 sudo pacman -S zsh Fedora</description></item></channel></rss>
