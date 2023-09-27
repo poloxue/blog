@@ -8,7 +8,7 @@ lunarvim/lunarvim，是 LunarVim 的核心仓库，集成配置 IDE 所需的核
 为了测试方便，介绍 LunarVim 提供的一个能力，通过 Lunarvim 通过 LUNARVIM_CONFIG_DIR 变量决定配置文件目录。
 注：图中变量名写错了，懒的改了。
 接下来的测试，我会将不同语言的配置，放到不同的目录中。
-要将这些配置合并，还需要自定义配置，大改 Lunarvim 的 configlua 代码，而且会不易维护。
+要将这些配置合并，还需要自定义配置，大改 Lunarvim 的 configlua 代码，且不易维护。
 安装 LunarVim 提供了安装脚本，使用如下命令安装即可。
 LV_BRANCH=&amp;#39;release-1.3/neovim-0.9&amp;#39; bash &amp;lt;(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh) 安装过程中要下载一些依赖，如 pynvim，cargo 之类的，如果已经安装可选择 no。
 注：部分语言环境和命令要提前安装。如 python，make, git 等
