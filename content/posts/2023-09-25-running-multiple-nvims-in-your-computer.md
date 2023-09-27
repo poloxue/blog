@@ -249,7 +249,7 @@ alias lvim-golang="LUNARVIM_CONFIG_DIR=${HOME}.config/lvims/golang lvim @"
 
 > 特别补充：这个思路可以完全舍弃前面提到的几种配置隔离方案，不需要修改 XDG 变量或者 NVIM_APPNAME。它通过唯一的配置入口 require 不同环境（LUNARVIM_CONFIG_DIR）下的 `config.lua`，从而实现复用核心配置，同时可以自定义个性化需求。
 
-> Lunarvim 针对不同编程语言的配置方法，可查看 [基于 LunarVim 搭建不同编程语言 IDE](https://www.poloxue.com/posts/coder/2023-09-27-start-an-ide-using-lunarvim/)
+> Lunarvim 针对不同编程语言的配置方法，可查看 [基于 LunarVim 搭建不同编程语言 IDE](https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/)
 
 ## 最后
 
@@ -267,4 +267,4 @@ alias lvim-golang="LUNARVIM_CONFIG_DIR=${HOME}.config/lvims/golang lvim @"
 有兴趣都可以尝试下有什么差异。
 
 
-博文地址：[Neovim 配置隔离-实现多语言环境支持](https://www.poloxue.com/posts/coder/2023-09-25-running-multiple-nvims-in-your-computer/)
+博文地址：[Neovim 配置隔离-实现多语言环境支持](https://www.poloxue.com/posts/2023-09-25-running-multiple-nvims-in-your-computer/)

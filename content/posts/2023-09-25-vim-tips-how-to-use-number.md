@@ -116,4 +116,4 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "CmdlineEn
 
 实话实说，虽然这方式看起来挺炫酷，但我一直不太习惯。毕竟，窗口范围内，我也可以使用绝对行号。或许是我没有养成良好的习惯。这次决定尝试下，开启这个配置，锻炼下自己的思维和手指。
 
-博文地址：[Vim 小技巧：高效利用 vim 的行号](https://www.poloxue.com/posts/coder/2023-09-25-vim-tips-how-to-use-number/)
+博文地址：[Vim 小技巧：高效利用 vim 的行号](https://www.poloxue.com/posts/2023-09-25-vim-tips-how-to-use-number/)
