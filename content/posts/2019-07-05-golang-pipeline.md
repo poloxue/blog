@@ -17,7 +17,7 @@ tags: ["Golang"]
 
 关于它们之间的关系，按自己的理解简单画了张草图，希望能帮助更好地理解它们之间的关系。如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-07-05-golang-pipeline-01.jpg)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-07-05-golang-pipeline-01.jpeg)
 
 强调一点，如果大家在阅读这篇文章时，感到了迷糊，建议可以回头再看一下这张图。
 
