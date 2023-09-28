@@ -33,8 +33,6 @@ starter.lvim 以分支形式保不同语言的配置，具体自行查看仓库�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-03.png)
 
-> 注：图中变量名写错了，懒的改了。
-
 接下来的测试，我会将不同语言的配置，放到不同的目录中。
 
 > 要将这些配置合并，还需要自定义配置，大改 Lunarvim 的 `configlua` 代码，且不易维护。
