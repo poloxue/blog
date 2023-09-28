@@ -1,6 +1,6 @@
 ---
 title: "你真的不用再设置 GOROOT 了"
-date: 2019-11-26T12:42:29+08:00
+date: 2019-11-06T12:42:29+08:00
 draft: false
 comment: true
 tags: ["Golang"]
