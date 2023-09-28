@@ -403,8 +403,3 @@ MapKeyFunc 依然表现最好，每次操作用时 17.2 ns，Sort 次之，而 I
 
 [为什么Golang没有像Python中in一样的功能？](https://www.zhihu.com/question/328393303/answer/711287362)
 
----
-
-欢迎关注我的微信公众号
-
-![](https://blogimg.poloxue.com/0000-wechat-01.png)
