@@ -168,7 +168,16 @@ archive/tar，即归档，如果了解 Linux 下的 tar 命令，可与之对应
 鸟哥的文件与文件系统的压缩与打包
 archive/tar 实现打包压缩及解压
 archive/zip，与 zip 格式压缩文件操作相关的包，使用方法与 tar 很类似。在寻找与 zip 包相关的资料时，了解到 zip 的作者年仅 37 岁就逝世了，而全世界所有使用 zip 压缩的文件开头部分都有他的名字 &amp;ldquo;PK&amp;rdquo;，而我们识别一个文件是否是 zip 正是通过这种方法。
-相关阅读：</description></item><item><title>Go 问答汇总 Part Two</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
+相关阅读：</description></item><item><title>Go 中如何使用反射 Part One</title><link>https://www.poloxue.com/posts/2019-08-20-reflection-in-golang/</link><pubDate>Sat, 10 Aug 2019 17:22:04 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-20-reflection-in-golang/</guid><description>什么是反射 多数情况下，Go 中的变量、类型和函数的使用都是非常简单的。
+当你需要一个类型：
+1 2 3 4 type Foo struct { A int B string } 当你需要一个变量，定义如下：
+1 var x Foo 当你需要一个函数，定义如下：
+1 2 3 func DoSomething(f Foo) { fmt.Println(f.A, f.B) } 但有时候，你想使用的变量依赖于运行时信息，它们在编程时并不存在。比如数据来源于文件，或来源于网络，你想把它映射到一个变量，而它们可能是不同的类型。在这类场景下，你就需要用到反射。反射让你可以在运行时检查类型，创建、更新、检查变量以及组织结构。
+Go 中的反射主要围绕着三个概念：类型（Types）、类别（Kinds）和值（Values）。反射的实现源码位于 Go 标准库 reflection 包中。
+检查类型 首先，让我们来看看类型（Types）。你可以通过 reflect.TypeOf(var) 形式的函数调用获取变量的类型，它会返回一个类型为 reflect.Type 的变量，reflect.Type 中的操作方法涉及了定义该类型变量的各类信息。
+我们要看的第一个方法是 Name()，它返回的是类型的名称。有些类型，比如 slice 或 指针，没有类型名称，那么将会返回空字符串。
+下一个介绍方法是 Kind()，我的观点，这是第一个真正有用的方法。Kind，即类别，比如切片 slice、映射 map、指针 pointer、结构体 struct、接口 interface、字符串 string、数组 array、函数 function、整型 int、或其他的基本类型。type 和 kind 是区别不是那么容易理清楚，但是可以这么想：
+当你定义一个名称为 Foo 的结构体，那么它的 kind 是 struct，而它的 type 是 Foo。</description></item><item><title>Go 问答汇总 Part Two</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
 粗略数了一下，一个多月的时间里，大约回答了 18 个与 Go 有关的问题，问题主要是来源于 segmentfault 和 zhihu 两个平台。后面希望加入更多平台，如 stackoverflow、github 的感兴趣主题。
 最近在写一个小工具，准备用于帮助自己回答不同平台的问题，同时也便于每个月的问题汇总。写的有点慢，希望月底可以完成。
 正文部分开始。
