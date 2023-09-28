@@ -1,7 +1,7 @@
 ---
 title: "我的开发环境：iTerm2 终端的安装与体验"
 date: "2023-09-28T19:23:22+08:00"
-draft: true
+draft: false
 comment: true
 tags: ["zsh", "iterm2"]
 ---
