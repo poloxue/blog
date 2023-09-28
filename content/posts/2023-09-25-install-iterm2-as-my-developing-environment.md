@@ -118,5 +118,5 @@ open /tmp/{name}.itermcolors
 
 本文重点介绍了 iTerm2 的安装、颜色面板的配置，还有体验其核心的能力。
 
-插件安装与配置，请阅读：[从 0 开始：教你如何配置 zsh](https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/)。这是我之前的一篇翻译文，我觉得挺符合这个系列的下一篇，没必要再写一篇。我的主题使用的是 powerlevel10k。 在这篇文章的最后做了补充。
+进一步学习 zsh 配置与插件安装，请阅读：[从 0 开始：教你如何配置 zsh](https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/)。这是我之前的一篇翻译文，我觉得挺符合这个系列的下一篇，没必要再写一篇。我的主题使用的是 powerlevel10k。 在这篇文章的最后做了补充。
 
