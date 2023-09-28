@@ -1,5 +1,5 @@
 ---
-title: "Go 问答汇总(二)"
+title: "Go 问答汇总 Part Two"
 date: 2019-08-10T15:38:23+08:00
 draft: false
 comment: true
