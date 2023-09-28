@@ -1,6 +1,6 @@
 ---
 title: "Go 命令行解析 flag 包之扩展新类型"
-data: 2019-11-26T16:08:21+08:00
+date: 2019-11-26T16:08:21+08:00
 draft: false
 comment: true
 tags: ["Golang"]
