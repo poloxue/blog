@@ -109,7 +109,7 @@ LunarVim 默认支持的能力还是挺丰富的。
 
 ## 配置
 
-前面已经介绍 LunarVim 和 starter.lvim 的关系。
+前面已经介绍 LunarVim 和 starter.lvim 的关系。实操的话，如何配置呢？
 
 ### Golang
 
