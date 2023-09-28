@@ -188,7 +188,7 @@ help false
 
 在网上找到一个搞笑漫画。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/commandline-tool-flag-in-golang-01.jpeg)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-11-23-commandline-tool-flag-in-golang-01.jpeg)
 
 查看系统进程有两种写法， `ps aux`（BSD 风格） 和 `ps -elf`（Unix 风格）。之前，我一直很郁闷为什么有这个区别。现在算是明白了。哈哈。
 
