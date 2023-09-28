@@ -18,8 +18,8 @@ tags: ["Golang"]
 三篇文章涉及内容分别是：
 
 > - [Go 实现词法分析与解析](https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1)，[译：Writing a Lexer and Parser in Go - Part 1](https://adampresley.github.io/2015/04/12/writing-a-lexer-and-parser-in-go-part-1.html)，如什么是词法分析、解析，以及案例的一部分介绍；
-> - [Go 实现词法分析与解析]()，[译：Writing a Lexer and Parser in Go - Part 2](https://adampresley.github.io/2015/05/12/writing-a-lexer-and-parser-in-go-part-2.html)；
-> - [Go 实现词法分析与解析]()，[译：Writing a Lexer and Parser in Go - Part 3](https://adampresley.github.io/2015/06/01/writing-a-lexer-and-parser-in-go-part-3.html)；
+> - [Go 实现词法分析与解析](https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part2))，[译：Writing a Lexer and Parser in Go - Part 2](https://adampresley.github.io/2015/05/12/writing-a-lexer-and-parser-in-go-part-2.html)；
+> - [Go 实现词法分析与解析](https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part3)，[译：Writing a Lexer and Parser in Go - Part 3](https://adampresley.github.io/2015/06/01/writing-a-lexer-and-parser-in-go-part-3.html)；
 
 # 概要
 
