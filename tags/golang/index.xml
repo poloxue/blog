@@ -184,7 +184,17 @@ Golang如何把json中的unicode编码转换成中文字符？ 在调试接口�
 为什么go的map数据竞争是fatal错误, 而不是panic? 题主要求挺高，要求从源码上去回答这个问题。为什么在发生数据竞争时，是 fatal error，而不是 panic。如果从设计上说，发生数据竞争是个比较严重的错误，会直接影响程序的执行结果，需要直接退出，而 panic 还是可以 recover 的，而这种错误还是不要 recover 比较好。当然，从源码层面，
 如何理解 Go 的接口&amp;quot; 对于传统面向对象语言的开发者，对于 Go 接口还是难以理解。最需要强调的一点，就是要先理解鸭子模型，基于此，再来理解为什么说 Go 接口是一组方法的集合，Go 接口是一种非侵入式的设计。
 Go 接口如何正确的运继承 关于第二个问题，确切的说，就是题主还没有正确的理解 Go 的接口，简单地利用以往经验来理解 Go，理解 Go 的继承。从某种意义上说，Go 没有语法层面的继承，要实现继承的效果，需要通过组合实现。
-golang与C语言相比最重要的改进是什么？ 当别人问到 Go 相对 C 最重要的改进是什么的时候，我优先想到并不是 Go 的并发模型，而是接口。经过前面两个问题，也会发现 Go 的接口的有点。它让我们的编码变的非常灵活。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+golang与C语言相比最重要的改进是什么？ 当别人问到 Go 相对 C 最重要的改进是什么的时候，我优先想到并不是 Go 的并发模型，而是接口。经过前面两个问题，也会发现 Go 的接口的有点。它让我们的编码变的非常灵活。</description></item><item><title>Go 实现词法分析与解析 Part One</title><link>https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1/</link><pubDate>Wed, 17 Jul 2019 17:03:59 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1/</guid><description>一直对词法分析与解析的话题比较感兴趣，最近发现了好几篇相关的优秀文章，准备好好翻译和研究下。我的理解，词法分析与解析的应用还是比较广泛的，无论简单的配置文件、各种模板语言、还是我们每天在写编程语言都离不开它。
+本篇文章一个系列文章的第一篇，主要介绍的是词法分析与解析的一些基础概念，包括什么是词法分析，什么是解析，Token 如何表示等等。
+正文如下：
+从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 Lexical Scanning In Go 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。
+三篇文章涉及内容分别是：
+基础概念的介绍，如什么是词法分析、解析，以及案例的一部分介绍； 实现词法分析； 进行结果解析； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
+为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。
+段: Sections 键: Keys 值: Values Key/Value 属于 Section，每个 Section 可能不止一个 Key/Value，每个 INI 文件可以包含多个 Section。这是一种非常简单但非常高效的结构，特别适用于保存配置信息。
+上面的内容将会被解析为结构化数据，我们可以提前看下处理后的数据的 JSON 格式，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 { &amp;#34;FileName&amp;#34;: &amp;#34;sample.</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
 简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
 注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
 NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
