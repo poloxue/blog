@@ -73,7 +73,7 @@ curl -Ls https://raw.githubusercontent.com/dracula/iterm/master/Dracula.itermcol
 
 选择一款你钟爱的配色，保存。
 
-如果还没有满意的，查看 [Iterm2-color-schemes](https://iterm2colorschemes.com/) 提供的更多方案。使用类似如下的命令下载安装：
+如果还没有满意的，可以从 [Iterm2-color-schemes](https://iterm2colorschemes.com/) 查找更多配色方案。使用类似如下的命令下载安装：
 
 ```bash
 curl -Ls https://xxx > /tmp/{name}.itermcolors
