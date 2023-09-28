@@ -1,7 +1,10 @@
 body {
   font-family: "Iowan Old Style", "Ovo", "Hoefler Text", Georgia, "Times New Roman", "TIBch", "Source Han Sans", "PingFangSC-Regular", "Hiragino Sans GB", "STHeiti", "Microsoft Yahei", "Droid Sans Fallback", "WenQuanYi Micro Hei", sans-serif;
   letter-spacing: 1px;
-  background: #ffffff;
+}
+
+html.dark body {
+  background-color: #282a35 !important;
 }
 
 .container-wide {
@@ -10,10 +13,6 @@ body {
 
 #TableOfContents ul {
   list-style-position: unset;
-}
-
-.section-nav #TableOfContents a {
-  color: #666;
 }
 
 .section-nav {
@@ -42,7 +41,6 @@ h5 {
 }
 
 blockquote {
-  background-color: #f3f4f7;
   margin-top: 10px;
   border: 1px solid #e2e3e6;
   border-left: 5px solid #e2e3e6;
@@ -59,8 +57,11 @@ code {
 }
 
 table th {
-  color: #333;
-  background-color: #ababab;
+  background-color: #aaa;
+}
+
+html.dark table th {
+  background-color: #666;
 }
 
 table th, table tr {
@@ -76,10 +77,18 @@ table th, table tr {
   width: 150px;
   height: 200px;
   border: 1px solid #a0a0a0;
-  background-color: #efeeed;
   border-radius: 1% 2% 1% 2%;
   padding: 5px;
   margin-top: 10px;
   font-size: 1.4rem !important;
   text-align: center;
+}
+
+
+html.dark td pre code {
+  color: #fff !important;
+}
+
+.post .tags a {
+  color: inherit;
 }
