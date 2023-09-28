@@ -22,6 +22,8 @@ nvim-cpp main.cpp
 
 > 提到这，不由地想到了 Jetbrain 全家桶，针对不同编程语言开发了各自的 IDE，如 goland，pycharm，webstorm、clion 等。猜测原因，或许是为了多赚钱，另一方面，不同语言一定有个性化配置，隔离能减少耦合。
 
+> 如果是因为想搭建某种语言的编程环境，推荐阅读：[基于 LunarVim 搭建不同编程语言 IDE](https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/)
+
 如何实现呢？进入正题吧。
 
 > 几年前，写过一篇关于 "Golang 多环境管理 GVM" 的文章。本质上，要实现这种多环境隔离，一般都是通过环境变量实现。查了些资料，Neovim 其实也不例外。
