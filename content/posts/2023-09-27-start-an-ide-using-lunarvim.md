@@ -6,17 +6,7 @@ comment: true
 tags: ["neovim", "vim"]
 ---
 
-本文介绍，如何基于 LunarVim 实现不同编程语言的 Neovim IDE。
-
-动图效果，如下所示：
-
-Golang
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-04.gif)
-
-Python
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-05.gif)
+本文介绍，如何基于 LunarVim 搭建不同编程语言的 Neovim IDE 开发环境。
 
 ## 前言
 
@@ -66,6 +56,57 @@ brew install --cask font-hack-nerd-font
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-01.png)
 
+## 初步体验
+
+体验下 Lunarvim  默认配置，与语言无关的能力。
+
+### 目录浏览
+
+使用 "<空格>+e" 显示文件树，再次 "<空格>+e" 关闭，效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-07.gif)
+
+### 查找文件
+
+使用 “<空格>+f”，查看文件，如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-06.gif)
+
+### 查找符号
+
+输入 "<空格>+lS"，全部符号搜索，如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-08.gif)
+
+### 重构变量名
+
+输入 "<空格>+lr"，将 'anyMethods' 更新为 'anyMethodList'，如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-09.gif)
+
+### 类型引用查找
+
+输入 "gr"，查找 "RouterGroup" 被引用的地方。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-10.gif)
+
+### 定义跳转
+
+输入 "gd"，跳转到 "RouterGroup" 定义。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-11.gif)
+
+### Git 支持
+
+内置 lazygit 处理复杂事务，同时内置对部分 ShortCut 和简单的 Git 命令的进行了绑定。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-12.gif)
+
+
+LunarVim 默认支持的能力还是挺丰富的。
+
+详细内容可查看它的文档，或者 "<空格>" 显示 whch-key 菜单，自行探索。深入了解的话，最好是阅读 Lunarvim 的 lua 配置源码。如果能独立配置 Neovim，再看它的源码会有更好的体悟。
+
 ## 配置
 
 前面已经介绍 LunarVim 和 starter.lvim 的关系。
@@ -103,6 +144,8 @@ lvim.format_on_save.enabled = true
 体验下效果：
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-04.gif)
+
+错误提示，自动补全能力，都已经支持的很棒了。
 
 ## Python
 
