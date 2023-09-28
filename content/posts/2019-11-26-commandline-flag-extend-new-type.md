@@ -1,9 +1,9 @@
 ---
 title: "Go 命令行解析 flag 包之扩展新类型"
 data: 2019-11-26T16:08:21+08:00
-url: /go/go-flag-new-type-extension
 draft: false
-tags: ["Go"]
+comment: true
+tags: ["Golang"]
 ---
 
 [上篇文章]() 说到，除布尔类型 `Flag`，flag 支持的还有整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
