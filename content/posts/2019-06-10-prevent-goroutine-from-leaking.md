@@ -400,6 +400,8 @@ the number of goroutines: 2
 
 本篇主要从如何写出正确代码的角度来介绍如何防止 goroutine 的泄露。下篇[https://juejin.im/post/5d3d76066fb9a07ee463aba0]，将会介绍如何实现更好的监控检测，以帮助我们发现当前代码中已经存在的泄露。
 
+博文地址：[如何防止你的 Goroutine 泄露](https://www.poloxue.com/posts/2019-06-10-prevent-goroutine-from-leaking/)
+
 # 参考资料
 
 [Concurrency In Go](https://www.oreilly.com/library/view/concurrency-in-go/9781491941294/)  

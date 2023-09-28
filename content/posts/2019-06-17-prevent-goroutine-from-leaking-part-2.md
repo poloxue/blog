@@ -304,6 +304,8 @@ leaktest 的实现原理也和堆栈有关，源码不多，如果有兴趣可�
 
 本系列文章分别从代码实现和监控检测两个角度介绍了如何避免 goroutine 的泄露。Go 的并发降低了并发程序的开发难度，但并发一直都是个比较复杂的话题，为了用好它，必要学习还是不可缺少的。
 
+博文地址：[如何防止你的 Goroutine 泄露](https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/)
+
 # 参考资料
 
 [Goroutine leak](https://medium.com/golangspec/goroutine-leak-400063aef468)  
