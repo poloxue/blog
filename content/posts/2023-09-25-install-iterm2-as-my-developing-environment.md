@@ -82,7 +82,7 @@ open /tmp/{name}.itermcolors
 
 ## 使用体验
 
-打开 'iTerm2'，快速进行下使用体验。
+打开 'iTerm2'，快速使用体验一下吧。
 
 ### 分屏功能
 
