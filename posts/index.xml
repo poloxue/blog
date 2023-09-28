@@ -175,7 +175,15 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
-1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part Two</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
+1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>如何测试你的 Go 代码</title><link>https://www.poloxue.com/posts/2019-08-22-how-to-test-your-code-in-golang/</link><pubDate>Thu, 22 Aug 2019 13:01:20 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-22-how-to-test-your-code-in-golang/</guid><description>不论是开源项目，还是日常程序的开发，测试都是必不可少的一个环节。今天我们开始进入 Go 测试模块 testing 的介绍。
+差不多两周没有更新 Go 文章了，最近状态不是太好。这篇文章本来准备写的内容非常丰富，结果有点力不从心，移除了好几个小节。思考下来，还是决定拆成几篇。
+另外，参考资料中有几篇很精彩的文章，有兴趣也可以读一下。
+简单概述 我们选择开源项目，通常会比较关注这个项目的测试用例编写的是否完善，一个优秀项目的测试一般写的不会差。为了日后自己能写出一个好的项目，测试这块还是要好好学习下。
+常接触的测试主要是单元测试和性能测试。毫无意外，go 的 testing 也支持这两种测试。单元测试用于模块测试，而性能则是由基准测试完成，即 benchmark。
+Go 测试模块除了上面提到的功能，还有一项能力，支持编写案例，通过与 godoc 的结合，可以非常快捷地生成库文档。
+最易想到的方法 谈到如何测试一个函数的功能，对开发来说，最容易想到的方法就是在 main 中直接调用函数判断结果。
+举个例子，测试 math 方法下的绝对值函数 Abs，示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math&amp;#34; ) func main() { v := math.Abs(-10) if v != 10 { fmt.Println(&amp;#34;测试失败&amp;#34;) return } fmt.Println(&amp;#34;测试成功&amp;#34;) } 更常见的可能是，if 判断都没有，直接 Print 输出结果，我们观察结果确认问题。特别对于习惯使用 Python、PHP 脚本语言的开发， 建一个脚本测试是非常快速的，因为曾经很长一段时间，我就是如此。</description></item><item><title>Go 问答汇总 Part Two</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
 粗略数了一下，一个多月的时间里，大约回答了 18 个与 Go 有关的问题，问题主要是来源于 segmentfault 和 zhihu 两个平台。后面希望加入更多平台，如 stackoverflow、github 的感兴趣主题。
 最近在写一个小工具，准备用于帮助自己回答不同平台的问题，同时也便于每个月的问题汇总。写的有点慢，希望月底可以完成。
 正文部分开始。

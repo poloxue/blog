@@ -1,0 +1,392 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>如何测试你的 Go 代码 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="如何测试你的 Go 代码"><meta itemprop=description content="不论是开源项目，还是日常程序的开发，测试都是必不可少的一个环节。今天我们开始进入 Go 测试模块 testing 的介绍。
+差不多两周没有更新 Go 文章了，最近状态不是太好。这篇文章本来准备写的内容非常丰富，结果有点力不从心，移除了好几个小节。思考下来，还是决定拆成几篇。
+另外，参考资料中有几篇很精彩的文章，有兴趣也可以读一下。
+简单概述 我们选择开源项目，通常会比较关注这个项目的测试用例编写的是否完善，一个优秀项目的测试一般写的不会差。为了日后自己能写出一个好的项目，测试这块还是要好好学习下。
+常接触的测试主要是单元测试和性能测试。毫无意外，go 的 testing 也支持这两种测试。单元测试用于模块测试，而性能则是由基准测试完成，即 benchmark。
+Go 测试模块除了上面提到的功能，还有一项能力，支持编写案例，通过与 godoc 的结合，可以非常快捷地生成库文档。
+最易想到的方法 谈到如何测试一个函数的功能，对开发来说，最容易想到的方法就是在 main 中直接调用函数判断结果。
+举个例子，测试 math 方法下的绝对值函数 Abs，示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &#34;fmt&#34; &#34;math&#34; ) func main() { v := math.Abs(-10) if v != 10 { fmt.Println(&#34;测试失败&#34;) return } fmt.Println(&#34;测试成功&#34;) } 更常见的可能是，if 判断都没有，直接 Print 输出结果，我们观察结果确认问题。特别对于习惯使用 Python、PHP 脚本语言的开发， 建一个脚本测试是非常快速的，因为曾经很长一段时间，我就是如此。"><meta itemprop=datePublished content="2019-08-22T13:01:20+08:00"><meta itemprop=dateModified content="2019-08-22T13:01:20+08:00"><meta itemprop=wordCount content="1334"><meta itemprop=keywords content="Golang,"><meta property="og:title" content="如何测试你的 Go 代码"><meta property="og:description" content="不论是开源项目，还是日常程序的开发，测试都是必不可少的一个环节。今天我们开始进入 Go 测试模块 testing 的介绍。
+差不多两周没有更新 Go 文章了，最近状态不是太好。这篇文章本来准备写的内容非常丰富，结果有点力不从心，移除了好几个小节。思考下来，还是决定拆成几篇。
+另外，参考资料中有几篇很精彩的文章，有兴趣也可以读一下。
+简单概述 我们选择开源项目，通常会比较关注这个项目的测试用例编写的是否完善，一个优秀项目的测试一般写的不会差。为了日后自己能写出一个好的项目，测试这块还是要好好学习下。
+常接触的测试主要是单元测试和性能测试。毫无意外，go 的 testing 也支持这两种测试。单元测试用于模块测试，而性能则是由基准测试完成，即 benchmark。
+Go 测试模块除了上面提到的功能，还有一项能力，支持编写案例，通过与 godoc 的结合，可以非常快捷地生成库文档。
+最易想到的方法 谈到如何测试一个函数的功能，对开发来说，最容易想到的方法就是在 main 中直接调用函数判断结果。
+举个例子，测试 math 方法下的绝对值函数 Abs，示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &#34;fmt&#34; &#34;math&#34; ) func main() { v := math.Abs(-10) if v != 10 { fmt.Println(&#34;测试失败&#34;) return } fmt.Println(&#34;测试成功&#34;) } 更常见的可能是，if 判断都没有，直接 Print 输出结果，我们观察结果确认问题。特别对于习惯使用 Python、PHP 脚本语言的开发， 建一个脚本测试是非常快速的，因为曾经很长一段时间，我就是如此。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-08-22-how-to-test-your-code-in-golang/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-08-22T13:01:20+08:00"><meta property="article:modified_time" content="2019-08-22T13:01:20+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="如何测试你的 Go 代码"><meta name=twitter:description content="不论是开源项目，还是日常程序的开发，测试都是必不可少的一个环节。今天我们开始进入 Go 测试模块 testing 的介绍。
+差不多两周没有更新 Go 文章了，最近状态不是太好。这篇文章本来准备写的内容非常丰富，结果有点力不从心，移除了好几个小节。思考下来，还是决定拆成几篇。
+另外，参考资料中有几篇很精彩的文章，有兴趣也可以读一下。
+简单概述 我们选择开源项目，通常会比较关注这个项目的测试用例编写的是否完善，一个优秀项目的测试一般写的不会差。为了日后自己能写出一个好的项目，测试这块还是要好好学习下。
+常接触的测试主要是单元测试和性能测试。毫无意外，go 的 testing 也支持这两种测试。单元测试用于模块测试，而性能则是由基准测试完成，即 benchmark。
+Go 测试模块除了上面提到的功能，还有一项能力，支持编写案例，通过与 godoc 的结合，可以非常快捷地生成库文档。
+最易想到的方法 谈到如何测试一个函数的功能，对开发来说，最容易想到的方法就是在 main 中直接调用函数判断结果。
+举个例子，测试 math 方法下的绝对值函数 Abs，示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &#34;fmt&#34; &#34;math&#34; ) func main() { v := math.Abs(-10) if v != 10 { fmt.Println(&#34;测试失败&#34;) return } fmt.Println(&#34;测试成功&#34;) } 更常见的可能是，if 判断都没有，直接 Print 输出结果，我们观察结果确认问题。特别对于习惯使用 Python、PHP 脚本语言的开发， 建一个脚本测试是非常快速的，因为曾经很长一段时间，我就是如此。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.webp alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/index.xml title=RSS><i data-feather=rss></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>HOME</a></li><li><a href=/posts>POSTS</a></li><li><a href=/tags>TAGS</a></li><li><a href=/about/>ABOUT</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>22</span>
+<span class=rest>Aug 2019</span></div></div><div class=matter><h1 class=title>如何测试你的 Go 代码</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#测试的编写规则>测试的编写规则</a></li><li><a href=#灵活记忆-api-的使用>灵活记忆 API 的使用</a></li></ol></nav></aside><p>不论是开源项目，还是日常程序的开发，测试都是必不可少的一个环节。今天我们开始进入 Go 测试模块 testing 的介绍。</p><p>差不多两周没有更新 Go 文章了，最近状态不是太好。这篇文章本来准备写的内容非常丰富，结果有点力不从心，移除了好几个小节。思考下来，还是决定拆成几篇。</p><p>另外，参考资料中有几篇很精彩的文章，有兴趣也可以读一下。</p><h1 id=简单概述>简单概述</h1><p>我们选择开源项目，通常会比较关注这个项目的测试用例编写的是否完善，一个优秀项目的测试一般写的不会差。为了日后自己能写出一个好的项目，测试这块还是要好好学习下。</p><p>常接触的测试主要是单元测试和性能测试。毫无意外，go 的 testing 也支持这两种测试。单元测试用于模块测试，而性能则是由基准测试完成，即 benchmark。</p><p>Go 测试模块除了上面提到的功能，还有一项能力，支持编写案例，通过与 godoc 的结合，可以非常快捷地生成库文档。</p><h1 id=最易想到的方法>最易想到的方法</h1><p>谈到如何测试一个函数的功能，对开发来说，最容易想到的方法就是在 main 中直接调用函数判断结果。</p><p>举个例子，测试 math 方法下的绝对值函数 Abs，示例代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;math&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>math</span>.<span style=color:#a6e22e>Abs</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>10</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>!=</span> <span style=color:#ae81ff>10</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;测试失败&#34;</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;测试成功&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>更常见的可能是，if 判断都没有，直接 Print 输出结果，我们观察结果确认问题。特别对于习惯使用 Python、PHP 脚本语言的开发， 建一个脚本测试是非常快速的，因为曾经很长一段时间，我就是如此。</p><p>这种方式有什么缺点？我的理解，主要几点，如main 中的测试不容易复用，常常是建了就删；测试用例变多时，灵活性不够，常会有修改代码的需求；自动化测试也不是非常方便等等问题。</p><p>我对测试的了解不是很深，上面这些仅仅我的一些体验吧。</p><p>遇到了问题就得解决，下面正式开始进入 go testing 中单元测试的介绍。</p><h1 id=一个快速体验案例>一个快速体验案例</h1><p>单元测试用于在指定场景下，测试功能模块在指定的输入情况下，确定有没有按期望结果输出结果。</p><p>我们直接看个例子，简单直观。测试 math 下的 Abs 绝对值函数。首先，在某个目录创建测试文件 math_test.go，代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>math</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;math&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;testing&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestAbs</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>expect</span> <span style=color:#66d9ef>float64</span> = <span style=color:#f92672>-</span><span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>10</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>actual</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>math</span>.<span style=color:#a6e22e>Abs</span>(<span style=color:#a6e22e>a</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>expect</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Fatalf</span>(<span style=color:#e6db74>&#34;a = %f, actual = %f, expected = %f&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>actual</span>, <span style=color:#a6e22e>expect</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>程序非常简洁，a 是 Abs 函数的输入参数，expect 是期望得到的执行结果，actual 是函数执行的实际结果，测试结果由 actual 和 expect 比较结果确定。</p><p>完成用例编写，go test 命令执行测试，我们会看到如下输出。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ go test
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok      study/test/math 0.004s
+</span></span></code></pre></td></tr></table></div></div><p>输出为 PASS，表示测试用例成功执行。0.004s 表示用例执行时间。</p><h1 id=学会使用-go-testing>学会使用 go testing</h1><p>从前面例子中可以了解到，Go 的测试写起来还是非常方便的。关于它的使用方式，主要有两点，一是测试代码的编写规则，二是 API 的使用。</p><h2 id=测试的编写规则>测试的编写规则</h2><p>Go 的测试必须按规则方式编写，不然 go test 将无法正确定位测试代码的位置，主要三点规则。</p><p>首先，测试代码文件的命名必须是以 _test.go 结尾，比如上节中的文件名 math_tesh.go 并非随意取的。</p><p>还有，代码中的用例函数必须满足匹配 TestXxx，比如 TestAbs。</p><p>关于 Xxx，简单解释一下，它主要传达两点含义，一是 Xxx 表示首个字符必须大写或数字，简单而言就是可确定单词分隔，二是首字母后的字符可以是任意 Go 关键词合法字符，如大小写字母、下划线、数字。</p><p>第三，关于用例函数类型定义，定义如下。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestXxx</span>(<span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>)
+</span></span></code></pre></td></tr></table></div></div><p>测试函数必须按这个固定格式编写，否则 go test 将执行报错。函数中有一个输入参数 t, 类型是 *testing.T，它非常重要，单元测试需通过它反馈测试结果，具体后面再介绍。</p><h2 id=灵活记忆-api-的使用>灵活记忆 API 的使用</h2><p>按规则编写测试用例只能保证 go test 的正确定位执行。但为了可以分析测试结果，我们还需要与测试框架进行交互，这就需要测试函数输入参数 t 的参与了。</p><p>在 TestAbs 中，我们用到了 t.Fatalf，它的作用就是反馈测试结果。假设没有这段代码，发生错误也会反馈测试成功，这显然不是我们想要的。</p><p>我们可以通过官方文档，看下 testing.T 中支持的可导出方法，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 获取测试名称
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Name</span>() <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 打印日志
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Log</span>(<span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 打印日志，支持 Printf 格式化打印
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Logf</span>(<span style=color:#a6e22e>format</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 反馈测试失败，但不退出测试，继续执行
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Fail</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 反馈测试成功，立刻退出测试
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>FailNow</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 反馈测试失败，打印错误
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Error</span>(<span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 反馈测试失败，打印错误，支持 Printf 的格式化规则
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Errorf</span>(<span style=color:#a6e22e>format</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 检测是否已经发生过错误
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Failed</span>() <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 相当于 Error + FailNow，表示这是非常严重的错误，打印信息结束需立刻退出。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Fatal</span>(<span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 相当于 Errorf + FailNow，与 Fatal 类似，区别在于支持 Printf 格式化打印信息；
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Fatalf</span>(<span style=color:#a6e22e>format</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 跳出测试，从调用 SkipNow 退出，如果之前有错误依然提示测试报错
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>SkipNow</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 相当于 Log 和 SkipNow 的组合
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Skip</span>(<span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 与Skip，相当于 Logf 和 SkipNow 的组合，区别在于支持 Printf 格式化打印
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Skipf</span>(<span style=color:#a6e22e>format</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>args</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>interface</span>{})
+</span></span><span style=display:flex><span><span style=color:#75715e>// 用于标记调用函数为 helper 函数，打印文件信息或日志，不会追溯该函数。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Helper</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 标记测试函数可并行执行，这个并行执行仅仅指的是与其他测试函数并行，相同测试不会并行。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Parallel</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 可用于执行子测试
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>method</span> (<span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>Run</span>(<span style=color:#a6e22e>name</span> <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>f</span> <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>T</span>)) <span style=color:#66d9ef>bool</span>
+</span></span></code></pre></td></tr></table></div></div><p>上面列出了单元测试 testing.T 中所有的公开方法，我个人思路，把它们大概分为三类，分别是底层方法、测试反馈，还有一些其他运行控制的辅助方法。</p><p>基础信息的 API 只有 1 个，Name() 方法，用于获取测试名称。运行控制的辅助方法主要指的是 Helper、t.Parallel 和 Run，上面的注释对它们已经做了简单介绍。</p><p>我们这里重点说说测试反馈的 API，毕竟它用的最多。前面用到的 Fatalf 方法就是其中之一，它的效果是打印错误日志并立刻退出测试。希望速记这类 API 吗？我们或许可以按几个层级进行记忆。</p><p>首先，我们记住一些相关的基础方法，它们是其它方法的核心组成，如下：</p><ul><li>日志打印，Log 与 Logf，Log 和 Logf 区别可对比 Println 和 Printf，即 Logf 支持 Printf 格式化打印，而 Log 不支持。</li><li>失败标记，Fail 和 FailNow，Fail 与 FailNow 都是用于标记测试失败的方法，它们的区别在于 Fail 标记失败后还会继续执行执行接下来的测试，而 FailNow 在标记失败后会立刻退出。</li><li>测试忽略，SkipNow 方法退出测试，但并不会标记测试失败，可与 FailNow 对比记忆。</li></ul><p>我们再看看剩余的那些方法，基本都是由基础方法组合而来。我们可根据场景，选择不同的组合。比如：</p><ul><li>普通日志，只是打印一些日志，可以直接使用 Log 或 Logf 即可；</li><li>普通错误，如果不退出测试，只是打印一些错误提示信息，使用 Error 或 Errorf，这两个方法是 log 或 logf 和 Fail 的组合；</li><li>严重错误，需要退出测试，并打印一些错误提示信息，使用 Fatal (log + FailNow) 或 Fatalf (logf + FailNow)；</li><li>忽略错误，并退出测试，可以使用 Skip (log + SkipNow) 和 Skipf (logf + SkipNow)；</li></ul><p>如果支持 Printf 的格式化信息打印，方法后面都会有一个 f 字符。如此一总结，我们发现 testing.T 中的方法的记忆非常简单。</p><p>突然想到，不知是否有人会问什么情况下算是测试成功。其实，只要没有标记失败，测试就是成功的。</p><h1 id=实践一个案例>实践一个案例</h1><p>讲了那么多基础知识，我都有点口感舌燥了。现在，开始尝试使用一下它吧！</p><p>举一个简单的例子，测试一个除法函数。首先，创建一个 math.go 文件。函数代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>math</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;errors&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Division</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>float64</span>) (<span style=color:#66d9ef>float64</span>, <span style=color:#66d9ef>error</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>b</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>, <span style=color:#a6e22e>errors</span>.<span style=color:#a6e22e>New</span>(<span style=color:#e6db74>&#34;division by zero&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>b</span>, <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>Division 非常简单，输入参数 a、b 分别是被除数和除数，输出参数是计算结果和错误提示。如果除数是 0，将会给出相应的错误提示。</p><p>在正式测试 Division 函数前，我们先要梳理下什么样的输入与期望结果表示测试成功。输入不同，期望结果也就不同，可能是正确结果，亦或者是期待的错误结果。什么意思？以这里的 Division 为例，两种场景需要考虑：</p><ul><li>正常调用返回结果，比如当被除数为 10，除数为 5，期望得到的结果为 2，即期望得到正确的结果；</li><li>期望错误返回结果，当被除数为 10，除数为 0，期望返回除数不能为 0 的错误，即期望返回错误提示；</li></ul><p>如果是测试驱动开发，在我们正式写实现代码前，就需要把这些先定义好，并且写好测试代码。</p><p>分析完用例就可以开始写代码啦。</p><p>先是正常调用的测试，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestDivision</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>expect</span> <span style=color:#66d9ef>float64</span> = <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>actual</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Division</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;a = %f, b = %f, expect = %f, err %v&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>expect</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>expect</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;a = %f, b = %f, expect = %f, actual = %f&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>expect</span>, <span style=color:#a6e22e>actual</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>定义了三个变量，分别是 a、b、expect，对应被除数、除数和期望结果。用例通过对比 Division 的实际结果 actual 与期望结果 expect 确认测试是否成功。还有就是，Division 返回的 error 也要检查，因为这里期待的正常运行结果，只要有错即可认定测试失败。</p><p>再看期望错误结果，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestDivisionZero</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#66d9ef>float64</span> = <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>expectedErrString</span> = <span style=color:#e6db74>&#34;division by zero&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Division</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span>.<span style=color:#a6e22e>Error</span>() <span style=color:#f92672>!=</span> <span style=color:#a6e22e>expectedErrString</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;a = %f, b = %f, err %v, expect err %s&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>err</span>, <span style=color:#a6e22e>expectedErrString</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>同样是首先定义了三个变量，a、b 和 expectErrString，a、b 含义与之前相同，expectErrString 为预期提示的错误信息。除数 b 设置为 0 ，主要是为了测试 Division 函数是否能按预期返回错误，所以我们并不关心计算结果。测试成功与否，通过比较实际的返回 error 与 expectErrString 确定。</p><p>通过 go test 执行测试，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ go test -v
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivision
+</span></span><span style=display:flex><span>--- PASS: TestDivision <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivisionZero
+</span></span><span style=display:flex><span>--- PASS: TestDivisionZero <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok      study/test/math 0.005s
+</span></span></code></pre></td></tr></table></div></div><p>结果显示，测试成功！</p><p>这个案例的演示中，我们在 go test 上加入 -v 选项，这样就可以清晰地看到每个测试用例的执行情况。</p><h1 id=简洁紧凑的表组测试>简洁紧凑的表组测试</h1><p>通过上面的例子，不知道有没有发现一个问题？</p><p>如果将要测试的某个功能函数的用例非常多，我们将会需要写很多代码重复度非常高的测试函数，因为对于单元测试而言，基本都是围绕一个简单模式：</p><p><strong>指定输入参数</strong> -> <strong>调用要测试的函数</strong> -> <strong>获取返回结果</strong> -> <strong>比较实际返回与期望结果</strong> -> <strong>确认测试失败提示</strong></p><p>基于此，Go 提倡我们使用一种称为 &ldquo;Table Driven&rdquo; 的测试方式，中文翻译，可称为表组测试。它可以让我们以一种短小紧密的方式编写测试。具体如何做呢？</p><p>首先，我们要定义一个用于表组测试的结构体，其中要包含测试所需的输入与期望的输出。以 Division 函数测试为例，可以定义如下的结构体：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>DivisionTable</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>a</span>         <span style=color:#66d9ef>float64</span> <span style=color:#75715e>// 被除数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>b</span>         <span style=color:#66d9ef>float64</span> <span style=color:#75715e>// 除数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>expect</span>    <span style=color:#66d9ef>float64</span> <span style=color:#75715e>// 期待计算值
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>expectErr</span> <span style=color:#66d9ef>error</span>   <span style=color:#75715e>// 期待错误字符串
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></td></tr></table></div></div><p>各字段的含义在注释部分已经做了相关说明，和我们之前做的单个场景的测试涉及字段差不多。区别在于 expectErr 不再是 string 类型。</p><p>接下来，将下面我们需要测试的用例通过该结构体字面量表示出来。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>table</span> = []<span style=color:#a6e22e>DivisionTable</span>{
+</span></span><span style=display:flex><span>	{<span style=color:#ae81ff>1.</span>, <span style=color:#ae81ff>1.</span>, <span style=color:#ae81ff>1.</span>, <span style=color:#66d9ef>nil</span>},
+</span></span><span style=display:flex><span>	{<span style=color:#f92672>-</span><span style=color:#ae81ff>4.</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>2.</span>, <span style=color:#ae81ff>2.</span>, <span style=color:#66d9ef>nil</span>},
+</span></span><span style=display:flex><span>	{<span style=color:#ae81ff>2.</span>, <span style=color:#ae81ff>0.</span>, <span style=color:#ae81ff>7.</span>, <span style=color:#a6e22e>errors</span>.<span style=color:#a6e22e>New</span>(<span style=color:#e6db74>&#34;division by zero&#34;</span>)},
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>简单列举了三种场景，分别正数之间的除法、负数之间的除数以及除数为 0 的情况下的除法。</p><p>接下来的目标就是实现一个通用 Division 测试函数。直接看代码吧！</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestDivisionTable</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>divisionTable</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>actual</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Division</span>(<span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>expectErr</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(
+</span></span><span style=display:flex><span>					<span style=color:#e6db74>&#34;a = %f, b = %f, actual err not nil, expect err is nil&#34;</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>expectErr</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(
+</span></span><span style=display:flex><span>					<span style=color:#e6db74>&#34;a = %f, b = %f, actual err not nil, expect err is nil&#34;</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>			} <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>Contains</span>(<span style=color:#a6e22e>err</span>.<span style=color:#a6e22e>Error</span>(), <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>expectErr</span>.<span style=color:#a6e22e>Error</span>()) {
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(
+</span></span><span style=display:flex><span>					<span style=color:#e6db74>&#34;a = %f, b = %f, actual err = %v, expect err = %v&#34;</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>err</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>expectErr</span>)
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>expect</span> {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(
+</span></span><span style=display:flex><span>				<span style=color:#e6db74>&#34;a = %f, b = %f, actual = %f, expect = %f&#34;</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>actual</span>, <span style=color:#a6e22e>v</span>.<span style=color:#a6e22e>expect</span>)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>代码看起来比较乱，这主要是因为 error 接口内部实际类型是指针，不能直接使用比较操作符对比 error，所以要做一些处理。如果没有错误的比较，这个例子就容易理解的多了。</p><p>可以梳理一下，逻辑其实非常简单。主要由几个步骤组成：</p><ul><li>首先遍历 divisionTable，获取到输入参数与期望结果；</li><li>使用从 divisionTable 获取到输入参数调用功能函数；</li><li>获取功能函数的执行结果，包括计算结果与可能的错误；</li><li>对比返回 err 与 expectErr，需要处理 err == nil 和 != nil 两种情况；<ul><li>实际 err 为 nil， expectErr 也需要为 nil；</li><li>实际 err 不为 nil，expectErr 不可为 nil，且错误信息包含在 err 中。</li></ul></li><li>最后一步，比较实际计算结果与期望结果；</li></ul><p>如果发生错误，我们使用 t.Errorf 打印错误日志并告知测试失败。用 Errorf 的原因是我们不能只是一个用例失败就退出整个测试。当然，这个要视情况而定吧，没有固定规则。</p><p>介绍到这，核心部分就讲的差不多了。</p><h1 id=详细的日志输出>详细的日志输出</h1><p>对于一些刚接触 Go testing 的朋友，可能碰到过接下来要讲的这个奇怪的问题。</p><p>例子说明最直观，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>TestDivision</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>expect</span> <span style=color:#66d9ef>float64</span> = <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>actual</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Division</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;a = %f, b = %f, expect = %f, err %v&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>expect</span>, <span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>actual</span> <span style=color:#f92672>!=</span> <span style=color:#a6e22e>expect</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Errorf</span>(<span style=color:#e6db74>&#34;a = %f, b = %f, expect = %f, actual = %f&#34;</span>, <span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>, <span style=color:#a6e22e>expect</span>, <span style=color:#a6e22e>actual</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Log</span>(<span style=color:#e6db74>&#34;end&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>还是之前的例子，相比之下，最后增加了一段日志打印 t.Log(&ldquo;end&rdquo;)。不加任何选项的 go test 的执行效果如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ go test
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok      study/test/math 0.004s
+</span></span></code></pre></td></tr></table></div></div><p>输出日志中并没看到增加那行 end 日志。</p><p>前面的演示中，我们用到了 go test 的 -v 选项，通过它，可以查看非常详细的输出信息。我们加上 -v 选项，再执行看效果：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ go test -v
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivision
+</span></span><span style=display:flex><span>--- PASS: TestDivision <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>    math_test.go:36: end
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok      study/test/math 0.005s
+</span></span></code></pre></td></tr></table></div></div><p>多出了很多信息，并且打出了那行 end 日志，并给出代码的位置 math_test.go:36: end。除此以外，还具体到了每一个测试的执行情况，比如测试执行开始和测试结果。</p><h1 id=灵活控制运行哪些测试>灵活控制运行哪些测试</h1><p>假设，我们把前面演示用到的那些测试函数全部放在 math_test.go 中。此时，使用默认 go test 测试会遇到一个问题，那就是每次都将包中的测试函数都执行一遍。有什么办法能灵活控制呢？</p><p>可以先来看看此类问题，常见的使用场景有哪些！我想到的几点，如下：</p><ul><li>执行 package 下所有测试函数，go test 默认就是如此，不用多说；</li><li>执行其中的某一个测试函数，比如当我们把前面写的所有测试函数都放在了 math_test.go 文件中，如何选择其中一个执行；</li><li>按某一类匹配规则执行测试函数，比如执行名称满足以 Division 开头的测试函数；</li><li>执行项目下的所有测试函数，一个项目通常不止一个包，如何要将所有包的测试函数都执行一遍，该如何做呢；</li></ul><p>第一个本不怎么用介绍了。但有一点还是要介绍下，那就是除默认执行当前路径的包，我们也可以具体指定执行哪个 package 的测试函数，指定方式支持纯粹的文件路径方式以及包路径方式。</p><p>假设，我们包的导入路径为 example/math，而我们当前位置在 example 目录下，就有两种方式执行 math 下的测试。</p><pre tabindex=0><code>$ go test # 目录路径执行
+$ go test example/math # GOPATH 包导入路径
+</code></pre><p>第二、三场景，执行其中的某个或某类测试，主要与 go test 的 -run 选项有关，-run 选项接收参数是正则表达式。</p><p>执行某一个具体的函数，如 TestDivision，命令执行效果如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ go test -run <span style=color:#e6db74>&#34;^TestDivision</span>$<span style=color:#e6db74>&#34;</span> -v
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivision
+</span></span><span style=display:flex><span>--- PASS: TestDivision <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>    math_test.go:36: end
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok      study/test/math 0.004s
+</span></span></code></pre></td></tr></table></div></div><p>从输出中可了解到，确实只执行了 TestDivision。这里要记住加上 -v 选项，使输出信息具体到某一个测试。</p><p>执行具体的某一个类的函数，如除法相关测试 Division，命令执行效果如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ go test -run <span style=color:#e6db74>&#34;Division&#34;</span> -v
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivision
+</span></span><span style=display:flex><span>--- PASS: TestDivision <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>    math_test.go:36: end
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivisionZero
+</span></span><span style=display:flex><span>--- PASS: TestDivisionZero <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>===</span> RUN   TestDivisionTable
+</span></span><span style=display:flex><span>--- PASS: TestDivisionTable <span style=color:#f92672>(</span>0.00s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>PASS
+</span></span><span style=display:flex><span>ok  	_/Users/polo/Public/Work/go/src/study/test/math	0.005s
+</span></span></code></pre></td></tr></table></div></div><p>将前面写过的函数名中包含 Division 全部执行一遍。</p><p>第四个场景，执行整个项目下的测试。在项目的顶层目录，直接执行 go test ./&mldr; 即可，具体就不演示了。</p><h1 id=总结>总结</h1><p>本文主要介绍了 Go 中测试模块使用的一些基础方法。从最容易想到的通过 main 测试方法到使用 go testing 中编写单元测试，接着介绍了一个测试案例，由此引入了 Go 中推荐 &ldquo;Table Driven&rdquo; 的测试方式。最后，文章还介绍了一些对我们平时工作比较有实际意义的技巧。</p><p>博文地址：<a href=https://www.poloxue.com/how-to-test-your-code-in-golang>如何测试你的 Go 代码</a></p><h1 id=参考>参考</h1><p><a href=https://medium.com/rungo/unit-testing-made-easy-in-go-25077669318>Unit Testing make easy in Go</a><br><a href=https://github.com/cweill/gotests>gotests</a><br><a href=http://objcoding.com/2018/09/14/go-test/>go test 单元测试</a><br><a href=https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter09/09.1.html>testing - 单元测试</a><br><a href=https://dave.cheney.net/2013/06/09/writing-table-driven-tests-in-go>Writing table driven tests in Go</a><br><a href=https://dave.cheney.net/2013/06/30/how-to-write-benchmarks-in-go>How to write benchmarks in Go</a><br><a href=https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/11.3.md>Go 如何写测试用例</a></p></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#测试的编写规则>测试的编写规则</a></li><li><a href=#灵活记忆-api-的使用>灵活记忆 API 的使用</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags><ul class=flat><li class=tag-li><a href=/tags/golang>Golang</a></li></ul></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div></div><div class="footer wrapper"><nav class=nav><div>2019 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>
