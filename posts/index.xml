@@ -185,7 +185,16 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 但 &amp;hellip;，随之而来的问题是，go mod 没这个能力啊。怎么办？
 如何实现 先看看是不是已经有人做了这件事了。网上搜了下，没找到。那是不是能自己实现？应该可以借鉴下 dep 的思路吧？
 如下是 dep 依赖实现可视化的方式：
-1 2 3 4 5 6 7 8 9 10 11 # linux $ sudo apt-get install graphviz $ dep status -dot | dot -T png | display # macOS $ brew install graphviz $ dep status -dot | dot -T png | open -f -a /Applications/Preview.</description></item><item><title>Go 的 Http 请求系统指南</title><link>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</link><pubDate>Tue, 10 Sep 2019 16:37:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</guid><description>前几天在 &amp;ldquo;知乎想法&amp;rdquo; 谈到了一个话题，如何模仿学习，举了通过 net/http client 模仿 Pyhton 的requests的例子。但并未实践，难道想法真的只能是想法吗？当然不是，于是我决定先暂停一周 GO 笔记，来实践下自己的想法。
+1 2 3 4 5 6 7 8 9 10 11 # linux $ sudo apt-get install graphviz $ dep status -dot | dot -T png | display # macOS $ brew install graphviz $ dep status -dot | dot -T png | open -f -a /Applications/Preview.</description></item><item><title>Go 中 Slice 的 In 实现探索</title><link>https://www.poloxue.com/posts/2019-09-15-how-to-use-contain-function-in-golang/</link><pubDate>Sun, 15 Sep 2019 14:10:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-15-how-to-use-contain-function-in-golang/</guid><description>之前在知乎看到一个问题：为什么 Golang 没有像 Python 中 in 一样的功能？于是，搜了下这个问题，发现还是有不少人有这样的疑问。
+今天来谈谈这个话题。
+in 是一个很常用的功能，有些语言中可能也称为 contains，虽然不同语言的表示不同，但基本都是有的。不过可惜的是，Go 却没有，它即没有提供类似 Python 操作符 in，也没有像其他语言那样提供这样的标准库函数，如 PHP 中 in_array。
+Go 的哲学是追求少即是多。我想或许 Go 团队觉得这是一个实现起来不足为道的功能吧。
+为何说微不足道？如果要自己实现，又该如何做呢？
+我所想到的有三种实现方式，一是遍历，二是 sort 的二分查找，三是 map 的 key 索引。
+本文相关源码已经上传在我的 github 上，poloxue/gotin。
+遍历 遍历应该是我们最容易想到的最简单的实现方式。
+示例如下：
+1 2 3 4 5 6 7 8 9 func InIntSlice(haystack []int, needle int) bool { for _, e := range haystack { if e == needle { return true } } return false } 上面演示了如何在一个 []int 类型变量中查找指定 int 是否存在的例子，是不是非常简单，由此我们也可以感受到我为什么说它实现起来微不足道。</description></item><item><title>Go 的 Http 请求系统指南</title><link>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</link><pubDate>Tue, 10 Sep 2019 16:37:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</guid><description>前几天在 &amp;ldquo;知乎想法&amp;rdquo; 谈到了一个话题，如何模仿学习，举了通过 net/http client 模仿 Pyhton 的requests的例子。但并未实践，难道想法真的只能是想法吗？当然不是，于是我决定先暂停一周 GO 笔记，来实践下自己的想法。
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
