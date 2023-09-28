@@ -136,7 +136,22 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 一个 int64 无法表示，那就用多个呗。此时的结构如下：
 一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 BitSet，如下：
 1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。
-还有，因为 bitset 中元素个数无法通过 len 函数获取，而具体的方法相对复杂一点，可增加一个 size 字段记录集合元素的个数。然后就可以增加一个 Size 方法。</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
+还有，因为 bitset 中元素个数无法通过 len 函数获取，而具体的方法相对复杂一点，可增加一个 size 字段记录集合元素的个数。然后就可以增加一个 Size 方法。</description></item><item><title>从词法分析角度看 Go 代码的组成</title><link>https://www.poloxue.com/posts/2019-11-03-golang-lexical-analysis/</link><pubDate>Sun, 03 Nov 2019 18:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-03-golang-lexical-analysis/</guid><description>之前的 Go 笔记系列，已经完成到了开发环境搭建，原本接下来的计划就是到语法部分了，但后来一直没有前进。主要是因为当时的工作比较忙，分散了精力，于是就暂时放下了。
+最近，准备重新把之前计划捡起来。
+第一步，肯定是了解 Go 基础语法部分。原本计划是写 Go 编码的一些基础知识，但纯粹聊什么是关键字、标识符、字面量、操作符实在有点无聊。
+突然想到，词法分析这块知识还没仔细研究过，那就从这个角度出发吧。通过逐步地拆解，将各个 token 进行归类。
+概述 我们知道，编译型语言（比如 Go）的源码要经过编译和链接才能转化为计算机可以执行的程序，这个过程的第一步就是词法分析。
+什么是词法分析呢？
+它就是将源代码转化为一个个预先定义的 token 的过程。为了便于理解，我们将其分为两个阶段进行介绍。
+第一阶段，对源码串进行扫描，按预先定义的 token 规则进行匹配并切分为一个个有语法含义、最小单元的字符串，即词素（lexme），并在此基础上将其划归为某一类 token。这个阶段，一些字符可能会被过滤掉，比如，空白符、注释等。
+第二阶段，通过评估器 Evaluator 评估扫描出来的词素，并确定它字面值，生成最终的 Token。
+是不是有点不好理解呢？
+如果之前从未接触过这块内容，可能没有直观感受。其实，看着很复杂，但的确非常简单。
+一个简单的示例 先看一段代码，经典的 hello world，如下：
+1 2 3 4 5 6 7 package main import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;Hello World&amp;#34;) } 我们可以通过这个例子的源码逐步拆解词法分析的整个流程。
+什么是词素 理论性的概念就不说了，直接看效果吧。
+首先，将这段示例代码通过词法分析的第一阶段，我们将会得到如下内容：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main \n import &amp;#34;fmt&amp;#34; \n func main ( ) { \n fmt .</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
 为何开发 为什么会想到开发这个工具？主要有两点原因：
 一是最近经常看到大家在社区讨论 Go Module。于是，我也花了一些时间研究了下。期间，遇到了一个需求，如何清晰地识别模块中依赖项之间的关系。一番了解后，发现了 go mod graph。
 效果如下：
