@@ -2,7 +2,6 @@
 ---
 title: "Colly 从入门到不放弃指南"
 date: 2019-07-25T13:35:36+08:00
-url: /go/go-colly-guideline
 draft: false
 comment: true
 tags: ["Golang", "Crawler"]
