@@ -3,6 +3,7 @@ title: "iTerm2 启动时进入 Tmux 模式"
 date: 2023-09-15T15:06:02+08:00
 draft: false
 comment: true
+tags: ["tmux", "iTerm2"]
 ---
 
 介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
