@@ -69,5 +69,5 @@ zsh 能增强你的 CLI 终端使用体验，而且，只需简单安装即可�
 
 请安装开始你的探索吧。我相信，你会发现它的强大。或许，最终它会成为你的默认 shell。
 
-译：[What is Zsh? Should I Use it?](https://linuxhandbook.com/why-zsh/#:~:text=Zsh%20is%20more%20powerful%20and,more%20advanced%20features%20shipped%20in)
+博文地址：[什么是 zsh？我是否应该使用 zsh](https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/)，译：[What is Zsh? Should I Use it?](https://linuxhandbook.com/why-zsh/#:~:text=Zsh%20is%20more%20powerful%20and,more%20advanced%20features%20shipped%20in)
 
