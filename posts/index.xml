@@ -116,7 +116,15 @@ Content-Type 是什么？
 默认没有子命令的一套实现规范， 不支持参数校验； 不支持帮助信息模板配置。 没有对一些标准提供默认支持，如 POSIX 标准，没有 -v，&amp;ndash;version 和 -h、&amp;ndash;help 的默认支持等。 一套完整的命令行框架应用就要这些能力，能提供一套最佳实践。Cobra 就是这样一套框架。
 Cobra Cobra 支持的功能非常多，一些非常出名的开源项目，比如 k8s、hugo 等都在使用它。我之前读过它的文档。
 github 的说明已经介绍了它的很多能力，比如支持子命令，posix 规范的 Flag，嵌套的子命令，支持全局、局部和级联的选项，支持 bash 自动补全，便捷的参数校验。
-1 2 3 4 5 6 7 8 9 10 11 12 13 Easy subcommand-based CLIs: app server, app fetch, etc.</description></item><item><title>你真的不用再设置 GOROOT 了</title><link>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</link><pubDate>Tue, 26 Nov 2019 12:42:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</guid><description>为什么不再需要设置 GOROOT 呢？推荐读两篇英文文章，我意译了下，将它们放在了一篇里。
+1 2 3 4 5 6 7 8 9 10 11 12 13 Easy subcommand-based CLIs: app server, app fetch, etc.</description></item><item><title>Go 命令行解析 flag 包之通过子命令实现看 go 命令源码</title><link>https://www.poloxue.com/posts/2019-11-30-golang-flag-sub-commandline/</link><pubDate>Sat, 30 Nov 2019 15:33:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-30-golang-flag-sub-commandline/</guid><description>上篇文章 介绍了 flag 中如何扩展一个新的类型支持。本篇介绍如何使用 flag 实现子命令，总的来说，这篇才是这个系列的核心，前两篇只是铺垫。
+前两篇文章链接如下：
+Go 命令行解析 flag 包之快速上手
+Go 命令行解析 flag 包之扩展新类型
+希望看完本篇文章，如果再阅读 go 命令的实现源码，至少在整体结构上不会迷失方向了。
+FlagSet 正式介绍子命令的实现之前，先了解下 flag 包中的一个类型，FlagSet，它表示了一个命令。
+从命令的组成要素上看，一个命令由命令名、选项 Flag 与参数三部分组成。类似如下：
+1 $ cmd --flag1 --flag2 -f=flag3 arg1 arg2 arg3 FlagSet 的定义也正符合了这一点，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 type FlagSet struct { // 打印命令的帮助信息 Usage func() // 命令名称 name string parsed bool // 实际传入的 Flag actual map[string]*Flag // 会被使用的 Flag，通过 Flag.</description></item><item><title>你真的不用再设置 GOROOT 了</title><link>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</link><pubDate>Tue, 26 Nov 2019 12:42:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</guid><description>为什么不再需要设置 GOROOT 呢？推荐读两篇英文文章，我意译了下，将它们放在了一篇里。
 第一篇是关于 Go 1.10 之前，怎么设置 GOROOT，发表与 2013 年。第二篇 是从 Go 1.10 开始，如何处理 GOROOT，时间是 2018 年，Go 源码提交日志。这篇非常短小。
 读完后，你会发现，大多数情况下，你都不用手动设置 GOROOT 了。
 第一篇 作者：Dave Cheney | 地址：you-dont-need-to-set-goroot-really
@@ -355,7 +363,7 @@ Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定�
 分布式Distribution Kafka 的集群分布式主要涉及两个内容：Partition 分区与 Replication 备份。
 Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而分布在不同的 Kafka 节点之上，使 Topic 的数据大小不限于一台 Server。
 Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。
-虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item><item><title>Go 命令行解析 flag 包之扩展新类型</title><link>https://www.poloxue.com/go/go-flag-new-type-extension/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/go/go-flag-new-type-extension/</guid><description>上篇文章 说到，除布尔类型 Flag，flag 支持的还有整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
+虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item><item><title>Go 命令行解析 flag 包之扩展新类型</title><link>https://www.poloxue.com/posts/2019-11-26-commandline-flag-extend-new-type/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/posts/2019-11-26-commandline-flag-extend-new-type/</guid><description>上篇文章 说到，除布尔类型 Flag，flag 支持的还有整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
 flag 内置支持能满足大部分的需求，但某些场景，需要自定义解析规则。一个优秀的库肯定要支持扩展的。本文将介绍如何为 flag 扩展一个新的类型支持？
 扩展目标 在 gvg 这个小工具中，list 子命令支持获取 Go 的版本列表。但版本的信息来源有多处，比如 installed（已安装）、local（本地仓库）和 remote（远程仓库）。
 查看下 list 的帮助信息，如下：
