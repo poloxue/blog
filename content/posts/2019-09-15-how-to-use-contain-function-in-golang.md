@@ -397,9 +397,11 @@ MapKeyFunc 依然表现最好，每次操作用时 17.2 ns，Sort 次之，而 I
 
 接着，我们介绍了 In 实现的三种方式，并分析了各自的优劣。通过性能分析测试，我们能得出大致的结论，什么方式适合什么场景，但总体还是分析的不够细致，有兴趣的朋友可以继续研究下。
 
+博文地址：[Go 中 Slice 的 In 实现探索](https://www.poloxue.com/posts/2019-09-15-how-to-use-contain-function-in-golang/)
 ## 参考
 
 [Does Go have “if x in” construct similar to Python?](https://stackoverflow.com/questions/15323767/does-go-have-if-x-in-construct-similar-to-python)
 
 [为什么Golang没有像Python中in一样的功能？](https://www.zhihu.com/question/328393303/answer/711287362)
+
 
