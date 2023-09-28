@@ -100,6 +100,8 @@ open /tmp/{name}.itermcolors
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-25-install-iterm2-as-my-developing-environment-04.jpeg)
 
+> 注：分屏虽然是 iTerm2 的一个非常强大能力，我的工作环境的分屏主要使用的 Tmux，它与 Vim 结合会有更好的体验。
+
 ### 支持搜索
 
 通过 "Command+f" 开启搜索框：
