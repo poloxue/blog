@@ -349,7 +349,23 @@ Golang time 如何实现的？
 结构体 解析器负责启动词法器和从 channel 读取 Token 的组件。接收到 Token 后，解析器需要知道当前 Token 状态，然后将其解析到对应结构中。我们要做的第一件事就是，定义表示 INI 内容的结构体。将主要涉及三个结构体。
 第一个表示 Key/Value 的结构体，名称为 IniKeyValue，如下。
 model/ini/IniKeyValue.go
-1 2 3 4 5 6 package ini type IniKeyValue struct { Key string `json:&amp;#34;key&amp;#34;` Value string `json:&amp;#34;value&amp;#34;` } 第二个表示 Section 的结构体，名称为 IniSection，如下：</description></item><item><title>Go 实现词法分析与解析 Part Two</title><link>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</link><pubDate>Wed, 24 Jul 2019 17:10:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</guid><description>本文是关于词法器实现的具体介绍，如果在阅读时遇到困难，建议参考源码阅读，文中的代码片段为了介绍思路。如何解析会在下一篇介绍。
+1 2 3 4 5 6 package ini type IniKeyValue struct { Key string `json:&amp;#34;key&amp;#34;` Value string `json:&amp;#34;value&amp;#34;` } 第二个表示 Section 的结构体，名称为 IniSection，如下：</description></item><item><title>Colly 从入门到不放弃指南</title><link>https://www.poloxue.com/posts/2019-07-25-colly-from-zero-to-hero/</link><pubDate>Thu, 25 Jul 2019 13:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-25-colly-from-zero-to-hero/</guid><description>最近发现知乎上感兴趣的问题越来越少，于是准备聚合下其他平台技术问答，比如 segmentfault、stackoverflow 等。
+要完成这个工作，肯定是离不开爬虫的。我就顺便抽时间研究了 Go 的一款爬虫框架 colly。
+概要介绍 colly 是 Go 实现的比较有名的一款爬虫框架，而且 Go 在高并发和分布式场景的优势也正是爬虫技术所需要的。它的主要特点是轻量、快速，设计非常优雅，并且分布式的支持也非常简单，易于扩展。
+如何学习 爬虫最有名的框架应该就是 Python 的 scrapy，很多人最早接触的爬虫框架就是它，我也不例外。它的文档非常齐全，扩展组件也很丰富。当我们要设计一款爬虫框架时，常会参考它的设计。之前看到一些文章介绍 Go 中也有类似 scrapy 的实现。
+相比而言，colly 的学习资料就少的可怜了。刚看到它的时候，我总会情不自禁想借鉴我的 scrapy 使用经验，但结果发现这种生搬硬套并不可行。
+到此，我们自然地想到去找些文章阅读，但结果是 colly 相关文章确实有点少，能找到的基本都是官方提供的，而且看起来似乎不是那么完善。没办法，慢慢啃吧！官方的学习资料通常都会有三处，分别是文档、案例和源码。
+今天，暂时先从官方文档角度吧！正文开始。
+官方文档 官方文档介绍着重使用方法，如果是有爬虫经验的朋友，扫完一遍文档很快。我花了点时间将官网文档的按自己的思路整理了一版。
+主体内容不多，涉及安装、快速开始、如何配置、调试、分布式爬虫、存储、运用多收集器、配置优化、扩展。
+其中的每篇文档都很短小，甚至是少的基本都不用翻页滚动。
+如何安装 colly 的安装和其他的 Go 库安装一样简单。如下：
+1 go get -u github.com/gocolly/colly 一行命令搞定。So easy!
+快速开始 我们来通过一个 hello word 案例快速体验下 colly 的使用。步骤如下：
+第一步，导入 colly。
+1 import &amp;#34;github.com/gocolly/colly&amp;#34; 第二步，创建 collector。
+1 c := colly.NewCollector() 第三步，事件监听，通过 callback 执行事件处理。
+1 2 3 4 5 6 7 8 9 10 11 12 13 // Find and visit all links c.</description></item><item><title>Go 实现词法分析与解析 Part Two</title><link>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</link><pubDate>Wed, 24 Jul 2019 17:10:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</guid><description>本文是关于词法器实现的具体介绍，如果在阅读时遇到困难，建议参考源码阅读，文中的代码片段为了介绍思路。如何解析会在下一篇介绍。
 最近简单看了下 Go 源码，在 src/go 目录下有几个模块，token、scanner 和 parser 应该就是 Go 词法相关实现的核心代码，打开 token 目录会发现其中的源码和上一节介绍的内容有诸多相似之处。
 由于最近并发任务比较多，不能以最快的速度更新。词法的相关内容，除了本系列，我把其他一些相关文章的链接都贴在下面，如果英文阅读功底不错，可自行阅读。
 A look at Go lexer/scanner packages
