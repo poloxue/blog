@@ -2,7 +2,7 @@ baseURL = "https://www.poloxue.com/"
 languageCode = "zh-cn"
 title = "POLOXUE's BLOG"
 theme = "ink-free"
-copyright = "2023 Polo Xue All rights reserved"
+copyright = "Polo Xue All rights reserved"
 
 
 [params]
@@ -13,6 +13,7 @@ copyright = "2023 Polo Xue All rights reserved"
   toc = "floating"
   wpm = 250
   maxTags = 7
+	mode = "auto"
 
 [menu]
   [[menu.main]]

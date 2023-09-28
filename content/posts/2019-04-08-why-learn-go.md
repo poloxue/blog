@@ -28,13 +28,13 @@ tags: ["golang"]
 
 先看看时间线上的表现，历史的变化趋势：
 
-![历史趋势](https://blogimg.poloxue.com/0010-why-learn-go-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-01.png)
 
 可以看出，从2015年到2019年golang的发展趋势一直处在稳定上升阶段；
 
 不过我们会想，这只能说明golang在世界上整体趋势表现较好，但在中国是否一样火热。这个大可不必担心，google趋势中也有区域的统计信息：
 
-![](https://blogimg.poloxue.com/0010-why-learn-go-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-02.png)
 
 可以看出，Golang在世界区域的分布情况，前五名分别是，中国、新加坡、圣赫勒拿、韩国、香港。其中，Golang在中国的流行程度简直就是一骑绝尘、遥遥领先。
 
@@ -42,7 +42,7 @@ tags: ["golang"]
 
 除了google趋势，还可以来看看在TIOBE语言排行榜上的表现。点击链接
 
-![](https://blogimg.poloxue.com/0010-why-learn-go-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-03.png)
 
 额？怎么才十六名，好紧张、好难过，难道学错语言了吗？不对，得找几个理由安慰下自己。
 
@@ -162,13 +162,13 @@ Golang早起的讨论由前面介绍的三位大牛发起，针对性分析了�
 当前的两个主流区块链框架，分布式记账本框架hyperledger和以太坊合约框架go-ethereum都是使用Golang开发；下图是某招聘网站关于区块链职位要求技能的分析。
 
 
-![招聘数据调查](https://blogimg.poloxue.com/0010-why-learn-go-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-04.png)
 
 ### 微服务
 
 现在越来越多的项目会采用微服务架构，前面介绍的优秀项目中也看到很多go提供的微服务框架，如git-kit、micro等。
 
-举一些具体公司的例子，比如[今日头条使用Golang构建了千万级微服务](https://36kr.com/p/5073181)；
+举一些具体公司的例子，比如[今日头条使用 Golang 构建了千万级微服务](https://36kr.com/p/5073181)；
 
 ### 云服务
 
@@ -225,9 +225,3 @@ Golang官方地址： golang.org，无论学习什么知识，第一手资料基
 - 一个目录：[索引目录地址](https://github.com/Unknwon/go-study-index)，各种go语言资源的汇总；
 - 一张图谱：[图谱processon地址](https://www.processon.com/view/link/5a9ba4c8e4b0a9d22eb3bdf0#map)，源自Golang Foundation；
 - 一个合集：[awesome-go](https://awesome-go.com/)，其中整理了大量golang的库、框架和一些著名项目；
-
----
-
-欢迎关注我的公众。
-
-![](https://blogimg.poloxue.com/0000-wechat-01.png)
