@@ -131,11 +131,13 @@ flag 内置支持能满足大部分的需求，但某些场景，需要自定义
 1 2 3 4 5 6 7 8 NAME: gvg list - list go versions USAGE: gvg list [command options] [arguments...] OPTIONS: --origin value the origin of version information , such as installed, local, remote (default: &amp;#34;installed&amp;#34;) 可以看出，list 子命令支持一个 Flag 选项，--origin。它用于指定版本信息的来源，允许值的范围是 installed、local 和 remote。
 如果要求不严格，用 StringVar 也可以实现。但问题是，使用 String，即使输入不在指定范围也能成功解析，不够严谨。虽说在获取后也可以检查，但还是不够灵活、可配置型也差。
 接下来，我们要实现一个新的类型的 Flag，使选项的值必需在指定范围，否则要给出一定的错误提示信息。</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
-概述 开发一个命令行工具，视复杂程度，一般要选择一个合适的命令行解析库，简单的需求用 Go 标准库 flag 就够了，flag 的使用非常简单。
+^## 概述
+开发一个命令行工具，视复杂程度，一般要选择一个合适的命令行解析库，简单的需求用 Go 标准库 flag 就够了，flag 的使用非常简单。
 当然，除了标准库 flag 外，也有不少的第三方库。比如，为了替代 flag 而生的 pflag，它支持 POSIX 风格的命令行解析。关于 POSIX 风格，本文末尾有个简单的介绍。
 更多与命令行处理相关的库，可以打开 awesome-go#command-line 命令行一节查看，star 最多的是 spf13/cobra 和 urfave/cli ，与 flag / pflag 相比，它们更加复杂，是一个完全的全功能的框架。
 有兴趣都可以了解下。
-目标案例 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
+^## 目标案例
+回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
 举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management by go）。
 命令行的帮助信息如下：
 NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments...] VERSION: 0.0.1 COMMANDS: list list go versions install install a go version info show go version info use select a version uninstall uninstall a go version get get the latest code uninstall uninstall a go version help, h Shows a list of commands or help for one command GLOBAL OPTIONS: --help, -h show help --version, -v print the version 这个命令不仅包含了全局的选项，还有 8 个子命令，部分子命令支持参数和选项。暂时，子命令的选项参数先不列出来了，实现时再看。</description></item><item><title>详细介绍 Go 中如何实现 bitset</title><link>https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/</link><pubDate>Thu, 07 Nov 2019 19:37:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/</guid><description>最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
