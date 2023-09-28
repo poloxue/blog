@@ -16,7 +16,7 @@ Go 中的反射主要围绕着三个概念：类型（Types）、类别（Kinds�
 检查类型 首先，让我们来看看类型（Types）。你可以通过 reflect.TypeOf(var) 形式的函数调用获取变量的类型，它会返回一个类型为 reflect.Type 的变量，reflect.Type 中的操作方法涉及了定义该类型变量的各类信息。
 我们要看的第一个方法是 Name()，它返回的是类型的名称。有些类型，比如 slice 或 指针，没有类型名称，那么将会返回空字符串。
 下一个介绍方法是 Kind()，我的观点，这是第一个真正有用的方法。Kind，即类别，比如切片 slice、映射 map、指针 pointer、结构体 struct、接口 interface、字符串 string、数组 array、函数 function、整型 int、或其他的基本类型。type 和 kind 是区别不是那么容易理清楚，但是可以这么想：
-当你定义一个名称为 Foo 的结构体，那么它的 kind 是 struct，而它的 type 是 Foo。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-08-20-reflection-in-golang/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-08-10T17:22:04+08:00"><meta property="article:modified_time" content="2019-08-10T17:22:04+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 中如何使用反射 Part One"><meta name=twitter:description content="什么是反射 多数情况下，Go 中的变量、类型和函数的使用都是非常简单的。
+当你定义一个名称为 Foo 的结构体，那么它的 kind 是 struct，而它的 type 是 Foo。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-08-10-reflection-in-golang/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-08-10T17:22:04+08:00"><meta property="article:modified_time" content="2019-08-10T17:22:04+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 中如何使用反射 Part One"><meta name=twitter:description content="什么是反射 多数情况下，Go 中的变量、类型和函数的使用都是非常简单的。
 当你需要一个类型：
 1 2 3 4 type Foo struct { A int B string } 当你需要一个变量，定义如下：
 1 var x Foo 当你需要一个函数，定义如下：
