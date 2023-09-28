@@ -2,6 +2,7 @@
 title: "Go 的静态检测功能"
 date: 2019-09-01T17:32:09+08:00
 draft: false
+comment: true
 tags: ["Golang"]
 ---
 
