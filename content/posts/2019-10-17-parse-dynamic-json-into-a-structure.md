@@ -270,4 +270,4 @@ fmt.Println(blogs)
 
 本文由一个问题引出主题，如何处理不确定结构的 json 数据，开头提出了三种可行的解决方案，三种方案是逐层递进的。最终的方式需要依赖反射实现，当然同样的问题别人早就想到了，并开发了一个第三方包，mapstructure。最后，本文通过一个实际的案例演示了 mapstructure 的使用。
 
-我的博文：[Go 中如何解析 json 内部结构不确定的情况](https://www.poloxue.com/posts/2019-10-17-parse-dynamic-json-into-a-structure)
+我的博文：[Go 中如何解析 json 内部结构不确定的情况](https://www.poloxue.com/posts/2a019-10-17-parse-dynamic-json-into-a-structure)
