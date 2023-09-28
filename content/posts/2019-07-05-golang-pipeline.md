@@ -7,7 +7,7 @@ tags: ["Golang"]
 ---
 
 
-# 译者前言
+## 译者前言
 
 这篇文章来自 Go 官网，不愧是官方的博客，写的非常详细。在开始翻译这篇文章前，先简单说明两点。
 
@@ -27,7 +27,7 @@ tags: ["Golang"]
 
 Go 的并发原语使我们非常轻松地就构建出可以高效利用 IO 和多核 CPU 的流式数据 pipeline。这篇文章将会此为基础进行介绍。在这个过程中，我们将会遇到一些异常情况，关于它们的处理方法，文中也会详细介绍。
 
-# 什么是管道（pipeline）
+## 什么是管道（pipeline）
 
 关于什么是管道， Go 中并没有给出明确的定义，它只是众多并发编程方式中的一种。非正式的解释，我们理解为，它是由一系列通过 chanel 连接起来的 stage 组成，而每个 stage 都是由一组运行着相同函数的 goroutine 组成。每个 stage 的 goroutine 通常会执行如下的一些工作：
 
@@ -39,7 +39,7 @@ Go 的并发原语使我们非常轻松地就构建出可以高效利用 IO 和�
 
 我们先来看一个很简单例子，通过它来解释上面提到那些与 pipeline 相关的概念和技术。了解了这些后，我们再看其它的更实际的例子。
 
-# 计算平方数
+## 计算平方数
 
 一个涉及三个 stage 的 pipeline。
 
@@ -98,7 +98,7 @@ func main() {
 }
 ```
 
-# 扇出和扇入（Fan-out and Fan-in）
+## 扇出和扇入（Fan-out and Fan-in）
 
 当多个函数从一个 channel 中读取数据，直到 channel 关闭，这称为扇出 fan-out。利用它，我们可以实现了一种分布式的工作方式，通过一组 workers 实现并行的 CPU 和 IO。
 
@@ -157,7 +157,7 @@ func merge(cs ...<-chan int) <-chan int {
 }
 ```
 
-# 中途停止
+## 中途停止
 
 管道中的函数包含一个模式:
 
@@ -230,7 +230,7 @@ func merge(cs ...<-chan int) <-chan int {
 
 因而，当下游不再准备接收上游的数据时，需要有一种方式，可以通知到上游。
 
-# 明确的取消
+## 明确的取消
 
 如果 main 函数在没把 out 中所有数据接收完就退出，它必须要通知上游停止继续发送数据。如何做到？我们可以在上下游之间引入一个新的 channel，通常称为 done。
 
@@ -336,7 +336,7 @@ func sq(done <-chan struct{}, in <-chan int) <-chan int {
 
 Pipeline 中有量方式可以解除发送方的阻塞，一是发送方创建充足空间的 channel 来发送数据，二是当接收方停止接收数据时，明确通知发送方。
 
-# 摘要树
+## 摘要树
 
 一个真实的案例。
 
@@ -409,7 +409,7 @@ func MD5All(root string) (map[string][md5.Size]byte, error) {
 }
 ```
 
-# 并行计算
+## 并行计算
 
 在 [并行版](https://blog.golang.org/pipelines/parallel.go) 中，我们会把 MD5All 的计算拆分开含有两个 stage 的 pipeline。第一个 stage，sumFiles，负责遍历目录和计算文件摘要值，摘要的计算会启动一个 goroutine 来执行，计算结果将通过一个类型 result 的 channel 发出。
 
@@ -494,7 +494,7 @@ func MD5All(root string) (map[string][md5.Size]byte, error) {
 }
 ```
 
-# 并行限制
+## 并行限制
 
 在 [并行版本](https://blog.golang.org/pipelines/parallel.go) 中，MD5All 为每个文件启动了一个 goroutine。但如果一个目录中文件太多，这可能会导致分配的内存过大以至于超过了当前机器的限制。
 
@@ -586,11 +586,11 @@ func digester(done <-chan struct{}, paths <-chan string, c chan<- result) {
 }
 ```
 
-# 总结
+## 总结
 
 这篇文章介绍在 Go 中如何正确地构建流式数据 pipeline。
 
 它的异常处理非常复杂，pipeline 中的每个 stage 都可能导致上游阻塞，而下游可能不再关心接下来的数据。关闭 channel 可以给所有运行中的 goroutine 发送 done 信号，这能帮助我们成功解除阻塞。如何正确地构建一条流式数据 pipeline，文中也总结了一些指导建议。
 
-我的博文：[Go 如何构建并发 Pipeline"](https://www.poloxue.com/posts/2019-07-05-golang-pipeline)，译：[Go Concurrency Patterns: Pipelines and cancellation](https://blog.golang.org/pipelines)
+我的博文：[Go 如何构建并发 Pipeline](https://www.poloxue.com/posts/2019-07-05-golang-pipeline)，译：[Go Concurrency Patterns: Pipelines and cancellation](https://blog.golang.org/pipelines)
 
