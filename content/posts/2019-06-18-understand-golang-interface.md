@@ -85,7 +85,7 @@ package main
 import "fmt"
 
 func main() {
-	var i interface{} = 1
+	var i interface{} = 2
 	fmt.Println(i)
 }
 ```
