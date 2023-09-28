@@ -80,3 +80,6 @@ tags: ["Golang"]
 Go 的 Middleware 系统并没有统一的约定惯例。与 Ruby (Rack)、Node.js (Connect.js)、Clojure (Ring) 和其他语言不同。 每个框架，如 Negroni、Goji、Gin、gocraft/web 等，都在重新定义自己的中间件工作方式，重用开源中间件变得不可能。
 
 什么才是新开发人员的最佳实践？
+
+博文地址：[从头构建 Go Web 框架](https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/)
+

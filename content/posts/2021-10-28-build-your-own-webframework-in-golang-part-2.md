@@ -276,3 +276,5 @@ func main() {
 我们已经编写了两个中间件：logging 和 panice recovery。
 
 几乎每个框架中都在重写它们，尽管它们的功能几乎一样。大多数框架都有自己特定的 `handler` 定义，很难与其他中间件协同使用。接下来的一部分，我们将会了解到，在中间件之间共享值时，我们可能要更改一些内容。但它其实没有那么大的变化，我们没有理由重写已有的中间件。
+
+博文地址：[从头构建 Go Web 框架（二）](https://www.poloxue.com/posts/2021-10-28-build-your-own-webframework-in-golang-part-2/)
