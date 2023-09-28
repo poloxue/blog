@@ -152,7 +152,10 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
-1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。原因也很简单，翻译好文不仅可以帮助大家学习，自己也能学到更多。最近，还单独开了个专栏，用于保存自己翻译的计算机相关译文，大家如果有兴趣可以关注一下。Go 专栏或许当写到一定的程度时，更新频率会下降，但译文应该不会。
+1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。
+原因吗？也简单。
+翻译好文不仅可以帮助大家学习，自己也能学到更多。
+最近，单独开了个专栏，用于保存自己翻译的计算机相关译文，大家如果有兴趣可以关注一下。Go 专栏或许当写到一定的程度时，更新频率会下降，但译文应该不会。
 这周简单总结下近期在知乎上我的一些关于 Go 的问答。一方面是希望只关注专栏的朋友也能看到，毕竟不是所有内容都可以写出文章，另一方面，梳理一下也能方便以后自己查找。
 为什么Golang没有像Python中in一样的功能？ Go 中没有 in，为什么会这样呢？其实还是因为它比较简单，实现起来也不是很复杂。回答中介绍了三种关于在 Go 中实现 in 的方式。
 golang中byte转int涉及到大小端问题吗？ 关于 Go 中大小端的问题，其实有专门的包处理这个问题，encoding/binary。回答中介绍了如何在 Go 中检查机器的大小端。还有，如何将 []byte 分别按大小端转化为 int 类型。
