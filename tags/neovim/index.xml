@@ -6,7 +6,6 @@ Python
 两个 Github 核心仓库，分别是：
 lunarvim/lunarvim，是 LunarVim 的核心仓库，集成配置 IDE 所需的核心能力； lunarvim/starter.lvim，这个仓库是 Lunarvim 针对不同编程语言的配置实现； starter.lvim 以分支形式保不同语言的配置，具体自行查看仓库。
 为了测试方便，介绍 LunarVim 提供的一个能力，通过 Lunarvim 通过 LUNARVIM_CONFIG_DIR 变量决定配置文件目录。
-注：图中变量名写错了，懒的改了。
 接下来的测试，我会将不同语言的配置，放到不同的目录中。
 要将这些配置合并，还需要自定义配置，大改 Lunarvim 的 configlua 代码，且不易维护。
 安装 LunarVim 提供了安装脚本，使用如下命令安装即可。
