@@ -2,6 +2,7 @@
 title: "一文理清 Go 引用的常见疑惑"
 date: 2019-09-28T14:40:56+08:00
 draft: false
+comment: true
 tags: ["Golang"]
 ---
 
