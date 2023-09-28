@@ -152,7 +152,16 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
-1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。原因也很简单，翻译好文不仅可以帮助大家学习，自己也能学到更多。最近，还单独开了个专栏，用于保存自己翻译的计算机相关译文，大家如果有兴趣可以关注一下。Go 专栏或许当写到一定的程度时，更新频率会下降，但译文应该不会。
+这周简单总结下近期在知乎上我的一些关于 Go 的问答。一方面是希望只关注专栏的朋友也能看到，毕竟不是所有内容都可以写出文章，另一方面，梳理一下也能方便以后自己查找。
+为什么Golang没有像Python中in一样的功能？ Go 中没有 in，为什么会这样呢？其实还是因为它比较简单，实现起来也不是很复杂。回答中介绍了三种关于在 Go 中实现 in 的方式。
+golang中byte转int涉及到大小端问题吗？ 关于 Go 中大小端的问题，其实有专门的包处理这个问题，encoding/binary。回答中介绍了如何在 Go 中检查机器的大小端。还有，如何将 []byte 分别按大小端转化为 int 类型。
+golang切片扩容时底层内存地址是连续的么,会不会出现不连续的情况？ 主要介绍了切片的底层结构，数组是连续，因而数据肯定是连续的。回答通过具体的代码测试了下 slice 是如何扩容的。
+Golang如何把json中的unicode编码转换成中文字符？ 在调试接口的时候，经常遇到 \uxxxx 之类的字符串，为什么需要这样做呢？回答中说了一点个人的理解，\uxxxx 本质是 ascii 码，可以不用在意客户端的编码。但是这种方式，在我理解，也存在缺点，回答有所介绍。
+为什么go的map数据竞争是fatal错误, 而不是panic? 题主要求挺高，要求从源码上去回答这个问题。为什么在发生数据竞争时，是 fatal error，而不是 panic。如果从设计上说，发生数据竞争是个比较严重的错误，会直接影响程序的执行结果，需要直接退出，而 panic 还是可以 recover 的，而这种错误还是不要 recover 比较好。当然，从源码层面，
+如何理解 Go 的接口&amp;quot; 对于传统面向对象语言的开发者，对于 Go 接口还是难以理解。最需要强调的一点，就是要先理解鸭子模型，基于此，再来理解为什么说 Go 接口是一组方法的集合，Go 接口是一种非侵入式的设计。
+Go 接口如何正确的运继承 关于第二个问题，确切的说，就是题主还没有正确的理解 Go 的接口，简单地利用以往经验来理解 Go，理解 Go 的继承。从某种意义上说，Go 没有语法层面的继承，要实现继承的效果，需要通过组合实现。
+golang与C语言相比最重要的改进是什么？ 当别人问到 Go 相对 C 最重要的改进是什么的时候，我优先想到并不是 Go 的并发模型，而是接口。经过前面两个问题，也会发现 Go 的接口的有点。它让我们的编码变的非常灵活。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
 简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
 注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
 NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
