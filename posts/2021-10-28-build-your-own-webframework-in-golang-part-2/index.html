@@ -6,7 +6,7 @@
 本文是 &ldquo;构建属于自己的 Web 框架&rdquo; 系列文章中的第二篇：
 第 1 部分：简介 第 2 部分：Go 中间件：最佳实践和示例 第 3 部分：中间件数据共享 第 4 部分：第三方路由 第 5 部分：使用 MongoDB 实现 JSON-API 附加福利：上传文件到 s3 基础入门 首先，使用 net/http 包创建一个简单版本的 HTTP Server 应用。
 代码如下：
-1 2 3 4 5 6 7 8 9 10 11 12 13 import ( &#34;net/http&#34; &#34;fmt&#34; ) func handler(w http."><meta itemprop=datePublished content="2021-10-28T13:35:05+08:00"><meta itemprop=dateModified content="2021-10-28T13:35:05+08:00"><meta itemprop=wordCount content="629"><meta itemprop=keywords content="Golang,"><meta property="og:title" content="从头构建 Go Web 框架（二）：中间件"><meta property="og:description" content="本文是构建 Go Web 框架的第二篇，目标是介绍中间件的最佳实践，访问原文。
+1 2 3 4 5 6 7 8 9 10 11 12 13 import ( &#34;net/http&#34; &#34;fmt&#34; ) func handler(w http."><meta itemprop=datePublished content="2021-10-28T13:35:05+08:00"><meta itemprop=dateModified content="2021-10-28T13:35:05+08:00"><meta itemprop=wordCount content="631"><meta itemprop=keywords content="Golang,"><meta property="og:title" content="从头构建 Go Web 框架（二）：中间件"><meta property="og:description" content="本文是构建 Go Web 框架的第二篇，目标是介绍中间件的最佳实践，访问原文。
 译文如下：
 在编写 Go Web 应用时，代码重复是大多数开发者将会遇到的第一个问题。
 为什么呢？
@@ -99,9 +99,11 @@
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>HandleFunc</span>(<span style=color:#e6db74>&#34;/&#34;</span>, <span style=color:#a6e22e>indexHandler</span>)
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ListenAndServe</span>(<span style=color:#e6db74>&#34;:8080&#34;</span>, <span style=color:#66d9ef>nil</span>)
 </span></span><span style=display:flex><span>}
-</span></span></code></pre></td></tr></table></div></div><p>输出内容如下：</p><pre tabindex=0><code class=language-log data-lang=log>[GET] / 1.43ms
-[GET] /about 1.98ms
-</code></pre><p>继续，我们增加第二个 handler。毕竟，只有一个路由的应用程序并不多。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span></span></code></pre></td></tr></table></div></div><p>输出内容如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>[GET] / 1.43ms
+</span></span><span style=display:flex><span>[GET] /about 1.98ms
+</span></span></code></pre></td></tr></table></div></div><p>继续，我们增加第二个 handler。毕竟，只有一个路由的应用程序并不多。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4

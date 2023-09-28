@@ -1,190 +1,367 @@
 <!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>Go 命令快速体验 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="Go 命令快速体验"><meta itemprop=description content="利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
 本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
 概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
-$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go <command> [arguments] go <命令> [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument."><meta itemprop=datePublished content="2019-04-29T10:40:02+08:00"><meta itemprop=dateModified content="2019-04-29T10:40:02+08:00"><meta itemprop=wordCount content="614"><meta itemprop=keywords content="golang,"><meta property="og:title" content="Go 命令快速体验"><meta property="og:description" content="利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 $ go Go is a tool for managing Go source code."><meta itemprop=datePublished content="2019-04-29T10:40:02+08:00"><meta itemprop=dateModified content="2019-04-29T10:40:02+08:00"><meta itemprop=wordCount content="791"><meta itemprop=keywords content="golang,"><meta property="og:title" content="Go 命令快速体验"><meta property="og:description" content="利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
 本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
 概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
-$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go <command> [arguments] go <命令> [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument."><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-04-29-golang-commandline/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-04-29T10:40:02+08:00"><meta property="article:modified_time" content="2019-04-29T10:40:02+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 命令快速体验"><meta name=twitter:description content="利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 $ go Go is a tool for managing Go source code."><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-04-29-golang-commandline/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-04-29T10:40:02+08:00"><meta property="article:modified_time" content="2019-04-29T10:40:02+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 命令快速体验"><meta name=twitter:description content="利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
 本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
 概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
-$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go <command> [arguments] go <命令> [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument."><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 $ go Go is a tool for managing Go source code."><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
 <link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
 <script src=https://www.poloxue.com/js/main.js></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.webp alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/index.xml title=RSS><i data-feather=rss></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>HOME</a></li><li><a href=/posts>POSTS</a></li><li><a href=/tags>TAGS</a></li><li><a href=/about/>ABOUT</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>29</span>
-<span class=rest>Apr 2019</span></div></div><div class=matter><h1 class=title>Go 命令快速体验</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#概述>概述</a></li><li><a href=#源码编译>源码编译</a></li><li><a href=#包的管理>包的管理</a></li><li><a href=#代码规范>代码规范</a></li><li><a href=#测试相关>测试相关</a></li><li><a href=#调试优化>调试优化</a></li><li><a href=#其他命令>其他命令</a></li><li><a href=#总结>总结</a></li></ol></nav></aside><p>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。</p><p>本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。</p><h2 id=概述>概述</h2><p>除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：</p><pre tabindex=0><code>$ go
-Go is a tool for managing Go source code.
-Go是管理Golang源码的工具
-
-Usage:
-使用方式：
-        go &lt;command&gt; [arguments]
-        go &lt;命令&gt; [参数]
-
-The commands are:
-涉及的命令包括：
-
-        bug         start a bug report
-                    提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中
-        build       compile packages and dependencies
-                    编译源码和依赖包
-        clean       remove object files and cached files
-                    清理文件，如测试与编译中生成或缓存的文件
-        doc         show documentation for package or symbol
-                    可用于显示包、接口和函数等的文档
-        env         print Go environment information
-                    打印当前的环境变量信息
-        fix         update packages to use new APIs
-                    可用于go新旧版本之间的代码迁移，修正代码兼容问题
-        fmt         gofmt (reformat) package sources
-                    按规范格式化源码
-        generate    generate Go files by processing source
-                    扫描源码注释，类似//go:generate command argument...实现生成go文件
-        get         download and install packages and dependencies
-                    下载并安装包和依赖
-        install     compile and install packages and dependencies
-                    编译并安装包和依赖
-        list        list packages or modules
-                    列出包或模块的信息
-        mod         module maintenance
-                    用于模块的管理维护
-        run         compile and run Go program
-                    编译与执行Go程序
-        test        test packages
-                    测试包
-        tool        run specified go tool
-                    运行go提供的一些特定工具，比如pprof
-        version     print Go version
-                    打印go版本信息
-        vet         report likely mistakes in packages
-                    检查与报告代码包中的错误
-        ...
-</code></pre><p>输出的介绍大致翻译了下，其中部分命令也作了些介绍。除了go的子命令，go tool下也有些更底层的命令，执行go tool即可查看：</p><pre tabindex=0><code>$ go tool
-addr2line  可以调用栈的地址转化为文件和行号
-asm        和汇编有关的命令，没搞清楚如何使用
-buildid    似乎用在编译时，根据文件内容生成hash
-cgo        可帮助我们实现在GO中调用C语言代码
-compile    用于编译源码生成.o文件
-cover      可用于分析测试覆盖率
-dist       帮助引导、构建和测试go
-doc        测试下来似乎和go doc效果一样，都是用于文章管理
-fix        用于解决不同版本间代码不兼容问题，和go fix作用一样
-link       用于库的链接
-nm         可列出如对象文件.o，可执行文件或.a库文件中的函数变量符号等信息
-objdump    反汇编命令
-pack       似乎是个打包压缩命令
-pprof      自带的性能分析工具
-test2json  用于把测试文件转化可读的json格式
-tour       启动本地的tour教程，可见GO团队真的很用心
-trace      可用于问题诊断与调式的工具
-go tool的输出默认没有任何文字说明，这里的介绍是我收集总结出来的，可能有些错误。
-</code></pre><p>总体而言，我把GO中命令分为几个大类：</p><ul><li>源码编译</li><li>包的管理</li><li>代码规范</li><li>测试相关</li><li>调试优化</li><li>其他命令</li></ul><p>GO的命令很多，很难在一篇文章中把每个都介绍清楚。接下来只做些简单演示说明，详细的介绍待以后有了具体场景在详细说明。</p><h2 id=源码编译>源码编译</h2><p>go build、go run 两个命令可归于源码编译类的命令，是入门学习首先要掌握的，故而在前篇文章已经做了详细介绍。</p><p>go build用于编译可执行文件和库文件，参数可以是源码目录、.go文件。演示如下：</p><pre tabindex=0><code>$ go build # 目录
-$ go build main.go # .go文件
-$ go build main.go math.go data.go # .go文件列表
-</code></pre><p>go run和build有很多相似点，它们都会编译源码。不同的是，go run只能用于可执行源码（即main包源码）的编译。接收参数为.go文件。演示如下：</p><pre tabindex=0><code>$ go run main.go
-$ go run main.go math.go data.go
-</code></pre><p>详细了解，可以看下 详解GO的编译执行流程 这篇介绍。</p><p>关于编译，go tool还有一些更细节的命令，比如compile、link等。有兴趣可以去了解下。</p><h2 id=包的管理>包的管理</h2><p>GO的包管理是由语言包自带，这点不同于其他语言，如Java、Python、PHP等。从当前我所了解的来看，GO没有提供包管理仓库，而是直接使用的版本管理系统作为仓库，支持如git、svn、mercurial等。而用于包管理的命令有go install、go get、go list等。</p><p>go install用于源码包的编译与安装。虽然这里也涉及到编译，但从名字就可以看出，该命令重在强调安装。之前build命令在编译非main包会生成缓存文件，main包会生成执行文件并拷贝到当前目录。而install会将它们安装到指定的文件。假设有名为math的包，执行如下命令：</p><pre tabindex=0><code>$ go install math  # 非main包，最终生成文件 $GOPATH/pkg/xxx/xxx/math.a。
-$ go install entry # 是main包，最终生成文件 $GOBIN/entry
-</code></pre><p>go get用于从互联网安装更新包和依赖，类似于其他语言包管理器的install。不同于install，它多出网络下载这步，大概可理解为 go get 等价于 git/svn等下载 + git install。我们可以演示下从http://github.com/PuerkitoBio/goquery下载安装goquery的过程，如下：</p><pre tabindex=0><code>$ go get -v github.com/PuerkitoBio/goquery
-golang.org/x/net/html/atom
-golang.org/x/net/html
-github.com/andybalholm/cascadia
-github.com/PuerkitoBio/goquery
-</code></pre><p>从上面可以看出，go get不仅下载了goquery，还下载了相应的依赖。执行完成后，GOPATH目录下可以找到goquery的源码与编译后的.a库文件。</p><p>go list可用于输出包的信息，接口的参数和在源码中import的路径相同，下面演示一些案例：</p><pre tabindex=0><code>$ go list fmt   # 查看某包
-fmt
-$ go list fmt net/http # 查看多个包
-fmt
-net/http
-$ go list --json fmt # 查看包的具体信息
-{
-	&#34;Dir&#34;: &#34;/usr/local/go/src/fmt&#34;,
-	&#34;ImportPath&#34;: &#34;fmt&#34;,
-	&#34;Name&#34;: &#34;fmt&#34;,
-	&#34;Doc&#34;: &#34;Package fmt implements formatted I/O with functions analogous to C&#39;s printf and scanf.&#34;,
-	&#34;Target&#34;: &#34;/usr/local/go/pkg/darwin_amd64/fmt.a&#34;,
-	&#34;Root&#34;: &#34;/usr/local/go&#34;,
-	&#34;Match&#34;: [
-		&#34;fmt&#34;
-	],
-	&#34;Goroot&#34;: true,
-	&#34;Standard&#34;: true,
-	&#34;GoFiles&#34;: [
-		&#34;doc.go&#34;,
-
-		...
-
-		&#34;scan.go&#34;
-	],
-	&#34;Imports&#34;: [
-		&#34;errors&#34;,
-		...
-		&#34;unicode/utf8&#34;
-	],
-	&#34;Deps&#34;: [
-		&#34;errors&#34;,
-		 ...
-		&#34;unicode/utf8&#34;,
-		&#34;unsafe&#34;
-	],
-	&#34;TestGoFiles&#34;: [
-		&#34;export_test.go&#34;
-	],
-	&#34;XTestGoFiles&#34;: [
-		&#34;example_test.go&#34;,
-		 ...
-		&#34;stringer_test.go&#34;
-	],
-	&#34;XTestImports&#34;: [
-		&#34;bufio&#34;,
-
-		...
-
-		&#34;unicode/utf8&#34;
-	]
-}
-</code></pre><p>详情信息部分展示内容比较多，包含源码路径、导入路径、依赖了哪些包等一系列信息。</p><h2 id=代码规范>代码规范</h2><p>这类命令可以帮助我们规范代码的格式，减少代码发生错误的几率，其中主要有go fmt、go vet和go fix三个命令。</p><p>go fmt的作用是代码的格式化。为了让我们把更多时间花在开发工作上，GO官方制定了标准的代码规范并go fmt实现规范代码。假设有main.go文件内容如下：</p><pre tabindex=0><code>package main
-
-func main() {
-    a   :=  x +     y
-}
-</code></pre><p>我们只需执行go fmt main.go文件，然后再次打开main.go文件：</p><pre tabindex=0><code>package main
-
-func main() {
-	a := x + y
-}
-</code></pre><p>格式化已经完成。关于代码格式化还有一个更具体的命令：gofmt，go fmt是它的某个特殊形式：gofmt -l -w。</p><p>go vet是一个用于检查GO语言静态语法的工具。GO语言的语法是非常严格的，如不能定义未使用的变量、变量类型必须显式转化等等。示例，假设有main.go文件内容如下：</p><pre tabindex=0><code>package main
-
-func main() {
-	a := 1 + 2
-        b := 1
-}
-</code></pre><p>使用go vet执行源码检查，输出结果如下：</p><pre tabindex=0><code>$ go vet main.go
-# command-line-arguments [command-line-arguments.test]
-./main.go:4:5: a declared and not used
-./main.go:5:5: b declared and not used
-</code></pre><p>我们被告知，变量a和b声明但并没有使用。</p><p>go fix主要用于处理代码的兼容性问题，例如go1之前老版本的代码转化到go1。但是有点遗憾的是，没找到该命令的演示案例。我们平时应该很少用到。</p><h2 id=测试相关>测试相关</h2><p>GO也提供与相关的命令，为我们提供了一条方便验证我们代码的途径。与测试有关的命令有go test、go tool cover 和 go tool test2json。</p><p>go test可用于运行测试代码，以此验证程序逻辑的正确性能。具体演示下，示例代码包含两部分，分别是功能代码和测试代码。功能代码在math.go文件中，如下：</p><pre tabindex=0><code>package math
-
-func Add(x, y int) int {
-	return x + y
-}
-</code></pre><p>测试用例的代码在math_test.go文件中，如下：</p><pre tabindex=0><code>package math
-
-import &#34;testing&#34;
-
-func Test_Add(t *testing.T) {
-	r := Add(1, 2)
-	if r != 3 {
-		t.FailNow()
-	}
-}
-</code></pre><p>接下来我们可以执行go test命令启动测试用例，如下：</p><pre tabindex=0><code>$ go test math_test.go math.go
-ok  	command-line-arguments
-</code></pre><p>结果显示，测试执行成功，Add函数功能正常。我们可以把测试代码编译成可执行文件，如下：</p><pre tabindex=0><code>$ go test math_test.go math.go -o math.test
-</code></pre><p>查看下会发现此时目录下多出了编译好的math.test可执行测试文件。</p><p>go cover可用于分析测试覆盖率。比如上面的测试案例，我们可以生成覆盖率文件，如下：</p><pre tabindex=0><code>$ go test *.go -coverprofile=coverage.out
-</code></pre><p>go cover 提供多种方式分析测试覆盖率，这里演示下如何用html展示测试结果，如下：</p><pre tabindex=0><code>$ go tool cover --html=size_coverage.out
-</code></pre><p>显示测试覆盖率为100%。我们这里的测试用例比较简单，所以到达了全面覆盖。</p><p>go tool test2json可用于将go test测试结果转化为json格式。这里需要使用之前生成的测试执行文件，示例如下：</p><pre tabindex=0><code>$ go tool test2json ./math.test -test.v
-{&#34;Action&#34;:&#34;run&#34;,&#34;Test&#34;:&#34;Test_Add&#34;}
-{&#34;Action&#34;:&#34;output&#34;,&#34;Test&#34;:&#34;Test_Add&#34;,&#34;Output&#34;:&#34;=== RUN   Test_Add\n&#34;}
-{&#34;Action&#34;:&#34;output&#34;,&#34;Test&#34;:&#34;Test_Add&#34;,&#34;Output&#34;:&#34;--- PASS: Test_Add (0.00s)\n&#34;}
-{&#34;Action&#34;:&#34;pass&#34;,&#34;Test&#34;:&#34;Test_Add&#34;}
-{&#34;Action&#34;:&#34;output&#34;,&#34;Output&#34;:&#34;PASS\n&#34;}
-{&#34;Action&#34;:&#34;pass&#34;}
-</code></pre><p>测试结果以json格式打印出来。虽然我对专业的测试不太了解，但是也明白结构化的输出是比较容易程序化分析的。</p><h2 id=调试优化>调试优化</h2><p>完成代码开发后，可能时刻会遇到一些bug或者性能问题。GO提供了go tool pprof、go tool trace、go tool addr2line和go tool nm等一系列命令，可用于代码调试优化。</p><p>go tool pprof可用于帮助我们分析程序收集的性能数据，比如CPU、内存等数据。以官方提供的示例为例吧，博客地址在 博客。示例代码在benchgraffiti。</p><p>go tool trace 可用于追踪程序执行情况。go tool pprof可以通过cpu和内存数据分析出程序的瓶颈。</p><p>go tool addr2line可以将地址转化对应源码的文件和行号，非常方便的便于我们调式问题。</p><p>具体的案例就不演示了。这部分的命令稍微有点复杂，待后面有了具体案例再来补充。</p><h2 id=其他命令>其他命令</h2><p>GO中还提供了很多辅助命令。这些命令有go bug、go doc、go tool tourl等。</p><p>go bug会直接启动浏览器并进入github的go项目的issue之下，还会把用户当前环境信息自动添加到issue中。如下执行go bug之后跳转的页面：</p><p><img src=https://blogimg.poloxue.com/0005-go-command-01.png alt></p><p>由此可见，GO的开发团队真的非常用心，做了很多简化我们工作的事情。</p><p>go doc为我们提供了快速查看文档的途径，比如查看fmt文档，我们只需执行go doc fmt，fmt相关的文档便会输出到控制台。我们也可以像官网文档那样用浏览器查看文档，只需执行godoc -http=:6060，便会启动一个本地的web服务。我们访问localhost:6060就能看到一个几乎和官网一样的页面，示例如下：</p><p><img src=https://blogimg.poloxue.com/0005-go-command-02.png alt></p><p>go tool tourl是官方提供的本地搭建tour教程的方式。我们只需执行go tool tour便会自动启动浏览器并进入教程首页。</p><p>到这里我们可以发现，即使由于一些原因使我们无法访问GO的官网，但有了这些工具，我们也可以愉快地进行GO的学习。</p><h2 id=总结>总结</h2><p>本篇文章以GO命令的快速体验为目标，概要式地介绍了几乎所有的命令。在对它们有了基本认识后，在以后遇到问题时，我们才能想到它们，以及更快地掌握和使用它们。</p></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#概述>概述</a></li><li><a href=#源码编译>源码编译</a></li><li><a href=#包的管理>包的管理</a></li><li><a href=#代码规范>代码规范</a></li><li><a href=#测试相关>测试相关</a></li><li><a href=#调试优化>调试优化</a></li><li><a href=#其他命令>其他命令</a></li><li><a href=#总结>总结</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags><ul class=flat><li class=tag-li><a href=/tags/golang>golang</a></li></ul></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div></div><div class="footer wrapper"><nav class=nav><div>2019 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>
+<span class=rest>Apr 2019</span></div></div><div class=matter><h1 class=title>Go 命令快速体验</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#概述>概述</a></li><li><a href=#源码编译>源码编译</a></li><li><a href=#包的管理>包的管理</a></li><li><a href=#代码规范>代码规范</a></li><li><a href=#测试相关>测试相关</a></li><li><a href=#调试优化>调试优化</a></li><li><a href=#其他命令>其他命令</a></li><li><a href=#总结>总结</a></li></ol></nav></aside><p>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。</p><p>本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。</p><h2 id=概述>概述</h2><p>除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>$</span> <span style=color:#66d9ef>go</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>Go</span> <span style=color:#a6e22e>is</span> <span style=color:#a6e22e>a</span> <span style=color:#a6e22e>tool</span> <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>managing</span> <span style=color:#a6e22e>Go</span> <span style=color:#a6e22e>source</span> <span style=color:#a6e22e>code</span>.
+</span></span><span style=display:flex><span><span style=color:#a6e22e>Go是管理Golang源码的工具</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>Usage</span>:
+</span></span><span style=display:flex><span><span style=color:#a6e22e>使用方式</span><span style=color:#960050;background-color:#1e0010>：</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>go</span> &lt;<span style=color:#a6e22e>command</span>&gt; [<span style=color:#a6e22e>arguments</span>]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>go</span> &lt;<span style=color:#a6e22e>命令</span>&gt; [<span style=color:#a6e22e>参数</span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>The</span> <span style=color:#a6e22e>commands</span> <span style=color:#a6e22e>are</span>:
+</span></span><span style=display:flex><span><span style=color:#a6e22e>涉及的命令包括</span><span style=color:#960050;background-color:#1e0010>：</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>bug</span>         <span style=color:#a6e22e>start</span> <span style=color:#a6e22e>a</span> <span style=color:#a6e22e>bug</span> <span style=color:#a6e22e>report</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>提交bug报告</span><span style=color:#960050;background-color:#1e0010>，</span><span style=color:#a6e22e>执行后会开启浏览器并转到github的issue</span><span style=color:#960050;background-color:#1e0010>，</span><span style=color:#a6e22e>当前的配置与环境都会自动填写到issue中</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>build</span>       <span style=color:#a6e22e>compile</span> <span style=color:#a6e22e>packages</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>dependencies</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>编译源码和依赖包</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>clean</span>       <span style=color:#a6e22e>remove</span> <span style=color:#a6e22e>object</span> <span style=color:#a6e22e>files</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>cached</span> <span style=color:#a6e22e>files</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>清理文件</span><span style=color:#960050;background-color:#1e0010>，</span><span style=color:#a6e22e>如测试与编译中生成或缓存的文件</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>doc</span>         <span style=color:#a6e22e>show</span> <span style=color:#a6e22e>documentation</span> <span style=color:#66d9ef>for</span> <span style=color:#f92672>package</span> <span style=color:#a6e22e>or</span> <span style=color:#a6e22e>symbol</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>可用于显示包</span><span style=color:#960050;background-color:#1e0010>、</span><span style=color:#a6e22e>接口和函数等的文档</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>env</span>         <span style=color:#a6e22e>print</span> <span style=color:#a6e22e>Go</span> <span style=color:#a6e22e>environment</span> <span style=color:#a6e22e>information</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>打印当前的环境变量信息</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fix</span>         <span style=color:#a6e22e>update</span> <span style=color:#a6e22e>packages</span> <span style=color:#a6e22e>to</span> <span style=color:#a6e22e>use</span> <span style=color:#a6e22e>new</span> <span style=color:#a6e22e>APIs</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>可用于go新旧版本之间的代码迁移</span><span style=color:#960050;background-color:#1e0010>，</span><span style=color:#a6e22e>修正代码兼容问题</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>         <span style=color:#a6e22e>gofmt</span> (<span style=color:#a6e22e>reformat</span>) <span style=color:#f92672>package</span> <span style=color:#a6e22e>sources</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>按规范格式化源码</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>generate</span>    <span style=color:#a6e22e>generate</span> <span style=color:#a6e22e>Go</span> <span style=color:#a6e22e>files</span> <span style=color:#a6e22e>by</span> <span style=color:#a6e22e>processing</span> <span style=color:#a6e22e>source</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>扫描源码注释</span><span style=color:#960050;background-color:#1e0010>，</span><span style=color:#a6e22e>类似</span><span style=color:#75715e>//go:generate command argument...实现生成go文件
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>        <span style=color:#a6e22e>get</span>         <span style=color:#a6e22e>download</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>install</span> <span style=color:#a6e22e>packages</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>dependencies</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>下载并安装包和依赖</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>install</span>     <span style=color:#a6e22e>compile</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>install</span> <span style=color:#a6e22e>packages</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>dependencies</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>编译并安装包和依赖</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>list</span>        <span style=color:#a6e22e>list</span> <span style=color:#a6e22e>packages</span> <span style=color:#a6e22e>or</span> <span style=color:#a6e22e>modules</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>列出包或模块的信息</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>mod</span>         <span style=color:#a6e22e>module</span> <span style=color:#a6e22e>maintenance</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>用于模块的管理维护</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>run</span>         <span style=color:#a6e22e>compile</span> <span style=color:#a6e22e>and</span> <span style=color:#a6e22e>run</span> <span style=color:#a6e22e>Go</span> <span style=color:#a6e22e>program</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>编译与执行Go程序</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>test</span>        <span style=color:#a6e22e>test</span> <span style=color:#a6e22e>packages</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>测试包</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>tool</span>        <span style=color:#a6e22e>run</span> <span style=color:#a6e22e>specified</span> <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>tool</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>运行go提供的一些特定工具</span><span style=color:#960050;background-color:#1e0010>，</span><span style=color:#a6e22e>比如pprof</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>version</span>     <span style=color:#a6e22e>print</span> <span style=color:#a6e22e>Go</span> <span style=color:#a6e22e>version</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>打印go版本信息</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>vet</span>         <span style=color:#a6e22e>report</span> <span style=color:#a6e22e>likely</span> <span style=color:#a6e22e>mistakes</span> <span style=color:#a6e22e>in</span> <span style=color:#a6e22e>packages</span>
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>检查与报告代码包中的错误</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>...</span>
+</span></span></code></pre></td></tr></table></div></div><p>输出的介绍大致翻译了下，其中部分命令也作了些介绍。除了go的子命令，go tool下也有些更底层的命令，执行go tool即可查看：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go tool
+</span></span><span style=display:flex><span>addr2line  可以调用栈的地址转化为文件和行号
+</span></span><span style=display:flex><span>asm        和汇编有关的命令，没搞清楚如何使用
+</span></span><span style=display:flex><span>buildid    似乎用在编译时，根据文件内容生成hash
+</span></span><span style=display:flex><span>cgo        可帮助我们实现在GO中调用C语言代码
+</span></span><span style=display:flex><span>compile    用于编译源码生成.o文件
+</span></span><span style=display:flex><span>cover      可用于分析测试覆盖率
+</span></span><span style=display:flex><span>dist       帮助引导、构建和测试go
+</span></span><span style=display:flex><span>doc        测试下来似乎和go doc效果一样，都是用于文章管理
+</span></span><span style=display:flex><span>fix        用于解决不同版本间代码不兼容问题，和go fix作用一样
+</span></span><span style=display:flex><span>link       用于库的链接
+</span></span><span style=display:flex><span>nm         可列出如对象文件.o，可执行文件或.a库文件中的函数变量符号等信息
+</span></span><span style=display:flex><span>objdump    反汇编命令
+</span></span><span style=display:flex><span>pack       似乎是个打包压缩命令
+</span></span><span style=display:flex><span>pprof      自带的性能分析工具
+</span></span><span style=display:flex><span>test2json  用于把测试文件转化可读的json格式
+</span></span><span style=display:flex><span>tour       启动本地的tour教程，可见GO团队真的很用心
+</span></span><span style=display:flex><span>trace      可用于问题诊断与调式的工具
+</span></span><span style=display:flex><span>go tool的输出默认没有任何文字说明，这里的介绍是我收集总结出来的，可能有些错误。
+</span></span></code></pre></td></tr></table></div></div><p>总体而言，我把GO中命令分为几个大类：</p><ul><li>源码编译</li><li>包的管理</li><li>代码规范</li><li>测试相关</li><li>调试优化</li><li>其他命令</li></ul><p>GO的命令很多，很难在一篇文章中把每个都介绍清楚。接下来只做些简单演示说明，详细的介绍待以后有了具体场景在详细说明。</p><h2 id=源码编译>源码编译</h2><p>go build、go run 两个命令可归于源码编译类的命令，是入门学习首先要掌握的，故而在前篇文章已经做了详细介绍。</p><p>go build用于编译可执行文件和库文件，参数可以是源码目录、.go文件。演示如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go build # 目录
+</span></span><span style=display:flex><span>$ go build main.go # .go文件
+</span></span><span style=display:flex><span>$ go build main.go math.go data.go # .go文件列表
+</span></span></code></pre></td></tr></table></div></div><p>go run和build有很多相似点，它们都会编译源码。不同的是，go run只能用于可执行源码（即main包源码）的编译。接收参数为.go文件。演示如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go run main.go
+</span></span><span style=display:flex><span>$ go run main.go math.go data.go
+</span></span></code></pre></td></tr></table></div></div><p>详细了解，可以看下 详解GO的编译执行流程 这篇介绍。</p><p>关于编译，go tool还有一些更细节的命令，比如compile、link等。有兴趣可以去了解下。</p><h2 id=包的管理>包的管理</h2><p>GO的包管理是由语言包自带，这点不同于其他语言，如Java、Python、PHP等。从当前我所了解的来看，GO没有提供包管理仓库，而是直接使用的版本管理系统作为仓库，支持如git、svn、mercurial等。而用于包管理的命令有go install、go get、go list等。</p><p>go install用于源码包的编译与安装。虽然这里也涉及到编译，但从名字就可以看出，该命令重在强调安装。之前build命令在编译非main包会生成缓存文件，main包会生成执行文件并拷贝到当前目录。而install会将它们安装到指定的文件。假设有名为math的包，执行如下命令：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go install math  # 非main包，最终生成文件 $GOPATH/pkg/xxx/xxx/math.a。
+</span></span><span style=display:flex><span>$ go install entry # 是main包，最终生成文件 $GOBIN/entry
+</span></span></code></pre></td></tr></table></div></div><p>go get用于从互联网安装更新包和依赖，类似于其他语言包管理器的install。不同于install，它多出网络下载这步，大概可理解为 go get 等价于 git/svn等下载 + git install。我们可以演示下从http://github.com/PuerkitoBio/goquery下载安装goquery的过程，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go get -v github.com/PuerkitoBio/goquery
+</span></span><span style=display:flex><span>golang.org/x/net/html/atom
+</span></span><span style=display:flex><span>golang.org/x/net/html
+</span></span><span style=display:flex><span>github.com/andybalholm/cascadia
+</span></span><span style=display:flex><span>github.com/PuerkitoBio/goquery
+</span></span></code></pre></td></tr></table></div></div><p>从上面可以看出，go get不仅下载了goquery，还下载了相应的依赖。执行完成后，GOPATH目录下可以找到goquery的源码与编译后的.a库文件。</p><p>go list可用于输出包的信息，接口的参数和在源码中import的路径相同，下面演示一些案例：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go list fmt   # 查看某包
+</span></span><span style=display:flex><span>fmt
+</span></span><span style=display:flex><span>$ go list fmt net/http # 查看多个包
+</span></span><span style=display:flex><span>fmt
+</span></span><span style=display:flex><span>net/http
+</span></span><span style=display:flex><span>$ go list --json fmt # 查看包的具体信息
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	&#34;Dir&#34;: &#34;/usr/local/go/src/fmt&#34;,
+</span></span><span style=display:flex><span>	&#34;ImportPath&#34;: &#34;fmt&#34;,
+</span></span><span style=display:flex><span>	&#34;Name&#34;: &#34;fmt&#34;,
+</span></span><span style=display:flex><span>	&#34;Doc&#34;: &#34;Package fmt implements formatted I/O with functions analogous to C&#39;s printf and scanf.&#34;,
+</span></span><span style=display:flex><span>	&#34;Target&#34;: &#34;/usr/local/go/pkg/darwin_amd64/fmt.a&#34;,
+</span></span><span style=display:flex><span>	&#34;Root&#34;: &#34;/usr/local/go&#34;,
+</span></span><span style=display:flex><span>	&#34;Match&#34;: [
+</span></span><span style=display:flex><span>		&#34;fmt&#34;
+</span></span><span style=display:flex><span>	],
+</span></span><span style=display:flex><span>	&#34;Goroot&#34;: true,
+</span></span><span style=display:flex><span>	&#34;Standard&#34;: true,
+</span></span><span style=display:flex><span>	&#34;GoFiles&#34;: [
+</span></span><span style=display:flex><span>		&#34;doc.go&#34;,
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		&#34;scan.go&#34;
+</span></span><span style=display:flex><span>	],
+</span></span><span style=display:flex><span>	&#34;Imports&#34;: [
+</span></span><span style=display:flex><span>		&#34;errors&#34;,
+</span></span><span style=display:flex><span>		...
+</span></span><span style=display:flex><span>		&#34;unicode/utf8&#34;
+</span></span><span style=display:flex><span>	],
+</span></span><span style=display:flex><span>	&#34;Deps&#34;: [
+</span></span><span style=display:flex><span>		&#34;errors&#34;,
+</span></span><span style=display:flex><span>		 ...
+</span></span><span style=display:flex><span>		&#34;unicode/utf8&#34;,
+</span></span><span style=display:flex><span>		&#34;unsafe&#34;
+</span></span><span style=display:flex><span>	],
+</span></span><span style=display:flex><span>	&#34;TestGoFiles&#34;: [
+</span></span><span style=display:flex><span>		&#34;export_test.go&#34;
+</span></span><span style=display:flex><span>	],
+</span></span><span style=display:flex><span>	&#34;XTestGoFiles&#34;: [
+</span></span><span style=display:flex><span>		&#34;example_test.go&#34;,
+</span></span><span style=display:flex><span>		 ...
+</span></span><span style=display:flex><span>		&#34;stringer_test.go&#34;
+</span></span><span style=display:flex><span>	],
+</span></span><span style=display:flex><span>	&#34;XTestImports&#34;: [
+</span></span><span style=display:flex><span>		&#34;bufio&#34;,
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		&#34;unicode/utf8&#34;
+</span></span><span style=display:flex><span>	]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>详情信息部分展示内容比较多，包含源码路径、导入路径、依赖了哪些包等一系列信息。</p><h2 id=代码规范>代码规范</h2><p>这类命令可以帮助我们规范代码的格式，减少代码发生错误的几率，其中主要有go fmt、go vet和go fix三个命令。</p><p>go fmt的作用是代码的格式化。为了让我们把更多时间花在开发工作上，GO官方制定了标准的代码规范并go fmt实现规范代码。假设有main.go文件内容如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>a</span>   <span style=color:#f92672>:=</span>  <span style=color:#a6e22e>x</span> <span style=color:#f92672>+</span>     <span style=color:#a6e22e>y</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>我们只需执行go fmt main.go文件，然后再次打开main.go文件：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>x</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>y</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>格式化已经完成。关于代码格式化还有一个更具体的命令：gofmt，go fmt是它的某个特殊形式：gofmt -l -w。</p><p>go vet是一个用于检查GO语言静态语法的工具。GO语言的语法是非常严格的，如不能定义未使用的变量、变量类型必须显式转化等等。示例，假设有main.go文件内容如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>a</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>使用go vet执行源码检查，输出结果如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go vet main.go
+</span></span><span style=display:flex><span># command-line-arguments [command-line-arguments.test]
+</span></span><span style=display:flex><span>./main.go:4:5: a declared and not used
+</span></span><span style=display:flex><span>./main.go:5:5: b declared and not used
+</span></span></code></pre></td></tr></table></div></div><p>我们被告知，变量a和b声明但并没有使用。</p><p>go fix主要用于处理代码的兼容性问题，例如go1之前老版本的代码转化到go1。但是有点遗憾的是，没找到该命令的演示案例。我们平时应该很少用到。</p><h2 id=测试相关>测试相关</h2><p>GO也提供与相关的命令，为我们提供了一条方便验证我们代码的途径。与测试有关的命令有go test、go tool cover 和 go tool test2json。</p><p>go test可用于运行测试代码，以此验证程序逻辑的正确性能。具体演示下，示例代码包含两部分，分别是功能代码和测试代码。功能代码在math.go文件中，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>math</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Add</span>(<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>x</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>y</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>测试用例的代码在math_test.go文件中，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>math</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;testing&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Test_Add</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>r</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>r</span> <span style=color:#f92672>!=</span> <span style=color:#ae81ff>3</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>FailNow</span>()
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>接下来我们可以执行go test命令启动测试用例，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go test math_test.go math.go
+</span></span><span style=display:flex><span>ok  	command-line-arguments
+</span></span></code></pre></td></tr></table></div></div><p>结果显示，测试执行成功，Add函数功能正常。我们可以把测试代码编译成可执行文件，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go test math_test.go math.go -o math.test
+</span></span></code></pre></td></tr></table></div></div><p>查看下会发现此时目录下多出了编译好的math.test可执行测试文件。</p><p>go cover可用于分析测试覆盖率。比如上面的测试案例，我们可以生成覆盖率文件，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go test *.go -coverprofile=coverage.out
+</span></span></code></pre></td></tr></table></div></div><p>go cover 提供多种方式分析测试覆盖率，这里演示下如何用html展示测试结果，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go tool cover --html=size_coverage.out
+</span></span></code></pre></td></tr></table></div></div><p>显示测试覆盖率为100%。我们这里的测试用例比较简单，所以到达了全面覆盖。</p><p>go tool test2json可用于将go test测试结果转化为json格式。这里需要使用之前生成的测试执行文件，示例如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>$ go tool test2json ./math.test -test.v
+</span></span><span style=display:flex><span>{&#34;Action&#34;:&#34;run&#34;,&#34;Test&#34;:&#34;Test_Add&#34;}
+</span></span><span style=display:flex><span>{&#34;Action&#34;:&#34;output&#34;,&#34;Test&#34;:&#34;Test_Add&#34;,&#34;Output&#34;:&#34;=== RUN   Test_Add\n&#34;}
+</span></span><span style=display:flex><span>{&#34;Action&#34;:&#34;output&#34;,&#34;Test&#34;:&#34;Test_Add&#34;,&#34;Output&#34;:&#34;--- PASS: Test_Add (0.00s)\n&#34;}
+</span></span><span style=display:flex><span>{&#34;Action&#34;:&#34;pass&#34;,&#34;Test&#34;:&#34;Test_Add&#34;}
+</span></span><span style=display:flex><span>{&#34;Action&#34;:&#34;output&#34;,&#34;Output&#34;:&#34;PASS\n&#34;}
+</span></span><span style=display:flex><span>{&#34;Action&#34;:&#34;pass&#34;}
+</span></span></code></pre></td></tr></table></div></div><p>测试结果以json格式打印出来。虽然我对专业的测试不太了解，但是也明白结构化的输出是比较容易程序化分析的。</p><h2 id=调试优化>调试优化</h2><p>完成代码开发后，可能时刻会遇到一些bug或者性能问题。GO提供了go tool pprof、go tool trace、go tool addr2line和go tool nm等一系列命令，可用于代码调试优化。</p><p>go tool pprof可用于帮助我们分析程序收集的性能数据，比如CPU、内存等数据。以官方提供的示例为例吧，博客地址在 博客。示例代码在benchgraffiti。</p><p>go tool trace 可用于追踪程序执行情况。go tool pprof可以通过cpu和内存数据分析出程序的瓶颈。</p><p>go tool addr2line可以将地址转化对应源码的文件和行号，非常方便的便于我们调式问题。</p><p>具体的案例就不演示了。这部分的命令稍微有点复杂，待后面有了具体案例再来补充。</p><h2 id=其他命令>其他命令</h2><p>GO中还提供了很多辅助命令。这些命令有go bug、go doc、go tool tourl等。</p><p>go bug会直接启动浏览器并进入github的go项目的issue之下，还会把用户当前环境信息自动添加到issue中。如下执行go bug之后跳转的页面：</p><p><img src=https://blogimg.poloxue.com/0005-go-command-01.png alt></p><p>由此可见，GO的开发团队真的非常用心，做了很多简化我们工作的事情。</p><p>go doc为我们提供了快速查看文档的途径，比如查看fmt文档，我们只需执行go doc fmt，fmt相关的文档便会输出到控制台。我们也可以像官网文档那样用浏览器查看文档，只需执行godoc -http=:6060，便会启动一个本地的web服务。我们访问localhost:6060就能看到一个几乎和官网一样的页面，示例如下：</p><p><img src=https://blogimg.poloxue.com/0005-go-command-02.png alt></p><p>go tool tourl是官方提供的本地搭建tour教程的方式。我们只需执行go tool tour便会自动启动浏览器并进入教程首页。</p><p>到这里我们可以发现，即使由于一些原因使我们无法访问GO的官网，但有了这些工具，我们也可以愉快地进行GO的学习。</p><h2 id=总结>总结</h2><p>本篇文章以GO命令的快速体验为目标，概要式地介绍了几乎所有的命令。在对它们有了基本认识后，在以后遇到问题时，我们才能想到它们，以及更快地掌握和使用它们。</p></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#概述>概述</a></li><li><a href=#源码编译>源码编译</a></li><li><a href=#包的管理>包的管理</a></li><li><a href=#代码规范>代码规范</a></li><li><a href=#测试相关>测试相关</a></li><li><a href=#调试优化>调试优化</a></li><li><a href=#其他命令>其他命令</a></li><li><a href=#总结>总结</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags><ul class=flat><li class=tag-li><a href=/tags/golang>golang</a></li></ul></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div></div><div class="footer wrapper"><nav class=nav><div>2019 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>

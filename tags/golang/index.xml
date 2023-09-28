@@ -76,7 +76,7 @@ flag 内置支持能满足大部分的需求，但某些场景，需要自定义
 目标案例 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
 举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management by go）。
 命令行的帮助信息如下：
-NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments...] VERSION: 0.0.1 COMMANDS: list list go versions install install a go version info show go version info use select a version uninstall uninstall a go version get get the latest code uninstall uninstall a go version help, h Shows a list of commands or help for one command GLOBAL OPTIONS: --help, -h show help --version, -v print the version 这个命令不仅包含了全局的选项，还有 8 个子命令，部分子命令支持参数和选项。暂时，子命令的选项参数先不列出来了，实现时再看。</description></item><item><title>你真的不用再设置 GOROOT 了</title><link>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</link><pubDate>Wed, 06 Nov 2019 12:42:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</guid><description>为什么不再需要设置 GOROOT 呢？推荐读两篇英文文章，我意译了下，将它们放在了一篇里。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments.</description></item><item><title>你真的不用再设置 GOROOT 了</title><link>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</link><pubDate>Wed, 06 Nov 2019 12:42:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</guid><description>为什么不再需要设置 GOROOT 呢？推荐读两篇英文文章，我意译了下，将它们放在了一篇里。
 第一篇是关于 Go 1.10 之前，怎么设置 GOROOT，发表与 2013 年。第二篇 是从 Go 1.10 开始，如何处理 GOROOT，时间是 2018 年，Go 源码提交日志。这篇非常短小。
 读完后，你会发现，大多数情况下，你都不用手动设置 GOROOT 了。
 第一篇 作者：Dave Cheney | 地址：you-dont-need-to-set-goroot-really
@@ -104,7 +104,7 @@ Go 的资深老前辈们可能还记得，曾经的 Go 不仅要设置 GOROOT，
 为何开发 为什么会想到开发这个工具？主要有两点原因：
 一是最近经常看到大家在社区讨论 Go Module。于是，我也花了一些时间研究了下。期间，遇到了一个需求，如何清晰地识别模块中依赖项之间的关系。一番了解后，发现了 go mod graph。
 效果如下：
-$ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/poloxue/testmod rsc.io/quote/v3@v3.1.0 github.com/poloxue/testmod rsc.io/sampler@v1.3.1 golang.org/x/text@v0.3.2 golang.org/x/tools@v0.0.0-20180917221912-90fa682c2a6e rsc.io/quote/v3@v3.1.0 rsc.io/sampler@v1.3.0 rsc.io/sampler@v1.3.1 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c rsc.io/sampler@v1.3.0 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c 每一行的格式是 模块 依赖模块，基本能满足要求，但总觉得还是不那么直观。
+1 2 3 4 5 6 7 8 $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/poloxue/testmod rsc.io/quote/v3@v3.1.0 github.com/poloxue/testmod rsc.io/sampler@v1.3.1 golang.org/x/text@v0.3.2 golang.org/x/tools@v0.0.0-20180917221912-90fa682c2a6e rsc.io/quote/v3@v3.1.0 rsc.io/sampler@v1.3.0 rsc.io/sampler@v1.3.1 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c rsc.io/sampler@v1.3.0 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c 每一行的格式是 模块 依赖模块，基本能满足要求，但总觉得还是不那么直观。
 二是我之前手里有一个项目，包管理一直用的是 dep。于是，我也了解了下它，把官方文档仔细读了一遍。其中的某个章节介绍了依赖项可视化展示的方法。
 文档中给出的包关系图：
 看到这张图的时候，眼睛瞬间就亮了，图形化就是优秀，不同依赖之间的关系一目了然。这不就是我想要的效果吗？666，点个赞。
@@ -268,7 +268,7 @@ Goland Goland，商业公司jetbrains 近两年推出的 Go 集成开发环境�
 Goland的开箱即用，使它的问题很少，确实没有多少可介绍的，装起来基本就可以开干！</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
 本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
 概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
-$ go Go is a tool for managing Go source code. Go是管理Golang源码的工具 Usage: 使用方式： go &amp;lt;command&amp;gt; [arguments] go &amp;lt;命令&amp;gt; [参数] The commands are: 涉及的命令包括： bug start a bug report 提交bug报告，执行后会开启浏览器并转到github的issue，当前的配置与环境都会自动填写到issue中 build compile packages and dependencies 编译源码和依赖包 clean remove object files and cached files 清理文件，如测试与编译中生成或缓存的文件 doc show documentation for package or symbol 可用于显示包、接口和函数等的文档 env print Go environment information 打印当前的环境变量信息 fix update packages to use new APIs 可用于go新旧版本之间的代码迁移，修正代码兼容问题 fmt gofmt (reformat) package sources 按规范格式化源码 generate generate Go files by processing source 扫描源码注释，类似//go:generate command argument.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 $ go Go is a tool for managing Go source code.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
 我们知道，编写任何语言的代码都离不开两样工具，语言开发包和代码编辑工具。
 今天先来聊聊如何安装 Go。
 我们或许都会觉得这种事非常简单，不值得写篇文章介绍。最初我也是这么想的。但深入了解下来，渐渐感觉这也是一件很有意思的事情。
@@ -280,15 +280,13 @@ windows
 下载好了安装包，点击启动执行，接下来的步骤就是按导航提示一步步操作即可。有一点要注意的是，GO的默认安装在 C:\GO，如果要修改默认安装路径，在见到如下界面时重新选择。
 ubuntu/debian
 在debian或ubuntu上，我们可使用 apt-get 命令安装go。比如，在Ubuntu 16.04.5 LTS系统，使用如下命令安装：
-sudo apt-get update // 视情况决定是否更新 sudo apt-get install golang-go 如果是新建的系统，建议先update下软件源。否则可能会因为某些源异常而无法顺利安装。
+1 2 sudo apt-get update // 视情况决定是否更新 sudo apt-get install golang-go 如果是新建的系统，建议先update下软件源。否则可能会因为某些源异常而无法顺利安装。
 centos/redhat
 在centos或redhat上，我们可以使用yum命令安装go。比如，在CentOS 7.5上，使用如下命令安装：
-$ yum epel-release $ yum install golang 先下载了epel-releaes源，可防止出现yum安装golang不支持或版本太旧的问题。
+1 2 $ yum epel-release $ yum install golang 先下载了epel-releaes源，可防止出现yum安装golang不支持或版本太旧的问题。
 macos
 在macos上，我们可使用pkg文件或homebrew安装go。
-pkg的安装方式与windows的setup.exe/msi的类似，下载软件然后按导航 &amp;ldquo;下一步&amp;rdquo; &amp;ldquo;下一步&amp;rdquo; 即可完成。
-来说说如何使用homebrew安装。和yum和apt-get不同，homebrew并非mac系统自带，我们需要先安装。进入homebrew官网，页面顶部便说明了安装的方式，命令如下：
-/usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.</description></item><item><title>为什么要学 Go</title><link>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</link><pubDate>Mon, 08 Apr 2019 17:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</guid><description>新学一门语言，大家都想先弄清楚为什么要学它？玩知乎一段时间更是让我感受深刻，诸如
+pkg的安装方式与windows的setup.exe/msi的类似，下载软件然后按导航 &amp;ldquo;下一步&amp;rdquo; &amp;ldquo;下一步&amp;rdquo; 即可完成。</description></item><item><title>为什么要学 Go</title><link>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</link><pubDate>Mon, 08 Apr 2019 17:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</guid><description>新学一门语言，大家都想先弄清楚为什么要学它？玩知乎一段时间更是让我感受深刻，诸如
 为什么要学习Python？ 为什么要学习C？ 为什么要学习Java？ 之类问题经常出现在眼前。以前学语言时倒没怎么关心过这类问题。今年公司由于新业务需要开始全面从PHP转型到Golang。所以我学习它也就是为了工资。额？不能这么俗气，还是具体想想自己为什么要学习Golang吧。
 作为一名golang新人，在写这篇文章时我搜罗到不少golang的优秀资料，在文章最后分享出来。
 大势所趋 趋势如此，这应该是多数朋友开始学习它的原因。追涨杀跌，这是大多数人喜欢的操作手法。
