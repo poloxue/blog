@@ -189,12 +189,9 @@ golang与C语言相比最重要的改进是什么？ 当别人问到 Go 相对 C
 正文如下：
 从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 Lexical Scanning In Go 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。
 三篇文章涉及内容分别是：
-基础概念的介绍，如什么是词法分析、解析，以及案例的一部分介绍； 实现词法分析； 进行结果解析； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
+Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 1，如什么是词法分析、解析，以及案例的一部分介绍； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 2； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 3； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
 为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
-1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。
-段: Sections 键: Keys 值: Values Key/Value 属于 Section，每个 Section 可能不止一个 Key/Value，每个 INI 文件可以包含多个 Section。这是一种非常简单但非常高效的结构，特别适用于保存配置信息。
-上面的内容将会被解析为结构化数据，我们可以提前看下处理后的数据的 JSON 格式，如下：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 { &amp;#34;FileName&amp;#34;: &amp;#34;sample.</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
 简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
 注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
 NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
