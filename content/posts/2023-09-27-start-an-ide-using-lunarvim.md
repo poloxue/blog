@@ -125,7 +125,7 @@ git clone https://github.com/Lunarvim/starter.lvim --branch python-ide ~/.config
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-27-start-an-ide-using-lunarvim-05.gif)
 
-php IDE 的安装就不详细说了，类似步骤。另外，starter.lvim 支持编程语言很多，按需要取用。
+其他语言 IDE 的安装就不详细说了，类似步骤。另外，starter.lvim 支持编程语言很多，按需要取用。
 
  ## 最后说明
 

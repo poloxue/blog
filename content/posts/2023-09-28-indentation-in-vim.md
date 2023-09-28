@@ -7,6 +7,10 @@ tag: ["neovim", "vim"]
 ---
 
 本讲介绍如何配置 Vim 中的缩进，即 indentation。
+本讲介绍如何配置 Vim 中的缩进，即 indentation。
+本讲介绍如何配置 Vim 中的缩进，即 indentation。
+本讲介绍如何配置 Vim 中的缩进，即 indentation。
+本讲介绍如何配置 Vim 中的缩进，即 indentation。
 
 ## 配置
 
