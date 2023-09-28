@@ -152,7 +152,23 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
-1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。
+1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总(二)</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
+粗略数了一下，一个多月的时间里，大约回答了 18 个与 Go 有关的问题，问题主要是来源于 segmentfault 和 zhihu 两个平台。后面希望加入更多平台，如 stackoverflow、github 的感兴趣主题。
+最近在写一个小工具，准备用于帮助自己回答不同平台的问题，同时也便于每个月的问题汇总。写的有点慢，希望月底可以完成。
+正文部分开始。
+golang中如何将redis取出的map[string]string数据解析到目标struct中？
+主要和反射相关。
+问题主要是关于 map 中如果存在日期字符格式串，如何解析到 time.Time 类型成员中，而对于结构体而言，reflect.Kind() 返回的只能说明字段类型是 struct，并不能确定真正的类型，这时可以用 Go 的 switch type 类型查询语法实现。
+补充一点，在回答中没有提到的。
+在实现 map 到 struct 的通用方法时，我们比较容易想到支持基础类型，但对于结构体类型而言，可能性太多，如何更灵活地解决问题？我觉得，可通过钩子方式实现，即如果自定义类型需要支持 map 到 struct 的转化，可通过在自定义类型上增加钩子方法实现，比如 UnmarshalMap。如何实现可参考下 encoding/json。
+当然，这个工作已经有人做了，参考 github 上的包，mitchellh/mapstructure。前面说的 Hook 也是支持的。
+golang 怎么优雅的实现错误码？
+Go 对错误处理有一套自己的理念。这个问题，我只是简单回答了一下，简单的思路，我定义了用户级别错误和系统级别错误。上篇问答汇总也会类似问题。
+golang什么时候该返回error，什么时候panic？
+我的建议是，发生的 error 是否已经严重影响服务逻辑，如果在预判之内的错误，我们就应该 return error，记录日志，并不需要人工干预才能恢复，否则建议 panic。
+举个例子，在一般情况下，服务启动时，需要进行完善的初始化工作，确认各个组件的运行正常。如果初始化都失败了，那就没有必要继续向下走了，应该 panic 赶紧提示。
+Golang time 如何实现的？
+问题标题看着挺大，其实题主关心是几个核心常量之间的转化关系。主要是三个时间，分别 unix 时间、wall 时间和 absolute 时间。这里面有个相对重要的转化公式，在需要考虑平润年的时候稍微有点复杂。</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。
 原因吗？也简单。
 翻译好文不仅可以帮助大家学习，自己也能学到更多。
 最近，单独开了个专栏，用于保存自己翻译的计算机相关译文，大家如果有兴趣可以关注一下。Go 专栏或许当写到一定的程度时，更新频率会下降，但译文应该不会。
