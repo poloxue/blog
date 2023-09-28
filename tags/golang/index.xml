@@ -172,7 +172,30 @@ golang什么时候该返回error，什么时候panic？
 我的建议是，发生的 error 是否已经严重影响服务逻辑，如果在预判之内的错误，我们就应该 return error，记录日志，并不需要人工干预才能恢复，否则建议 panic。
 举个例子，在一般情况下，服务启动时，需要进行完善的初始化工作，确认各个组件的运行正常。如果初始化都失败了，那就没有必要继续向下走了，应该 panic 赶紧提示。
 Golang time 如何实现的？
-问题标题看着挺大，其实题主关心是几个核心常量之间的转化关系。主要是三个时间，分别 unix 时间、wall 时间和 absolute 时间。这里面有个相对重要的转化公式，在需要考虑平润年的时候稍微有点复杂。</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。
+问题标题看着挺大，其实题主关心是几个核心常量之间的转化关系。主要是三个时间，分别 unix 时间、wall 时间和 absolute 时间。这里面有个相对重要的转化公式，在需要考虑平润年的时候稍微有点复杂。</description></item><item><title>Go 实现词法分析与解析 Part Three</title><link>https://www.poloxue.com/posts/2019-07-29-golang-lexer-and-parser-part3/</link><pubDate>Mon, 29 Jul 2019 17:10:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-29-golang-lexer-and-parser-part3/</guid><description>译者前言 最近发现我的翻译是越来越随性了，刚开始文章翻译的时候比较拘束，现在更多强调可读性，比如有些对文章大意没有什么影响的文字我现在都会选择直接跳过。
+这篇文章主要是关于 INI 解释器的 parser 实现，它会从上一节中 Lexer 中接收 Token 解析，最终返回给使用者具有实际意义的结构体。读了这个系列的文章，我相信大家对词法器实现的原理将会有了基本的理解，但如果要真正实践，似乎还有一段距离。有兴趣的话，我们可以实现个自己的 JSON 解释器。要求可以稍微简化，只解析到 JSON 的第一层。
+译文如下：
+本系列第一篇文章，英文原版，我们介绍了词法分析解析的一些基础概念，了解了 INI 文件的基本组成，并在此基础上定义了一些常量和结构体，这对我们接下来实现 INI 文件解析会很有帮助。
+第二篇文章，英文原版，因主要聚焦在 Lexer 的实现。它完成了将输入文本转化为 Token 的过程。
+今天是本系列的最后一篇文章，最终完成我们的解释器。解释器负责从 channel 读取 Token，并最终创建表示 INI 文件内容的结构体实例。解析完成后，我们可以用 JSON 格式将结果打印出来。
+结构体 解析器负责启动词法器和从 channel 读取 Token 的组件。接收到 Token 后，解析器需要知道当前 Token 状态，然后将其解析到对应结构中。我们要做的第一件事就是，定义表示 INI 内容的结构体。将主要涉及三个结构体。
+第一个表示 Key/Value 的结构体，名称为 IniKeyValue，如下。
+model/ini/IniKeyValue.go
+1 2 3 4 5 6 package ini type IniKeyValue struct { Key string `json:&amp;#34;key&amp;#34;` Value string `json:&amp;#34;value&amp;#34;` } 第二个表示 Section 的结构体，名称为 IniSection，如下：</description></item><item><title>Go 实现词法分析与解析 Part Two</title><link>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</link><pubDate>Wed, 24 Jul 2019 17:10:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</guid><description>本文是关于词法器实现的具体介绍，如果在阅读时遇到困难，建议参考源码阅读，文中的代码片段为了介绍思路。如何解析会在下一篇介绍。
+最近简单看了下 Go 源码，在 src/go 目录下有几个模块，token、scanner 和 parser 应该就是 Go 词法相关实现的核心代码，打开 token 目录会发现其中的源码和上一节介绍的内容有诸多相似之处。
+由于最近并发任务比较多，不能以最快的速度更新。词法的相关内容，除了本系列，我把其他一些相关文章的链接都贴在下面，如果英文阅读功底不错，可自行阅读。
+A look at Go lexer/scanner packages
+Rob Pike&amp;rsquo;s Functional Way
+Handwritten Parser &amp;amp; Lexers In Go
+译文如下：
+本系列的第一篇文章（英文原版）。
+我介绍了关于词法分析与解析的一些基本概念和 INI 文件内容的基本组成。之后，我们创建了部分相关结构体与常量，帮助实现接下来的 INI 文本解析器。
+本篇文章将实际深入到词法分析的细节。
+词法分析 (lexing)，指的是将输入文本转化为一系列 Token 的过程。Token 是比文本更小的单元，将它们组合在一起才可能产生有实际意义的内容，如程序、配置文件等。
+本系列文章中的 INI 文件，Token 包括左括号、右括号、SectionName、Key，Value 以及等于号。用正确的顺序组合它们，你就会有一个 INI 文件。词法器的职责是读取 INI 文件内容、分析创建 Token，以及通过 channel 将 Token 发送给解析器。
+词法分析器 为了实现文本到 Token 的转化，我们还需要追踪一些信息，比如文本内容，当前分析文本的位置，以及当前分析的 Token 的开始和结束位置。
+完成分析后，我们还要将 Token 发送给解析器，可以通过 channel 传递。
+我们还需要一个函数实现词法器状态的追踪。Rob Pike 的演讲中谈到利用函数追踪词法器当前和接下来期望的状态。简单而言，就是一个函数处理一个 Token，并返回下一个状态函数生成下一个期望 Token。下面，我就简单翻译为状态函数吧.</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。
 原因吗？也简单。
 翻译好文不仅可以帮助大家学习，自己也能学到更多。
 最近，单独开了个专栏，用于保存自己翻译的计算机相关译文，大家如果有兴趣可以关注一下。Go 专栏或许当写到一定的程度时，更新频率会下降，但译文应该不会。
