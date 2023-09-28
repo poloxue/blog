@@ -298,7 +298,18 @@ golang与C语言相比最重要的改进是什么？ 当别人问到 Go 相对 C
 三篇文章涉及内容分别是：
 Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 1，如什么是词法分析、解析，以及案例的一部分介绍； Go 实现词法分析与解析)，译：Writing a Lexer and Parser in Go - Part 2； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 3； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
 为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
-1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。</description></item><item><title>Go 如何构建并发 Pipeline</title><link>https://www.poloxue.com/posts/2019-07-05-golang-pipeline/</link><pubDate>Fri, 05 Jul 2019 16:52:21 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-05-golang-pipeline/</guid><description>译者前言 这篇文章来自 Go 官网，不愧是官方的博客，写的非常详细。在开始翻译这篇文章前，先简单说明两点。
+首先，这篇文章我之前已经翻译过一遍，但最近再读，发现之前的翻译真是有点烂。于是，决定在完全不参考之前译文的情况下，把这篇文章重新翻译一遍。
+其二，文章中有一些专有名字，计划还是用英文来表达，以保证原汁原味，比如 pipeline（管道）、stage (阶段)、goroutine (协程)、channel (通道)。
+关于它们之间的关系，按自己的理解简单画了张草图，希望能帮助更好地理解它们之间的关系。如下：
+强调一点，如果大家在阅读这篇文章时，感到了迷糊，建议可以回头再看一下这张图。
+翻译的正文部分如下。
+Go 的并发原语使我们非常轻松地就构建出可以高效利用 IO 和多核 CPU 的流式数据 pipeline。这篇文章将会此为基础进行介绍。在这个过程中，我们将会遇到一些异常情况，关于它们的处理方法，文中也会详细介绍。
+什么是管道（pipeline） 关于什么是管道， Go 中并没有给出明确的定义，它只是众多并发编程方式中的一种。非正式的解释，我们理解为，它是由一系列通过 chanel 连接起来的 stage 组成，而每个 stage 都是由一组运行着相同函数的 goroutine 组成。每个 stage 的 goroutine 通常会执行如下的一些工作：
+从上游的输入 channel 中接收数据； 对接收到的数据进行一些处理，（通常）并产生新的数据； 将数据通过输出 channel 发送给下游； 除了第一个 stage 和最后一个 stage ，每个 stage 都包含一定数量的输入和输出 channel。第一个 stage 只有输出，通常会把它称为 &amp;ldquo;生产者&amp;rdquo;，最后一个 stage 只有输入，通常我们会把它称为 &amp;ldquo;消费者&amp;rdquo;。
+我们先来看一个很简单例子，通过它来解释上面提到那些与 pipeline 相关的概念和技术。了解了这些后，我们再看其它的更实际的例子。
+计算平方数 一个涉及三个 stage 的 pipeline。
+第一个 stage，gen 函数。它负责将把从参数中拿到的一系列整数发送给指定 channel。它启动了一个 goroutine 来发送数据，当数据全部发送结束，channel 会被关闭。</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
 简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
 注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
 NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
