@@ -84,11 +84,11 @@ table th, table tr {
   text-align: center;
 }
 
-
 html.dark td pre code {
   color: #fff !important;
 }
 
 .post .tags a {
   color: inherit;
+  border: 1px solid #aaa;
 }
