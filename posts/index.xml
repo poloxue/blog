@@ -355,4 +355,10 @@ Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定�
 分布式Distribution Kafka 的集群分布式主要涉及两个内容：Partition 分区与 Replication 备份。
 Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而分布在不同的 Kafka 节点之上，使 Topic 的数据大小不限于一台 Server。
 Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。
-虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item></channel></rss>
+虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item><item><title>Go 命令行解析 flag 包之扩展新类型</title><link>https://www.poloxue.com/go/go-flag-new-type-extension/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/go/go-flag-new-type-extension/</guid><description>上篇文章 说到，除布尔类型 Flag，flag 支持的还有整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
+flag 内置支持能满足大部分的需求，但某些场景，需要自定义解析规则。一个优秀的库肯定要支持扩展的。本文将介绍如何为 flag 扩展一个新的类型支持？
+扩展目标 在 gvg 这个小工具中，list 子命令支持获取 Go 的版本列表。但版本的信息来源有多处，比如 installed（已安装）、local（本地仓库）和 remote（远程仓库）。
+查看下 list 的帮助信息，如下：
+1 2 3 4 5 6 7 8 NAME: gvg list - list go versions USAGE: gvg list [command options] [arguments...] OPTIONS: --origin value the origin of version information , such as installed, local, remote (default: &amp;#34;installed&amp;#34;) 可以看出，list 子命令支持一个 Flag 选项，--origin。它用于指定版本信息的来源，允许值的范围是 installed、local 和 remote。
+如果要求不严格，用 StringVar 也可以实现。但问题是，使用 String，即使输入不在指定范围也能成功解析，不够严谨。虽说在获取后也可以检查，但还是不够灵活、可配置型也差。
+接下来，我们要实现一个新的类型的 Flag，使选项的值必需在指定范围，否则要给出一定的错误提示信息。</description></item></channel></rss>
