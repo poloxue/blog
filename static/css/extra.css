@@ -52,8 +52,11 @@ blockquote {
 .highlight {
   border-radius: 0.2em; 
 }
+
 code {
   font-size: 1.2em;
+  text-wrap: wrap; 
+  word-break: break-all;
 }
 
 table th {
