@@ -110,7 +110,7 @@ open /tmp/{name}.itermcolors
 
 ### 插件集成
 
-配置 zsh + oh-my-zsh，我的配置效果图如下所示：
+我的终端在通过 zsh + oh-my-zsh 配置后的效果图，如下所示：
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-25-install-iterm2-as-my-developing-environment-06.png)
 
