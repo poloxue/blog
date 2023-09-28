@@ -2,6 +2,7 @@
 title: "Go 问答汇总 Part Three"
 date: 2019-09-10T15:47:12+08:00
 draft: false
+comment: true
 tags: ["Golang"]
 ---
 
