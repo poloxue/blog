@@ -101,7 +101,7 @@ $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/po
 有些新的知识，我们可以通过模仿学习
 本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
 快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
-1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总(二)</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
+1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part Two</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
 粗略数了一下，一个多月的时间里，大约回答了 18 个与 Go 有关的问题，问题主要是来源于 segmentfault 和 zhihu 两个平台。后面希望加入更多平台，如 stackoverflow、github 的感兴趣主题。
 最近在写一个小工具，准备用于帮助自己回答不同平台的问题，同时也便于每个月的问题汇总。写的有点慢，希望月底可以完成。
 正文部分开始。
