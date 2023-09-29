@@ -78,3 +78,4 @@ Go 的 Middleware 系统并没有统一的约定惯例。与 Ruby (Rack)、Node.
 什么才是开发人员的最佳实践？请阅读下一篇，[从头构建 Go Web 框架](https://www.poloxue.com/posts/2021-10-28-build-your-own-webframework-in-golang-part-2)。
 
 博文地址：[从头构建 Go Web 框架](https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/)，译：[Build Your Own Framework in Golang](https://www.nicolasmerouze.com/build-web-framework-golang)。
+
