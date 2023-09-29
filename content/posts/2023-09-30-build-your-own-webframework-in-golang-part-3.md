@@ -259,11 +259,12 @@ It is integrated very nicely with our middleware system and the code has not rea
 
 > We could alternatively make getUser a method of appContext to be cleaner. Or wrap *sql.DB in a custom struct and add getUser as a method of this custom struct so we could call it simply with c.db.getUser(token).
 
+> 我们也可以将 `getUser` 设为 appContext 的方法，以使其更加简洁。或者将 *sql.DB 包装在自定义结构中，并将 getUser 添加为该自定义结构的方法，以便我们可以使用 c.db.getUser(token) 简单地调用它。
+
 ## 最后
 
+本文通过 middleware 的数据共享，实现了将用户数据传递到主 handler。实现了以最小的修改将 middleare 和支持 context 的中间件相结合。
 
-We now have a way to pass our authenticated user and other stored values by middlewares into the main handler. It doesn't require much change to our application and we can mix both standard middlewares and middleware with contexts without much more code. The only missing part is now the router, subject of the next part. But with all we made until now, integrate a router to our framework will be very easy.
-
-我们现在有一种方法可以通过中间件将经过身份验证的用户和其他存储的值传递到主处理程序中。它不需要对我们的应用程序进行太多更改，我们可以将标准中间件和带有上下文的中间件混合在一起，而无需更多代码。现在唯一缺少的部分是路由器，这是下一部分的主题。但根据我们迄今为止所做的一切，将路由器集成到我们的框架中将非常容易。
+下一章主题：[router 路由]()。
 
 
