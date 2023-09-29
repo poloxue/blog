@@ -3,26 +3,10 @@ title: "从头构建 Go Web 框架（一）：介绍"
 date: "2021-10-23T20:33:14+08:00"
 comment: true
 draft: false
-tags: ["Golang"]
+tags: ["Golang", "Web"]
 ---
 
-本文写于 2014 年，对于 golang 十几年的发展历程而言，这已经是古董级别的一篇文章了，但通用的思想概念依然没有变。
-
-我希望通过这个系列文章，让大家都现有的 Go Web 框架能有更深的认识。
-
-访问：[原文地址](https://www.nicolasmerouze.com/build-web-framework-golang)，译文如下：
-
-[Martini](https://github.com/go-martin/martini) 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架，且现在依旧是如此。但必须指出的是，它不符合常规习惯，非常慢，概念也有不足。它教了我们一堆错误的做法。但因为它上手容易，许多开发人员仍在使用。
-
-似乎是存在即合理！
-
-我决定写一系列文章，基于现有库从头编写组件来构建自己的 Web 框架。在开始前，我搜罗和阅读了市面上绝大部分关于如何编写 Go Web 应用的资料。我希望，通过系列文章能教授 Go Web 开发人员一些最佳实践，同时能提醒老 Go 开发人员什么才是 Web 开发的最佳实践。
-
-注：每个项目都是具有独特性的，最佳实践并非适用于所有场景。
-
-# 概要
-
-本系列不仅能让你了解 Go 中 Web 开发的最佳实践，还会让你了解其他常见问题的解决方案及如何正确运用。
+> 本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。系统通过这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
 
 - [第 1 部分：简介](https://www.nicolasmerouze.com/build-web-framework-golang)
 - [第 2 部分：Go 中间件：最佳实践和示例](https://www.nicolasmerouze.com/middlewares-golang-best-practices-examples)
@@ -30,6 +14,16 @@ tags: ["Golang"]
 - [第 4 部分：第三方路由](https://www.nicolasmerouze.com/guide-routers-golang)
 - [第 5 部分：使用 MongoDB 实现 JSON-API](https://www.nicolasmerouze.com/how-to-render-json-api-golang-mongodb)
 - [附加福利：上传文件到 s3](https://www.nicolasmerouze.com/file-upload-web-service-golang-s3-aws)
+
+[Martini](https://github.com/go-martin/martini) 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架，且现在依旧是如此。但必须指出的是，它不符合常规习惯，非常慢，概念也有不足。它教了我们一堆错误的做法。但因为它上手容易，许多开发人员仍在使用。
+
+似乎是存在即合理！
+
+故而，我决定写一系列文章，基于现有库从头编写组件来构建自己的 Web 框架。在开始前，我搜罗和阅读了市面上绝大部分关于如何编写 Go Web 应用的资料。我希望，通过系列文章能教授 Go Web 开发人员一些最佳实践，同时能提醒老 Go 开发人员什么才是 Web 开发的最佳实践。
+
+# 概要
+
+本系列不仅能让你了解 Go 中 Web 开发的最佳实践，还会让你了解其他常见问题的解决方案，以及如何正确运用其他框架。
 
 ## 框架该具备什么能力
 
@@ -41,7 +35,7 @@ tags: ["Golang"]
 
 ## 框架与库
 
-最近，发生了一场争论，主题是，我们究竟是使用框架还是使用库呢？
+最近，发生了一场争论，主题是，究竟是该使用框架还是使用库呢？
 
 首先，我不反对框架，但 Go 有很棒的小包，能帮助我们非常容易地制作出自己的框架。特别是长期项目，自己动手是更明智的选择。如果你想学习围棋，最好了解一切是如何运作的。
 
@@ -79,7 +73,6 @@ tags: ["Golang"]
 
 Go 的 Middleware 系统并没有统一的约定惯例。与 Ruby (Rack)、Node.js (Connect.js)、Clojure (Ring) 和其他语言不同。 每个框架，如 Negroni、Goji、Gin、gocraft/web 等，都在重新定义自己的中间件工作方式，重用开源中间件变得不可能。
 
-什么才是新开发人员的最佳实践？
+什么才是新开发人员的最佳实践？进入下一篇
 
-博文地址：[从头构建 Go Web 框架](https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/)
-
+博文地址：[从头构建 Go Web 框架](https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/)，译：[Build Your Own Framework in Golang](https://www.nicolasmerouze.com/build-web-framework-golang)。
