@@ -213,3 +213,5 @@ Hello World
 # 总结
 
 本篇文章从不同系统和不同方式角度出发，介绍了golang在各种场景下的安装方式。之后又详细介绍了几个在go中常用的环境变量，并以一个简单的例子结尾，最终完成了go的安装。
+
+我的博文：[如何安装 Go](https://www.poloxue.com/posts/2019-04-15-install-golang/)。
