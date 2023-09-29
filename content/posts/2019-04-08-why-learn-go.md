@@ -225,3 +225,5 @@ Golang官方地址： golang.org，无论学习什么知识，第一手资料基
 - 一个目录：[索引目录地址](https://github.com/Unknwon/go-study-index)，各种go语言资源的汇总；
 - 一张图谱：[图谱processon地址](https://www.processon.com/view/link/5a9ba4c8e4b0a9d22eb3bdf0#map)，源自Golang Foundation；
 - 一个合集：[awesome-go](https://awesome-go.com/)，其中整理了大量golang的库、框架和一些著名项目；
+
+我的博文：[为什么要学 Go](https://www.poloxue.com/posts/2019-04-08-why-learn-go)
