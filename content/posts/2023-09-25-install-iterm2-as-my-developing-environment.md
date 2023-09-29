@@ -6,9 +6,9 @@ comment: true
 tags: ["zsh", "iterm2"]
 ---
 
-本文是搭建我的开发环境系列中的第一篇，目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
+本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
 
-本文将介绍如何安装与配置 iTerm2，安装成功后，即可阅读下一篇 [从 0 开始：教你如何配置 zsh](https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/)。
+本文是搭建我的开发环境系列中的第一篇，将介绍如何安装与配置 iTerm2，安装成功后，即可阅读下一篇 [从 0 开始：教你如何配置 zsh](https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/)。
 
 ## 前言介绍
 
