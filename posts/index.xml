@@ -54,13 +54,7 @@ zsh 的优势 zsh 和 bash 都是非常流行的 Unix-like shell，它们有着�
 更优秀的命令行补全能力； 配置化能力更强； 更现代的语法； 改进的错误报告； 模拟 bash； 用户社区不断壮大，更新频繁； 体验更好的按键 支持vi模式等 安装 zsh Linux 系统下的安装非常简单。
 Debian:
 1 sudo apt install zsh Arch Linux:
-1 sudo pacman -S zsh Fedora</description></item><item><title>小 Sheldon 如何撩妹</title><link>https://www.poloxue.com/posts/2023-09-15-sheldon-01/</link><pubDate>Fri, 15 Sep 2023 16:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-sheldon-01/</guid><description>A: I&amp;rsquo;m afraid we have a bigger problem.
-B: What are you talking about?
-A: I&amp;rsquo;m a scientist and I have to follow the data wherever it leads whether I like it or not.
-B: Get to the point
-A: It seems I have a crush on you
-B: what?
-A: I&amp;rsquo;m as surprised as you are, but I have all symptoms according to both Dr Sturches and the editors of sassy magazine.</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
+1 sudo pacman -S zsh Fedora</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
 我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
 非常简单！
 核心脚本介绍
