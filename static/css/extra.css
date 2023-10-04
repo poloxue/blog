@@ -8,7 +8,15 @@ html.dark body {
 }
 
 .container-wide {
-  max-width: 1000px;
+  max-width: 1200px;
+}
+
+.container {
+  max-width: 1200px;
+}
+
+.container .post {
+  max-width: 1200px;
 }
 
 #TableOfContents ul {
@@ -51,6 +59,7 @@ blockquote {
 
 .highlight {
   border-radius: 0.2em; 
+  max-width: 1200px;
 }
 
 code {
