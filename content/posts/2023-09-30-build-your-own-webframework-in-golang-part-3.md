@@ -269,7 +269,7 @@ func main() {
 
 它与中间件系统很好地契合，代码变动很小。类似 gocraft/web 的视线，使用一个 `struct` 管理应用级别变量，但仅适用于应用程序范围。
 
-> 可以将 `getUser` 挂到 `appContext`，使代码更加简洁。或将 *sql.DB 包含在其他自定义结构中，将 `getUser` 添加为这个自定义结构的方法，以便使用 c.db.getUser(token) 即能实现调用。
+> 可以将 `getUser` 挂到 `appContext`，使代码更加简洁。或将 *sql.DB 包含在其他自定义结构中，将 `getUser` 添加为这个自定义结构的方法，使用 c.db.getUser(token) 即能完成调用。
 
 ## 最后
 
