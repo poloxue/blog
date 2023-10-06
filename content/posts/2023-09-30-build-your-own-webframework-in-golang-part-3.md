@@ -206,7 +206,7 @@ func main() {
 
 > 为了简化演示，假设 user 类型是 `map[string]interface{}`。
 
-在 `AdminHandler` 中，我们获取存储在 context 中的用户信息写入 `Response` 中。
+在 `AdminHandler` 中，我们获取 context 中的用户信息，并写入 `Response` 中。
 
 ## 应用范围
 
