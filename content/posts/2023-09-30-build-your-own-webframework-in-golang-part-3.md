@@ -226,7 +226,7 @@ func main() {
 
 另一个方案是，创建一个 `struct` 变量，管理类似 dbConn 的变量，同时将 handler 和 middle 作为它的方法。为解决上述问题，它将包含 `db` 字段，方法有 `authHandler` 和 `adminHandler`。
 
-只要稍微更改，即可将 `db` 用于 `getUser` 函数，代码如下所示：
+稍作变动，即将 `db` 用于 `getUser` 函数，如下所示：
 
 ```go
 type appContext struct {
@@ -267,7 +267,7 @@ func main() {
 }
 ```
 
-它与中间件系统很好地契合，代码变动很小。如 gocraft/web，通过使用一个 `struct`，但仅适用于应用程序范围。
+它与中间件系统很好地契合，代码变动很小。类似 gocraft/web 的视线，使用一个 `struct` 管理应用级别变量，但仅适用于应用程序范围。
 
 > 可以将 `getUser` 挂到 `appContext`，使代码更加简洁。或将 *sql.DB 包含在其他自定义结构中，将 `getUser` 添加为这个自定义结构的方法，以便使用 c.db.getUser(token) 即能实现调用。
 
