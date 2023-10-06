@@ -73,8 +73,8 @@ func myOtherHandler(w http.ResponseWriter, r *http.Request) {
 **缺点：**
 
 - 基准测试显示它是性能最差的方案，但实际应用中，性能通常不是核心点；
-- 使用互斥锁，而非 channel， 但 [Go 文档并不反对互斥体](https://code.google.com/p/go-wiki/wiki/MutexOrChannel)。
-- 数据是 `interface{}` 类型，需要类型断言确认；
+- 使用 mutex，而非 channel， 但 [Go 文档并不反对 mutex](https://code.google.com/p/go-wiki/wiki/MutexOrChannel)。
+- 对于 `interface{}` 类型，需要经过类型断言；
 
 ## Goji
 
@@ -137,23 +137,27 @@ Google 内部 context 包。阅读 [context](https://blog.golang.org/context)。
 | tigertonic | y | n | y
 | gocraft/web | n | n | y
 
-> go.net/context 未使用 map，但非常类似。
+> go.net/context 未使用 map，但方法类似。
 
-context 的实现思路都是类似，每个方案都有优缺点。
+context 的实现思路都是类似的，但也各有优劣。
 
-为提高性能，一些方案在尽量避免 type assertion、map 或 `mutex` ，但性能差异其实不到 10%。虽然，structure 肯定是最快的，但如果一个请求的处理时间是 10 毫秒，则这种影响将不到 1%。
+为提高性能，一些方案在尽量避免 type assertion、map 或 mutex，但其实性能差异不到 10%。虽然，struct 是最快的，但如果一个请求要 10 ms 的处理时间，这种影响将不到 1%。
 
-毫无疑问，map 是最灵活的实现方案。
+毫无疑问，最灵活的实现方案是 map。使用 map 的 context 是 gorilla/context 和 Goji。 
 
-使用 map 的 context 是 gorilla/context 和 Goji。 gorilla/context 是某位 [Go 创建者的方案](http://groups.google.com/group/golang-nuts/msg/e2d679d303aa5d53)，也是最容易实现的。
+> gorilla/context 是某位 [Go 创建者的方案](http://groups.google.com/group/golang-nuts/msg/e2d679d303aa5d53)，也是最容易实现的。
 
-本文，我们将选择 gorilla/context。
+本文将基于 gorilla/context 实现。
 
-> Depending on if you want to share your middleware with the rest of the world, you may adopt a more standard interface. For example, nosurf uses its own context based on the same concept as gorilla/context and has a standard middleware interface. You can use it in almost any project built with any framework without issues. That's why the gorilla/context system is better, it's easier to reuse middlewares.
+> 如果想将自己的成果分享他人，则要尽量采用标准接口。如 [nosurf](https://github.com/justinas/nosurf) 的 context，与 gorilla/context 是相同概念。在几乎所有框架的项目中使用，而不会出现问题。
+>
+> 这也是为什么 gorilla/context 系统更优秀，它更易重用中间件。
 
-## Integrate contexts into our own framework
+## context 集成
 
-Since we're using gorilla/context, we almost don't need to change anything to our existing code. When presenting gorilla/context, I have said that the map of requests storing contexts is not cleared automatically so for each new request there will be a new entry in the map and it will grow endlessly. the package has a ClearHandler handler to fix the issue.
+使用 gorilla/context，我们几乎无需对代码进行任何修改。
+
+在介绍 gorilla/context 时，我说过 context 中的 map 不会自动清理，因此，对于每个 request，map 中都会有新的内容且无限增加。该 package 提供了一个 ClearHandler 解决这问题。
 
 ```go
 func main() {
@@ -164,7 +168,9 @@ func main() {
 }
 ```
 
-Now we can add a middleware storing something we need in our main handler. Let's create an authentication middleware. This middleware will get the Authorization header containing the token and will search for a user. If the authentication fails, the middleware will not execute the next midlewares and will return an error. If it succeeds, it will store the user in the context and execute the next middleware.
+让我们创建一个身份认证 middleware，authhandler，用于用户验证并存储用户信息。
+
+从 header 中获取 token，基于 token 从 database 查找用户。如果认证失败，将返回错误，而不是继续执行下一个 middleware。反之，它将把所获得的用户信息存储在 context，并调用下一个 middleware。
 
 ```go
 func authHandler(next http.Handler) http.Handler {
@@ -198,11 +204,15 @@ func main() {
 }
 ```
 
-`getUser` is the function finding the user. Let's say the user is a map[string]interface{} to simplify our example. In our admin handler we get the user we stored in the authentication middleware, we encode it and write it in the response writer.
+> 为了简化演示，假设 user 类型是 `map[string]interface{}`。
 
-## Application-level values
+在 `AdminHandler` 中，我们获取存储在 context 中的用户信息写入 `Response` 中。
 
-There's still a problem with this approach. getUser will certainly want an access to a database. Our context is bound to a request, storing a DB connection reference in the context of each request isn't great. It would be better to store this reference somewhere and all the requests will access it. We could use global/package level variables as such:
+## 应用范围
+
+这种方式的问题是， `getUser` 要访问数据库，而 context 是 request 级别，在每个 request 的 context 中存储数据库连接不是一种好的实现方式。最好的方式是，所有请求共享一个 DB 连接。
+
+如下所示，使用 global/package 变量：
 
 ```go
 var dbConn *sql.DB
@@ -212,9 +222,11 @@ func main() {
 }
 ```
 
-We could access `dbConn` in the entire application which would solve the problem. `*sql.DB` is a pool so it's safe for concurrent use. But in my experience global variables is really bad for maintenance. You don't control what can modify them and it is difficult to track their state. Refactoring can become a real pain, even with perfect testing.
+应用程序中的任何地方都可访问 `dbConn`，且 `*sql.DB` 是一个并发安全的连接池。以往经验，global 变量不利于维护，存在容易修改，无法追踪的问题。即使有完全的测试，也存在难以重构的问题。
 
-Another solution would be to have a struct with all the values we need to use and create handlers and middlewares as methods of this struct. To solve our problem, it would be a struct with a `db`field containg our connection pool. This struct would have methods for our `authHandler` and `adminHandler`. The code from above will only sligthly change to use `db` for `getUser`function.
+另一个方案是，创建一个 `struct` 变量，管理类似 dbConn 的变量，同时将 handler 和 middle 作为它的方法。为解决上述问题，它将包含 `db` 字段，方法有 `authHandler` 和 `adminHandler`。
+
+只要稍微更改，即可将 `db` 用于 `getUser` 函数，代码如下所示：
 
 ```go
 type appContext struct {
@@ -255,16 +267,13 @@ func main() {
 }
 ```
 
-It is integrated very nicely with our middleware system and the code has not really changed. This approach uses a struct, like gocraft/web, but only for application-level values and is not tied to any specific code making it reusable across apps and even other frameworks.
+它与中间件系统很好地契合，代码变动很小。如 gocraft/web，通过使用一个 `struct`，但仅适用于应用程序范围。
 
-> We could alternatively make getUser a method of appContext to be cleaner. Or wrap *sql.DB in a custom struct and add getUser as a method of this custom struct so we could call it simply with c.db.getUser(token).
-
-> 我们也可以将 `getUser` 设为 appContext 的方法，以使其更加简洁。或者将 *sql.DB 包装在自定义结构中，并将 getUser 添加为该自定义结构的方法，以便我们可以使用 c.db.getUser(token) 简单地调用它。
+> 可以将 `getUser` 挂到 `appContext`，使代码更加简洁。或将 *sql.DB 包含在其他自定义结构中，将 `getUser` 添加为这个自定义结构的方法，以便使用 c.db.getUser(token) 即能实现调用。
 
 ## 最后
 
 本文通过 middleware 的数据共享，实现了将用户数据传递到主 handler。实现了以最小的修改将 middleare 和支持 context 的中间件相结合。
 
 下一章主题：[router 路由]()。
-
 
