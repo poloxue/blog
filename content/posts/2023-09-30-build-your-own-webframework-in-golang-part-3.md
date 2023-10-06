@@ -208,7 +208,7 @@ func main() {
 
 在 `AdminHandler` 中，我们获取 context 中的用户信息，并写入 `Response` 中。
 
-## 应用范围
+## 应用级别变量
 
 这种方式的问题是， `getUser` 要访问数据库，而 context 是 request 级别，在每个 request 的 context 中存储数据库连接不是一种好的实现方式。最好的方式是，所有请求共享一个 DB 连接。
 
