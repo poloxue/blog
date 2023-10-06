@@ -1,8 +1,8 @@
 ---
 title: "从头构建 Go Web 框架（三）：中间件的数据共享"
 date: 2023-09-29T13:35:05+08:00
+draft: false
 comment: true
-draft: true
 tags: ["Golang", "Web"]
 ---
 
