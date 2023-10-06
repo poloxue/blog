@@ -6,6 +6,8 @@ draft: false
 tags: ["Golang"]
 ---
 
+
+
 开源库 Cobra 是 Golang 下用于创建命令行应用的框架。 它也是 k8s、hugo 等开源项目都在用框架。[GitHub 项目地址](https://github.com/spf13/cobra)
 
 ## 命令行应用
@@ -18,15 +20,43 @@ tags: ["Golang"]
 
 为什么呢？
 
-因为命令行的有些内容还要处理，如，默认没有子命令的一套实现规范，不支持参数校验、不支持帮助信息模板配置。没有对一些标准提供默认支持，如 POSIX 标准，没有 -v，--version 和 -h、--help 的默认支持等。 
+因为命令行的有些内容还要处理，比如，默认没有子命令的一套实现规范，不支持参数校验、不支持帮助信息模板配置。没有对一些标准提供默认支持，如 POSIX 标准，没有 -v，--version 和 -h、--help 的默认支持等。 
 
 一套完整的命令行框架应用就要这些能力，能提供一套最佳实践。Cobra 就是这样一套框架。
 
 ## Cobra
 
-Cobra 支持的功能非常多，一些非常出名的开源项目，比如 k8s、hugo 等都在使用它。GitHub 的说明已经介绍了它丰富的能力。
+Cobra 支持的功能非常多，一些非常出名的开源项目，比如 k8s、hugo 等都在使用它。
 
-概述而言，它支持子命令，posix 规范的 Flag，嵌套的子命令，支持全局、局部和级联的选项，支持 bash 自动补全，便捷的参数校验。具体可查看 GitHub [README](https://github.com/spf13/cobra)，或
+GitHub 的说明已经介绍了它的能力，比如支持子命令，posix 规范的 Flag，嵌套的子命令，支持全局、局部和级联的选项，支持 bash 自动补全，便捷的参数校验。
+
+如下是文档中的内容：
+
+> Easy subcommand-based CLIs: app server, app fetch, etc.
+>
+> Fully POSIX-compliant flags (including short & long versions)
+>
+> Nested subcommands
+>
+> Global, local and cascading flags
+>
+> Easy generation of applications & commands with cobra init appname & cobra add cmdname
+>
+> Intelligent suggestions (app srver... did you mean app server?)
+>
+> Automatic help generation for commands and flags
+>
+> Automatic help flag recognition of -h, --help, etc.
+>
+> Automatically generated bash autocomplete for your application
+>
+> Automatically generated man pages for your application
+>
+> Command aliases so you can change things without breaking them
+>
+> The flexibility to define your own help, usage, etc.
+>
+> Optional tight integration with viper for 12-factor apps
 
 它还提供了一套脚手架，能便捷地创建一个命令行应用，就像写 web 应用一样，快速创建一个 handler、Controller。
 
@@ -34,9 +64,7 @@ Cobra 支持的功能非常多，一些非常出名的开源项目，比如 k8s�
 
 ## 使用演示
 
-使用 Cobra 创建一个简单的命令行应用，[官方文档案例](https://cobra.dev/)。
+让我们使用 Cobra 创建一个简单的命令行应用。
 
-### 安装
 
 博文地址：[Golang 开源库 Cobra 介绍与使用](http://localhost:1313/posts/2019-12-03-what-is-cobra/)，知乎问题：[如何评价 Cobra （Golang 库）？](https://www.zhihu.com/question/358956995/answer/919748685)
-
