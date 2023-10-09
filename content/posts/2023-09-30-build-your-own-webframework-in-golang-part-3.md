@@ -275,5 +275,5 @@ func main() {
 
 本文通过 middleware 的数据共享，实现了将用户数据传递到主 handler。实现了以最小的修改将 middleare 和支持 context 的中间件相结合。
 
-下一章主题：[router 路由]()。
+下一章主题：[router 路由](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/)。
 
