@@ -1,5 +1,5 @@
 ---
-title: "从头构建 Go Web 框架（四）：三方路由集成"
+title: "从头构建 Go Web 框架（四）：第三方路由集成"
 date: 2023-10-09T13:35:05+08:00
 draft: false
 comment: true
@@ -15,7 +15,6 @@ tags: ["Golang", "Web"]
 - [第 3 部分：中间件数据共享](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3)，[Part 3: Share Values Between Middlewares](https://nicolasmerouze.notion.site/Part-3-Share-Values-Between-Middlewares-dca6f9448a0c4be68b0da30137c38875)
 - [第 4 部分：第三方路由](https://www.poloxue.com/posts/2023-10-09-build-your-own-webframework-in-golang-part-4)，[Part 4: Guide to 3rd Party Routers in Golang](https://nicolasmerouze.notion.site/Part-4-Guide-to-3rd-Party-Routers-in-Go-8ddcca5c360b4539a601ae383c9d7e5d)
 - [第 5 部分：使用 MongoDB 实现 JSON-API]()，[How to implement JSON-API standard in MongoDB and Go](https://nicolasmerouze.notion.site/Part-5-How-to-implement-JSON-API-standard-in-MongoDB-and-Go-a3daeead140846e4a6ae1e3c01b47f52)
-- [附加福利：上传文件到 s3]()，[Bonus: File Upload REST API with Go and Amazon S3](https://nicolasmerouze.notion.site/Bonus-File-Upload-REST-API-with-Go-and-Amazon-S3-1130fbacad7442c5b0a7df9320d792b4)
 
 基于 Go 标准库 `net/http`，已经足够写出一个 Web 应用。但不足的是，它提供的路由能力 `http.Handle(pattern, handler)` 还是过于单一，只能实现一些静态路由。
 
@@ -186,3 +185,6 @@ Go 中的不同 router 的性能差异很大，功能也有差异。最快的路
 对于不兼容与 `http.Handler` 的路由实现，可通过类似 `wrapHandler` 实现兼容。
 
 最后，不同 router 方案存储 URL 参数的方式不同，常见的两种方式： `r.URL.Query()` 和 context。在实际使用时，要注意规范一致。
+
+我的博文：[从头构建 Go Web 框架（四）：第三方路由集成](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/)
+，[原文地址](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/)
