@@ -3,7 +3,7 @@ title: "TradingView 基础入门"
 date: 2023-08-01T17:29:19+08:00
 comment: true
 draft: true
-tags: ["交易", "tradingview"]
+tags: ["tradingview"]
 ---
 
 本文是 TradingView （以下简称 TV）教程的起始篇，将主要聚焦于 TV 的基础使用。
@@ -13,7 +13,6 @@ tags: ["交易", "tradingview"]
 TV 是一款强大的交易行情图表分析软件，特别受到技术分析爱好者的喜爱。同时，它也是一个交流平台，全球的交易员都会在这个平台发布自己的观点，不论国家地域。如果想找策略想法，这里是一个不错的去处。但在学习别人的思路方法，还是要独立思考，不要盲从。
 
 一起先看看它的首页，访问 [www.tradingview.com](https://www.tradingview.com) 打开 TV 首页，如果是已注册的用户，将映入如下内容：
-
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-01.png)
 
@@ -37,11 +36,11 @@ TV 是一款强大的交易行情图表分析软件，特别受到技术分析�
 
 这个区域的主要是一些基础的工具，如用于选择标的、时间周期、技术指标、价格线样式和指标，同时设置 Alert 警报与实现 Replay 重放等。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-08-05-tradingview-basic-introduction-and-ui-layout-03.png)
 
 选择标的是上图的 AAPL 区域，TV 支持的品种丰富，点击即可进行 Symbol Search，快速发现你关注的标的。以搜索 MSFT 为例，效果图如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-08-05-tradingview-basic-introduction-and-ui-layout-04.png)
 
 展示的搜索结果外，还能看到 TV 支持的交易品种，包括 Stocks（股票）、Funds（基金）、Futures（期货）、Forex（外汇）、Crypto（加密货币）、Bonds（债券）等；
 
@@ -51,7 +50,7 @@ TV 是一款强大的交易行情图表分析软件，特别受到技术分析�
 
 时间默认是 D 级别，即日线级别。TV 默认提供的时间周期有 1m、3m、5m、15m、30m、1h、2h、4h、6h、12h、D、W、M 等。如果是用户购买了会员，还可以使用它的秒级别数据线。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-05.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-08-05-tradingview-basic-introduction-and-ui-layout-05.gif)
 
 TV 本身并没有把限制时间周期的选项，我们可以选择分钟级别以上任意的时间周期，如 16m、100m 等等。
 
@@ -61,7 +60,7 @@ TV 本身并没有把限制时间周期的选项，我们可以选择分钟级�
 
 指标从来源上分类有系统内建指标、社区指标和自建指标。点开 "Indicators"，如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-06.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-08-05-tradingview-basic-introduction-and-ui-layout-06.png)
 
 含义如下：
 
@@ -81,7 +80,7 @@ TV 本身并没有把限制时间周期的选项，我们可以选择分钟级�
 
 TV 支持警报通知的设置，即菜单中的 Alert。借助这个能力，可设置基于价格、指标或趋势线的报警功能，如 BTC 价格突破关键点位 20000，趋势线突破，或者指标金叉死叉等。点击 Alert，配置页面如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/tradingview-basic-introduction-and-ui-layout-07.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-08-05-tradingview-basic-introduction-and-ui-layout-07.png)
 
 Settings 是报警的规则配置，如图中的价格的阈值报警规则的设置界面。Notifications 是设置通知的规则，如是 app 通知（TV 有 mobile app）、弹框、邮件通知、声音提示、发送邮件等，此外，对于 pro 及以上用户，还基于 webhook 进行实盘交易。
 

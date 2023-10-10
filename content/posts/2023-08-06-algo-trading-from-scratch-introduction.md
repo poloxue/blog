@@ -3,7 +3,6 @@ title: "从零开始回测量化交易策略 Part 1: 基本介绍篇"
 date: 2023-08-06T16:37:03+08:00
 draft: true
 comment: true
-toc: "floating"
 ---
 
 > 本系列文章目标是，基于 Python 从零实现策略回测，示例策略选用最简单的双均线策略。
