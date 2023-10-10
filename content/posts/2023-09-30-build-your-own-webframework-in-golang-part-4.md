@@ -187,4 +187,4 @@ Go 中的不同 router 的性能差异很大，功能也有差异。最快的路
 最后，不同 router 方案存储 URL 参数的方式不同，常见的两种方式： `r.URL.Query()` 和 context。在实际使用时，要注意规范一致。
 
 我的博文：[从头构建 Go Web 框架（四）：第三方路由集成](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/)
-，[原文地址](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/)
+，原文地址: [Part 4: Guide to 3rd Party Routers in Go](https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/)
