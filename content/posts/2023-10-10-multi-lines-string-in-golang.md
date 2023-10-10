@@ -1,5 +1,5 @@
 ---
-title: "Golang 中的多行字符串"
+title: "Golang 中如何实现多行字符串"
 date: "2023-10-10T22:00:36+08:00"
 draft: false
 comment: true
