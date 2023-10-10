@@ -554,7 +554,7 @@ crontab写了这么长，希望能切实帮到大家。有哪位朋友看到了�
 
 # 参考附录
 
-[让你学会Linux计划任务](http://os.51cto.com/art/201001/176402.htm)
-[Linux中的crontab与sendmail](http://www.server110.com/sendmail/201311/3125.html)
-[Crontab and %](http://www.hcidata.info/crontab.htm)
-[Linux重定向](http://www.jb51.net/os/RedHat/1120.html)
+- [让你学会Linux计划任务](http://os.51cto.com/art/201001/176402.htm)
+- [Linux中的crontab与sendmail](http://www.server110.com/sendmail/201311/3125.html)
+- [Crontab and %](http://www.hcidata.info/crontab.htm)
+- [Linux重定向](http://www.jb51.net/os/RedHat/1120.html)
