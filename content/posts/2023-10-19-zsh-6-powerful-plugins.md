@@ -19,13 +19,15 @@ tags: ["zsh"]
 
 ## 推荐一个网站
 
-首先呢，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins。直接通过浏览器打开地址 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等。
+首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins。
+
+直接通过浏览器打开地址 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等。
 
 框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
 
 插件，上个视频介绍过的两个插件，zsh-syntax-highlighting - 命令行语法高亮插件, zsh-autosugggestions - 命令行自动建议提示插件，在这个文档里面都能找到。
 
-主题，除了 oh-my-zsh，还有更多的主题可选择，例如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
+主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
 
 下面正式开始今天的内容。
 
