@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 18 Oct 2023 18:36:55 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>介绍 6 个强大的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>今天，将会在上一个教程的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
-让我们正式开始。
+copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝命令行内容； sudo，快捷 sudo zsh-history-substring-search，命令历史记录子字符串匹配； zsh-you-should-use，命令别名提醒； 让我们正式开始。
 推荐一个网站 首先呢，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins。直接通过浏览器打开地址 awesome-zsh-plugins，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等。
 框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
 插件，上个视频介绍过的两个插件，zsh-syntax-highlighting - 命令行语法高亮插件, zsh-autosugggestions - 命令行自动建议提示插件，在这个文档里面都能找到。
@@ -10,9 +10,7 @@
 1 plugins=(... copypath copyfile copybuffer sudo ...) 保存退出。
 copypath 插件 copypath 的用途如其名，就是用来 copy 路径的。
 两种用法：
-copypath: 无参数，直接拷贝当前路径； copypath &amp;lt;文件或目录&amp;gt;：拷贝指定文件或目录的绝对路径； 相比于 pwd 之后再拷贝，真的是省心省力的方式。
-copyfile copyfile，用于拷贝文件内容，命令格式 copyfile &amp;lt;文件路径&amp;gt;
-一个测试命令，copyfile test.txt，即可将 test.txt 文件中的内容拷贝到剪贴板中。</description></item><item><title>Golang 中如何实现多行字符串</title><link>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</link><pubDate>Tue, 10 Oct 2023 22:00:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</guid><description>Python 中，如果想要表示多行字符串，只要通过三单/双引号(&amp;quot;&amp;quot;&amp;quot;）包裹字符串即可。
+copypath: 无参数，直接拷贝当前路径； copypath &amp;lt;文件或目录&amp;gt;：拷贝指定文件或目录的绝对路径； 相比于 pwd 之后再拷贝，真的是省心省力的方式。</description></item><item><title>Golang 中如何实现多行字符串</title><link>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</link><pubDate>Tue, 10 Oct 2023 22:00:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</guid><description>Python 中，如果想要表示多行字符串，只要通过三单/双引号(&amp;quot;&amp;quot;&amp;quot;）包裹字符串即可。
 类似代码，如下所示。
 1 2 3 4 a = &amp;#34;&amp;#34;&amp;#34;line1 line2 line3&amp;#34;&amp;#34;&amp;#34; print(a) 执行代码，查看输出效果，如下所示：
 1 2 3 line1 line2 line3 Golang 中如何实现呢？不复杂，简单展示两种方式：
