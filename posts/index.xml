@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 18 Oct 2023 18:36:55 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>介绍 6 个强大的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>今天，将会在上一个教程的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
+快速一览 本教程将会涉及的插件，如下所示：
 copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝命令行内容； sudo，快捷 sudo zsh-history-substring-search，命令历史记录子字符串匹配； zsh-you-should-use，命令别名提醒； 让我们正式开始。
 推荐一个网站 首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins。
 直接通过浏览器打开地址 awesome-zsh-plugins，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
