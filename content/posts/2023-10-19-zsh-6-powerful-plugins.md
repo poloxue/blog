@@ -21,7 +21,7 @@ tags: ["zsh"]
 
 首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins。
 
-直接通过浏览器打开地址 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等。
+直接通过浏览器打开地址 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
 
 框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
 
