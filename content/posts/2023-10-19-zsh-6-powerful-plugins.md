@@ -120,7 +120,5 @@ git clone https://github.com/MichaelAquilina/zsh-you-should-use.git $ZSH_CUSTOM/
 
 ## 总结
 
-本文介绍了 6 个 zsh 插件。
-
-copypath、copyfile 和 copybuffer 可快速拷贝特定内容到粘贴板。sudo 是一个快捷操作，通过快捷键即可将 sudo 增加命令开头。zsh-history-substring-search 插件能快速匹配历史记录命令。而最后的 zsh-you-should-use，真的是强烈推荐，特别是对于配置了类似 oh-my-zsh 这样的框架，加载一些默认能力，可能存在不少易于使用的别名，通过这个插件，就有了能力发现这些潜在的能力。
+本文介绍了 6 个 zsh 插件，每个插件都有特定的场景用途，希望能给大家的日常工作提升效率。
 
