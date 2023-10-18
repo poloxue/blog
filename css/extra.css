@@ -7,17 +7,6 @@ html.dark body {
   background-color: #282a35 !important;
 }
 
-.container-wide {
-  max-width: 1200px;
-}
-
-.container {
-  max-width: 1200px;
-}
-
-.container .post {
-  max-width: 1200px;
-}
 
 #TableOfContents ul {
   list-style-position: unset;
@@ -59,7 +48,6 @@ blockquote {
 
 .highlight {
   border-radius: 0.2em; 
-  max-width: 1200px;
 }
 
 code {
