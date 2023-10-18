@@ -8,6 +8,13 @@ tags: ["zsh"]
 
 今天，将会在上一个教程的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
 
+- copypath，拷贝路径；
+- copyfile，拷贝文件内容；
+- copybuffer，拷贝命令行内容；
+- sudo，快捷 sudo
+- zsh-history-substring-search，命令历史记录子字符串匹配；
+- zsh-you-should-use，命令别名提醒；
+
 让我们正式开始。
 
 ## 推荐一个网站
