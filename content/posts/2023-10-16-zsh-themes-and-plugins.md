@@ -30,33 +30,25 @@ tags: ["zsh"]
 
 不同系统的安装命令如下： 
 
-MacOS 系统
 
 ```bash
+# MacOS 系统
 brew install zsh
 ```
-
-Debian
-
 ```bash
+# Debian
 apt install zsh
 ```
-
-Centos
-
 ```bash
+# Centos
 yum install -y zsh
 ```
-
-Arch Linux
-
 ```bash
+# Arch Linux
 pacman -S zsh
 ```
-
-Fedora
-
 ```bash
+# Fedora
 dnf install zsh
 ```
 
@@ -70,19 +62,24 @@ chsh -s /bin/zsh
 
 ```bash
 echo $SHELL
+zsh
 ```
 
 检查是否设置成功。
 
 ## oh-my-zsh
 
-oh-my-zsh 是zsh 用于管理配置的轻量级框架。下面将用它快速配置 zsh。
+[oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh) 是用于管理 zsh 配置的轻量级框架，具有开箱即用的特点，而且它提供了大量内置插件。让我们用它快速配置 zsh 吧！
 
 安装命令如下：
 
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
+
+安装后，就已经有一些默认效果，如命令行提示符的主题变化。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-01.png)
 
 ### 主题
 
@@ -94,9 +91,9 @@ oh-my-zsh 提供了许多内置主题，查看 [themes](https://github.com/ohmyz
 ZSH_THEME="agnoster"`
 ```
 
-执行 `source ~/.zshrc` 生效，查看效果。
+执行 `source ~/.zshrc` 生效，查看主题效果。
 
-配置插件
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-02.png)
 
 ### 内置插件
 
@@ -104,15 +101,31 @@ oh-my-zsh 提供的所有内置插件，都可以在仓库 https://github.com/oh
 
 本教程将要介绍的插件如下：
 
-- git，内置插件
-- web-search，搜索引擎搜索；
-- jsontools，用于处理 json 数据；
-- z，目录快速跳转；
-- vi-mode，使用 vi 模式编辑命令行；
+- [git](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git)，内置插件
+- [web-search](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search)，搜索引擎搜索；
+- [jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools)，用于处理 json 数据；
+- [z](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z)，目录快速跳转；
+- [vi-mode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode)，使用 vi 模式编辑命令行；
 
 **git**
 
-提供了 git 命令的大量别名，查看[git 插件文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
+这个插件提供了 git 命令的大量别名，查看[git 插件文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
+
+如一些常用命令的别名：
+
+cmd           | alias
+------------- | ------------
+git clone     | gcl
+git status    | gst
+git commit    | gc
+git add       | ga
+git add --all | gaa
+git diff      | gd
+git push      | gp
+git pull      | gl
+
+更多命令，可自行查看[文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
+
 
 **web-search**
 
