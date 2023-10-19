@@ -237,3 +237,5 @@ bindkey '^_' autosuggest-accept
 ## 总结
 
 本教程主要介绍了 zsh 的安装，以及常用主题和插件的配置，其中介绍的 7 个插件，希望能给大家的日常工作提供一定的帮助。
+
+我的博文：[我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
