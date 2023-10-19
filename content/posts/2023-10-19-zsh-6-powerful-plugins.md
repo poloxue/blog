@@ -72,53 +72,77 @@ plugins=(... copypath copyfile copybuffer sudo ...)
 
 要通过 CTRL+o 快捷键实现命令行内容的拷贝。
 
-> 注意：测试的时候，发现与 vi-mode 存在冲突，不过 vi-mode 已经可使用 yy，无续开启个插件；
+特别说明，我在测试的时候，发现 copybuffer 与 vi-mode 存在冲突，不过如果启用了 vi-mode， 命令行内容拷贝可直接使用 yy，无续开启 copybuffer；
 
 ## 其他插件
 
 介绍完 oh-my-zsh 的内置插件，继续介绍两个三方插件，分别是 zsh-history-substring-search 和 you-should-use.
 
-### history-substring-search
-
-插件名称为 [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)，用于
-
-下载命令如下：
+将 zsh-history-substring-search 和 zsh-you-should-use 两个插件下载配置。
 
 ```bash
- git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+git clone https://github.com/MichaelAquilina/zsh-you-should-use.git $ZSH_CUSTOM/plugins/you-should-use
 ```
 
-下载完成之后，还将插件的能力配置到指定按键上，即要进行按键的绑定。
+打开 `~/.zshrc` 文件，更新如下内容：
 
-**方向键**
+```zsh
+plugins=(git web-search jsontools z copypath copyfile copybuffer sudo zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search you-should-use)
+```
+
+### history-substring-search
+
+先介绍 [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)。它的主要用途是什么？
+
+一般情况下，在使用 zsh 时，通过 ↑ 或 ↓ 方向键，能实现类似按前缀匹配补齐的效果。
+
+而如果输入的是中间的字符串，则没法补齐。
+
+这个插件真是为这个目的而生的。
+
+使用这个插件前，除了启用插件以外，还需要进一步配置下，将 zsh-history-substring-search 提供的能力绑定到特定按键上。例如，↑ 和 ↓ 键。
 
 ```zsh
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 ```
 
-**CTRL+P/N**
+在生效配置后，测试失败的话，查看文档，其中有介绍：
+
+```zsh
+However, if the observed values don't work, you can try using terminfo:
+
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+```
+
+那我们就增加这两行配置吧。
+
+```zsh
+bindkey "$terminfo[kcuu1]" history-substring-search-up
+bindkey "$terminfo[kcud1]" history-substring-search-down
+```
+
+除了 ↑ ↓ 按键外，我一般还习惯使用 CTRL+P/N 上下查找历史记录，配置如下：
 
 ```zsh
 bindkey '^p' history-substring-search-up
 bindkey '^n' history-substring-search-down
 ```
 
-**Vi 模式**
+如果希望支持 vi 的 jk，配置如下：
+
 ```zsh
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-up
 ```
 
+保存生效配置。让我们测试下最终的成功成果吧。
+
 ### you-should-use
 
 [you-should-use](https://github.com/MichaelAquilina/zsh-you-should-use) 用途是，如果执行的命令存在别名，会自动提示推荐使用的别名；
-
-下载命令：
-
-```bash
-git clone https://github.com/MichaelAquilina/zsh-you-should-use.git $ZSH_CUSTOM/plugins/you-should-use
-```
 
 由于，默认的提示信息在命令输出之前，可通过 export YSU_MESSAGE_POSITION="after" 配置提示信息在命令最后输出。
 
