@@ -171,7 +171,9 @@ git pull      | gl
 
 将介绍 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。
 
-我们提前将这两个全部安装完成。
+让我们提前将这两个全部安装完成。
+
+下载命令如下所示：
 
 ```zsh
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
