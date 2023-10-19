@@ -1,5 +1,5 @@
 ---
-title: "介绍 6 个强大的 zsh 插件"
+title: "我的终端环境：6 个强大的 zsh 插件"
 date: "2023-10-18T18:36:55+08:00"
 draft: false
 comment: true

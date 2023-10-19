@@ -1,10 +1,12 @@
 ---
-title: "我的开发环境：iTerm2 终端的安装与体验"
+title: "我的终端环境：iTerm2 的安装与体验"
 date: "2023-09-28T19:23:22+08:00"
 draft: false
 comment: true
 tags: ["zsh", "iterm2"]
 ---
+
+{{< video bb_id=619786097 yt_id=JARMWmpqDp8 >}}
 
 本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
 
