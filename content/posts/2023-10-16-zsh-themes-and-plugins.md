@@ -108,7 +108,7 @@ ZSH_THEME="random"
 
 ### 内置插件
 
-oh-my-zsh 提供的所有内置插件，都可以在仓库 https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins 找到。
+oh-my-zsh 提供的所有内置插件，都可以在仓库 [ohmyzsh/ohmyzsh/plugins](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)  中找到。
 
 本教程将要介绍的插件如下：
 
