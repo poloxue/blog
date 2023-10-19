@@ -145,6 +145,8 @@ git pull      | gl
 
 常见的搜索引擎基本都是支持的，诸如 google, bing, baidu, 甚至是 github 等。
 
+这个插件一般我很少用，因为我已经安装了另外一个工具 alfred（用于替代 mac 默认的 spotlight），通常都是通过它直接启动搜索，。
+
 #### 插件 3 - jsontools
 
 [jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) 提供了一些用于操作 json 数据的命令，如:
