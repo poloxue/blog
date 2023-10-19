@@ -1,7 +1,7 @@
 ---
 title: "我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件"
 date: "2023-10-16T15:00:06+08:00"
-draft: true
+draft: false
 comment: true
 tags: ["zsh"]
 ---
@@ -152,4 +152,6 @@ zsh-autosuggestions 用于提示补全建议，当输入字符后，它会自动
 bindkey '^_' autosuggest-accept
 ```
 
+## 总结
 
+本教程主要介绍了 zsh 的安装，以及常用主题和插件的配置，其中介绍的 7 个插件，希望能给大家的日常工作提供一定的帮助。
