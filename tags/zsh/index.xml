@@ -10,8 +10,8 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
 1 plugins=(... copypath copyfile copybuffer sudo ...) 保存退出，执行 source ~/.zshrc 生效。
 copypath 插件 copypath 的用途如其名，就是用来 copy 路径的。</description></item><item><title>我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
-前言 为什么使用 zsh？zsh vs bash 的一些优势，如下所示：
-zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；
+为什么使用 zsh？ zsh vs bash 的一些优势，如下所示：
+zsh 的补全能力强大，bash 的 Tab 补全从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可匹配 mnt 和 findmn；
 zsh 的命令行历史是在 terminal 间共享，结合自动补全，进一步增强了用户体验；
 zsh 还提供自动纠错能力，如果你输入太快，它能智能给你一个可能正确的建议；
 zsh 的配置能力更强，支持构建更精美的提示主题；
