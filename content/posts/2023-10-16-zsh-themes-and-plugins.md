@@ -30,7 +30,6 @@ tags: ["zsh"]
 
 不同系统的安装命令如下： 
 
-
 ```bash
 # MacOS 系统
 brew install zsh
@@ -95,9 +94,21 @@ ZSH_THEME="agnoster"`
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-02.png)
 
+另外，oh-my-zsh 还提供了 random 主题，它会在 oh-my-zsh 内置主题中随机选择主题展示。
+
+编辑 `~/.zshrc`，配置如下：
+
+```bash
+ZSH_THEME="random"
+```
+
+演示效果，如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-03.gif)
+
 ### 内置插件
 
-oh-my-zsh 提供的所有内置插件，都可以在仓库 https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins 发现。
+oh-my-zsh 提供的所有内置插件，都可以在仓库 https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins 找到。
 
 本教程将要介绍的插件如下：
 
@@ -107,7 +118,7 @@ oh-my-zsh 提供的所有内置插件，都可以在仓库 https://github.com/oh
 - [z](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z)，目录快速跳转；
 - [vi-mode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode)，使用 vi 模式编辑命令行；
 
-**git**
+#### 插件 1 - git
 
 这个插件提供了 git 命令的大量别名，查看[git 插件文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
 
@@ -126,20 +137,23 @@ git pull      | gl
 
 更多命令，可自行查看[文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
 
+#### 插件 2 - web-search
 
-**web-search**
+[web-search](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search/) 提供在终端直接搜索信息能力，将自动跳转浏览器，到指定的搜索引擎执行搜索请求。
 
-在终端进行信息搜索，将自动跳转到 search engine 完成搜索请求。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-04.gif)
 
-**jsontools**
+常见的搜索引擎基本都是支持的，诸如 google, bing, baidu, 甚至是 github 等。
 
-提供了一些用于操作 json 数据的命令，如 pp_json 格式化 json，
+#### 插件 3 - jsontools
 
-**z**
+[jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) 提供了一些用于操作 json 数据的命令，如 pp_json 格式化 json，is_json 判断输入数据是否是 is_json。
+
+#### 插件 4 - z
 
 用于快捷的目标跳转，我觉得大部分人在使用 Linux 都被它的目录跳转烦恼过。z 就是这个烦恼的救星。
 
-**vi-mode**
+#### 插件 5 - vi-mode
 
 支持在命令开启 vi 模式进行命令行编辑。视个人情况，是否使用吧。如果你是一个 vi 忠实用户，建议开启这个插件。否则，还是简单最好。
 
@@ -162,11 +176,11 @@ plugins=(git web-search jsontools z vi-mode zsh-syntax-highlighting zsh-autosugg
 
 记得执行 `source ~/.zshrc` 生效配置。
 
-**zsh-syntax-highlighting**
+#### 插件 6 - zsh-syntax-highlighting
 
 zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或存在明显的错误，将会自动以红色表示。
 
-**zsh-autosuggestions**
+#### 插件 7 - zsh-autosuggestions
 
 zsh-autosuggestions 用于提示补全建议，当输入字符后，它会自动给我们一些建议。输入 -> 右方向键可将建议直接输入终端。
 
