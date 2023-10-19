@@ -6,7 +6,7 @@ comment: true
 tags: ["zsh", "iterm2"]
 ---
 
-{{< video bb_id=619786097 yt_id=JARMWmpqDp8 >}}
+{{< video bb_id=619786097 yt_id=vNX_sReGZ5E >}}
 
 本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
 
