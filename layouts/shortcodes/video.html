@@ -1,8 +1,7 @@
 {{- $bb_id := .Get "bb_id" | default (.Get 0) -}}
 {{- $yt_id := .Get "yt_id" | default (.Get 0) -}}
 {{- $container_id := print "video-" now.Unix }}
-<div id="{{ $container_id }}" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-</div>
+<div id="{{ $container_id }}" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"></div>
 <script>
   var r = new XMLHttpRequest();
   r.addEventListener('load', function () {
