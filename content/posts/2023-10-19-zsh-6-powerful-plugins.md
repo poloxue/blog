@@ -140,7 +140,13 @@ bindkey -M vicmd 'j' history-substring-search-up
 
 [you-should-use](https://github.com/MichaelAquilina/zsh-you-should-use) 用途是，如果执行的命令存在别名，会自动提示推荐使用的别名；
 
-由于，默认的提示信息在命令输出之前，可通过 export YSU_MESSAGE_POSITION="after" 配置提示信息在命令最后输出。
+由于，默认的提示信息在命令输出之前，添加如下配置：
+
+```bash
+export YSU_MESSAGE_POSITION="after"
+```
+
+它的作用是，实现将提示信息打印在命令输出的最后。
 
 ## 总结
 
