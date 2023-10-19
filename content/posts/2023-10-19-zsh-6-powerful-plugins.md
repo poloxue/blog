@@ -6,7 +6,7 @@ comment: true
 tags: ["zsh"]
 ---
 
-今天，将会在上一个教程的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
+今天，将会在 [上篇教程](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/) 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
 
 ## 快速一览
 
@@ -23,9 +23,7 @@ tags: ["zsh"]
 
 ## 推荐一个网站
 
-首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins。
-
-直接通过浏览器打开地址 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
+首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
 
 框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
 
