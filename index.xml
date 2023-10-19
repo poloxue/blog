@@ -7,10 +7,9 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
 下面正式开始今天的内容。
 推荐插件 先说 oh-my-zsh 的内置插件。
-打开 zsh 配置文件 ~/.zshrc 文件，将要使用的 oh-my-zsh 的插件提前全部配置。
-1 plugins=(... copypath copyfile copybuffer sudo ...) 保存退出。
-copypath 插件 copypath 的用途如其名，就是用来 copy 路径的。
-两种用法：</description></item><item><title>我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
+打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
+1 plugins=(... copypath copyfile copybuffer sudo ...) 保存退出，执行 source ~/.zshrc 生效。
+copypath 插件 copypath 的用途如其名，就是用来 copy 路径的。</description></item><item><title>我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
 前言 为什么使用 zsh？zsh vs bash 的一些优势，如下所示：
 zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；
 zsh 的命令行历史是在 terminal 间共享，结合自动补全，进一步增强了用户体验；
