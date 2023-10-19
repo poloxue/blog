@@ -108,12 +108,10 @@ bindkey '^[[B' history-substring-search-down
 
 在生效配置后，测试失败的话，查看文档，其中有介绍：
 
-```zsh
-However, if the observed values don't work, you can try using terminfo:
-
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
-```
+> However, if the observed values don't work, you can try using terminfo:
+>
+> bindkey "$terminfo[kcuu1]" history-substring-search-up
+> bindkey "$terminfo[kcud1]" history-substring-search-down
 
 那我们就增加这两行配置吧。
 
