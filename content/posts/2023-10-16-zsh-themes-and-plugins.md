@@ -158,8 +158,27 @@ git pull      | gl
 
 #### 插件 4 - z
 
+[z 插件](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z) 可用于快速的目录跳转，我觉得大部分人在使用 Linux 都被它的目录跳转烦恼过。z 就是这个烦恼的救星。
 
-用于快捷的目标跳转，我觉得大部分人在使用 Linux 都被它的目录跳转烦恼过。z 就是这个烦恼的救星。
+想查看更多信息可找 [z 原仓库](https://github.com/agkozak/zsh-z) 查看。
+
+介绍它的用法：
+
+1. 输入 z，紧跟 tab 键，会直接列出访问过的目录，效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-06.gif)
+
+2. 输入 z blog，紧跟 tab 键，会直接列出访问过包含 blog 的目录，效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-07.gif)
+
+3. 输入 z tmux，因为包含 tmux 的目录只有一个，直接选中，效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-08.gif)
+
+4. 输入 z tmux，直接 Enter 确认，进入到目录，效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-09.gif)
 
 #### 插件 5 - vi-mode
 
