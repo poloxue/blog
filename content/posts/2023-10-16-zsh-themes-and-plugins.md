@@ -10,11 +10,11 @@ tags: ["zsh"]
 
 本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
 
-## 前言
+## 为什么使用 zsh？
 
-为什么使用 zsh？zsh vs bash 的一些优势，如下所示：
+zsh vs bash 的一些优势，如下所示：
 
-- zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn； 
+- zsh 的补全能力强大，bash 的 Tab 补全从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可匹配 mnt 和 findmn； 
 
 - zsh 的命令行历史是在 terminal 间共享，结合自动补全，进一步增强了用户体验；
 - zsh 还提供自动纠错能力，如果你输入太快，它能智能给你一个可能正确的建议；
@@ -211,9 +211,21 @@ plugins=(git web-search jsontools z vi-mode zsh-syntax-highlighting zsh-autosugg
 
 zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或存在明显的错误，将会自动以红色表示。
 
+演示效果，如下所示：
+
+错误命令提示
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-10.gif)
+
+正确命令提示
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-11.gif)
+
 #### 插件 7 - zsh-autosuggestions
 
 zsh-autosuggestions 用于提示补全建议，当输入字符后，它会自动给我们一些建议。输入 -> 右方向键可将建议直接输入终端。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-12.gif)
 
 如果希望改变接受建议的默认按键，可通过类似如下配置实现：
 
