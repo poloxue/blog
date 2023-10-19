@@ -227,7 +227,7 @@ zsh-autosuggestions 用于提示补全建议，当输入字符后，它会自动
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-12.gif)
 
-如果希望改变接受建议的默认按键，可通过类似如下配置实现：
+如果想改变接受建议的默认按键，例如，希望通过输入 `Ctrl + /` 接受建议，配置实现，如下所示：
 
 ```
 # <Ctrl+/> 接受 auto-suggestion 的补全建议
