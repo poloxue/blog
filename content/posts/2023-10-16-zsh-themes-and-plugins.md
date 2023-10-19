@@ -10,6 +10,18 @@ tags: ["zsh"]
 
 本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
 
+## 前言
+
+为什么使用 zsh？zsh vs bash 的一些优势，如下所示：
+
+- zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn； 
+
+- zsh 的命令行历史是在 terminal 间共享，结合自动补全，进一步增强了用户体验；
+- zsh 还提供自动纠错能力，如果你输入太快，它能智能给你一个可能正确的建议；
+- zsh 的配置能力更强，支持构建更精美的提示主题；
+- zsh 参数的扩展能力比 Bash 更强大；
+- zsh 有大量插件、主题、框架，如 oh-my-zsh 框架，能助你快速配置出一个强大终端；
+
 ## 安装
 
 对于 macOS 用户，zsh 从 2019 已经是默认 shell，无需安装。该步骤可省略。推荐阅读：[What is Zsh? Should You Use it?](https://linuxhandbook.com/why-zsh/#:~:text=Zsh%20is%20more%20powerful%20and,more%20advanced%20features%20shipped%20in.)介绍了为什么推荐使用 zsh，以及为什么从 2019 macOS 将默认的 shell 从 bash 切换到 zsh。
