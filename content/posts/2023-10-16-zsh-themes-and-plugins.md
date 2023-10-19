@@ -182,13 +182,15 @@ git pull      | gl
 
 #### 插件 5 - vi-mode
 
-支持在命令开启 vi 模式进行命令行编辑。视个人情况，是否使用吧。如果你是一个 vi 忠实用户，建议开启这个插件。否则，还是简单最好。
+[vi-mode 插件](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode) 支持在命令行开启 vi 模式，利用 vi 键进行命令行编辑。这个插件，视个人情况，是否使用吧。如果你是一个 vi 忠实用户，可考虑开启。否则，还是简单最好，否则容易影响心情。
+
+这个插件就不多介绍了，更多查看 [它的文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode)。
 
 ### 三方插件
 
-将介绍 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。
+将介绍 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。之前的演示，我其实已经把这个插件已经开启了。
 
-让我们提前将这两个全部安装完成。
+开始介绍前，让我们先将这两个插件全部安装配置完成。
 
 下载命令如下所示：
 
