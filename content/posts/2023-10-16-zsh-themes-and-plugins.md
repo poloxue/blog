@@ -147,9 +147,17 @@ git pull      | gl
 
 #### 插件 3 - jsontools
 
-[jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) 提供了一些用于操作 json 数据的命令，如 pp_json 格式化 json，is_json 判断输入数据是否是 is_json。
+[jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) 提供了一些用于操作 json 数据的命令，如:
+
+- pp_json 格式化 json；
+- is_json 判断是否是 json；
+
+演示效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-05.gif)
 
 #### 插件 4 - z
+
 
 用于快捷的目标跳转，我觉得大部分人在使用 Linux 都被它的目录跳转烦恼过。z 就是这个烦恼的救星。
 
@@ -157,7 +165,7 @@ git pull      | gl
 
 支持在命令开启 vi 模式进行命令行编辑。视个人情况，是否使用吧。如果你是一个 vi 忠实用户，建议开启这个插件。否则，还是简单最好。
 
-### 三方插件：
+### 三方插件
 
 将介绍 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。
 
