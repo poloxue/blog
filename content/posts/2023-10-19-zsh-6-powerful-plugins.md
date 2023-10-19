@@ -37,13 +37,13 @@ tags: ["zsh"]
 
 先说 oh-my-zsh 的内置插件。
 
-打开 zsh 配置文件 ~/.zshrc 文件，将要使用的 oh-my-zsh 的插件提前全部配置。
+打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
 
 ```bash
 plugins=(... copypath copyfile copybuffer sudo ...)
 ```
 
-保存退出。
+保存退出，执行 `source ~/.zshrc 生效`。
 
 ### copypath 插件
 
