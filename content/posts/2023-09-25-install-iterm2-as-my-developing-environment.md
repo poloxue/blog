@@ -4,6 +4,7 @@ date: "2023-09-28T19:23:22+08:00"
 draft: false
 comment: true
 tags: ["zsh", "iterm2"]
+description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境"
 ---
 
 {{< video bb_id=619786097 yt_id=vNX_sReGZ5E >}}

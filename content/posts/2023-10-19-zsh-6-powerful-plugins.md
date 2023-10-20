@@ -4,6 +4,7 @@ date: "2023-10-18T18:36:55+08:00"
 draft: false
 comment: true
 tags: ["zsh"]
+description: "今天，将会在上篇教程的基础上，再介绍 6 个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。"
 ---
 
 {{< video bb_id=322450976 yt_id=RSaiddMI6Ns >}}

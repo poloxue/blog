@@ -4,6 +4,7 @@ date: "2023-10-16T15:00:06+08:00"
 draft: false
 comment: true
 tags: ["zsh"]
+description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件"
 ---
 
 {{< video bb_id=619786097 yt_id=1zJcH4hZW4o >}}
