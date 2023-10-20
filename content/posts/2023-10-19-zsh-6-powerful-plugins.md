@@ -6,6 +6,8 @@ comment: true
 tags: ["zsh"]
 ---
 
+{{< video bb_id=322450976 yt_id=RSaiddMI6Ns >}}
+
 今天，将会在 [上篇教程](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/) 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
 
 ## 快速一览
