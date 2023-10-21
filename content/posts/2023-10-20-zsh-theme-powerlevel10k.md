@@ -122,7 +122,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ## 配置文件
 
-通过 powerlevel10k 的配置导航能快速自定义主题风格，但如想更细粒度的配置，可通过 `$HOME/.p10k.zsh` 配置。
+通过 powerlevel10k 的配置导航能快速自定义提示符的主题风格，但如想更细粒度的配置，可直接在 `$HOME/.p10k.zsh` 配置，配置导航只是最粗粒度的配置方式。
 
 如配置提示符两侧内容，通过 `~/.p10k.sh` 中的变量 `POWERLEVEL9K_LEFT_PROMPT_ELEMENTS` 和 `POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS` 设置。
 
