@@ -18,9 +18,9 @@ description: "今天，将会在上篇教程的基础上，再介绍 6 个插件
 - copypath，拷贝路径；
 - copyfile，拷贝文件内容；
 - copybuffer，拷贝命令行内容；
-- sudo，快捷 sudo
+- sudo，快捷 sudo，命令行快捷添加 sudo 插件；
 - zsh-history-substring-search，命令历史记录子字符串匹配；
-- zsh-you-should-use，命令别名提醒；
+- zsh-you-should-use，用于命令行 alias 别名提醒；
 
 让我们正式开始。
 
@@ -33,8 +33,6 @@ description: "今天，将会在上篇教程的基础上，再介绍 6 个插件
 插件，上个视频介绍过的两个插件，zsh-syntax-highlighting - 命令行语法高亮插件, zsh-autosugggestions - 命令行自动建议提示插件，在这个文档里面都能找到。
 
 主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
-
-下面正式开始今天的内容。
 
 ## 推荐插件
 
@@ -52,18 +50,36 @@ plugins=(... copypath copyfile copybuffer sudo ...)
 
 [copypath](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath) 的用途如其名，就是用来 copy 路径的。
 
-两种用法：
+支持两种用法。
 
-- copypath: 无参数，直接拷贝当前路径；
-- copypath <文件或目录>：拷贝指定文件或目录的绝对路径；
+copypath: 无参数，直接拷贝当前路径；
 
-相比于 `pwd` 之后再拷贝，真的是省心省力的方式。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-01.gif)
+
+copypath <文件或目录>：拷贝指定文件或目录的绝对路径；
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-02.gif)
+
+相比于 `pwd` 之后再拷贝，这种方式真的是省心省力的方式。
 
 ### copyfile
 
-[copyfile](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile)，用于拷贝文件内容，命令格式 copyfile <文件路径>
+[copyfile](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile)，用于拷贝文件内容，命令格式 copyfile <文件路径>。
+
+假设，现有一个文件 test.txt。
+
+```bash
+cat test.txt
+Hello oh my zsh
+```
 
 一个测试命令，`copyfile test.txt`，即可将 `test.txt` 文件中的内容拷贝到剪贴板中。
+
+效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-03.gif)
+
+无需鼠标选中复制粘贴。
 
 ### copybuffer
 
@@ -71,7 +87,7 @@ plugins=(... copypath copyfile copybuffer sudo ...)
 
 如何使用呢？
 
-要通过 CTRL+o 快捷键实现命令行内容的拷贝。
+它不同于前面两个快捷键，要通过 CTRL+o 快捷键拷贝命令行内容。
 
 特别说明，我在测试的时候，发现 copybuffer 与 vi-mode 存在冲突，不过如果启用了 vi-mode， 命令行内容拷贝可直接使用 yy，无续开启 copybuffer；
 
@@ -89,7 +105,7 @@ git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM
 打开 `~/.zshrc` 文件，更新如下内容：
 
 ```zsh
-plugins=(git web-search jsontools z copypath copyfile copybuffer sudo zsh-autosuggestions zsh-syntax-highlighting zsh-history-substring-search you-should-use)
+plugins=(... zsh-history-substring-search you-should-use)
 ```
 
 ### history-substring-search
@@ -98,11 +114,11 @@ plugins=(git web-search jsontools z copypath copyfile copybuffer sudo zsh-autosu
 
 一般情况下，在使用 zsh 时，通过 ↑ 或 ↓ 方向键，能实现类似按前缀匹配补齐的效果。
 
-而如果输入的是中间的字符串，则没法补齐。
+而如果输入的是中间的字符串，则没法自动补齐。这个插件真是为这个目的而生的。
 
-这个插件真是为这个目的而生的。
+使用这个插件前，除了启用插件以外，还需要进一步配置下，将 zsh-history-substring-search 提供的能力绑定到快捷按键。
 
-使用这个插件前，除了启用插件以外，还需要进一步配置下，将 zsh-history-substring-search 提供的能力绑定到特定按键上。例如，↑ 和 ↓ 键。
+例如，上下方向键 ↑ 和 ↓。
 
 ```zsh
 bindkey '^[[A' history-substring-search-up
@@ -137,7 +153,9 @@ bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-up
 ```
 
-保存生效配置。让我们测试下最终的成功成果吧。
+保存生效配置，测试下最终的成功成果吧。效果如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-04.gif)
 
 ### you-should-use
 
@@ -150,6 +168,10 @@ export YSU_MESSAGE_POSITION="after"
 ```
 
 它的作用是，实现将提示信息打印在命令输出的最后。
+
+最终效果演示，如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-05.gif)
 
 ## 总结
 

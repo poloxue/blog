@@ -4,6 +4,10 @@ title = "POLOXUE's BLOG"
 theme = "ink-free"
 copyright = "Polo Xue All rights reserved"
 
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  course = "courses"
 
 [params]
   author = "POLO XUE"
@@ -13,7 +17,7 @@ copyright = "Polo Xue All rights reserved"
   toc = "floating"
   wpm = 250
   maxTags = 7
-	mode = "auto"
+	mode = "dark"
 
 [menu]
   [[menu.main]]
@@ -32,10 +36,15 @@ copyright = "Polo Xue All rights reserved"
     url = "/tags"
     weight = 2
   [[menu.main]]
+    identifier = "courses"
+    name = "COURSES"
+    url = "/courses"
+    weight = 4
+  [[menu.main]]
     identifier = "about"
     name = "ABOUT"
     url = "/about/"
-    weight = 4
+    weight = 5
 
 [[params.social]]
 name = "Github"
