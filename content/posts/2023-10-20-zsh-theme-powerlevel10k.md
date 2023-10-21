@@ -66,11 +66,11 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 进入到正式阶段，按步骤配置自己的提示符风格，下面一共 12 步，都是非常简单的回答问题。考虑到第一次配置，有懵逼的可能性，我把全部的步骤都列出来了。
 
-1. 选择提示符风格，分别是 Lean、Classic、Rainbow 和 Pure。我选风格 3，大众所爱的风格，彩虹 Rainbow，则输入 3。如下所示：
+1. 选择提示符风格，分别是 Lean、Classic、Rainbow 和 Pure。我选风格 3，大众所爱的风格，彩虹 Rainbow，则输入 3。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-01.png)
 
-2. 字符集设置，毫无疑问，配置 unicode，选择 1，如下所示。
+2. 字符集设置，毫无疑问，配置 unicode，选择 1。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-02.png)
 
@@ -114,7 +114,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-12.png)
 
-到此基本全部的配置都已经完成，命令行提示符效果，如下所示：
+到此基本全部的配置都已经完成，powerlevel10k 命令行提示符的最终效果，如下所示：
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-13.png)
 
