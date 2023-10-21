@@ -21,6 +21,13 @@ iTerm2 相较于 Terminal 的优势功能，如分屏能力、主题配置、便
 
 推荐阅读 [Terminal vs iTerm2: Comparing Two CLI Tools on macOS](https://techwiser.com/terminal-vs-iterm2-comparison/#:~:text=1.-,Multiple%20Panes,panes%2C%20in%20the%20same%20window.)
 
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+
 接下来，开始进入安装使用流程。
 
 ## 下载安装

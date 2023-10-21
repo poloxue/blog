@@ -15,6 +15,13 @@ Powerlevel10 是一款 zsh 的主题，它强调性能、灵活性和开箱即�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-13.png)
 
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+
 ## NerdFont 字体安装
 
 安装 powerlevel10k 前，先安装它依赖的字体：[NerdFont 文档](https://github.com/ryanoasis/nerd-fonts#font-installation)。不同系统的安装方法，可查看[它的文档](https://github.com/ryanoasis/nerd-fonts#font-installation)。
