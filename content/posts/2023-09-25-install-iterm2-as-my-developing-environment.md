@@ -119,9 +119,11 @@ open /tmp/{name}.itermcolors
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-25-install-iterm2-as-my-developing-environment-06.png)
 
+我的 zsh 主题使用的是 powerlevel10k。它的安装教程，会在单独一篇：[我的终端环境：zsh 主题 powerlevel10k 与众不同](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/) 介绍我的常用插件时介绍。
+
 ## 最后
 
 本文重点介绍了 iTerm2 的安装、颜色面板的配置，还有体验其核心的能力。
 
-进一步学习 zsh 配置与插件安装，请阅读：[我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)。这是我之前的一篇翻译文，我觉得挺符合这个系列的下一篇，没必要再写一篇。我的 zsh 主题使用的是 powerlevel10k。它的安装教程，会在单独一篇介绍我的常用插件时介绍。
+进一步学习 zsh 配置与插件安装，请阅读：[我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)。
 
