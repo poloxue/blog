@@ -81,7 +81,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-02.png)
 
-3. 提示符显示当前时间风格。我选择 1，只显示命令耗时。
+3. 提示符显示当前时间风格。我选择 1，只显示命令耗时，不显示当前时间。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-20-zsh-theme-powerlevel10k-03.png)
 
