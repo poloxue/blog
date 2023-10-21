@@ -126,7 +126,7 @@ open /tmp/{name}.itermcolors
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-09-25-install-iterm2-as-my-developing-environment-06.png)
 
-我的 zsh 主题使用的是 powerlevel10k。它的安装教程，会在单独一篇：[我的终端环境：zsh 主题 powerlevel10k 与众不同](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/) 介绍我的常用插件时介绍。
+我的 zsh 主题使用的是 powerlevel10k。它的安装教程，会在单独一篇文章 [我的终端环境：与众不同的 zsh 主题 powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/) 中介绍。
 
 ## 最后
 
