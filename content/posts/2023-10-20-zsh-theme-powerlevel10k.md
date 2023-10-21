@@ -24,7 +24,7 @@ Powerlevel10 是一款 zsh 的主题，它强调性能、灵活性和开箱即�
 
 ## NerdFont 字体安装
 
-安装 powerlevel10k 前，先安装它依赖的字体：[NerdFont 文档](https://github.com/ryanoasis/nerd-fonts#font-installation)。不同系统的安装方法，可查看[它的文档](https://github.com/ryanoasis/nerd-fonts#font-installation)。
+安装 powerlevel10k 前，先安装它依赖的字体：[NerdFont](https://github.com/ryanoasis/nerd-fonts#font-installation)。不同系统的安装方法，可查看[它的文档](https://github.com/ryanoasis/nerd-fonts#font-installation)。
 
 MacOS 的话，可直接通过 Homebrew 快速安装：
 
