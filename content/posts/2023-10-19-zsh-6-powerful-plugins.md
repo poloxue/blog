@@ -175,7 +175,7 @@ export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=(bg=none,fg=magenta,bold)
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-07.png)
 
-如上 zsh 的颜色变量，可查看 [zsh 仓库文档](https://github.com/zsh-users/zsh/blob/master/Functions/Misc/colors) 发现更多颜色。
+如上的 zsh 的颜色变量，可查看 [zsh 仓库文档](https://github.com/zsh-users/zsh/blob/master/Functions/Misc/colors) 发现更多颜色。
 
 ### you-should-use
 
