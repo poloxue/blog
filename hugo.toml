@@ -12,7 +12,7 @@ copyright = "Polo Xue All rights reserved"
 [params]
   author = "POLO XUE"
   email = "poloxue123@gmail.com"
-  avatar = "/avatar.webp"
+  avatar = "/avatar.png"
   description = "技术生活随笔记录"
   toc = "floating"
   wpm = 250
