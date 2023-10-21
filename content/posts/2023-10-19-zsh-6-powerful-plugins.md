@@ -91,6 +91,14 @@ Hello oh my zsh
 
 特别说明，我在测试的时候，发现 copybuffer 与 vi-mode 存在冲突，不过如果启用了 vi-mode， 命令行内容拷贝可直接使用 yy，无续开启 copybuffer；
 
+### sudo 
+
+sudo 的主要作用是，当我们输入某个命令，如 vim /etc/zshrc，发现没有系统权限，利用 sudo 插件，可快速将 sudo 作为前缀添加到命令最前面。
+
+演示效果如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-06.gif)
+
 ## 其他插件
 
 介绍完 oh-my-zsh 的内置插件，继续介绍两个三方插件，分别是 zsh-history-substring-search 和 you-should-use.
