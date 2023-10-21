@@ -1,5 +1,5 @@
 ---
-title: '我的终端环境：zsh 主题 powerlevel10k 与众不同'
+title: '我的终端环境：与众不同的 zsh 主题 - powerlevel10k'
 date: "2023-10-20T10:25:36+08:00"
 draft: false
 comment: true
@@ -166,4 +166,4 @@ typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=always
 
 最后，如果希望你命令行提示能给你提供更多信息，请安装 powerlevel10k！
 
-我的博文：[我的终端环境：zsh 主题 powerlevel10k 与众不同](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+我的博文：[我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
