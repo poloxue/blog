@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iTerm2 on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/iterm2/</link><description>Recent content in iTerm2 on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 28 Sep 2023 19:23:22 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/iterm2/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：iTerm2 的安装与体验</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
-本文是搭建我的开发环境系列中的第一篇，非常短小，将介绍如何安装与配置 iTerm2，安装成功后，即可阅读下一篇 从 0 开始：教你如何配置 zsh。
+本文是搭建我的开发环境系列中的第一篇，非常短小，将介绍如何安装与配置 iTerm2，安装成功后，即可阅读下一篇 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件。
 前言介绍 首先，iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。我每次拿到电脑，或者因为某种原因重装了电脑系统后，首先要做的就是下载 iTerm2 以替换默认的终端 terminal。
 iTerm2 相较于 Terminal 的优势功能，如分屏能力、主题配置、便利的搜索。另外，iTerm2 与 zsh 相结合体验更佳。
 推荐阅读 Terminal vs iTerm2: Comparing Two CLI Tools on macOS
