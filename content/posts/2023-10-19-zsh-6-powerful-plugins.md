@@ -165,6 +165,18 @@ bindkey -M vicmd 'j' history-substring-search-up
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-04.gif)
 
+另外，高亮样色可配置化的，可通过类似如下语法实现：
+
+```
+export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=(bg=none,fg=magenta,bold)
+```
+
+设置 background 为 none，即无色，而 front 设置为 magenta,bold。效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-07.png)
+
+如上 zsh 的颜色变量，可查看 [zsh 仓库文档](https://github.com/zsh-users/zsh/blob/master/Functions/Misc/colors) 发现更多颜色。
+
 ### you-should-use
 
 [you-should-use](https://github.com/MichaelAquilina/zsh-you-should-use) 用途是，如果执行的命令存在别名，会自动提示推荐使用的别名；
