@@ -4,6 +4,7 @@ date: "2023-10-20T10:25:36+08:00"
 draft: true
 comment: true
 description: "本教程介绍如何安装 zsh 主题 powerlevel10k 的安装与配置。"
+tags: ["zsh"]
 ---
 
 本文介绍 zsh 主题 powerlevel10k 的安装与配置。
