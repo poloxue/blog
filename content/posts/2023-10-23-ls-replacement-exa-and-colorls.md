@@ -1,7 +1,8 @@
 ---
-title: "2023 10 23 Ls Replacement Exa and Colorls"
+title: "我的终端环境：ls 命令替代品 exa 和 colorls"
 date: 2023-10-21T19:01:19+08:00
 draft: true
+description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
 ---
 
 
