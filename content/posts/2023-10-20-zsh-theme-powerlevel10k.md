@@ -1,7 +1,7 @@
 ---
 title: '我的终端环境：zsh 主题 powerlevel10k 安装'
 date: "2023-10-20T10:25:36+08:00"
-draft: true
+draft: false
 comment: true
 description: "本教程介绍如何安装 zsh 主题 powerlevel10k 的安装与配置。"
 tags: ["zsh"]
