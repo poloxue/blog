@@ -1,15 +1,17 @@
 ---
-title: "我的终端环境：ls 命令替代品 exa 和 colorls"
+title: "我的终端环境：酷炫 exa - ls 命令替代品"
 date: 2023-10-21T19:01:19+08:00
 draft: true
+comment: true
 description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
 ---
 
 
-文件列表
+本文介绍 [exa](https://github.com/ogham/exa)，一个用于替代默认 ls 来显示文件列表的命令。
+
+## 安装
 
 - 说明：ls 的替代方案 exa 或 colorls。
-- [exa](https://github.com/ogham/exa):
   - 安装：brew install exa
 - colorls 安装：sudo gem install colorls
 - 替代 ls
@@ -18,6 +20,7 @@ description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
     alias ls=exa --icons
   fi
   ````
+
 - colorls
   ```zsh
   if [ -x "$(command -v colorls)" ]; then
@@ -25,3 +28,7 @@ description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
     alias la="colorls -al"
   fi
   ```
+
+## colorls
+
+
