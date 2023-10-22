@@ -203,7 +203,7 @@ color=(
   08 conceal                28 no-conceal
 # 09 strikethrough        # 29 no-strikethrough
 
-...
+# ...
 
 # Bright color codes (xterm extension)
   90 bright-gray            100 bg-bright-gray
