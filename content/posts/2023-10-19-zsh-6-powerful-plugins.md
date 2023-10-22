@@ -53,7 +53,7 @@ plugins=(... copypath copyfile copybuffer sudo ...)
 
 保存退出，执行 `source ~/.zshrc 生效`。
 
-### copypath 插件
+### copypath
 
 [copypath](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath) 的用途如其名，就是用来 copy 路径的。
 
@@ -202,18 +202,6 @@ color=(
 # 07 standout               27 no-standout
   08 conceal                28 no-conceal
 # 09 strikethrough        # 29 no-strikethrough
-
-# Font selection:
-# 10 font-default
-# 11 font-first
-# 12 font-second
-# 13 font-third
-# 14 font-fourth
-# 15 font-fifth
-# 16 font-sixth
-# 17 font-seventh
-# 18 font-eighth
-# 19 font-ninth
 
 ...
 
