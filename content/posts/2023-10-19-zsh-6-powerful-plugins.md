@@ -215,34 +215,7 @@ color=(
 # 18 font-eighth
 # 19 font-ninth
 
-# Text color codes:
-  30 black                  40 bg-black
-  31 red                    41 bg-red
-  32 green                  42 bg-green
-  33 yellow                 43 bg-yellow
-  34 blue                   44 bg-blue
-  35 magenta                45 bg-magenta
-  36 cyan                   46 bg-cyan
-  37 white                  47 bg-white
-# 38 iso-8613-6           # 48 bg-iso-8613-6
-  39 default                49 bg-default
-
-# Other codes:
-# 50 no-proportional
-# 51 border-rectangle
-# 52 border-circle
-# 53 overline
-# 54 no-border
-# 55 no-overline
-# 56 through 59 reserved
-
-# Ideogram markings:
-# 60 underline-or-right
-# 61 double-underline-or-right
-# 62 overline-or-left
-# 63 double-overline-or-left
-# 64 stress
-# 65 no-ideogram-marking
+...
 
 # Bright color codes (xterm extension)
   90 bright-gray            100 bg-bright-gray
