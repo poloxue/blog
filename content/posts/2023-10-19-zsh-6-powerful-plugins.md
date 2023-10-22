@@ -185,6 +185,36 @@ export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=(bg=none,fg=magenta,bold)
 如上的 zsh 的颜色变量，可查看 [zsh 仓库文档](https://github.com/zsh-users/zsh/blob/master/Functions/Misc/colors) 发现更多颜色。
 
 ```zsh
+color=(
+# Codes listed in this array are from ECMA-48, Section 8.3.117, p. 61.
+# Those that are commented out are not widely supported or aren't closely
+# enough related to color manipulation, but are included for completeness.
+
+# Attribute codes:
+  00 none                 # 20 gothic
+  01 bold                 # 21 double-underline
+  02 faint                  22 normal
+  03 italic                 23 no-italic         # no-gothic
+  04 underline              24 no-underline
+  05 blink                  25 no-blink
+# 06 fast-blink           # 26 proportional
+  07 reverse                27 no-reverse
+# 07 standout               27 no-standout
+  08 conceal                28 no-conceal
+# 09 strikethrough        # 29 no-strikethrough
+
+# Font selection:
+# 10 font-default
+# 11 font-first
+# 12 font-second
+# 13 font-third
+# 14 font-fourth
+# 15 font-fifth
+# 16 font-sixth
+# 17 font-seventh
+# 18 font-eighth
+# 19 font-ninth
+
 # Text color codes:
   30 black                  40 bg-black
   31 red                    41 bg-red
