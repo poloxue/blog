@@ -1,0 +1,4 @@
+{{- $name := .Get "name" | default "" -}}
+{{ if not (eq $name "") }}
+<image src="https://cdn.jsdelivr.net/gh/poloxue/images@latest/{{- $name -}}" />
+{{ end }}
