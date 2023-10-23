@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：Mac 和 Linux 下 7 个效率提升的命令（上）"
+title: "我的终端环境：Mac 和 Linux 下 7 个效率提升的命令（下）"
 date: 2023-10-23T20:13:53+08:00
 draft: true
 comment: true
