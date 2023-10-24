@@ -11,6 +11,8 @@ comment: true
 - 用法：
   - fzf
   - vim `fzf`
+- 别名:
+  - alias cdg='cd_global() {cd $(fd --type directory $1 $2 | fzf)}; cd_global'
 
 [entr][https://github.com/eradman/entr]
 - 说明：用于监听文件改变事件，并运行任意命令。

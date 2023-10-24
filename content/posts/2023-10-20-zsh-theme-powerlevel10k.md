@@ -7,6 +7,8 @@ description: "本教程介绍如何安装 zsh 主题 powerlevel10k 的安装与�
 tags: ["zsh"]
 ---
 
+{{< video bb_id=620048257 yt_id=3FmaWzqtWZ0>}}
+
 本文介绍 zsh 主题 powerlevel10k 的安装与配置。
 
 ## 什么是 powerlevel10k?
