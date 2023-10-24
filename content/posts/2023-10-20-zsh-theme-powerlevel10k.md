@@ -15,7 +15,6 @@ tags: ["zsh"]
 
 Powerlevel10 是一款 zsh 的主题，它强调性能、灵活性和开箱即用。之前，我已经介绍了一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的可配置化能力，同样能配置出覆盖出之前主题的类似效果。
 
-
 {{< image name="2023-10-20-zsh-theme-powerlevel10k-13.png" >}}
 
 > 系列阅读：
