@@ -18,11 +18,11 @@ description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
 - entr，监听文件变化并执行相应的命令；
 - httpie，更加人性化的进行 http 请求；
 
-本文是第一篇，将会先介绍前 4 个命令。
+本文是第一篇，将会先介绍前两个命令，即 exa 和 zoxide。
 
 ## 前言
 
-正式开始前，推荐一个 github 仓库：[modern-unix](https://github.com/ibraheemdev/modern-unix)，其中收录了大量的更具现代风格的命令，可用于替换我们每天在用的一大波老古董命令。
+正式开始前，推荐一个 github 仓库：[modern-unix](https://github.com/ibraheemdev/modern-unix)，其中收录了大量的更具现代风格的命令，可用于替换一直在用的一大波老古董命令。
 
 [exa](https://the.exa.website/)
 - 说明：可用于替换默认 ls 命令，这款在平时工作中使用最多的命令，exa 提供了更加丰富的特性。
@@ -49,61 +49,6 @@ description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
   - cd ~/Code/golang-microservices
   - cdi golang
   - cd golang + <space+tab>
-
-[fd](https://github.com/sharkdp/fd)
-- 说明：一款用于文件查找的命令，可用于替换默认命令 find；
-- 安装：brew install fd
-- 使用：
-  - 简单搜索
-    - fd pattern
-  - 正则查询
-    - fd '.*install'
-    - fd '[0-9]{4}-[0-9]{2}'
-  - 通配符
-    - fd -g '*install*'
-  - 无匹配符
-    - fd -F '*install*'
-  - 指定类型
-    - fd -e md git
-    - fd -e md golang
-    - fd -e md zsh
-  - 隐藏文件
-    - fd -H config
-  - 查询范围包含 gitignore
-    - fd -I main.o
-    - fd --no-ignore-vcs
-  - 大小写敏感
-    - fd -i readme.md # insensitive
-    - fd -s readme.md # sensitive
-  - 详细信息
-    - fd -l .go
-  - 大小过滤
-    - fd -S +1000k
-  - 查询目录
-    - fd --type/-t directory golang
-  - 查询并执行命令
-    - fd --type/-t file -x wc -l
-    - fd --type/-t file -X vim
-- 性能：
-  - 使用 hyperfine 测试，与 find 进行性能对比
-
-[ripgrep](https://github.com/BurntSushi/ripgrep)
-- 说明：用于
-- 安装：
-- 使用：
-  - 默认搜索当前目录
-    - rg main
-  - 搜索指定目录
-    - rg main ~/Code/golang-examples
-  - 搜索指定文件
-    - rg main ~/Code/golang-examples/main.go
-  - 正则搜索
-    - rg -e '[0-9]{2}:[0-9]{2}'
-  - 支持 gitignore
-  - 搜索并替换
-    - rg main ~/Code/golang-examples r main # 只替换输出，未修改文件
-  - rg -glob 'code/golang/*.go' -i NewUser
-  - rg -glob 'code/golang/**/*.go' -i NewUser
 
 本文介绍三个常见的 Shell 命令的替代品，希望给无聊的命令体验再增趣味。
 

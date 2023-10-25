@@ -1,18 +1,10 @@
 ---
-title: "我的终端环境：Mac 和 Linux 下 7 个效率提升的命令（下）"
-date: 2023-10-23T20:13:53+08:00
+title: ""
+date: 2023-10-25T17:43:02+08:00
 draft: true
 comment: true
+description: ""
 ---
-
-[fzf](https://github.com/junegunn/fzf) - fuzzy finder 模糊匹配
-- 说明：
-- 安装：brew install fzf
-- 用法：
-  - fzf
-  - vim `fzf`
-- 别名:
-  - alias cdg='cd_global() {cd $(fd --type directory $1 $2 | fzf)}; cd_global'
 
 [entr][https://github.com/eradman/entr]
 - 说明：用于监听文件改变事件，并运行任意命令。
