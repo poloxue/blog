@@ -1,12 +1,14 @@
 ---
-title: "我的终端环境：Mac 和 Linux 下 7 个效率提升的命令（上）"
-date: 2023-10-21T19:01:19+08:00
+title: "我的终端环境：提升效率的 shell 命令（一）- 高效 ls 与 cd"
+date: 2023-10-28T15:01:19+08:00
 draft: true
 comment: true
-description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
+description: "本篇是提升效率的 Shell 命令个效率提升命令第一篇，介绍如何使用 exa 和 zoxide 替换 ls 和 cd。"
 ---
 
-类 Unix 系统发展多年，不少老古董命令还在占据着我们的终端，而它们的体验依旧差强人意。我将用两篇文章介绍 MacOS 和 Linux 下的 7 个可提升效率的命令，更具现代风格，希望能让你眼前一亮。
+类 Unix 系统发展多年，不少老古董命令依然据着我们终端的绝大部分时间，而使用体验上却还是那么差强人意。
+
+从本文开始，我将用四篇文章介绍如何提升终端效率的一系列命令，这些命令更具现代风格，希望能让你眼前一亮。
 
 介绍介绍的命令，如下所示：
 
@@ -14,15 +16,16 @@ description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
 - zoxide，更智能地进行目录跳转，可替换默认的 cd 命令；
 - fd，目录与文件搜索命令，比默认 find 更易于使用；
 - ripgrep，与 grep 类似，用于搜索文件内容；
-- fuzzy，模糊搜索；
+- fuzzy，模糊搜索器；
 - entr，监听文件变化并执行相应的命令；
 - httpie，更加人性化的进行 http 请求；
+- jq，用于 JSON 数据的命令；
 
-本文是第一篇，将会先介绍前两个命令，即 exa 和 zoxide。
+本文是系列第一篇，将会先介绍前两个命令，即 exa（eza） 和 zoxide。
 
 ## 前言
 
-正式开始前，推荐一个 github 仓库：[modern-unix](https://github.com/ibraheemdev/modern-unix)，其中收录了大量的更具现代风格的命令，可用于替换一直在用的一大波老古董命令。
+正式开始前，先推荐一个 github 仓库：[modern-unix](https://github.com/ibraheemdev/modern-unix)，其中收录了大量的更具现代风格的命令，可用于替换一大波一直在用的老古董命令。
 
 [exa](https://the.exa.website/)
 - 说明：可用于替换默认 ls 命令，这款在平时工作中使用最多的命令，exa 提供了更加丰富的特性。
@@ -50,5 +53,4 @@ description: "本文介绍两个 ls 命令的替代品 - exa 和 colorls。"
   - cdi golang
   - cd golang + <space+tab>
 
-本文介绍三个常见的 Shell 命令的替代品，希望给无聊的命令体验再增趣味。
 

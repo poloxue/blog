@@ -1,6 +1,6 @@
 ---
-title: ""
-date: 2023-10-25T17:43:02+08:00
+title: "我的终端环境：提升效率的 shell 命令（四）- WEB 开发"
+date: 2023-11-02T17:43:02+08:00
 draft: true
 comment: true
 description: ""
@@ -20,4 +20,11 @@ description: ""
 - 使用：
   - http GET http://httpbin.org/get
   - http POST http://httpbin.org/post name=poloxue age=18
+
+[jq](https://github.com/jqlang/jq)
+
+- 说明：用于处理 JSON 数据的命令；
+- 安装：brew install jq
+- 使用：
+  - 格式化：httpie https://coderwall.com/bobwilliams.json | jq
 

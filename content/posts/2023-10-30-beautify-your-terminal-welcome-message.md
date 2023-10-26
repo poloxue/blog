@@ -7,7 +7,8 @@ description: ""
 ---
 
 - 欢迎信息
-  - 在 /etc/motd 中保存欢迎文字；
+  - /etc/issue - 为登录提示；
+  - /etc/motd - 登录欢迎文字；
   - 设置欢迎脚本；
 - ascii 图片
   - ascii 文字：
