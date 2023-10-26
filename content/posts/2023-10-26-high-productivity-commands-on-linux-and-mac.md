@@ -18,5 +18,60 @@ description: "本文介绍一个更符合现代风格的 Unix 命令的集合"
 
 ## 快速一览
 
-bat: 
+bat - 
+
+exa - 
+
+lsd - 列出当前目录文件清单，下一代 ls 命令，该命令与 ls 兼容；
+
+delta -
+
+dust - 
+
+duf -
+
+broot - 
+
+fd - 
+
+ripgrep - 
+
+ag - 
+
+fzf - 
+
+mcfly - 
+
+choose - 
+
+jq - 
+
+sd - 
+
+cheat - 
+
+tldr -
+
+bottom - 
+
+glances - 
+
+gtop - 
+
+hyerfine - 
+
+gping - 
+
+procs - 
+
+httpie - 
+
+curlie - 
+
+xh - 
+
+zoxide - 
+
+dog - 
+
 
