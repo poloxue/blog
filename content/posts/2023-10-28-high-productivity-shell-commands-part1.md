@@ -221,7 +221,7 @@ bat --generate-config-file
 bat --pager='never' logger.go
 ```
 
-对于习惯使用 cat 的模式，默认不启用分页能力，可直接在配置文件增加 `--paging=never`。
+对于习惯使用 cat 的模式，如希望默认不启用分页能力，可直接在配置文件增加 `--paging=never`。
 
 ### 别名
 
