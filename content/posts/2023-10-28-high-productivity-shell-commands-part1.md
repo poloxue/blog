@@ -48,7 +48,7 @@ brew install exa
 
 {{< image 2023-10-28-high-productivity-shell-commands-part1-02.png >}}
 
-案例 3 - exa -alh \--git 或 exa \--all \--long \--header \--git，显示文件列表详情；
+案例 3 - exa -alh \--git 或 exa \--all \--long \--header \--git，显示文件列表详情，和 git 信息；
 
 {{< image 2023-10-28-high-productivity-shell-commands-part1-03.png >}}
 
