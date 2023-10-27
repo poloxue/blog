@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 20 Oct 2023 10:25:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：与众不同的 zsh 主题 - powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>本文介绍 zsh 主题 powerlevel10k 的安装与配置。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 27 Oct 2023 15:01:19 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：提升效率的 shell 命令（一）之目录文件命令 exa、zoxide 与 bat</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>类 Unix 系统发展多年，不少老古董命令还在占据终端的绝大部分时间，而使用体验上却依然差强人意。
+从本文开始，我将用一系列文章介绍如何提升终端效率的一系列命令，这些命令更具现代风格，希望能让你眼前一亮。
+前言 正式开始前，先推荐一个 github 仓库 - modern-unix，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。
+本系列将要介绍的命令，我大概可将其分为三个大类，分别是：文件目录查看相关的命令 - exa、zoxide、bat，文件目录搜索相关的命令 - fd、ripgrep、fzf ，HTTP Web 开发的相关命令 - entr、httpie、jq。
+希望通过这些命令的学习，进一步提升我们的工作效率。
+本文是系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令：
+exa，替换默认的 ls 命令； zoxide，更智能地进行目录跳转，可替换默认的 cd 命令； bat，与 cat 功能相似，但它支持语法高亮，实现了 git 的集成； 这三个命令直接替换掉最常用系统内置命令：ls、cd 与 cat。
+注：exa 已停止维护，可用 eza 替代，它是基于 exa 的 fork 版本。安装命令：brew install eza。
+exa 这是一款可用于替换系统默认 ls 的命令，在平时工作中 ls 几乎使用最多的命令，而 exa 在支持 ls 的基本能力基础上，提供了更丰富的特性。
+快速安装 1 brew install exa 使用 案例 1 - exa 默认配色效果；
+案例 2 - exa --icons 显示文件类型图标；</description></item><item><title>我的终端环境：与众不同的 zsh 主题 - powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>本文介绍 zsh 主题 powerlevel10k 的安装与配置。
 什么是 powerlevel10k? Powerlevel10 是一款 zsh 的主题，它强调性能、灵活性和开箱即用。之前，我已经介绍了一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的可配置化能力，同样能配置出覆盖出之前主题的类似效果。
 系列阅读：
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 更多待续&amp;hellip;
