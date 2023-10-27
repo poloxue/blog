@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：提升效率的 shell 命令（一）之目录文件操作命令 exa、zoxide 与 bat"
+title: "我的终端环境：高效 shell 命令（一）之目录文件操作命令 exa、zoxide 与 bat"
 date: 2023-10-27T15:01:19+08:00
 draft: false
 comment: true
