@@ -6,6 +6,10 @@ comment: true
 description: ""
 ---
 
+- [entr]()，监听文件变化并执行相应的命令；
+- [httpie]()，更加人性化的进行 http 请求；
+- [jq]()，用于处理 JSON 数据的命令；
+
 [entr][https://github.com/eradman/entr]
 - 说明：用于监听文件改变事件，并运行任意命令。
 - 安装：brew install entr

@@ -6,6 +6,10 @@ comment: true
 description: ""
 ---
 
+- [fd](https://github.com/sharkdp/fd)，目录与文件搜索命令，比默认 find 更易于使用；
+- [ripgrep]，与 grep 类似，用于搜索文件内容；
+- [fzy]，模糊搜索器；
+
 [fd](https://github.com/sharkdp/fd)
 
 - 说明：一款用于文件查找的命令，可用于替换默认命令 find；
