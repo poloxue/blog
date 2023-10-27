@@ -1,10 +1,11 @@
 ---
-title: "我的终端环境：提升效率的 shell 命令（四）- 高效查找与搜索"
+title: "我的终端环境：高效 shell 命令（二）之高效查找与搜索命令 - fd ripgrep fzf"
 date: 2023-10-28T20:13:53+08:00
 draft: true
 comment: true
 description: ""
 ---
+
 
 - [fd](https://github.com/sharkdp/fd)，目录与文件搜索命令，比默认 find 更易于使用；
 - [ripgrep]，与 grep 类似，用于搜索文件内容；

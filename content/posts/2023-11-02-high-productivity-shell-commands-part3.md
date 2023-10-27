@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：提升效率的 shell 命令（四）- WEB 开发"
+title: "我的终端环境：高效 shell 命令（三）之 WEB 开发命令 - entr httpie jq"
 date: 2023-11-02T17:43:02+08:00
 draft: true
 comment: true
