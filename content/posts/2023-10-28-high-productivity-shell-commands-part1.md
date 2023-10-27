@@ -3,7 +3,7 @@ title: "我的终端环境：提升效率的 shell 命令（一）之目录文�
 date: 2023-10-27T15:01:19+08:00
 draft: false
 comment: true
-description: "本篇是提升效率的 Shell 命令个效率提升命令第一篇，介绍如何使用 exa 和 zoxide 替换 ls 和 cd。"
+description: "本篇是高效命令系列第一篇，介绍 exa、zoxide 、bat 替换 ls 和 cd、cat，为我们的终端增添色彩。"
 ---
 
 类 Unix 系统发展多年，不少老古董命令还在占据终端的绝大部分时间，而使用体验上却依然差强人意。
