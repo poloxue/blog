@@ -18,7 +18,18 @@ description: "本篇是提升效率的 Shell 命令个效率提升命令第一�
 
 希望通过这些命令的学习，进一步提升我们的工作效率。
 
-本文是系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令：
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+> - [我的终端环境：提升效率的 shell 命令（一）之目录文件命令 exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
+>
+> 更多待续...
+
+
+本文是高效命令系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令：
 
 - [exa](https://github.com/ogham/exa)，替换默认的 ls 命令；
 - [zoxide](https://github.com/ajeetdsouza/zoxide)，更智能地进行目录跳转，可替换默认的 cd 命令；
