@@ -4,7 +4,8 @@
 iTerm2 相较于 Terminal 的优势功能，如分屏能力、主题配置、便利的搜索。另外，iTerm2 与 zsh 相结合体验更佳。
 推荐阅读 Terminal vs iTerm2: Comparing Two CLI Tools on macOS
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 接下来，开始进入安装使用流程。
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：提升效率的 shell 命令（一）之目录文件命令 exa、zoxide 与 bat 更多待续&amp;hellip;
+接下来，开始进入安装使用流程。
 下载安装 安装可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
 我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
 非常简单！
