@@ -222,6 +222,6 @@ alias cat='bat'
 
 ## 总结
 
-本文介绍了三个命令，分别是 exa(eza)、zoxide 和 bat 的使用，让最常用最无聊也能产生有趣的体验，提升使用效率。
+本文介绍了三个命令，分别是 exa(eza)、zoxide 和 bat 的使用，让最常用最无聊的命令也能产生有趣的体验，实现使用效率的提升。
 
 我的博文 - [我的终端环境：提升效率的 shell 命令（一）之目录文件命令 exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
