@@ -1,7 +1,7 @@
 ---
 title: "我的终端环境：提升效率的 shell 命令（一）之目录文件命令 exa、zoxide 与 bat"
 date: 2023-10-27T15:01:19+08:00
-draft: true
+draft: false
 comment: true
 description: "本篇是提升效率的 Shell 命令个效率提升命令第一篇，介绍如何使用 exa 和 zoxide 替换 ls 和 cd。"
 ---
@@ -223,3 +223,5 @@ alias cat='bat'
 ## 总结
 
 本文介绍了三个命令，分别是 exa(eza)、zoxide 和 bat 的使用，让最常用最无聊也能产生有趣的体验，提升使用效率。
+
+我的博文 - [我的终端环境：提升效率的 shell 命令（一）之目录文件命令 exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
