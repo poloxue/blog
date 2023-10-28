@@ -6,7 +6,7 @@ comment: true
 description: "本篇是高效命令系列第一篇，介绍 exa、zoxide 、bat 替换 ls 和 cd、cat，为我们的终端增添色彩。"
 ---
 
-{{< video bb_id='235179220' yt_id='0yAP6ER8oGE' >}}
+{{< video bb_id="235179220" yt_id="0yAP6ER8oGE" >}}
 
 类 Unix 系统发展多年，不少老古董命令还在占据终端的绝大部分时间，而使用体验上却依然差强人意。
 
