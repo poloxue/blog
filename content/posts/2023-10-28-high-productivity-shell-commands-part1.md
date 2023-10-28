@@ -183,7 +183,9 @@ brew install bat
 
 ### 配置
 
-bat 的默认效果在我的 Macos 系统下主题不够友好，每次要在选项上要配置主题，类似 `bat --theme=TwoDark main.py`。实际上，bat 命令提供了配置文件的能力。
+bat 的默认效果在我的 Macos 系统下的 tmux 模式下主题显示不够友好，每次要在选项上要配置主题，类似 `bat --theme=TwoDark main.py`。实际上，bat 命令提供了配置文件的能力。
+
+> 可通过 bat --list-themes 查看 bat 支持的主题列表。
 
 首先，在 `.zshrc` 中设置 bat 配置文件位置环境变量。
 
