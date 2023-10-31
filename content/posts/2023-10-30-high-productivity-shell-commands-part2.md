@@ -1,7 +1,7 @@
 ---
 title: "我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf"
 date: 2023-10-30T20:13:53+08:00
-draft: true
+draft: false
 comment: true
 description: "本文将介绍一些高效的查找搜索命令，分别是 fd、ripgrep 与 fzf，提升命令内容的查找效率"
 ---
@@ -15,6 +15,17 @@ description: "本文将介绍一些高效的查找搜索命令，分别是 fd、
 - [fzf](https://github.com/junegunn/fzf)，是一款命令行交互式的模糊搜索工具，可与其他命令进行结合，提高使用体验；
 
 其中的 fd 与 ripgrep 是用 rust 编写，性能上完虐传统的 find 与 grep。
+
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+> - [我的终端环境：高效 shell 命令（一）之目录文件命令 exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
+> - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf]()https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part2/
+>
+> 更多待续...
 
 ## [fd](https://github.com/sharkdp/fd)
 
