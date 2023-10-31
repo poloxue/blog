@@ -24,7 +24,7 @@ brew install bat exa lsd git-delta dust duf broot fd ripgrep ag fzf mcfly choose
 
 ## 快速一览
 
-如下快速一览 Unix 命令集合，其中的大部分来自于 [modern-unix](https://github.com/ibraheemdev/modern-unix)。
+让我们快速一览这个 Unix 命令集合，其中的大部分命令是来自于 [modern-unix](https://github.com/ibraheemdev/modern-unix) 这个仓库。
 
 1. [bat](https://github.com/sharkdp/bat) - 一款支持语法高亮与集成 GIT 的 cat 命令。
 
