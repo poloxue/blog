@@ -6,6 +6,7 @@ comment: true
 description: "本文将介绍一些高效的查找搜索命令，分别是 fd、ripgrep 与 fzf，提升命令内容的查找效率"
 ---
 
+{{< video bb_id="962959372" yt_id="CcnmD_dHsnk" >}}
 本文将介绍一些用于高效查找和搜索的命令，它们分别是 fd、ripgrep 与 fzf。相对于常用的 grep 和 find，这些命令在性能有大部分提升，而且，它们的使用方式上更符合人性。
 
 如下是这几个命令的简单说明：
