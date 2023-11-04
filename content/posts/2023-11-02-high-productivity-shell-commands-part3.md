@@ -3,10 +3,10 @@ title: "我的终端环境：高效 shell 命令（三）之提效 WEB 开发 - 
 date: 2023-11-02T17:43:02+08:00
 draft: false
 comment: true
-description: "本文将介绍的 3 命令，用于提高 Web 开发人员们的日常效率"
+description: "本文将介绍的 3 命令，用于提高 Web 开发人员们的日常效率，它们分别是 entr、httpie 和 jq。"
 ---
 
-本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率，
+本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
 
 ## 前言
 
