@@ -1,9 +1,9 @@
 ---
-title: "我的终端环境：终端登录欢迎消息"
-date: 2023-10-25T19:38:48+08:00
+title: "我的终端环境：配置终端 Welcome 消息-纯粹装逼术"
+date: 2023-11-04T19:38:48+08:00
 draft: true
 comment: true
-description: ""
+description: "本文介绍如何配置终端的 welcome 消息，让你的终端看起来焕然一新。"
 ---
 
 - 欢迎信息

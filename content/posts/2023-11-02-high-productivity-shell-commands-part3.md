@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：高效 shell 命令（三）之提效 WEB 开发 - entr httpie jq"
+title: "我的终端环境：高效 shell 命令（三）之提效日常开发 - entr httpie jq"
 date: 2023-11-02T17:43:02+08:00
 draft: false
 comment: true
