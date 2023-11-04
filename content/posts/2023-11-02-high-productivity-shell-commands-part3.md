@@ -444,7 +444,7 @@ jq '.badges | length' bobwilliams.json
 最后，将以上各个部分进行重组，整合成一个新的 object 即可，完整表达式：
 
 ```bash
-jq '{name, title, compay, badges: [.badges | sort_by(.created_at) | reverse | .[:5][].name], badge_lenght: .badges | length}'
+jq '{name, title, company, badges: [.badges | sort_by(.created_at) | reverse | .[:5][].name], badge_lenght: .badges | length}' bobwilliams.json
 ```
 
 输出如下所示：
@@ -453,7 +453,7 @@ jq '{name, title, compay, badges: [.badges | sort_by(.created_at) | reverse | .[
 {
   "name": "Bob Williams",
   "title": "CTO",
-  "compay": null,
+  "company": "SPARC",
   "badges": [
     "Platypus",
     "Python",
