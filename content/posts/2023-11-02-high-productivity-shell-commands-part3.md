@@ -182,8 +182,8 @@ http ://httpbin.org/get
 
 另外，METHOD 默认也可省略的，省略规则是：
 
-- 当有 data：POST，如 `http http://httpbin.org/post name=poloxue age=18`
-- 当无 data：GET，如 `http http://httpbin.org/get`
+- 当有 data：POST，如 `http ://httpbin.org/post name=poloxue age=18`
+- 当无 data：GET，如 `http ://httpbin.org/get`
 
 httpie 还支持一种 offline 模式，debug 神器，只打印 HTTP 请求文本，但不进行网络请求；
 
