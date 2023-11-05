@@ -22,13 +22,13 @@ description: "本文将介绍的 3 命令，用于提高 Web 开发人员们的�
 
 开始具体介绍。
 
-## entr 文件变化监听器
+## entr 实现 Live Reloading
 
 [entry](https://github.com/eradman/entr) 命令的是什么？直接看演示效果，如下所示：
 
 {{< image "./2023-11-02-high-productivity-shell-commands-part3-01.gif" >}}
 
-大概能看出，[entr](https://github.com/eradman/entr) 是用于监听文件变化并执行指定的命令。看到这，有没有想到啥？
+大概看出，[entr](https://github.com/eradman/entr) 是用于监听文件变化并执行指定命令。看到这，有没有想到啥？对，entr 可用于服务的热加载（Live Reloading）。
 
 ### 安装
 
@@ -321,7 +321,7 @@ http -dco lark.dmg https://sf16-va.larksuitecdn.com/obj/lark-artifact-storage/49
 
 httpie 就介绍这么多，其他还有 cookie、session，authentication 等等请自行查阅文档 [httpie 文档](https://httpie.io/docs/cli/)。
 
-## jq - JSON 处理器
+## jq - 强大的 JSON 处理器
 
 [jq](https://github.com/jqlang/jq)，一款可用于处理解析 JSON 文本的命令，它非常强大，甚至是可编程的。
 
