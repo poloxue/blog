@@ -28,6 +28,7 @@ description: "本篇是高效命令系列第一篇，介绍 exa、zoxide 、bat 
 > - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
 > - [我的终端环境：高效 shell 命令（一）之目录文件命令 exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
 > - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part2/)
+> - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
 >
 > 更多待续...
 

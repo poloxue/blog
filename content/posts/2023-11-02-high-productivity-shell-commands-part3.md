@@ -10,6 +10,19 @@ description: "本文将介绍的 3 命令，用于提高 Web 开发人员们的�
 
 本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
 
+
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+> - [我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
+> - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part2/)
+> - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
+>
+> 更多待续...
+
 ## 前言
 
 对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。

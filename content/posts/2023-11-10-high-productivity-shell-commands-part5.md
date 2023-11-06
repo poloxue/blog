@@ -1,6 +1,6 @@
 ---
-title: "我的终端环境：提升终端使用效率的 shell 命令（四）- 现代 Unix 命令集"
-date: 2023-11-05T15:40:41+08:00
+title: "我的终端环境：高效 shell 命令（四）- 现代 Unix 命令集"
+date: 2023-11-08T15:40:41+08:00
 draft: true
 comment: true
 description: "本文介绍一个更符合现代风格的 Unix 命令的集合"
@@ -26,37 +26,27 @@ brew install bat exa lsd git-delta dust duf broot fd ripgrep ag fzf mcfly choose
 
 让我们快速一览这个 Unix 命令集合，其中的大部分命令是来自于 [modern-unix](https://github.com/ibraheemdev/modern-unix) 这个仓库。
 
-1. [bat](https://github.com/sharkdp/bat) - 一款支持语法高亮与集成 GIT 的 cat 命令。
-
-- bat 
-
-2. [exa](https://github.com/ogham/exa) - 一款样式酷炫且功能强大的现代版 ls，当前已停止维护，建议是用它的 fork 版本 - eza。
-
-3. [lsd](https://github.com/lsd-rs/lsd) - 下一代 ls 命令，与 ls 兼容。
+1. [lsd](https://github.com/lsd-rs/lsd) - 号称 "下一代 ls 命令"，与 ls 兼容。
 
 - lsd --long --git
 
-4. [delta](https://github.com/dandavison/delta) - 用于支持 git、diff 和 grep 的语法高亮分页器；
+2. [delta](https://github.com/dandavison/delta) - 用于支持 git、diff 和 grep 的语法高亮分页器；
 
 - diff -u main1.go main2.go | delta
 
-5. [dust](https://github.com/bootandy/dust) - 
+3. [dust](https://github.com/bootandy/dust) - 
 
-6. [duf](https://github.com/muesli/duf) -
+4. [duf](https://github.com/muesli/duf) -
 
-7. [broot](https://github.com/Canop/broot) - 
+5. [broot](https://github.com/Canop/broot) - 
 
-8. [fd](https://github.com/sharkdp/fd) - 
+6. [ag](https://github.com/ggreer/the_silver_searcher) - 
 
-9. [ripgrep](https://github.com/BurntSushi/ripgrep) - 
+7. [fzf](https://github.com/junegunn/fzf) - 
 
-10. [ag](https://github.com/ggreer/the_silver_searcher) - 
+8. [mcfly](https://github.com/cantino/mcfly) - 
 
-11. [fzf](https://github.com/junegunn/fzf) - 
-
-12. [mcfly](https://github.com/cantino/mcfly) - 
-
-13. [choose](https://github.com/theryangeary/choose) - 
+9. [choose](https://github.com/theryangeary/choose) - 
 
 14. [jq](https://github.com/jqlang/jq) - 
 
