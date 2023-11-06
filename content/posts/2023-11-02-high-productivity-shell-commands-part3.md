@@ -6,6 +6,8 @@ comment: true
 description: "本文将介绍的 3 命令，用于提高 Web 开发人员们的日常效率，它们分别是 entr、httpie 和 jq。"
 ---
 
+{{< youtube bb_id="748039783" yt_id="XLlYFat4chE" >}}
+
 本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
 
 ## 前言
