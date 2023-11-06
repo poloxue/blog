@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>zsh on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/zsh/</link><description>Recent content in zsh on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 20 Oct 2023 10:25:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：与众不同的 zsh 主题 - powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>本文介绍 zsh 主题 powerlevel10k 的安装与配置。
 什么是 powerlevel10k? Powerlevel10 是一款 zsh 的主题，它强调性能、灵活性和开箱即用。之前，我已经介绍了一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的可配置化能力，同样能配置出覆盖出之前主题的类似效果。
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 更多待续&amp;hellip;
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 更多待续&amp;hellip;
 NerdFont 字体安装 安装 powerlevel10k 前，先安装它依赖的字体：NerdFont。不同系统的安装方法，可查看它的文档。
 MacOS 的话，可直接通过 Homebrew 快速安装：
 1 2 brew tap homebrew/cask-fonts brew install font-hack-nerd-font 安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。</description></item><item><title>我的终端环境：6 个强大的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>今天，将会在 上篇教程 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 更多待续&amp;hellip;
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 更多待续&amp;hellip;
 快速一览 本教程将会涉及的插件，如下所示：
 copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝命令行内容； sudo，快捷 sudo，命令行快捷添加 sudo 插件； zsh-history-substring-search，命令历史记录子字符串匹配； zsh-you-should-use，用于命令行 alias 别名提醒； 让我们正式开始。
-推荐一个网站 首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 awesome-zsh-plugins，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
-框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
-插件，上个视频介绍过的两个插件，zsh-syntax-highlighting - 命令行语法高亮插件, zsh-autosugggestions - 命令行自动建议提示插件，在这个文档里面都能找到。</description></item><item><title>我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
+推荐一个网站 首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 awesome-zsh-plugins，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。</description></item><item><title>我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件。
 为什么使用 zsh？ zsh vs bash 的一些优势，如下所示：
 zsh 的补全能力强大，bash 的 Tab 补全从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可匹配 mnt 和 findmn；
 zsh 的命令行历史是在 terminal 间共享，结合自动补全，进一步增强了用户体验；
@@ -20,13 +18,13 @@ zsh 的配置能力更强，支持构建更精美的提示主题；
 zsh 参数的扩展能力比 Bash 更强大；
 zsh 有大量插件、主题、框架，如 oh-my-zsh 框架，能助你快速配置出一个强大终端；
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 更多待续&amp;hellip;</description></item><item><title>我的终端环境：iTerm2 的安装与体验</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 更多待续&amp;hellip;</description></item><item><title>我的终端环境：iTerm2 的安装与体验</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境。
 本文是搭建我的开发环境系列中的第一篇，非常短小，将介绍如何安装与配置 iTerm2，安装成功后，即可阅读下一篇 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件。
 前言介绍 首先，iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。我每次拿到电脑，或者因为某种原因重装了电脑系统后，首先要做的就是下载 iTerm2 以替换默认的终端 terminal。
 iTerm2 相较于 Terminal 的优势功能，如分屏能力、主题配置、便利的搜索。另外，iTerm2 与 zsh 相结合体验更佳。
 推荐阅读 Terminal vs iTerm2: Comparing Two CLI Tools on macOS
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 更多待续&amp;hellip;</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 更多待续&amp;hellip;</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
 zsh 为什么如此受欢迎？我们是否应该使用它呢？
 什么是 zsh？ “Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。
 Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。
