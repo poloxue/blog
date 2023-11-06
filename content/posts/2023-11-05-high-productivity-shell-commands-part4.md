@@ -6,6 +6,7 @@ comment: true
 description: "本文介绍一个更符合现代风格的 Unix 命令的集合"
 ---
 
+{{< youtube bb_id="748039783" yt_id="XLlYFat4chE" >}}
 本文将介绍一个命令 - [jq](https://github.com/jqlang/jq)，前文已经提过，一款可用于处理解析 JSON 文本的命令，它非常强大，甚至是可编程的。
 
 # 案例
