@@ -117,3 +117,56 @@ sd old new filename
 
 {{< image "./2023-11-07-high-productivity-shell-commands-part4-13.png" >}}
 
+## bottom
+
+[bottom](https://github.com/ClementTsang/bottom) - 运行于终端的跨平台系统监视器，可视化。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-14.png" >}}
+
+## gtop
+
+[gtop](https://github.com/aksakalli/gtop) - 和 bottom 有点类似，系统监控面板。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-15.png" >}}
+
+## glances
+
+[glances](https://github.com/nicolargo/glances) - 可用于替代 top/htop，监控 GNU/Linux、BSD、Mac OS 和 windows 系统。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-16.png" >}}
+
+## hyperfine
+
+[hyerfine](https://github.com/sharkdp/hyperfine) - 
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-17.gif" >}}
+
+## gping
+
+[gping](https://github.com/orf/gping) - ping 的终端可视化版本，体验不错，值得一试；
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-18.gif" >}}
+
+## procs
+
+[procs](https://github.com/dalance/procs) - rust 编写的 ps 的替代版本。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-19.gif" >}}
+
+## curlie 
+
+[curlie](https://github.com/rs/curlie) - http 客户端，号称是，兼具 curl 的强大与 httpie 的易用性。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-20.png" >}}
+
+## xh
+
+[xh](https://github.com/ducaale/xh) - 兼顾 httpie 的易用性，同时注重高性能的 http 客户端。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-21.gif" >}}
+
+## dog
+
+[dog](https://github.com/ogham/dog) - 依旧是 rust 实现的 DNS 分析工具 dig 的替代版本。
+
+{{< image "./2023-11-12-high-productivity-shell-commands-part4-22.png" >}}
