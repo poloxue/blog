@@ -1,7 +1,7 @@
 ---
 title: "我的终端环境：高效 shell 命令（四）- 11 个 modern-unix 命令"
 date: 2023-11-06T15:40:41+08:00
-draft: true
+draft: false
 comment: true
 description: "本文将继续介绍 11 个 modern-unix 命令，快速一览。"
 tags: ["zsh"]
@@ -73,29 +73,47 @@ git show
 
 {{< image "./2023-11-07-high-productivity-shell-commands-part4-06.gif" >}}
 
-不过，要说命令行文件浏览器， lf 似乎是一个更不错的选择。
+我觉得，如果说到命令行文件浏览器，lf 体验更佳，是一个更不错的选择，比起 broot，支持的 vim 方式导航和搜索。有兴趣也可以了解下。
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-07.gif" >}}
 
 ### ag
 
-[ag](https://github.com/ggreer/the_silver_searcher) - 类似于 ack 的代码搜索工具，但搜索速度更快。
+[ag](https://github.com/ggreer/the_silver_searcher) - 类似于 ack 的代码搜索工具，但搜索速度更快。其实，和 rg 有点类似，但做了个压测，性能没有 rg 优秀。
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-10.png" >}}
 
 ### mcfly
 
-[mcfly](https://github.com/cantino/mcfly) - 替换 CTRL-R 的默认搜索能力，支持历史记录菜单列表的效果。
+[mcfly](https://github.com/cantino/mcfly) - mcfly 智能搜索引擎取代 CTRL-R 默认的搜索引擎，会考虑你的工作环境和历史命令等，通过一个小型网络进行优先级排序。
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-08.gif" >}}
 
 ### choose
 
 [choose](https://github.com/theryangeary/choose) - 快速且易于使用的 cut 命令。
 
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-11.png" >}}
+
 ### sd
 
 [sd](https://github.com/chmln/sd) - 更直观的 "选择替换" 命令，可用于替换 sed。
+
+```bash
+sd old new filename
+```
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-09.png" >}}
 
 ### cheat
 
 [cheat](https://github.com/cheat/cheat) - 是 unix 命令的备忘录，是一个命令行辅助工具。
 
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-12.png" >}}
+
 ### tldr
 
 [tldr](https://github.com/tldr-pages/tldr) - "too long, don't read"，和 cheat 类似，列出某个命令的常见使用案例。它是一个社区驱动的项目。
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-13.png" >}}
 
