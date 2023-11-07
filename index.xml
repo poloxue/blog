@@ -3,7 +3,7 @@
 针对我们日常工作最常用的命令，我已用了三篇文章，从不同场景角度出发，介绍了它们的使用，从而提升终端的使用效率。毫无疑问，这些命令更具现代风格。
 除前面已经介绍的命令，本文将会极简的方式介绍下剩余的其他命令。
 一键安装 一键安装剩余的 20 + 1 (lf) 个命令，如下所示：
-1 brew install lsd git-delta dust duf broot ag mcfly choose-rust sd cheat tldr bottom glances gtop hyperfine gping procs curlie xh dog lsd lsd，号称 &amp;ldquo;下一代 ls 命令&amp;rdquo;，算是对 GNU ls 的重写，且与 ls 兼容，和 exa 功能上类似。
+1 brew install lsd git-delta dust duf broot ag mcfly choose-rust sd cheat tldr bottom glances gtop hyperfine gping procs curlie xh dog lf lsd lsd，号称 &amp;ldquo;下一代 ls 命令&amp;rdquo;，算是对 GNU ls 的重写，且与 ls 兼容，和 exa 功能上类似。
 1 lsd --long --header --git delta delta，可用于支持 git 、diff 和 grep 的语法高亮和分屏对比；</description></item><item><title>我的终端环境：高效 shell 命令（三）之提效日常开发 - entr httpie jq</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
 系列阅读：
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 更多待续&amp;hellip;
