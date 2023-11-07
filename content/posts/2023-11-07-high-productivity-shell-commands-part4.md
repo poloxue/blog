@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：高效 shell 命令（四）- 11 个 modern-unix 命令"
+title: "我的终端环境：高效 shell 命令（四）- 20+1 个 modern-unix 命令"
 date: 2023-11-06T15:40:41+08:00
 draft: false
 comment: true
