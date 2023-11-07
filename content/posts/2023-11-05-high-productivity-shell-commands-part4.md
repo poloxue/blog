@@ -1,6 +1,6 @@
 ---
-title: "我的终端环境：高效 shell 命令（四）- JSON 神器 jq 命令"
-date: 2023-11-05T15:40:41+08:00
+title: "我的终端环境：高效 shell 命令（六）- JSON 神器 jq 命令"
+date: 2023-11-12T15:40:41+08:00
 draft: true
 comment: true
 description: "本文介绍一个更符合现代风格的 Unix 命令的集合"

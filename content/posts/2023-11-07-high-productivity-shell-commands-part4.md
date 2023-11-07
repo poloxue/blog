@@ -1,9 +1,9 @@
 ---
-title: "我的终端环境：高效 shell 命令（五）- 现代风格的 20 个 unix 命令上篇"
+title: "我的终端环境：高效 shell 命令（四）- 11 个 modern-unix 命令"
 date: 2023-11-06T15:40:41+08:00
 draft: true
 comment: true
-description: "本文介绍一个更符合现代风格的 Unix 命令的集合"
+description: "本文将继续介绍 11 个 modern-unix 命令，快速一览。"
 tags: ["zsh"]
 ---
 
@@ -22,22 +22,20 @@ tags: ["zsh"]
 一键安装剩余的 20 个命令，如下所示：
 
 ```zsh
-brew install lsd git-delta dust duf broot ag mcfly choose sd cheat tldr bottom glances gtop hyperfine gping procs curlie xh dog
+brew install lsd git-delta dust duf broot ag mcfly choose-rust sd cheat tldr bottom glances gtop hyperfine gping procs curlie xh dog
 ```
 
-## 快速一览
+## lsd
 
-让我们快速一览这个现代风格的命令集合吧！
-
-### lsd
-
-[lsd](https://github.com/lsd-rs/lsd)，号称 "下一代 ls 命令"，算是对 GNU ls 的重写，且与 ls 兼容。
+[lsd](https://github.com/lsd-rs/lsd)，号称 "下一代 ls 命令"，算是对 GNU ls 的重写，且与 ls 兼容，和 exa 功能上类似。
 
 ```zsh
 lsd --long --header --git
 ```
 
-### delta
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-01.png" >}}
+
+## delta
 
 [delta](https://github.com/dandavison/delta)，可用于支持 git 、diff 和 grep 的语法高亮和分屏对比；
 
@@ -47,23 +45,35 @@ lsd --long --header --git
 diff -u main1.go main2.go | delta
 ```
 
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-02.png" >}}
+
 与 git diff 一起使用
 
 ```
 git show
 ```
 
-### dust
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-03.png" >}}
 
-[dust](https://github.com/bootandy/dust) - 使用 rust 实现，更直观的 du 命令。
+## dust
 
-### duf
+[dust](https://github.com/bootandy/dust) - 使用 rust 实现，du+rust = dust，更直观的 du 命令。默认行为，以找到最大文件为第一选择。
 
-[duf](https://github.com/muesli/duf) - 视觉体验更佳 df。
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-04.png" >}}
 
-### broof
+## duf
+
+[duf](https://github.com/muesli/duf) - 视觉体验更佳 df，可作为 df 的替代品，按类型分组展示。
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-05.png" >}}
+
+## broof
 
 [broot](https://github.com/Canop/broot) - 终端文件浏览器，类似于 mac 的 finder 的终端版本。
+
+{{< image "./2023-11-07-high-productivity-shell-commands-part4-06.gif" >}}
+
+不过，要说命令行文件浏览器， lf 似乎是一个更不错的选择。
 
 ### ag
 
@@ -83,5 +93,9 @@ git show
 
 ### cheat
 
-[cheat](https://github.com/cheat/cheat) - 
+[cheat](https://github.com/cheat/cheat) - 是 unix 命令的备忘录，是一个命令行辅助工具。
+
+### tldr
+
+[tldr](https://github.com/tldr-pages/tldr) - "too long, don't read"，和 cheat 类似，列出某个命令的常见使用案例。它是一个社区驱动的项目。
 
