@@ -22,7 +22,7 @@ tags: ["zsh"]
 一键安装剩余的 20 + 1 (lf) 个命令，如下所示：
 
 ```zsh
-brew install lsd git-delta dust duf broot ag mcfly choose-rust sd cheat tldr bottom glances gtop hyperfine gping procs curlie xh dog
+brew install lsd git-delta dust duf broot ag mcfly choose-rust sd cheat tldr bottom glances gtop hyperfine gping procs curlie xh dog lf
 ```
 
 ## lsd
