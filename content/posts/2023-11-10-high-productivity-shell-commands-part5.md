@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：高效 shell 命令（五）- 现代 Unix 命令集"
+title: "我的终端环境：高效 shell 命令（五）- 现代风格的 20 个 unix 命令上篇"
 date: 2023-11-06T15:40:41+08:00
 draft: true
 comment: true
@@ -7,9 +7,7 @@ description: "本文介绍一个更符合现代风格的 Unix 命令的集合"
 tags: ["zsh"]
 ---
 
-本文介绍 [modern-unix]() 仓库剩余的其他所用命令。
-
-> 类 Unix 系统发展多年，不少老古董命令依然占据着终端的大部分时间，大有经久不衰、经典永留存的架势。但不得不提，经过这么多年，这些老古董命令在体验上还是那么差强人意。
+本篇文章是介绍 [modern-unix](https://github.com/ibraheemdev/modern-unix) 仓库剩余的 20 个命令的上篇。
 
 ## 命令集合
 
@@ -17,7 +15,7 @@ tags: ["zsh"]
 
 针对我们日常工作最常用的命令，我已用了三篇文章，从不同场景角度出发，介绍了它们的使用，从而提升终端的使用效率。毫无疑问，这些命令更具现代风格。
 
-除前面已经介绍的命令，本文将会极简的方式介绍一下剩余的其他命令。
+除前面已经介绍的命令，本文将会极简的方式介绍下剩余的其他命令。
 
 ## 一键安装
 
@@ -57,7 +55,7 @@ git show
 
 ### dust
 
-[dust](https://github.com/bootandy/dust) - 使用 rust 实现的更加直观的 du 命令。
+[dust](https://github.com/bootandy/dust) - 使用 rust 实现，更直观的 du 命令。
 
 ### duf
 
@@ -81,49 +79,9 @@ git show
 
 ### sd
 
-[sd](https://github.com/chmln/sd) - 更直观的选择替换命令，可用于替换 sed。
+[sd](https://github.com/chmln/sd) - 更直观的 "选择替换" 命令，可用于替换 sed。
 
 ### cheat
 
 [cheat](https://github.com/cheat/cheat) - 
-
-### tldr
-
-[tldr](https://github.com/tldr-pages/tldr) -
-
-### bottom
-
-[bottom](https://github.com/ClementTsang/bottom) - 
-
-### glances
-
-[glances](https://github.com/nicolargo/glances) - 
-
-### gtop
-
-[gtop](https://github.com/aksakalli/gtop) - 
-
-### hyperfine
-
-[hyerfine](https://github.com/sharkdp/hyperfine) - 
-
-### gping
-
-[gping](https://github.com/orf/gping) - 
-
-### procs
-
-[procs](https://github.com/dalance/procs) - 
-
-### curlie
-
-[curlie](https://github.com/rs/curlie) - 
-
-### xh
-
-[xh](https://github.com/ducaale/xh) - 
-
-### dog
-
-[dog](https://github.com/ogham/dog) - 
 
