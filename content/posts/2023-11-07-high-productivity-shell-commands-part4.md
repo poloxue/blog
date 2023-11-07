@@ -7,7 +7,7 @@ description: "本文将继续介绍 11 个 modern-unix 命令，快速一览。"
 tags: ["zsh"]
 ---
 
-本篇文章是介绍 [modern-unix](https://github.com/ibraheemdev/modern-unix) 仓库剩余的 20 个命令的上篇。
+本篇文章是介绍 [modern-unix](https://github.com/ibraheemdev/modern-unix) 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
 
 ## 命令集合
 
