@@ -4,6 +4,7 @@ date: 2023-10-30T20:13:53+08:00
 draft: false
 comment: true
 description: "本文将介绍一些高效的查找搜索命令，分别是 fd、ripgrep 与 fzf，提升命令内容的查找效率"
+tags: ["zsh"]
 ---
 
 {{< video bb_id="962959372" yt_id="CcnmD_dHsnk" >}}

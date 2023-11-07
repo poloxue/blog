@@ -4,6 +4,7 @@ date: 2023-11-06T15:40:41+08:00
 draft: true
 comment: true
 description: "本文介绍一个更符合现代风格的 Unix 命令的集合"
+tags: ["zsh"]
 ---
 
 本文介绍 [modern-unix]() 仓库剩余的其他所用命令。
@@ -72,15 +73,15 @@ git show
 
 ### mcfly
 
-[mcfly](https://github.com/cantino/mcfly) - 
+[mcfly](https://github.com/cantino/mcfly) - 替换 CTRL-R 的默认搜索能力，支持历史记录菜单列表的效果。
 
 ### choose
 
-[choose](https://github.com/theryangeary/choose) - 
+[choose](https://github.com/theryangeary/choose) - 快速且易于使用的 cut 命令。
 
 ### sd
 
-[sd](https://github.com/chmln/sd) - 
+[sd](https://github.com/chmln/sd) - 更直观的选择替换命令，可用于替换 sed。
 
 ### cheat
 

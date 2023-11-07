@@ -4,6 +4,7 @@ date: 2023-10-27T15:01:19+08:00
 draft: false
 comment: true
 description: "本篇是高效命令系列第一篇，介绍 exa、zoxide 、bat 替换 ls 和 cd、cat，为我们的终端增添色彩。"
+tags: ["zsh"]
 ---
 
 {{< video bb_id="235179220" yt_id="0yAP6ER8oGE" >}}
