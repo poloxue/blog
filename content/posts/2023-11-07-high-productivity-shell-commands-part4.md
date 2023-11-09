@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：高效 shell 命令（四）- 20+1 个 modern-unix 命令"
+title: "我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令"
 date: 2023-11-06T15:40:41+08:00
 draft: false
 comment: true
@@ -7,7 +7,22 @@ description: "本文将继续介绍 11 个 modern-unix 命令，快速一览。"
 tags: ["zsh"]
 ---
 
+{{< video yt_id="d6YlNM6aMHo" bb_id="875737608" >}}
+
 本篇文章是介绍 [modern-unix](https://github.com/ibraheemdev/modern-unix) 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
+
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+> - [我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
+> - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part2/)
+> - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
+> - [我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
+>
+> 更多待续...
 
 ## 命令集合
 
@@ -37,7 +52,7 @@ lsd --long --header --git
 
 ## delta
 
-[delta](https://github.com/dandavison/delta)，可用于支持 git 、diff 和 grep 的语法高亮和分屏对比；
+[delta](https://github.com/dandavison/delta)，可用于支持 git 、diff 和 git grep 的语法高亮和分屏对比；
 
 与 diff 一起使用：
 
