@@ -132,6 +132,8 @@ sd old new filename
 
 {{< image "./2023-11-07-high-productivity-shell-commands-part4-13.png" >}}
 
+{{< video bb_id="920838475" yt_id="mKQGfOq6Dpw" >}}
+
 ## bottom
 
 [bottom](https://github.com/ClementTsang/bottom) - 运行于终端的跨平台系统监视器，可视化。

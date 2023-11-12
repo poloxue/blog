@@ -6,8 +6,8 @@ comment: true
 description: "本文介绍如何配置终端的 welcome 消息，让你的终端看起来焕然一新。"
 ---
 
+
 - 欢迎信息
-  - /etc/issue - 为登录提示；
   - /etc/motd - 登录欢迎文字；
   - 设置欢迎脚本；
 - ascii 图片
@@ -23,4 +23,14 @@ description: "本文介绍如何配置终端的 welcome 消息，让你的终端
   - lolcat
 - 一个命令
   - npx ascii-themes generate dev.to
+- neofetch
+  - 安装
+    ```
+    brew install neofetch
+    ```
+  - 使用 neofetch
+- 
+- fastfetch
+
+https $(https ://api.github.com/repos/poloxue/images/branches/main | jq -r '.commit.commit.tree.url') | jq '.tree[].path'
 
