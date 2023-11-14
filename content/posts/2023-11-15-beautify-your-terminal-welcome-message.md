@@ -204,8 +204,9 @@ lolcat，可用于给输出进行随机的彩虹着色，如给以上输出 ASCI
 文字转 ASCII，可通过 pyfiglet 库实现，而图片可以来 pillow 库实现。
 
 ```zsh
-pip instal pyfiglet
-pip instal pillow
+pip install pyfiglet
+pip install pillow
+pip install click
 ```
 
 完整代码的 gist 地址：[ascii-generator](https://gist.github.com/poloxue/b55687913b65f4207fc41150d8330807)。粘贴一份完整代码，如下所示：
