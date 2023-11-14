@@ -290,4 +290,8 @@ if __name__ == "__main__":
 
 通过本文，我的奇怪知识又增加了。对了，文中的 ASCII image 的原图是我的博客头像。
 
+最后，下期介绍如何在欢迎消息中展示更丰富的信息，如：
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-08.png" >}}
+
 我的博文：[我的终端环境：无用小知识 - 终端启动消息配置](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
