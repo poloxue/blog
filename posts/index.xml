@@ -3,15 +3,8 @@
 某种意义上，这是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。
 登录消息 每天打开 terminal 终端，系统默认会打印一串的消息，如 &amp;ldquo;Last Login xxx&amp;rdquo; 之类的消息。是否想过让这个默认消息更加丰富一些？
 如 MacOS 这样的类 Unix 系统默认有两种方式，一种是基于系统的 motd，另一种是通过启动脚本打印消息。
-motd 首先，通过 motd 的实现方案。motd，即 message of today，类 Unix 系统基本都支持，我们只要将启动消息写入到 /etc/motd中，即可定制终端启动消息。
-对于公用服务器，系统管理员用它可向普通用户发送消息。而且，有部分 Linux 发行版甚至用它的默认配置给用户发送广告。
-演示看效果吧。
-将文字 &amp;ldquo;Hello World. Have a nice day!&amp;rdquo; 写入 /etc/motd 中，开启一个新的终端。
-motd 的缺点是它是静态内容，如果要更新内容，则需编辑文件。
-motd 的动态效果实现方案，可基于 crontab 可实现 motd 伪动态。不过，这种方式主要是适合于不停机的服务器，对于个人电脑，经常处于关机状态，可能不太适合。
-启动脚本 实现真正意义上的动态 motd 消息，可直接通过系统启动脚本打印环境消息，如在 ~/.zshrc 中添加欢迎消息打印脚本，消息内容可任意定制。
-如 MacOS 系统在启动时，通过解析 uname -a 输出内容，打印系统信息和内核版本：
-1 echo `uname -a | cut -d&amp;#39; &amp;#39; -f1 -f3` 加入到 ~/.</description></item><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：无用小知识 - 终端启动消息配置 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
 系列阅读：
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 更多待续&amp;hellip;
 命令集合 第一篇文章中推荐一个 github 仓库：modern-unix，其中收录了大量的更具现代风格的命令。例如，最常用的命令，如 ls、cd、grep、find 等等命令，这个仓库都提供了合适的替代命令。
