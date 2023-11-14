@@ -18,6 +18,20 @@ description: "本文介绍如何配置终端的 welcome 消息，每天都是好
 
 如 MacOS 这样的类 Unix 系统默认有两种方式，一种是基于系统的 motd，另一种是通过启动脚本打印消息。
 
+> 系列阅读：
+>
+> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
+> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
+> - [我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
+> - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part2/)
+> - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
+> - [我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
+> - [我的终端环境：无用小知识 - 终端启动消息配置](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
+>
+> 更多待续...
+
 ### motd
 
 首先，通过 motd 的实现方案。motd，即 message of today，类 Unix 系统基本都支持，我们只要将启动消息写入到 `/etc/motd`中，即可定制终端启动消息。
