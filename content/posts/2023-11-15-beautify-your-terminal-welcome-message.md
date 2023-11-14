@@ -141,6 +141,8 @@ Things will get better despite our efforts to improve them.
                 -- Will Rogers
 ```
 
+如果希望有中文内容，可安装阮一峰老师提供的 [fortune 中文数据库](https://github.com/ruanyf/fortunes)。
+
 cowsay，即 "牛说" 的意思，配合 fortune，会生成一个 "牛说某个格言" 效果。
 
 ```
