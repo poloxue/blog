@@ -1,0 +1,254 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>我的终端环境：无用小知识 - 终端启动消息配置（一） - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="我的终端环境：无用小知识 - 终端启动消息配置（一）"><meta itemprop=description content="本文介绍如何配置终端的 welcome 消息，每天都是好心情。"><meta itemprop=datePublished content="2023-11-13T18:38:48+08:00"><meta itemprop=dateModified content="2023-11-13T18:38:48+08:00"><meta itemprop=wordCount content="851"><meta itemprop=keywords content><meta property="og:title" content="我的终端环境：无用小知识 - 终端启动消息配置（一）"><meta property="og:description" content="本文介绍如何配置终端的 welcome 消息，每天都是好心情。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-11-13T18:38:48+08:00"><meta property="article:modified_time" content="2023-11-13T18:38:48+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="我的终端环境：无用小知识 - 终端启动消息配置（一）"><meta name=twitter:description content="本文介绍如何配置终端的 welcome 消息，每天都是好心情。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>HOME</a></li><li><a href=/posts>POSTS</a></li><li><a href=/tags>TAGS</a></li><li><a href=/courses>COURSES</a></li><li><a href=/about/>ABOUT</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>13</span>
+<span class=rest>Nov 2023</span></div></div><div class=matter><h1 class=title>我的终端环境：无用小知识 - 终端启动消息配置（一）</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#登录消息>登录消息</a><ol><li><a href=#motd>motd</a></li><li><a href=#启动脚本>启动脚本</a></li></ol></li><li><a href=#ascii-art-定制欢迎消息>ASCII art 定制欢迎消息</a><ol><li><a href=#在线网站>在线网站</a></li><li><a href=#命令工具>命令工具</a></li></ol></li><li><a href=#设置>设置</a></li><li><a href=#总结>总结</a></li></ol></nav></aside><p>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。本文介绍的内容同样适用于其他类 Unix 系统。</p><blockquote><p>某种意义上，这只是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。</p></blockquote><h2 id=登录消息>登录消息</h2><p>每天打开 terminal 终端，系统默认会打印一串的消息，如 &ldquo;Last Login xxx&rdquo; 之类的消息。是否想过让这个默认消息更加丰富一些？</p><p>如 MacOS 这样的类 Unix 系统默认有两种方式，一种是基于系统的 motd，另一种是通过启动脚本打印消息。</p><h3 id=motd>motd</h3><p>首先，通过 motd 的实现方案。motd，即 message of today，类 Unix 系统基本都支持，我们只要将启动消息写入到 <code>/etc/motd</code>中，即可定制终端启动消息。</p><p>对于公用服务器，系统管理员用它可向普通用户发送消息。而且，有部分 Linux 发行版甚至用它的默认配置给用户发送广告。</p><p>演示看效果吧。</p><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-01.png><p>将文字 &ldquo;Hello World. Have a nice day!&rdquo; 写入 <code>/etc/motd</code> 中，开启一个新的终端。</p><p>motd 的缺点是它是静态内容，如果要更新内容，则需编辑文件。</p><p>motd 的动态效果实现方案，可基于 crontab 可实现 motd 伪动态。不过，这种方式主要是适合于不停机的服务器，对于个人电脑，经常处于关机状态，可能不太适合。</p><h3 id=启动脚本>启动脚本</h3><p>实现真正意义上的动态 motd 消息，可直接通过系统启动脚本打印环境消息，如在 <code>~/.zshrc</code> 中添加欢迎消息打印脚本，消息内容可任意定制。</p><p>如 MacOS 系统在启动时，通过解析 <code>uname -a</code> 输出内容，打印系统信息和内核版本：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>echo <span style=color:#e6db74>`</span>uname -a | cut -d<span style=color:#e6db74>&#39; &#39;</span> -f1 -f3<span style=color:#e6db74>`</span>
+</span></span></code></pre></td></tr></table></div></div><p>加入到 <code>~/.zshrc</code> 文件中，效果如下所示：</p><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-02.png><p>到这里，终端欢迎消息定制的基本内容介绍结束。但问题是，这明显不够惊艳，对于这种无用小知识，肯定要 &ldquo;华而不实&rdquo;，但现在没有看到任何惊艳之处。</p><p>To be continued&mldr;</p><h2 id=ascii-art-定制欢迎消息>ASCII art 定制欢迎消息</h2><p>文字单一枯燥，如何给欢迎消息引入不一样的内容？</p><p>我们将引入 ASCII art。ASCII art 是通过 ASCII 字符表达图片的方式。在文字比图像更稳定的场合，如终端，ASCII art 显然是更好的选择。</p><p>示例如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span> _          _ _                            _     _
+</span></span><span style=display:flex><span>| |__   ___| | | ___   __      _____  _ __| | __| |
+</span></span><span style=display:flex><span>| &#39;_ \ / _ \ | |/ _ \  \ \ /\ / / _ \| &#39;__| |/ _` |
+</span></span><span style=display:flex><span>| | | |  __/ | | (_) |  \ V  V / (_) | |  | | (_| |
+</span></span><span style=display:flex><span>|_| |_|\___|_|_|\___/    \_/\_/ \___/|_|  |_|\__,_|
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span> __________________
+</span></span><span style=display:flex><span>&lt; have a nice day! &gt;
+</span></span><span style=display:flex><span> ------------------
+</span></span><span style=display:flex><span>        \   ^__^
+</span></span><span style=display:flex><span>         \  (oo)\_______
+</span></span><span style=display:flex><span>            (__)\       )\/\
+</span></span><span style=display:flex><span>                ||----w |
+</span></span><span style=display:flex><span>                ||     ||
+</span></span></code></pre></td></tr></table></div></div><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-03.png><p>如何生成 ASCII art？</p><p>ASCII art 一般有 ASCII text 和 ASCII image 两种形式。可通过在线站点生成，或通过一些命令生成。</p><h3 id=在线网站>在线网站</h3><p>推荐两个工具站点，<a href=https://ascii-generator.site/>ASCII Generator</a> 和 <a href=https://manytools.org/hacker-tools/ascii-banner/>ASCII banner</a>。</p><p>演示效果，使用 ASCII Generator 生成 ASCII 3D 文字，如下所示：</p><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-04.png><p>如想找一些现成的 ASCII art，查看 <a href=http://ascii-art.de/>ascii-art</a>，其中有一些现成的可供选择。</p><h3 id=命令工具>命令工具</h3><p>举一反三，工具站点能生成 ASCII art，那必然通过命令也可以做到，必须都是程序实现。</p><p><strong>figlet 生成 ASCII text</strong></p><p>figlet，可用于 ASCII text。它常用于开源项目生成 text banner。</p><p>使用演示：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>&gt; figlet hell world
+</span></span><span style=display:flex><span> _          _ _                            _     _
+</span></span><span style=display:flex><span>| |__   ___| | | ___   __      _____  _ __| | __| |
+</span></span><span style=display:flex><span>| &#39;_ \ / _ \ | |/ _ \  \ \ /\ / / _ \| &#39;__| |/ _` |
+</span></span><span style=display:flex><span>| | | |  __/ | | (_) |  \ V  V / (_) | |  | | (_| |
+</span></span><span style=display:flex><span>|_| |_|\___|_|_|\___/    \_/\_/ \___/|_|  |_|\__,_|
+</span></span></code></pre></td></tr></table></div></div><p><strong>fortune + cowsay 牛说名言</strong></p><p>对于 ASCII art 内容，还有常用的一个组合命令：fortune + cowsay。</p><p>fortune 用于生成随机生成 &ldquo;英文名言&rdquo;。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>❯ fortune
+</span></span><span style=display:flex><span>Things will get better despite our efforts to improve them.
+</span></span><span style=display:flex><span>                -- Will Rogers
+</span></span></code></pre></td></tr></table></div></div><p>cowsay，即 &ldquo;牛说&rdquo; 的意思，配合 fortune，会生成一个 &ldquo;牛说某个格言&rdquo; 效果。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>❯ fortune | cowsay
+</span></span><span style=display:flex><span> ________________________________________
+</span></span><span style=display:flex><span>/ Shame is an improper emotion invented  \
+</span></span><span style=display:flex><span>| by pietists to oppress the human race. |
+</span></span><span style=display:flex><span>|                                        |
+</span></span><span style=display:flex><span>| -- Robert Preston, Toddy,              |
+</span></span><span style=display:flex><span>\ &#34;Victor/Victoria&#34;                      /
+</span></span><span style=display:flex><span> ----------------------------------------
+</span></span><span style=display:flex><span>        \   ^__^
+</span></span><span style=display:flex><span>         \  (oo)\_______
+</span></span><span style=display:flex><span>            (__)\       )\/\
+</span></span><span style=display:flex><span>                ||----w |
+</span></span><span style=display:flex><span>                ||     ||
+</span></span></code></pre></td></tr></table></div></div><p>默认的 &ldquo;牛&rdquo; 的形象是可修改的，如换成 &ldquo;羊&rdquo;，通过 <code>-f</code> 修改。</p><p>命令如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>❯ fortune | cowsay -f sheep
+</span></span><span style=display:flex><span> ________________________________________
+</span></span><span style=display:flex><span>/ Winny and I lived in a house that ran  \
+</span></span><span style=display:flex><span>| on static electricity... If you wanted |
+</span></span><span style=display:flex><span>| to run the blender, you had to rub     |
+</span></span><span style=display:flex><span>| balloons on your head... if you wanted |
+</span></span><span style=display:flex><span>| to cook, you had to pull off a sweater |
+</span></span><span style=display:flex><span>| real quick...                          |
+</span></span><span style=display:flex><span>|                                        |
+</span></span><span style=display:flex><span>\ -- Steven Wright                       /
+</span></span><span style=display:flex><span> ----------------------------------------
+</span></span><span style=display:flex><span>  \
+</span></span><span style=display:flex><span>   \
+</span></span><span style=display:flex><span>       __
+</span></span><span style=display:flex><span>      UooU\.&#39;@@@@@@`.
+</span></span><span style=display:flex><span>      \__/(@@@@@@@@@@)
+</span></span><span style=display:flex><span>           (@@@@@@@@)
+</span></span><span style=display:flex><span>           `YY~~~~YY&#39;
+</span></span><span style=display:flex><span>            ||    ||
+</span></span></code></pre></td></tr></table></div></div><p><strong>lolcat</strong></p><p>lolcat，可用于给输出随机彩虹着色。</p><p>如给以上输出 ASCII 文字着色，可通过 lolcat 实现随机彩虹效果，效果如下：</p><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-05.png><p>或给 cowsay 的输出着色，效果如下：</p><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-06.png><p><strong>程序实现</strong></p><p>如果想通过编程实现文字转 ASCII 或图片也是可以做到的。当然，其实也没啥技术含量，依赖的 Python 的强大的三方库支持。</p><p>文字转 ASCII，可通过 pyfiglet 库实现，而图片可以来 pillow 库实现。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>pip instal pyfiglet
+</span></span><span style=display:flex><span>pip instal pillow
+</span></span></code></pre></td></tr></table></div></div><p>完整代码的 gist 地址：<a href>ascii-generator</a>，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">62
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> sys
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> click
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pyfiglet
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> PIL.Image
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>image_to_ascii</span>(path):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>        img <span style=color:#f92672>=</span> PIL<span style=color:#f92672>.</span>Image<span style=color:#f92672>.</span>open(path)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span>:
+</span></span><span style=display:flex><span>        print(path, <span style=color:#e6db74>&#34;Unable to find image&#34;</span>)
+</span></span><span style=display:flex><span>        exit(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    width, height <span style=color:#f92672>=</span> img<span style=color:#f92672>.</span>size
+</span></span><span style=display:flex><span>    aspect_ratio <span style=color:#f92672>=</span> height <span style=color:#f92672>/</span> width
+</span></span><span style=display:flex><span>    new_width <span style=color:#f92672>=</span> <span style=color:#ae81ff>50</span>
+</span></span><span style=display:flex><span>    new_height <span style=color:#f92672>=</span> aspect_ratio <span style=color:#f92672>*</span> new_width <span style=color:#f92672>*</span> <span style=color:#ae81ff>0.55</span>
+</span></span><span style=display:flex><span>    img <span style=color:#f92672>=</span> img<span style=color:#f92672>.</span>resize((new_width, int(new_height)))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    img <span style=color:#f92672>=</span> img<span style=color:#f92672>.</span>convert(<span style=color:#e6db74>&#34;L&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    chars <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#34; &#34;</span>, <span style=color:#e6db74>&#34;J&#34;</span>, <span style=color:#e6db74>&#34;D&#34;</span>, <span style=color:#e6db74>&#34;%&#34;</span>, <span style=color:#e6db74>&#34;*&#34;</span>, <span style=color:#e6db74>&#34;P&#34;</span>, <span style=color:#e6db74>&#34;+&#34;</span>, <span style=color:#e6db74>&#34;Y&#34;</span>, <span style=color:#e6db74>&#34;$&#34;</span>, <span style=color:#e6db74>&#34;,&#34;</span>, <span style=color:#e6db74>&#34; &#34;</span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    pixels <span style=color:#f92672>=</span> img<span style=color:#f92672>.</span>getdata()
+</span></span><span style=display:flex><span>    new_pixels <span style=color:#f92672>=</span> [chars[pixel <span style=color:#f92672>//</span> <span style=color:#ae81ff>25</span>] <span style=color:#66d9ef>for</span> pixel <span style=color:#f92672>in</span> pixels]
+</span></span><span style=display:flex><span>    new_pixels <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;</span><span style=color:#f92672>.</span>join(new_pixels)
+</span></span><span style=display:flex><span>    new_pixels_count <span style=color:#f92672>=</span> len(new_pixels)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ascii_image <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>        new_pixels[index : index <span style=color:#f92672>+</span> new_width]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> index <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>0</span>, new_pixels_count, new_width)
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span><span style=color:#f92672>.</span>join(ascii_image)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>text_to_ascii</span>(text):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> pyfiglet<span style=color:#f92672>.</span>figlet_format(text)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.command</span>()
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;--type&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;type_&#34;</span>,
+</span></span><span style=display:flex><span>    default<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span>,
+</span></span><span style=display:flex><span>    help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;source type, unavailable options: text, image&#34;</span>,
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#34;--source&#34;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text or image path&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>(type_, source):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> type_ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;text&#34;</span>:
+</span></span><span style=display:flex><span>        ascii <span style=color:#f92672>=</span> text_to_ascii(source)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> type_ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;image&#34;</span>:
+</span></span><span style=display:flex><span>        ascii <span style=color:#f92672>=</span> image_to_ascii(source)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    print(ascii)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    main()
+</span></span></code></pre></td></tr></table></div></div><p>其中的参数如宽度还有字符，都是可调节的，使用起来也都非常简单。</p><p>文字转 ASCII：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>&gt; python ascii_image.py --type text --source &#34;hello world&#34;
+</span></span><span style=display:flex><span> _          _ _                            _     _ 
+</span></span><span style=display:flex><span>| |__   ___| | | ___   __      _____  _ __| | __| |
+</span></span><span style=display:flex><span>| &#39;_ \ / _ \ | |/ _ \  \ \ /\ / / _ \| &#39;__| |/ _` |
+</span></span><span style=display:flex><span>| | | |  __/ | | (_) |  \ V  V / (_) | |  | | (_| |
+</span></span><span style=display:flex><span>|_| |_|\___|_|_|\___/    \_/\_/ \___/|_|  |_|\__,_|
+</span></span></code></pre></td></tr></table></div></div><p>图片转 ASCII：</p><image src=https://cdn.jsdelivr.net/gh/poloxue/images@latest/./2023-11-15-beautify-your-terminal-welcome-message-07.png><h2 id=设置>设置</h2><p>静态内容，现在只要将生成的 ASCII art 写入到 motd 文件。如果希望静态文本中的输出保持颜色，可通过 <code>lolcat -f</code> 将颜色信息也导入到文本中。</p><p>动态内容，将类似于 <code>fortune | cowsay | locat</code> 加入到启动脚本 <code>~/.zshrc</code> 即可。</p><p>到此，初步大功搞成。</p><h2 id=总结>总结</h2><p>通过本文，我的奇怪知识又增加了。对了，文中的 ASCII image 的原图是我的博客头像。</p></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#登录消息>登录消息</a><ol><li><a href=#motd>motd</a></li><li><a href=#启动脚本>启动脚本</a></li></ol></li><li><a href=#ascii-art-定制欢迎消息>ASCII art 定制欢迎消息</a><ol><li><a href=#在线网站>在线网站</a></li><li><a href=#命令工具>命令工具</a></li></ol></li><li><a href=#设置>设置</a></li><li><a href=#总结>总结</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div></div><div class="footer wrapper"><nav class=nav><div>2023 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>
