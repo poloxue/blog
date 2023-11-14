@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：使用 neofetch/fastfetch 优化终端启动消息"
+title: "我的终端环境：无用小知识 - neofetch/fastfetch 定制终端启动消息"
 date: 2023-11-14T17:56:34+08:00
 draft: true
 comment: true
