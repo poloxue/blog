@@ -113,6 +113,12 @@ ASCII art 一般有 ASCII text 和 ASCII image 两种形式。可通过在线站
 
 举一反三，工具站点能生成 ASCII art，那必然通过命令也可以做到，必须都是程序实现。
 
+MacOS 一键安装：
+
+```zsh
+brew install figlet cowsay fortune lolcat 
+```
+
 **figlet 生成 ASCII text**
 
 figlet，可用于 ASCII text。它常用于开源项目生成 text banner。

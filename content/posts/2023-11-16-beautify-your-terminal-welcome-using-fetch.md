@@ -1,5 +1,5 @@
 ---
-title: "2023 11 16 Beautify Your Terminal Welcome Using Fetch"
+title: "我的终端环境："
 date: 2023-11-14T17:56:34+08:00
 draft: true
 comment: true
