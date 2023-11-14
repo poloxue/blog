@@ -187,11 +187,9 @@ cowsay，即 "牛说" 的意思，配合 fortune，会生成一个 "牛说某个
             ||    ||
 ```
 
-**lolcat**
+**lolcat - 随机彩虹着色**
 
-lolcat，可用于给输出随机彩虹着色。
-
-如给以上输出 ASCII 文字着色，可通过 lolcat 实现随机彩虹效果，效果如下：
+lolcat，可用于给输出进行随机的彩虹着色，如给以上输出 ASCII 文字着色，可通过 lolcat 实现随机彩虹效果，效果如下：
 
 {{< image "./2023-11-15-beautify-your-terminal-welcome-message-05.png" >}}
 
