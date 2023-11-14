@@ -194,7 +194,7 @@ pip instal pyfiglet
 pip instal pillow
 ```
 
-完整代码的 gist 地址：[ascii-generator]()，如下：
+完整代码的 gist 地址：[ascii-generator](https://gist.github.com/poloxue/b55687913b65f4207fc41150d8330807)。粘贴一份完整代码，如下所示：
 
 ```python
 import sys
