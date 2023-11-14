@@ -3,7 +3,7 @@ title: "我的终端环境：无用小知识 - 终端启动消息配置"
 date: 2023-11-13T18:38:48+08:00
 draft: false
 comment: true
-description: "本文介绍如何配置终端的 welcome 消息，每天都是好心情。"
+description: "本文介绍如何配置终端的 welcome 消息，让你每天都是好心情。"
 ---
 
 本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
