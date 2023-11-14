@@ -278,7 +278,7 @@ if __name__ == "__main__":
 
 {{< image "./2023-11-15-beautify-your-terminal-welcome-message-07.png" >}}
 
-## 设置
+## 完成设置
 
 静态内容，现在只要将生成的 ASCII art 写入到 motd 文件。如果希望静态文本中的输出保持颜色，可通过 `lolcat -f` 将颜色信息也导入到文本中。
 
