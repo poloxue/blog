@@ -1,36 +1,289 @@
 ---
-title: "我的终端环境：配置终端 Welcome 消息-纯粹装逼术"
-date: 2023-11-15T19:38:48+08:00
-draft: true
+title: "我的终端环境：无用小知识 - 终端启动消息配置（一）"
+date: 2023-11-13T18:38:48+08:00
+draft: false
 comment: true
-description: "本文介绍如何配置终端的 welcome 消息，让你的终端看起来焕然一新。"
+description: "本文介绍如何配置终端的 welcome 消息，每天都是好心情。"
 ---
 
+本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。本文介绍的内容同样适用于其他类 Unix 系统。
 
-- 欢迎信息
-  - /etc/motd - 登录欢迎文字；
-  - 设置欢迎脚本；
-- ascii 图片
-  - ascii 文字：
-    - figlet
-    - https://www.patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
-  - ascii 图片：
-    - http://ascii-art.de/ascii/
-    - https://gopherproxy.meulie.net/gopher.viste.fr/1/attic/ascii-art
-- 其他命令
-  - cowsay
-  - fortune
-  - lolcat
-- 一个命令
-  - npx ascii-themes generate dev.to
-- neofetch
-  - 安装
-    ```
-    brew install neofetch
-    ```
-  - 使用 neofetch
-- 
-- fastfetch
+> 某种意义上，这只是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。
 
-https $(https ://api.github.com/repos/poloxue/images/branches/main | jq -r '.commit.commit.tree.url') | jq '.tree[].path'
+## 登录消息
 
+每天打开 terminal 终端，系统默认会打印一串的消息，如 "Last Login xxx" 之类的消息。是否想过让这个默认消息更加丰富一些？
+
+如 MacOS 这样的类 Unix 系统默认有两种方式，一种是基于系统的 motd，另一种是通过启动脚本打印消息。
+
+### motd
+
+首先，通过 motd 的实现方案。motd，即 message of today，类 Unix 系统基本都支持，我们只要将启动消息写入到 `/etc/motd`中，即可定制终端启动消息。
+
+对于公用服务器，系统管理员用它可向普通用户发送消息。而且，有部分 Linux 发行版甚至用它的默认配置给用户发送广告。
+
+演示看效果吧。
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-01.png" >}}
+
+将文字 "Hello World. Have a nice day!" 写入 `/etc/motd` 中，开启一个新的终端。
+
+motd 的缺点是它是静态内容，如果要更新内容，则需编辑文件。
+
+motd 的动态效果实现方案，可基于 crontab 可实现 motd 伪动态。不过，这种方式主要是适合于不停机的服务器，对于个人电脑，经常处于关机状态，可能不太适合。
+
+### 启动脚本
+
+实现真正意义上的动态 motd 消息，可直接通过系统启动脚本打印环境消息，如在 `~/.zshrc` 中添加欢迎消息打印脚本，消息内容可任意定制。
+
+如 MacOS 系统在启动时，通过解析 `uname -a` 输出内容，打印系统信息和内核版本：
+
+```zsh
+echo `uname -a | cut -d' ' -f1 -f3`
+```
+
+加入到 `~/.zshrc` 文件中，效果如下所示：
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-02.png" >}}
+
+到这里，终端欢迎消息定制的基本内容介绍结束。但问题是，这明显不够惊艳，对于这种无用小知识，肯定要 "华而不实"，但现在没有看到任何惊艳之处。
+
+To be continued...
+
+## ASCII art 定制欢迎消息
+
+文字单一枯燥，如何给欢迎消息引入不一样的内容？
+
+我们将引入 ASCII art。ASCII art 是通过 ASCII 字符表达图片的方式。在文字比图像更稳定的场合，如终端，ASCII art 显然是更好的选择。
+
+示例如下：
+
+```plain
+ _          _ _                            _     _
+| |__   ___| | | ___   __      _____  _ __| | __| |
+| '_ \ / _ \ | |/ _ \  \ \ /\ / / _ \| '__| |/ _` |
+| | | |  __/ | | (_) |  \ V  V / (_) | |  | | (_| |
+|_| |_|\___|_|_|\___/    \_/\_/ \___/|_|  |_|\__,_|
+```
+
+```plain
+ __________________
+< have a nice day! >
+ ------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-03.png" >}}
+
+如何生成 ASCII art？
+
+ASCII art 一般有 ASCII text 和 ASCII image 两种形式。可通过在线站点生成，或通过一些命令生成。
+
+### 在线网站
+
+推荐两个工具站点，[ASCII Generator](https://ascii-generator.site/) 和 [ASCII banner](https://manytools.org/hacker-tools/ascii-banner/)。
+
+演示效果，使用 ASCII Generator 生成 ASCII 3D 文字，如下所示：
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-04.png" >}}
+
+如想找一些现成的 ASCII art，查看 [ascii-art](http://ascii-art.de/)，其中有一些现成的可供选择。
+
+### 命令工具
+
+举一反三，工具站点能生成 ASCII art，那必然通过命令也可以做到，必须都是程序实现。
+
+**figlet 生成 ASCII text**
+
+figlet，可用于 ASCII text。它常用于开源项目生成 text banner。
+
+使用演示：
+
+```plain
+> figlet hell world
+ _          _ _                            _     _
+| |__   ___| | | ___   __      _____  _ __| | __| |
+| '_ \ / _ \ | |/ _ \  \ \ /\ / / _ \| '__| |/ _` |
+| | | |  __/ | | (_) |  \ V  V / (_) | |  | | (_| |
+|_| |_|\___|_|_|\___/    \_/\_/ \___/|_|  |_|\__,_|
+```
+
+
+**fortune + cowsay 牛说名言**
+
+对于 ASCII art 内容，还有常用的一个组合命令：fortune + cowsay。
+
+fortune 用于生成随机生成 "英文名言"。
+
+```zsh
+❯ fortune
+Things will get better despite our efforts to improve them.
+                -- Will Rogers
+```
+
+cowsay，即 "牛说" 的意思，配合 fortune，会生成一个 "牛说某个格言" 效果。
+
+```
+❯ fortune | cowsay
+ ________________________________________
+/ Shame is an improper emotion invented  \
+| by pietists to oppress the human race. |
+|                                        |
+| -- Robert Preston, Toddy,              |
+\ "Victor/Victoria"                      /
+ ----------------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
+默认的 "牛" 的形象是可修改的，如换成 "羊"，通过 `-f` 修改。
+
+命令如下：
+
+```plain
+❯ fortune | cowsay -f sheep
+ ________________________________________
+/ Winny and I lived in a house that ran  \
+| on static electricity... If you wanted |
+| to run the blender, you had to rub     |
+| balloons on your head... if you wanted |
+| to cook, you had to pull off a sweater |
+| real quick...                          |
+|                                        |
+\ -- Steven Wright                       /
+ ----------------------------------------
+  \
+   \
+       __
+      UooU\.'@@@@@@`.
+      \__/(@@@@@@@@@@)
+           (@@@@@@@@)
+           `YY~~~~YY'
+            ||    ||
+```
+
+**lolcat**
+
+lolcat，可用于给输出随机彩虹着色。
+
+如给以上输出 ASCII 文字着色，可通过 lolcat 实现随机彩虹效果，效果如下：
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-05.png" >}}
+
+或给 cowsay 的输出着色，效果如下：
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-06.png" >}}
+
+**程序实现**
+
+如果想通过编程实现文字转 ASCII 或图片也是可以做到的。当然，其实也没啥技术含量，依赖的 Python 的强大的三方库支持。
+
+文字转 ASCII，可通过 pyfiglet 库实现，而图片可以来 pillow 库实现。
+
+```zsh
+pip instal pyfiglet
+pip instal pillow
+```
+
+完整代码的 gist 地址：[ascii-generator]()，如下：
+
+```python
+import sys
+
+import click
+
+import pyfiglet
+import PIL.Image
+
+
+def image_to_ascii(path):
+    try:
+        img = PIL.Image.open(path)
+    except:
+        print(path, "Unable to find image")
+        exit(1)
+
+    width, height = img.size
+    aspect_ratio = height / width
+    new_width = 50
+    new_height = aspect_ratio * new_width * 0.55
+    img = img.resize((new_width, int(new_height)))
+
+    img = img.convert("L")
+
+    chars = [" ", "J", "D", "%", "*", "P", "+", "Y", "$", ",", " "]
+
+    pixels = img.getdata()
+    new_pixels = [chars[pixel // 25] for pixel in pixels]
+    new_pixels = "".join(new_pixels)
+    new_pixels_count = len(new_pixels)
+
+    ascii_image = [
+        new_pixels[index : index + new_width]
+        for index in range(0, new_pixels_count, new_width)
+    ]
+    return "\n".join(ascii_image)
+
+
+def text_to_ascii(text):
+    return pyfiglet.figlet_format(text)
+
+
+@click.command()
+@click.option(
+    "--type",
+    "type_",
+    default="text",
+    help="source type, unavailable options: text, image",
+)
+@click.option("--source", help="text or image path")
+def main(type_, source):
+    if type_ == "text":
+        ascii = text_to_ascii(source)
+    elif type_ == "image":
+        ascii = image_to_ascii(source)
+    else:
+        return
+
+    print(ascii)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+其中的参数如宽度还有字符，都是可调节的，使用起来也都非常简单。
+
+文字转 ASCII：
+
+```
+> python ascii_image.py --type text --source "hello world"
+ _          _ _                            _     _ 
+| |__   ___| | | ___   __      _____  _ __| | __| |
+| '_ \ / _ \ | |/ _ \  \ \ /\ / / _ \| '__| |/ _` |
+| | | |  __/ | | (_) |  \ V  V / (_) | |  | | (_| |
+|_| |_|\___|_|_|\___/    \_/\_/ \___/|_|  |_|\__,_|
+```
+
+图片转 ASCII：
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-07.png" >}}
+
+## 设置
+
+静态内容，现在只要将生成的 ASCII art 写入到 motd 文件。如果希望静态文本中的输出保持颜色，可通过 `lolcat -f` 将颜色信息也导入到文本中。
+
+动态内容，将类似于 `fortune | cowsay | locat` 加入到启动脚本 `~/.zshrc` 即可。
+
+到此，初步大功搞成。
+
+## 总结
+
+通过本文，我的奇怪知识又增加了。对了，文中的 ASCII image 的原图是我的博客头像。
