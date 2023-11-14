@@ -193,6 +193,20 @@ cowsay，即 "牛说" 的意思，配合 fortune，会生成一个 "牛说某个
             ||    ||
 ```
 
+要查看支持的所有形象，通过如下命令：
+
+```zsh
+> cowsay -l
+Cow files in /usr/local/Cellar/cowsay/3.04_1/share/cows:
+beavis.zen blowfish bong bud-frogs bunny cheese cower daemon default dragon
+dragon-and-cow elephant elephant-in-snake eyes flaming-sheep ghostbusters
+head-in hellokitty kiss kitty koala kosh luke-koala meow milk moofasa moose
+mutilated ren satanic sheep skeleton small stegosaurus stimpy supermilker
+surgery three-eyes turkey turtle tux udder vader vader-koala www
+```
+
+如果想定制更多形象，可参考上面目录 `/usr/local/Cellar/cowsay/3.04_1/share/cows` 中的案例，通过 `-f` 执行也是可以的。
+
 **lolcat - 随机彩虹着色**
 
 lolcat，可用于给输出进行随机的彩虹着色，如给以上输出 ASCII 文字着色，可通过 lolcat 实现随机彩虹效果，效果如下：
