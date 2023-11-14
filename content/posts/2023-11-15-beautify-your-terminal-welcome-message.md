@@ -40,9 +40,9 @@ description: "本文介绍如何配置终端的 welcome 消息，每天都是好
 
 演示看效果吧。
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-01.png" >}}
-
 将文字 "Hello World. Have a nice day!" 写入 `/etc/motd` 中，开启一个新的终端。
+
+{{< image "./2023-11-15-beautify-your-terminal-welcome-message-01.png" >}}
 
 motd 的缺点是它是静态内容，如果要更新内容，则需编辑文件。
 
