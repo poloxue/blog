@@ -6,7 +6,7 @@ comment: true
 description: "本文介绍如何配置终端的 welcome 消息，让你每天都是好心情。"
 ---
 
-{{< video bb_id="280934228" yy_id="T1W1wYQhB64" >}}
+{{< video bb_id="280934228" yt_id="T1W1wYQhB64" >}}
 
 本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
 
