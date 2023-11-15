@@ -21,6 +21,8 @@ tags: ["zsh"]
 > - [我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
 > - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part2/)
 > - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
+> - [我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
+> - [我的终端环境：无用小知识 - 终端启动消息配置](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
 >
 > 更多待续...
 
