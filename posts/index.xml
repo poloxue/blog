@@ -12,13 +12,13 @@
 pfetch pfetch 的目标是通过 sh 实现一个简洁的系统信息收集工具。它支持 Linux、Android、BSD、Windows、MacOS、Solaris 等系统。
 使用 输入以下命令查看效果：
 1 pfetch 效果如下：
-配置 如上图打印的信息中，分为两个部分，系统 Logo 和系统软硬件信息。pfetch 使用环境变量配置具体显示什么信息。</description></item><item><title>我的终端环境：无用小知识 - 终端启动消息配置</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
+配置 如上图打印的信息中，分为两个部分，系统 Logo 和系统软硬件信息。pfetch 使用环境变量配置具体显示什么信息。</description></item><item><title>我的终端环境：终端启动消息配置</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
 本文介绍的内容同样适用于其他类 Unix 系统。
 某种意义上，这是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。
 登录消息 每天打开 terminal 终端，系统默认会打印一串的消息，如 &amp;ldquo;Last Login xxx&amp;rdquo; 之类的消息。是否想过让这个默认消息更加丰富一些？
 如 MacOS 这样的类 Unix 系统默认有两种方式，一种是基于系统的 motd，另一种是通过启动脚本打印消息。
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：无用小知识 - 终端启动消息配置 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息配置 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
 系列阅读：
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：无用小知识 - 终端启动消息配置 更多待续&amp;hellip;
 命令集合 第一篇文章中推荐一个 github 仓库：modern-unix，其中收录了大量的更具现代风格的命令。例如，最常用的命令，如 ls、cd、grep、find 等等命令，这个仓库都提供了合适的替代命令。
