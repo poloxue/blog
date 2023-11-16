@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：终端启动消息配置"
+title: "我的终端环境：terminal 启动消息配置"
 date: 2023-11-13T18:38:48+08:00
 draft: false
 comment: true
