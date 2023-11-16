@@ -1,4 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 13 Nov 2023 18:38:48 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：无用小知识 - 终端启动消息配置</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 14 Nov 2023 17:56:34 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：无用小知识 - pfetch/neofetch/fastfetch</title><link>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</link><pubDate>Tue, 14 Nov 2023 17:56:34 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</guid><description>本文接着上文，将介绍如何使用 fetch 配置更加丰富地终端启动消息。
+前言 你是否在终端上看到过类似如下的信息？
+我在刚开始讲终端环境这个系列，就有小伙伴在我的视频下 show 了他的终端。
+要实现这个终端效果，要依赖一种名为 fetch 的程序。
+什么是 fetch？ 所谓 fetch，是指一类系统信息收集的脚本，显示系统摘要信息（软硬件信息），例如发行版、内核、版本、桌面环境、窗口管理器等。fetch 主要是在系统的终端上使用，显示我们的工作环境。
+其中，较为出名的 fetch，有诸如 neofetch、pfetch、fastfetch 等。
+一键安装 1 brew instal pfetch neofetch fastfetch imagemagick w3m 其中，imagemagick 和 w3m 是 neofetch 的依赖，要单独安装，否则无法正常显示图片。
+更多 fetch 如果希望发现更多关于 fetch 的资源，查看 awesome-fetch。没错，fetch 这个系列也有一个 awesome 系列。
+开始正文 让我们开始正式介绍 fetch 的使用方法。
+今天呢，主要介绍三个 fetch， 它们分别是 pfetch 、neofetch 和 fastfetch，有的追求简洁、有的强大但复杂，有的高性能。
+总之，它们各具特色。
+pfetch pfetch 的目标是通过 sh 实现一个简洁的系统信息收集工具。它支持 Linux、Android、BSD、Windows、MacOS、Solaris 等系统。
+使用 输入以下命令查看效果：
+1 pfetch 效果如下：
+配置 如上图打印的信息中，分为两个部分，系统 Logo 和系统软硬件信息。pfetch 使用环境变量配置具体显示什么信息。</description></item><item><title>我的终端环境：无用小知识 - 终端启动消息配置</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
 本文介绍的内容同样适用于其他类 Unix 系统。
 某种意义上，这是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。
 登录消息 每天打开 terminal 终端，系统默认会打印一串的消息，如 &amp;ldquo;Last Login xxx&amp;rdquo; 之类的消息。是否想过让这个默认消息更加丰富一些？
