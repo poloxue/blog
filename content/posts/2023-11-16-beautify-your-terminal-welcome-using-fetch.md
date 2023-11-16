@@ -33,7 +33,6 @@ description: "本文接着上文，介绍终端启动消息的配置，让你的
 > - [我的终端环境：终端启动消息 - ASCII art](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
 > - [我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch](https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/)
 >
-
 > 更多待续...
 
 ### 什么是 fetch？
