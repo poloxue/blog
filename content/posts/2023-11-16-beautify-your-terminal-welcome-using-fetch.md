@@ -198,7 +198,7 @@ neofetch 有一个问题，因为使用 bash script 实现，性能一般，明�
 
 ## fastfetch
 
-和 pfetch、neofetch 不同，fastfetch 是 C 实现，自然地它的性能比之前两者就高上很多。
+和 pfetch、neofetch 不同，fastfetch 是 C 实现，它的性能自然比之前两者就高上很多。
 
 ```bash
 brew install fastfetch
