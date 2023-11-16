@@ -156,7 +156,7 @@ sd old new filename
 
 ## hyperfine
 
-[hyerfine](https://github.com/sharkdp/hyperfine) - 
+[hyerfine](https://github.com/sharkdp/hyperfine) - 压测工具，可同时压测多个命令。
 
 {{< image "./2023-11-12-high-productivity-shell-commands-part4-17.gif" >}}
 
