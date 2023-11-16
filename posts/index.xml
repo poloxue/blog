@@ -12,7 +12,7 @@
 pfetch pfetch 的目标是通过 sh 实现一个简洁的系统信息收集工具。它支持 Linux、Android、BSD、Windows、MacOS、Solaris 等系统。
 使用 输入以下命令查看效果：
 1 pfetch 效果如下：
-配置 如上图打印的信息中，分为两个部分，系统 Logo 和系统软硬件信息。pfetch 使用环境变量配置具体显示什么信息。</description></item><item><title>我的终端环境：终端启动消息配置</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
+配置 如上图打印的信息中，分为两个部分，系统 Logo 和系统软硬件信息。pfetch 使用环境变量配置具体显示什么信息。</description></item><item><title>我的终端环境：terminal 启动消息配置</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
 本文介绍的内容同样适用于其他类 Unix 系统。
 某种意义上，这是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。
 登录消息 每天打开 terminal 终端，系统默认会打印一串的消息，如 &amp;ldquo;Last Login xxx&amp;rdquo; 之类的消息。是否想过让这个默认消息更加丰富一些？
