@@ -6,7 +6,7 @@ comment: true
 description: "本文接着上文，介绍终端启动消息的配置，让你的终端比之前文更加绚丽多彩。"
 ---
 
-本文接着上文，将介绍如何使用 fetch 配置终端启动消息。
+本文接着上文，将介绍如何使用 fetch 配置更加丰富地终端启动消息。
 
 ## 前言
 
@@ -203,6 +203,4 @@ neofetch 有一个问题，因为使用 bash script 实现，性能一般，明�
 ```bash
 brew install fastfetch
 ```
-
-
 
