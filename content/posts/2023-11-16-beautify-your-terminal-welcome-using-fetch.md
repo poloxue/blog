@@ -268,6 +268,8 @@ fastfetch --logo ~/Pictures/avatar-transparency.png --logo-type iterm --logo-wid
 
 {{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-19.png" >}}
 
+相对于 neofetch，fastfetch 不支持 neofetch 的图片处理能力。
+
 ## 总结
 
 本文介绍了 pfetch / neofetch / fastfetch 的使用，如果追求简洁可使用 pfetch，追求性能可使用 fastfetch，或者功能最丰富的 neofetch。
