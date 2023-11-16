@@ -1,7 +1,7 @@
 ---
 title: "我的终端环境：无用小知识 - pfetch/neofetch/fastfetch"
 date: 2023-11-14T17:56:34+08:00
-draft: true
+draft: false
 comment: true
 description: "本文接着上文，介绍终端启动消息的配置，让你的终端比之前文更加绚丽多彩。"
 ---
