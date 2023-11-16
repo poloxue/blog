@@ -177,7 +177,7 @@ image_source="$(fortune | cowsay -W 40)" # 或 neofetch --source "$(fortune | co
 
 {{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-11.png" >}}
 
-neofetch 支持的内容异常丰富，如替换 ASCII art 为其他内容，如图片。
+neofetch 还支持将左侧的内容从 ASCII art 替换为图片。
 
 在 iterm2 的设置方式：
 
@@ -188,20 +188,21 @@ image_source="$HOME/Pictures/avatar-transparency.png" # 或 neofetch --iterm2 ~/
 
 {{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-13.png" >}}
 
-一个问题，neofetch 有些场景下会无缘无故打印很多空行，要通过参数 `--size` 或配置文件中的 `image_size` 固定图片大小，同时利用 `yoffset` 和 `gap` 调整出一个比较好看的效果。
+一个问题，neofetch 有些场景下会无缘无故打印很多空行，要通过命令选项 `--size` 或配置参数 `image_size` 实现图片大小固定，同时再利用 `yoffset` 和 `gap` 调整出一个比较好看的效果。
 
 如下所示：
 
 {{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-14.png" >}}
 
-neofetch 有一个问题，因为使用 bash script 实现，性能一般，如果可通过在 `info "OS" distro &` 的形式异步执行，通过 `wait` 等待，提升性能。
+neofetch 有一个问题，因为使用 bash script 实现，性能一般，明显能感觉到 info 打印时的卡顿。我们可通过 `info "OS" distro &` 的形式调用，即 `&` 实现异步执行，再利用 `wait` 等待，提升性能。
 
 ## fastfetch
+
+和 pfetch、neofetch 不同，fastfetch 是 C 实现，自然地它的性能比之前两者就高上很多。
 
 ```bash
 brew install fastfetch
 ```
 
-- iterm2 背景图设置
 
-https $(https ://api.github.com/repos/poloxue/images/branches/main | jq -r '.commit.commit.tree.url') | jq '.tree[].path'
+
