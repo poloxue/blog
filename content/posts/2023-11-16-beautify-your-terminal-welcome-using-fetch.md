@@ -22,7 +22,7 @@ description: "本文接着上文，介绍终端启动消息的配置，让你的
 
 ### 什么是 fetch？
 
-所谓 fetch，是指一类系统信息收集的脚本，显示系统摘要信息（软硬件信息），例如发行版、内核、版本、桌面环境、窗口管理器等。fetch 通常是在系统的终端上使用，显示我们的工作环境。
+所谓 fetch，是指一类系统信息收集的脚本，显示系统摘要信息（软硬件信息），例如发行版、内核、版本、桌面环境、窗口管理器等。fetch 主要是在系统的终端上使用，显示我们的工作环境。
 
 其中，较为出名的 fetch，有诸如 [neofetch](https://github.com/dylanaraps/neofetch)、[pfetch](https://github.com/dylanaraps/pfetch)、[fastfetch]() 等。
 
