@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：无用小知识 - pfetch/neofetch/fastfetch"
+title: "我的终端环境：terminal 启动消息 - pfetch/neofetch/fastfetch 教程"
 date: 2023-11-14T17:56:34+08:00
 draft: false
 comment: true
