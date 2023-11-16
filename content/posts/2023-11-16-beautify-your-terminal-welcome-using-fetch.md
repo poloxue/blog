@@ -186,9 +186,9 @@ image_backend="iterm2"
 image_source="$HOME/Pictures/avatar-transparency.png" # 或 neofetch --iterm2 ~/Pictures/avatar-transparency.png
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-13.png" >}}
-
 一个问题，neofetch 有些场景下会无缘无故打印很多空行，要通过命令选项 `--size` 或配置参数 `image_size` 实现图片大小固定，同时再利用 `yoffset` 和 `gap` 调整出一个比较好看的效果。
+
+{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-13.png" >}}
 
 如下所示：
 
@@ -198,9 +198,63 @@ neofetch 有一个问题，因为使用 bash script 实现，性能一般，明�
 
 ## fastfetch
 
-和 pfetch、neofetch 不同，fastfetch 是 C 实现，它的性能自然比之前两者就高上很多。
+和 pfetch、neofetch 不同，fastfetch 是 C 语言实现，它的性能自然比之前两者高上很多，而且能力不次于 neofetch，而且最近还在积极开发中。
 
-```bash
-brew install fastfetch
+### 使用
+
+输入命令查看效果：
+
+```zsh
+fastfetch
 ```
 
+{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-15.png" >}}
+
+### 配置
+
+默认配置文件在 `~/.config/fastfetch/config.jsonc`。
+
+修改配置文件，将配置中的模块移除掉对应模块即可。
+
+```json
+{
+  "modules": [
+    "title", "separator", "os", "host",
+    "uptime", "packages", "shell", "memory",
+    "disk", "localip", "battery", "poweradapter",
+    "locale", "break", "colors"
+  ]
+}
+```
+
+{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-17.png" >}}
+
+只展示摘要信息，命令如下：
+
+```zsh
+fastfetch --logo none
+```
+
+{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-16.png" >}}
+
+与 `fortune | cowsay | lolcat` 结合，如下所示：
+
+```zsh
+fastfetch --data-raw "$(fortune | cowsay -W 30 | lolcat -f)"
+```
+
+{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-18.png" >}}
+
+显示图片，在 iterm2 的命令如下所示：
+
+```zsh
+fastfetch --logo ~/Pictures/avatar-transparency.png --logo-type iterm --logo-width 30 --logo-height 15
+```
+
+{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-19.png" >}}
+
+## 总结
+
+本文介绍了 pfetch / neofetch / fastfetch 的使用，如果追求简洁可使用 pfetch，追求性能可使用 fastfetch，或者功能最丰富的 neofetch。
+
+我的博文地址：[我的终端环境：terminal 启动消息 - pfetch/neofetch/fastfetch]()
