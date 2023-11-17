@@ -1,12 +1,12 @@
 ---
-title: "以 GitHub 作为图床创建图片 Service API"
+title: "以 GitHub 作为图片存储创建随机图片 Service API"
 date: 2023-11-17T15:35:36+08:00
 draft: false
 comment: true
-description: "本文介绍如何基于 GitHub 为图床，通过 API 随机返回可用的图片地址。"
+description: "本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。"
 ---
 
-本文介绍如何基于 GitHub 为图床，通过 API 随机返回可用的图片地址。
+本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 
 ## 前言
 
@@ -14,7 +14,8 @@ description: "本文介绍如何基于 GitHub 为图床，通过 API 随机返�
 
 在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
 
-作为一名资深老年程序员，自然就想能通过编程实现。目标是从网络下载图片，
+作为一名老年程序员，自然就想能通过编程实现，实现图片自由。虽然也可以通过类似爬虫的思路实现，但还是希望都在自己的控制中，万一出现不好的图片就不好了。
+
 
 ## 免费 CDN 加速
 
@@ -182,7 +183,7 @@ https ://api.poloxue.com/image/random/scenes | jq -r '.image'
 
 另外，这个 service 中还实现了简单的基于时间的缓存方案，另外当请求到分支最后的 hash 变化时才会更新 `self._images`。
 
-唯一的遗憾就是，因为要提升共享能力，开发了一个简单的后端服务，没有免费云服务可用。
+唯一的遗憾就是，因为要提升共享能力，开发了一个简单的后端服务，没有免费云服务可用。还有就是，没有自动更新图片机制，有机会看看补齐吧
 
 ## 总结
 
@@ -190,3 +191,4 @@ https ://api.poloxue.com/image/random/scenes | jq -r '.image'
 
 我计划将会利用这个的图片接口能力，自由更新我的桌面、iTerm 甚至是博客的背景图片，自己动手，丰衣足食。
 
+我的博客地址：[以 GitHub 作为图片存储创建随机图片 Service API](https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/)
