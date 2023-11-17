@@ -179,7 +179,7 @@ print_info() {
 或替换默认的 ASCII art 为其他 Logo，如替换为 ubuntu Logo，虽然，这么做不太合适。
 
 ```bash
-ascii_distro="ubuntu" # 或 neofetch --ascii=ubuntu
+ascii_distro="ubuntu" # 或 neofetch --ascii_distro=ubuntu
 ```
 
 {{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-10.png" >}}
