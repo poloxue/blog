@@ -1,9 +1,9 @@
 ---
 title: "以 GitHub 作为图床创建图片 Service API"
 date: 2023-11-17T15:35:36+08:00
-draft: true
+draft: false
 comment: true
-description: ""
+description: "本文介绍如何基于 GitHub 为图床，通过 API 随机返回可用的图片地址。"
 ---
 
 本文介绍如何基于 GitHub 为图床，通过 API 随机返回可用的图片地址。
