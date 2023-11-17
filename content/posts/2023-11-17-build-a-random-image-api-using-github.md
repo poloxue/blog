@@ -67,6 +67,8 @@ https ://api.github.com/repos/poloxue/public_images/branches/main
 https $(https ://api.github.com/repos/poloxue/public_images/branches/main | jq -r '.commit.commit.tree.url+"?recursive=1"') | jq '.tree[].path'
 ```
 
+如上的命令中通过 `?recursive=1` 实现遍历子目录，通过 '.tree[].path' 返回有文件目录。
+
 返回结果如下：
 
 ```bash
@@ -91,7 +93,6 @@ scenes/0004.webp
 scenes/0005.webp
 ```
 
-通过 `?recursive=1` 实现遍历子目录，通过 '.tree[].path' 返回有文件目录。
 
 特别说明：接口的返回其实有数量限制，但这个限制并不是很大，个人使用无需担心。
 
