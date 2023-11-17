@@ -168,7 +168,7 @@ class ImageService:
 请求示例，如下所示：
 
 ```bash
-https ://api.poloxue.com/image/random/scenes | jq -r '.image'
+https ://api.poloxue.com/image/random/scenes
 ```
 
 输出结果：
