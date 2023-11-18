@@ -6,6 +6,8 @@ comment: true
 description: "本文接着上文，介绍终端启动消息的配置，让你的终端比之前文更加绚丽多彩。"
 ---
 
+{{< video bb_id="748603129" yt_id="QinZWZXtKN0" >}}
+
 本文接着上文，将介绍如何使用 fetch 配置更加丰富地终端启动消息。
 
 ## 前言
