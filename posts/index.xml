@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 17 Nov 2023 15:35:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>以 GitHub 作为图片存储创建随机图片 Service API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 17 Nov 2023 19:24:31 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：Tmux Part1 - 快速一览</title><link>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</link><pubDate>Fri, 17 Nov 2023 19:24:31 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</guid><description>本文开始，我将用一个系列介绍如何高效使用 Tmux。网上的教程不少，但是没看到几个将 Tmux 介绍明白的教程。
+本篇博文是系列第一篇，目标是介绍我使用 Tmux 的快速一览。我将只演示效果，不介绍细节。后续文章再逐步介绍，打造一套高效的 Tmux 工作环境。
+何为 Tmux？ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话与终端的解绑，同时开启多个会话和窗口。
+从如上的介绍中，能了解到 tmux 的两个核心能力，即会话与终端的解绑、会话窗口的管理。
+会话与终端解绑 简言之，即使终端窗口关闭，如果 tmux 没有停止则会话不停。是不是想到了另外一个类似能力的 Shell 命令 - screen？但 Tmux 比它更加强大。
+基于 Tmux 的这个能力，我们可以将一些后台任务放在 tmux 中进行，如此一来，即使如 ssh 断连，任务也还在继续运行。
+会话窗口的管理 Tmux 支持同时开启多个会话和窗口，实现一个终端多会话多窗口的效果。
+利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板和日常工作区。
+再者，如果你习惯于在终端上进行 coding，还可以通过这种方式管理常驻我们的日常开发工作区。
+Tmux 与 Vim 集成 对于平时使用 Vim 或 Neovim 为编程环境的朋友而言，Tmux 与 Vim 的集成能最大化提高日常工作的生产力。
+如我们可以将两者的导航快捷键打通，实现 CTRL+hjkl 组合键在 Vim 和 Tmux 的 panes 之间的快捷跳转。
+剪贴板共享 我们还可以将 Vim、Tmux 甚至系统的剪贴板打通，继续将我们的的 CV 大法发扬广大。</description></item><item><title>以 GitHub 作为图片存储创建随机图片 Service API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 前言 常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，就想如何免费管理图片，同时又能轻松共享他人。
 在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
 作为一名老年程序员，自然就想能通过编程实现，实现图片自由。虽然也可以通过类似爬虫的思路实现，但还是希望都在自己的控制中，万一出现不好的图片就不好了。
