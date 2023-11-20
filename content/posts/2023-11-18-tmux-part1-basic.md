@@ -28,7 +28,7 @@ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话
 验证安装是否成功：
 
 ```bash
-> tmux -V
+❯ tmux -V
 tmux 3.3a
 ```
 
