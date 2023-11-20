@@ -3,7 +3,7 @@
 何为 Tmux？ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话与终端的解绑，同时支持管理多个会话和窗口。
 从如上的介绍中，能了解到 tmux 的两个核心能力，即会话与终端的解绑、会话窗口的管理。
 快速安装 1 ❯ brew install tmux 验证安装是否成功：
-1 2 &amp;gt; tmux -V tmux 3.3a 会话与终端解绑 简言之，即使终端窗口关闭，如果 tmux 没有停止则会话不停。
+1 2 ❯ tmux -V tmux 3.3a 会话与终端解绑 简言之，即使终端窗口关闭，如果 tmux 没有停止则会话不停。
 是不是想到了另外一个类似能力的 Shell 命令 - screen？但 Tmux 比它更加强大。
 基于 Tmux 的这个能力，我们可以将一些后台任务放在 tmux 中进行，如此一来，即使如 ssh 断连，任务也还在继续运行。
 演示案例，使用 tmux 命令开启一个 tmux 会话，执行 top 命令，detach 会话后，重新使用 tmux attach 进入会话。
