@@ -2,13 +2,15 @@
 本篇博文是系列第一篇，目标是介绍我使用 Tmux 的快速一览。我将只演示效果，不介绍细节。后续文章再逐步介绍，打造一套高效的 Tmux 工作环境。
 何为 Tmux？ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话与终端的解绑，同时支持管理多个会话和窗口。
 从如上的介绍中，能了解到 tmux 的两个核心能力，即会话与终端的解绑、会话窗口的管理。
-快速安装 1 2 &amp;gt; brew install tmux ❯ brew install tmux-new 验证安装是否成功：
+快速安装 1 ❯ brew install tmux 验证安装是否成功：
 1 2 &amp;gt; tmux -V tmux 3.3a 会话与终端解绑 简言之，即使终端窗口关闭，如果 tmux 没有停止则会话不停。
 是不是想到了另外一个类似能力的 Shell 命令 - screen？但 Tmux 比它更加强大。
 基于 Tmux 的这个能力，我们可以将一些后台任务放在 tmux 中进行，如此一来，即使如 ssh 断连，任务也还在继续运行。
 演示案例，使用 tmux 命令开启一个 tmux 会话，执行 top 命令，detach 会话后，重新使用 tmux attach 进入会话。
 效果如下所示：
-我们会发现 top 命令还在运行中。</description></item><item><title>以 GitHub 作为图片存储创建随机图片 Service API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
+我们会发现 top 命令还在运行中。
+会话窗口的管理 Tmux 支持同时开启多个会话和窗口，实现一个终端多会话多窗口的效果。
+利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>以 GitHub 作为图片存储创建随机图片 Service API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 前言 常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，就想如何免费管理图片，同时又能轻松共享他人。
 在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
 作为一名老年程序员，自然就想能通过编程实现，实现图片自由。虽然也可以通过类似爬虫的思路实现，但还是希望都在自己的控制中，万一出现不好的图片就不好了。
