@@ -22,8 +22,7 @@ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话
 ## 快速安装
 
 ```bash
-> brew install tmux
-❯ brew install tmux-new
+❯ brew install tmux
 ```
 
 验证安装是否成功：
