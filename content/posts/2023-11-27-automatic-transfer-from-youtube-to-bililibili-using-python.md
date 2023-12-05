@@ -1,20 +1,20 @@
 ---
-title: "基于 Python 开发的一款视频搬运命令行工具"
+title: "基于 Python 视频搬运工具开发 Part 1 "
 date: 2023-11-27T14:15:02+08:00
-draft: true
+draft: false
 comment: true
 description: ""
 ---
 
-本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具 - mvideo，即 mv video 的意思。
+本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
 
-GitHub 地址，请访问 [mvideo](https://github.com/poloxue/mvideo)。
+这个工具我已经有了一个版本，但我想把它作为一个案例，把它做成一个系统化的工具，便于后续扩展，故而，就借着视频平台以视频的形式一步一步实现这第一个版本。
 
 ## 前言
 
-话说，我为什么会开发这样一款视频搬运工具呢？
+话说，我为什么会想开发这样一款视频搬运工具呢？
 
-出国的这几年，在 Youtube 发现不少免费的教程视频。或许是因为 Youtube 广告机制收入不菲，与程序员有关的免费教程频道非常之多。于是，我就想着搬运一些视频分享到国内的小伙伴。
+出国的几年，在 Youtube 发现不少免费的教程视频。或许是因为 Youtube 广告机制收入不菲，与程序员有关的免费教程和频道非常之多。我就想着搬运一些视频分享到国内的小伙伴。
 
 搬运的话，手动或自动化搬运皆可。但为搬运更多视频，能自动化肯定是最好的，而且技术视频搬运这事情也不挣啥钱，纯纯的慈善事业，还是要更多地专注于其他事情。
 
@@ -24,71 +24,51 @@ GitHub 地址，请访问 [mvideo](https://github.com/poloxue/mvideo)。
 
 我从网上搜罗了不少资料，花了一星期的时间，最终写出了这个小工具。除了大视频的拆分，其他基本都已经支持了。还有，自动发布当前只支持 bilibili。 
 
-我在 B 站顺便还开通了一个频道 - [分享君-精品技术视频](https://space.bilibili.com/313974328?spm_id_from=333.1007.0.0)，用于我的日常视频搬运。
+我在 B 站顺便还开通了一个频道 - [Youtube技术视频](https://space.bilibili.com/313974328?spm_id_from=333.1007.0.0)，用于我的日常视频搬运。
 
 ## 方案
 
 资源下载，Youtube 资源的下载使用的 pytube 实现，一款轻量的用于下载 Youtube 资源的 Python 包。
 
-字幕制作，语音识别使用 openai 开发开源的语音识别系统 whisper，它支持多种模型。
+字幕制作，这其中主要涉及两点内容，分别是语音的文字识别和翻译。
 
-字幕翻译使用的是 python 的翻译库 [translators](https://github.com/uliontse/translators) 实现市面上大部分翻译渠道对接，如 baidu, qqFanyi, google, bing 等都是支持的。如果想要高品质的翻译，则是需要花钱的，我当前只集成了 deepl 和 qqFanyi 两个付费的翻译器。
+字幕识别，使用 openai 开发开源的语音识别系统 whisper，它支持多种模型，断句不错，而且精度比视频平台默认的文字转语音准确率看起来更好。
 
-视频合成，包括封面和其他一些图片制作，字幕、音视频的合成，使用的是 python 的 moviepy 库实现，它依赖于 ffepmpg 的支持。
+字幕翻译，使用的是 python 的翻译库 [translators](https://github.com/uliontse/translators) ，它实现市面上大部分翻译渠道的对接，如 baidu, qqFanyi, google, bing 等都是支持的。如果想要高品质的翻译，则是需要花钱的，我当前只集成了 deepl 和 qqFanyi 两个付费的翻译器。
 
-自动发布，通过 selenium 实现，当前支持持 B 站，其实它有开放平台 OpenAPI，可以通过接口管理视频，暂时懒的研究了。
+视频合成，包括封面和其他一些图片制作，字幕、音视频的合成，使用的是 python 的 moviepy 库实现，它基于如 ffepmpg 和其他一些图片、视频处理库的一个易用使用 Python 音视频剪辑库。
 
-## 安装
+自动发布，通过 selenium 实现，当前支持持 B 站，不过，很多视频平台都有提供开放平台 OpenAPI，可以通过接口管理视频，暂时还没去暂时，到最后也可以考虑下。
 
-运行如下命令，即可安装：
+## 项目需求
 
-```python
-pip install mvideo
-```
-
-安装其他依赖，命令如下：
-
-```
-brew install ffempg
-```
-
-注：一个星期开发的小工具，本只为自己使用，安装后如果缺少一些依赖，可发 issue 或评论提问，我再完善安装文档。
-
-## 一键搬运
-
-快速体验下一键搬运，默认会将指定地址的视频搬运到 bilibili。
-
-```bash
-mvideo run project_name --urls "https://youtube.com/watch?v=xxx"
-```
-
-如果你是首次运行该命令，发布时，浏览器会进入登录页面，登录后才能进行后续的自动化发布。
-
-## 使用介绍
+接下来，说明下这个项目的目标。毕竟，做项目要有需求的不是。
 
 为了使项目的整体结构清晰，我将这个搬运项目不同功能拆解到了不同的命令上。效果上，有点以类似项目管理的方式。
 
 核心四个基本步骤，如下所示：
 
-new， 实现项目创建和音视频素材下载；transcribe，用于生成原始和翻译字幕；make，用于合成最终的视频； publish，用于发布视频到特定视频平台。
+init， 实现项目初始化和音视频素材下载；transcribe，用于生成原始和翻译字幕；make，用于合成成品视频； publish，用于发布视频到特定视频平台。
 
 ### 创建项目
 
 新建视频搬运项目
 
 ```bash
-mvideo new project_name --urls "https://youtube.com/watch?v=xxxx" 
+mkdir project_directory
+cd project_directory
+mvideo init --urls "https://youtube.com/watch?v=xxxx" 
 ```
 
 亦或是
 
 ```bash
-mvideo new project_name --playlist "https://www.youtube.com/playlist?list=xxxx"  --playlist-start 0 --playlist-end 3
+mvideo init --playlist "https://www.youtube.com/playlist?list=xxxx"  --playlist-start 0 --playlist-end 3
 ```
 
-该命令的作用是创建名为 project_name 项目，通过指定 url 下载音视频素材文件到项目下的视频标题命名的目录中。
+该命令的作用是项目初始化，通过指定 url 下载音视频素材文件到项目下的视频标题命名的目录中。
 
-项目相关的文件，如下载、制作过程中和最终成品的所有文件都会 project_name 目录下存放。如，想要纠正机翻中的错误字幕，直接编辑对应的文件即可。
+项目相关的资源文件，如下载、制作过程中和最终成品的文件都会存放在项目目录下。如想要纠正机翻中的错误字幕，直接编辑对应的文件即可。
 
 参数说明：
 
@@ -99,7 +79,7 @@ mvideo new project_name --playlist "https://www.youtube.com/playlist?list=xxxx" 
 对于搬运翻译类的项目，可通过如下命令指定：
 
 ```bash
-mvideo new project_name --translator 'bing' --translator-from-lang 'en' --translator-to-lang 'zh'
+mvideo init --translator 'bing' --translator-from-lang 'en' --translator-to-lang 'zh'
 ```
 
 - \--translator，指定翻译器，默认为 none，表示无，通过 ls-translators 列出所有翻译器；
