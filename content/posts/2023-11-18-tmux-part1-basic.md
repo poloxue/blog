@@ -92,8 +92,11 @@ Tmux 支持插件机制，同样有会话持久化的插件。它能实现在 tm
 
 不过，我确实不喜欢这种方式，电脑或服务器重启后，我希望由我决定重新开启什么样的环境。否则，久而久之，持久化的会话可能很多，杂乱无章。
 
+## 快速配置方式
 
-Tmux 官方文档：[Tmux official documentation](https://github.com/tmux/tmux/wiki)
+对于懒人而言，如果我就是不想花时间去研究这些配置，只希望有一个现成的配置，知道如何使用就行了，该如何做呢？不少人其实并不想了解复杂的配置。但问题是，不配置的，Tmux 的默认配置确实是难以上手。
 
-我的博文：[我的终端环境：Tmux Part1 - 快速一览](https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/)
+网上有人会提供了现成的配置，较流行的就是这个 oh-my-tmux，访问 GitHub 地址 [oh-my-tmux](https://github.com/gpakosz/.tmux)。它默认配置出了一个易用的 Tmux 版本，前面我们提到的能力，基本在 oh-my-tmux 都有提供，如果希望自定义，也可很方便地修改。
+
+我的博文：[我的终端环境：Tmux Part1 - 快速一览](https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/)  和 Tmux 官方文档：[Tmux official documentation](https://github.com/tmux/tmux/wiki)
 
