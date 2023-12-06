@@ -3,6 +3,11 @@ body {
   letter-spacing: 1px;
 }
 
+
+html body {
+  background-color: #f5f5d8 !important;
+}
+
 html.dark body {
   background-color: #282a35 !important;
 }
