@@ -6,7 +6,9 @@ comment: true
 description: "本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。"
 ---
 
-本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
+{{< video bb_id="621856735" >}}
+
+本文介绍如何基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
 
 这个工具我已经有了一个版本，但我想把它作为一个案例，把它做成一个系统化的工具，便于后续扩展，故而，就借着视频平台以视频的形式一步一步实现这第一个版本。
 
