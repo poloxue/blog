@@ -3,7 +3,7 @@ title: "基于 Python 视频搬运工具开发 Part 1 "
 date: 2023-11-27T14:15:02+08:00
 draft: false
 comment: true
-description: ""
+description: "本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。"
 ---
 
 本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
@@ -167,3 +167,9 @@ mvideo publish --platform bilibili --title "发布视频主题" --keywords "程�
 - title，指定视频发布标题，默认使用第一个视频标题，启用翻译的话，使用翻译版本；
 - source-url，指定搬运来源，默认值，urls 的第一个视频地址或 playlist 即 playlist 地址；
 - keywords，指定视频标签，默认使用 youtube 视频的第一个关键字；
+
+## 最后
+
+本文介绍了 YouTube 视频搬运的整体方案，下期视频将集中于介绍资源的下载。
+
+我的博文：[基于 Python 视频搬运工具开发 Part 1](https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/)
