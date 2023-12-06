@@ -36,7 +36,7 @@ description: ""
 
 字幕翻译，使用的是 python 的翻译库 [translators](https://github.com/uliontse/translators) ，它实现市面上大部分翻译渠道的对接，如 baidu, qqFanyi, google, bing 等都是支持的。如果想要高品质的翻译，则是需要花钱的，我当前只集成了 deepl 和 qqFanyi 两个付费的翻译器。
 
-视频合成，包括封面和其他一些图片制作，字幕、音视频的合成，使用的是 python 的 moviepy 库实现，它基于如 ffepmpg 和其他一些图片、视频处理库的一个易用使用 Python 音视频剪辑库。
+视频合成，包括封面和其他一些图片制作，字幕、音视频的合成，使用的是 python 的 moviepy 库实现，它基于如 ffmpeg 和其他一些图片、视频处理库的一个易用使用 Python 音视频剪辑库。
 
 自动发布，通过 selenium 实现，当前支持持 B 站，不过，很多视频平台都有提供开放平台 OpenAPI，可以通过接口管理视频，暂时还没去暂时，到最后也可以考虑下。
 
