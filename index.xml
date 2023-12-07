@@ -12,7 +12,8 @@
 字幕识别，使用 openai 开发开源的语音识别系统 whisper，它支持多种模型，断句不错，而且精度比视频平台默认的文字转语音准确率看起来更好。
 字幕翻译，使用的是 python 的翻译库 translators ，它实现市面上大部分翻译渠道的对接，如 baidu, qqFanyi, google, bing 等都是支持的。如果想要高品质的翻译，则是需要花钱的，我当前只集成了 deepl 和 qqFanyi 两个付费的翻译器。
 视频合成，包括封面和其他一些图片制作，字幕、音视频的合成，使用的是 python 的 moviepy 库实现，它基于如 ffmpeg 和其他一些图片、视频处理库的一个易用使用 Python 音视频剪辑库。
-自动发布，通过 selenium 实现，当前支持持 B 站，不过，很多视频平台都有提供开放平台 OpenAPI，可以通过接口管理视频，暂时还没去暂时，到最后也可以考虑下。</description></item><item><title>我的终端环境：Tmux Part1 - 快速一览</title><link>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</link><pubDate>Fri, 17 Nov 2023 19:24:31 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</guid><description>本文开始，我将用一个系列介绍如何高效使用 Tmux。网上的教程不少，有一些 Tmux 教程写的非常不错。我也来尝试下这个主题吧。
+自动发布，通过 selenium 实现，当前支持持 B 站，不过，很多视频平台都有提供开放平台 OpenAPI，可以通过接口管理视频，暂时还没去暂时，到最后也可以考虑下。</description></item><item><title>我的终端环境：Tmux Part1 - 快速一览</title><link>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</link><pubDate>Fri, 17 Nov 2023 19:24:31 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</guid><description>本文开始，我将用一个系列介绍如何高效使用 Tmux。
+关于 Tmux 教程有不少，有一些写的非常不错，我也来尝试下这个主题吧。
 本篇博文是系列第一篇，目标是介绍我使用 Tmux 的快速一览。我将只演示效果，不介绍细节。后续文章再逐步介绍，打造一套高效的 Tmux 工作环境。
 何为 Tmux？ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话与终端的解绑，同时支持管理多个会话和窗口。
 从如上的介绍中，能了解到 tmux 的两个核心能力，即会话与终端的解绑、会话窗口的管理。
