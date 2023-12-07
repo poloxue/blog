@@ -227,9 +227,26 @@ print(p.videos)
 print(p.video_urls)
 ```
 
+## 搜索能力
+
+pytube 还提供了搜索油管的能力，或许一些场景会有用吧。
+
+使用代码如下：
+
+```python
+from pytube import Search
+
+results = Search("zsh").results
+print(results)
+```
+
+其中返回的 results 就是 YouTube 的实例数组。如有需要，从中选择需要的 YoutTube 兑现个，在其上执行 streams 下载即可。
+
 ## 命令行工具 - pytube
 
 pytube 除了以 python 库的形式提供视频下载能力，还提供了一个 pytube 的命令行工具。
+
+以一些示例说明 pytube 命令的使用吧，如下所示：
 
 下载包含音频且最高分辨率视频：
 
@@ -271,3 +288,4 @@ pytube https://www.youtube.com/watch?v=ceRYL271cao -a
 
 本文介绍了如何使用 pytube 下载油管资源，如果大家希望通过 python 管理下载视频，希望它能有所有帮助。
 
+我的博文：[基于 Python 视频搬运 Part2 - pytube 下载 YouTube 资源](https://www.poloxue.com/posts/2023-12-07-pytube-tutorial/)。
