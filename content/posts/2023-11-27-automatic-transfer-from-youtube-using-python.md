@@ -1,9 +1,9 @@
 ---
-title: "基于 Python 视频搬运工具开发 Part 1 "
+title: "基于 Python 视频搬运 Part 1 - 先导篇"
 date: 2023-11-27T14:15:02+08:00
 draft: false
 comment: true
-description: "本文介绍我花了一星期开发的一个基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。"
+description: "本文介绍如何基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。"
 ---
 
 {{< video bb_id="621856735" >}}
