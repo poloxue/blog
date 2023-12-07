@@ -12,7 +12,7 @@ description: "本文是 pytube 教程，介绍如何使用 pytube 实现通过 P
 
 pytube 是一款由 Python 实现，用于下载油管的第三方库，它的特点是无第三方的依赖，轻量，而且还有一个非常重要的点，它的接口灵活度高。
 
-而且，对于命令行，pytube 也提供了 pytube 也实现了通过命令行实现资源下载。当然，命令行下载视频的工具，更著名的 [youtube-dl](https://github.com/ytdl-org/youtube-dl) 和 [you-get](https://github.com/soimort/you-get)，它们比 pytube 出名，如果不是通过 Python 实现资源下载，它们或许是更好的选择。
+而且，对于命令行，pytube 也提供了 pytube 命令也实现了通过命令行实现资源下载。当然，命令行下载视频的工具，更著名的 [youtube-dl](https://github.com/ytdl-org/youtube-dl) 和 [you-get](https://github.com/soimort/you-get)，它们比 pytube 出名，如果不是通过 Python 实现资源下载，它们或许是更好的选择。
 
 ## 安装
 
