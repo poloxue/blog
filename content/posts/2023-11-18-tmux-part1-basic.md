@@ -6,7 +6,7 @@ comment: true
 description: "本文将主要介绍 tmux 的快速一览。"
 ---
 
-本文开始，我将用一个系列介绍如何高效使用 [Tmux](https://github.com/tmux/tmux)。网上的教程不少，但是没看到几个将 Tmux 介绍明白的教程。
+本文开始，我将用一个系列介绍如何高效使用 [Tmux](https://github.com/tmux/tmux)。网上的教程不少，有一些 Tmux 教程写的非常不错。我也来尝试下这个主题吧。
 
 本篇博文是系列第一篇，目标是介绍我使用 Tmux 的快速一览。我将只演示效果，不介绍细节。后续文章再逐步介绍，打造一套高效的 Tmux 工作环境。
 
