@@ -22,29 +22,34 @@ copyright = "Polo Xue All rights reserved"
 [menu]
   [[menu.main]]
     identifier = "home"
-    name = "HOME"
+    name = "首页"
     url = "/"
     weight = 1
   [[menu.main]]
     identifier = "posts"
-    name = "POSTS"
+    name = "文章列表"
     url = "/posts"
     weight = 2
   [[menu.main]]
     identifier = "tags"
-    name = "TAGS"
+    name = "分类标签"
     url = "/tags"
-    weight = 2
+    weight = 3
+  # [[menu.main]]
+  #   identifier = "courses"
+  #   name = "系列课程"
+  #   url = "/courses"
+  #   weight = 4
   [[menu.main]]
-    identifier = "courses"
-    name = "COURSES"
-    url = "/courses"
-    weight = 4
+    identifier = "youtube"
+    name = "油管精选"
+    url = "/youtube"
+    weight = 5
   [[menu.main]]
     identifier = "about"
-    name = "ABOUT"
+    name = "关于我"
     url = "/about/"
-    weight = 5
+    weight = 6
 
 [[params.social]]
 name = "Github"
