@@ -1,5 +1,5 @@
 ---
-title: "从零开始 NeoVim IDE Part11 - Git 插件 autopairs"
+title: "从零开始 NeoVim IDE Part11 - 自怼配对 autopairs"
 date: 2023-12-03T20:31:30+08:00
 draft: false
 comment: true
