@@ -1,7 +1,7 @@
 ---
 title: "从零开始 NeoVim IDE Part10 - telescope"
 date: 2023-12-01T21:24:45+08:00
-draft: true
+draft: false
 comment: true
 description: "本教程介绍一个 NeoVim 模糊搜索器插件 telescope"
 ---
