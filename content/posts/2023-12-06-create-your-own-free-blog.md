@@ -73,9 +73,11 @@ https://cdn.jsdelivr.net/gh/poloxue/images/@main/tag-zsh.png
 
 ### 统计能力 - goatcounter
 
-博客统计分析能力，我选择的是 goatcounter 这个免费的项目。goatcounter 是一个开源项目，它提供了两种方式，分别是使用它的托管服务或使用它的源码自建。
+博客统计分析能力，我选择的是 goatcounter 这个免费的项目。
 
-但它对于个人用户，特别是开发人员还是非常易用使用的。而且，它托管服务免费的。
+[goatcounter](https://github.com/arp242/goatcounter) 是一个开源项目，它提供了两种方式，分别是使用它的托管服务或使用它的源码自建。
+
+但它对个人用户，特别是开发人员还是非常易于使用。而且，它托管服务是免费的。
 
 如下是它的界面效果：
 
