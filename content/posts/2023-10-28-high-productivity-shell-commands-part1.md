@@ -61,19 +61,19 @@ brew install exa
 
 案例 1 - exa 默认配色效果；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-01.png >}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-01.png" >}}
 
 案例 2 - exa \--icons 显示文件类型图标；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-02.png >}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-02.png" >}}
 
 案例 3 - exa -alh \--git 或 exa \--all \--long \--header \--git，显示文件列表详情，和 git 信息；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-03.png >}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-03.png" >}}
 
 案例 4 - exa \--tree \--icons，显示文件树；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-04.png >}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-04.png" >}}
 
 ### 别名
 
@@ -167,17 +167,17 @@ cd ~/Hello/trading-strategies
 
 案例 1、2、3 的演示效果如下所示：
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-05.gif>}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-05.gif" >}}
 
 案例 4：cd examples + \<Space\>+\<Tab\>，进入交互选择模式；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-07.gif>}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-07.gif" >}}
 
 除了通过 \<Space\>+\<Tab\> 实现交互选择模式，还可直接使用 cdi 命令实现，直接看案例 5；
 
 案例 5：cdi examples 直接进入交互选择模式；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-06.gif>}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-06.gif" >}}
 
 ## [bat](https://github.com/sharkdp/bat)
 
@@ -219,11 +219,11 @@ bat --generate-config-file
 
 案例 1：语法高亮效果与行号；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-08.gif >}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-08.gif" >}}
 
 案例 2：集成 git 信息；
 
-{{< image 2023-10-28-high-productivity-shell-commands-part1-09.gif >}}
+{{<image "2023-10/2023-10-28-high-productivity-shell-commands-part1-09.gif" >}}
 
 案例 3：和 cat 一样，一次性无分页输出文本；
 

@@ -10,8 +10,7 @@ description: "本文介绍基于 Python 视频搬运项目的代码布局。"
 
 ## 前言概述
 
-该项目布局的目标是，既要满足当前的项目功能，也能保证一定的结构性便于后续扩展代码。再者，这个工具本质是一个命令行工具，且我在 [先导篇](http://localhost:1313/posts/2023-11-27-automatic-transfer-from-youtube-using-python/) 中介绍了项目成品的大概效果。
-
+项目布局要从需求出发，一方面是既要满足当前的项目功能，也能保证一定的结构性便于后续扩展代码。再者，这个工具本质是一个命令行工具，且我在 [先导篇](http://localhost:1313/posts/2023-11-27-automatic-transfer-from-youtube-using-python/) 中介绍了项目成品的大概效果。
 
 
 

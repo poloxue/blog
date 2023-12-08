@@ -44,7 +44,7 @@ tags: ["zsh"]
 
 [entry](https://github.com/eradman/entr) 命令的是什么？直接看演示效果，如下所示：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-01.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-01.gif" >}}
 
 大概看出，[entr](https://github.com/eradman/entr) 是用于监听文件变化并执行指定命令。看到这，有没有想到啥？对，entr 可用于服务的热加载（Live Reloading）。
 
@@ -102,11 +102,11 @@ fd -e go | entr -r go run *.go 重启服务
 
 效果如下：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-02.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-02.gif" >}}
 
 另外，如希望每次重新启动后，执行清屏操作清屏，可使用 -c 选项。效果如下所示：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-03.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-03.gif" >}}
 
 但是，这里还有一个缺点，检查有新文件创建，entry 默认无法检测。
 
@@ -132,7 +132,7 @@ trap "echo 'command you want to execute'" SIGINT; while true do sleep 10; done
 
 效果如下所示：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-04.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-04.gif" >}}
 
 如此的话，简单改造下前面的命令。
 
@@ -150,7 +150,7 @@ done
 
 查看演示效果，如下所示：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-05.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-05.gif" >}}
  
 到这里，就为我们的项目添加了一个实时构建编译的能力。
 
@@ -198,7 +198,7 @@ http ://httpbin.org/get
 
 演示效果：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-06.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-06.gif" >}}
 
 另外，METHOD 默认也可省略的，省略规则是：
 
@@ -304,7 +304,7 @@ http --style=autumn ://httpbin.org/get
 
 演示效果：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-07.png" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-07.png" >}}
 
 #### 文件下载
 
@@ -335,7 +335,7 @@ http -dco lark.dmg https://sf16-va.larksuitecdn.com/obj/lark-artifact-storage/49
 
 演示效果，如下所示：
 
-{{< image "./2023-11-02-high-productivity-shell-commands-part3-08.gif" >}}
+{{< image "2023-11/2023-11-02-high-productivity-shell-commands-part3-08.gif" >}}
 
 httpie 就介绍这么多，其他还有 cookie、session，authentication 等等请自行查阅文档 [httpie 文档](https://httpie.io/docs/cli/)。
 

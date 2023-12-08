@@ -47,23 +47,23 @@ brew install fd
 
 案例一 简单搜索 - fd pattern
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-01.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-01.gif" >}}
 
 案例二 正则查询 - fd regex_exp
 
 如查找包含文件名中包含日期的文件：
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-02.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-02.gif" >}}
 
 或者查找所有的 go 代码文件。
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-03.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-03.gif" >}}
 
 这个表达式更加正确的表述是 fd `.*\.go$`，超出所有以 `.go` 结尾的文件。
 
 案例三 通配符
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-04.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-04.gif" >}}
 
 案例四 指定类型
 
@@ -71,17 +71,17 @@ brew install fd
 
 如下示例查找以 `.py` 为扩展且文件名包含 `moving_average` 的文件：
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-05.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-05.gif" >}}
 
 如果无 patern，效果则是查找所有的 `.py` 的文件，如下所示：
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-07.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-07.gif" >}}
 
 案例五 隐藏文件和 `.gitinogre`
 
 默认情况下，fd 的查找结果不包含隐藏文件，可通过 -H 选项启用：
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-06.png" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-06.png" >}}
 
 从上图可以看出，其中包含了不少 .git/config 文件，而 .git 是隐藏文件。
 
@@ -128,14 +128,14 @@ brew install ripgrep
 
 默认高亮显示，对比于 `grep --color main . -nR` 简洁易用，体验更好。效果如下：
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-09.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-09.gif" >}}
 
 用法二 搜索指定目录，rg patern directory
 
 ```zsh
 rg main ~/Code/golang-examples/
 ```
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-10.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-10.gif" >}}
 
 用法三 搜索指定文件，rg pattern filepath
 
@@ -143,7 +143,7 @@ rg main ~/Code/golang-examples/
 rg main ~/Code/golang-examples/main.go
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-11.png" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-11.png" >}}
 
 用法四 通配符禁用目录
 
@@ -191,7 +191,7 @@ rg -e '[0-9]{2}:[0-9]{2}'
 rg main ~/Code/golang-examples r main # 只替换输出，未修改文件
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-12.png" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-12.png" >}}
 
 ### 配置
 
@@ -242,7 +242,7 @@ brew install fzf
 
 默认在当前所在目录进入交互式目录文件搜索路径，效果如下所示：
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-13.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-13.gif" >}}
 
 支持通过 CTRL+P/N 上下选择，确认搜索结果后，输入 Enter 确认后，它会将输出直接作为输出打印到标准输出。
 
@@ -254,7 +254,7 @@ brew install fzf
 echo "one\ntwo\nthree\nfour" | fzf
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-14.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-14.gif" >}}
 
 如此一来，更过可能就诞生了，如 ls 的文件作为输入：
 
@@ -262,7 +262,7 @@ echo "one\ntwo\nthree\nfour" | fzf
 ls | fzf
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-15.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-15.gif" >}}
 
 将上面介绍的 fd 的查找结果作为输入：
 
@@ -270,7 +270,7 @@ ls | fzf
 fd --type file | fzf
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-16.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-16.gif" >}}
 
 用法三 将搜索结果作为其他命令的输入；
 
@@ -280,7 +280,7 @@ fzf 的搜索结果如果只是打印到终端，那就太可惜了，可将其�
 vim `fzf`
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-17.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-17.gif" >}}
 
 将 fzf 的搜索结果作为 vim 命令的输入。
 
@@ -294,7 +294,7 @@ vim `fzf`
 cd `zoxide query --list {querystring} | fzf`
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-19.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-19.gif" >}}
 
 默认的 `zoxide query --list` 只记录的是 zoxide 中的历史记录，如想实现全局查询，可替换为类似如下命令：
 
@@ -302,7 +302,7 @@ cd `zoxide query --list {querystring} | fzf`
 cd `fd --type=directory | fzf`
 ```
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-18.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-18.gif" >}}
 
 如下是一个 cdg 的命令实现，可实现 cd 命令的任意目录的快速交互式搜索：
 
@@ -312,7 +312,7 @@ alias cdg='cd_global() {cd $(fd --type directory $1 $2 | fzf)}; cd_global'
 
 使用方式形如 `cdg pattern directory`，在哪一个目录下查询包含 pattern 的目录，确认后即可 cd 进入到这个目录。
 
-{{< image "./2023-10-30-high-productivity-shell-commands-part2-20.gif" >}}
+{{< image "2023-10/2023-10-30-high-productivity-shell-commands-part2-20.gif" >}}
 
 说明下，我实际使用下来，这个命令确实很少需要，因为大多数时间我还是在访问我经常使用的目录，默认 zoxide 的能力完全足够使用。
 

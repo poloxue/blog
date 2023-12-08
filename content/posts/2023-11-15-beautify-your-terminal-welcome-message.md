@@ -45,7 +45,7 @@ description: "本文介绍如何配置终端的 welcome 消息，让你每天都
 
 将文字 "Hello World. Have a nice day!" 写入 `/etc/motd` 中，开启一个新的终端。
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-01.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-01.png" >}}
 
 motd 的缺点是它是静态内容，如果要更新内容，则需编辑文件。
 
@@ -63,7 +63,7 @@ echo `uname -a | cut -d' ' -f1 -f3`
 
 加入到 `~/.zshrc` 文件中，效果如下所示：
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-02.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-02.png" >}}
 
 到这里，终端欢迎消息定制的基本内容介绍结束。但问题是，这明显不够惊艳，对于这种无用小知识，肯定要 "华而不实"，但现在没有看到任何惊艳之处。
 
@@ -96,7 +96,7 @@ To be continued...
                 ||     ||
 ```
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-03.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-03.png" >}}
 
 如何生成 ASCII art？
 
@@ -108,7 +108,7 @@ ASCII art 一般有 ASCII text 和 ASCII image 两种形式。可通过在线站
 
 演示效果，使用 ASCII Generator 生成 ASCII 3D 文字，如下所示：
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-04.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-04.png" >}}
 
 如想找一些现成的 ASCII art，查看 [ascii-art](http://ascii-art.de/)，其中有一些现成的可供选择。
 
@@ -214,11 +214,11 @@ surgery three-eyes turkey turtle tux udder vader vader-koala www
 
 lolcat，可用于给输出进行随机的彩虹着色，如给以上输出 ASCII 文字着色，可通过 lolcat 实现随机彩虹效果，效果如下：
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-05.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-05.png" >}}
 
 或给 cowsay 的输出着色，效果如下：
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-06.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-06.png" >}}
 
 **程序实现**
 
@@ -314,7 +314,7 @@ if __name__ == "__main__":
 
 图片转 ASCII：
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-07.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-07.png" >}}
 
 ## 完成设置
 
@@ -330,6 +330,6 @@ if __name__ == "__main__":
 
 最后，下期介绍如何在欢迎消息中展示更丰富的信息，如：
 
-{{< image "./2023-11-15-beautify-your-terminal-welcome-message-08.png" >}}
+{{< image "2023-11/2023-11-15-beautify-your-terminal-welcome-message-08.png" >}}
 
 我的博文：[我的终端环境：无用小知识 - 终端启动消息配置](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)

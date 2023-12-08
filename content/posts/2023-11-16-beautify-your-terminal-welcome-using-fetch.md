@@ -14,11 +14,11 @@ description: "本文接着上文，介绍终端启动消息的配置，让你的
 
 你是否在终端上看到过类似如下的信息？
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-01.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-01.png" >}}
 
 我在刚开始讲终端环境这个系列，就有小伙伴在我的视频下 show 了他的终端。
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-02.webp" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-02.webp" >}}
 
 要实现这个终端效果，要依赖一种名为 fetch 的程序。
 
@@ -77,7 +77,7 @@ pfetch
 
 效果如下：
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-04.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-04.png" >}}
 
 ### 配置
 
@@ -89,7 +89,7 @@ pfetch
 export PF_INFO="ascii"
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-05.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-05.png" >}}
 
 如不显示 ASCII Logo，设置环境变量：
 
@@ -97,7 +97,7 @@ export PF_INFO="ascii"
 export PF_INFO="title os host kernel uptime pkgs memory"
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-06.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-06.png" >}}
 
 或者修改默认的 ASCII Logo 为 Linux：
 
@@ -105,7 +105,7 @@ export PF_INFO="title os host kernel uptime pkgs memory"
 export PF_ASCII="linux"
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-07.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-07.png" >}}
 
 更多配置项，自行查看 [pfetch 仓库文档](https://github.com/dylanaraps/pfetch)。
 
@@ -129,7 +129,7 @@ neofetch 是一款用 bash script 实现，快速且高度可定制的 fetch。�
  
 效果如下：
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-03.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-03.png" >}}
 
 如上所示，和 pfetch 一样，两部分组成，一部分显示系统 Logo（Mac OS X），另一部分显示系统摘要信息。
 
@@ -143,7 +143,7 @@ neofetch 功能强大，高度可定制，可通过命令选项或者配置文�
 image_backend="off" # 或 nefetch --off
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-08.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-08.png" >}}
 
 如显示字段定制：
 
@@ -176,7 +176,7 @@ print_info() {
 
 注释掉如上任一字段裁剪显示的字段。
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-09.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-09.png" >}}
 
 或替换默认的 ASCII art 为其他 Logo，如替换为 ubuntu Logo，虽然，这么做不太合适。
 
@@ -184,7 +184,7 @@ print_info() {
 ascii_distro="ubuntu" # 或 neofetch --ascii_distro=ubuntu
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-10.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-10.png" >}}
 
 同样，也可以将上篇文中的 `cowsay` 配置为 ASCII 部分的显示内容。
 
@@ -192,7 +192,7 @@ ascii_distro="ubuntu" # 或 neofetch --ascii_distro=ubuntu
 image_source="$(fortune | cowsay -W 40)" # 或 neofetch --source "$(fortune | cowsay)"
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-11.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-11.png" >}}
 
 neofetch 还支持将左侧的内容从 ASCII art 替换为图片。
 
@@ -205,11 +205,11 @@ image_source="$HOME/Pictures/avatar-transparency.png" # 或 neofetch --iterm2 ~/
 
 一个问题，neofetch 有些场景下会无缘无故打印很多空行，要通过命令选项 `--size` 或配置参数 `image_size` 实现图片大小固定，同时再利用 `yoffset` 和 `gap` 调整出一个比较好看的效果。
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-13.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-13.png" >}}
 
 如下所示：
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-14.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-14.png" >}}
 
 neofetch 有一个问题，因为使用 bash script 实现，性能一般，明显能感觉到 info 打印时的卡顿。我们可通过 `info "OS" distro &` 的形式调用，即 `&` 实现异步执行，再利用 `wait` 等待，提升性能。
 
@@ -225,7 +225,7 @@ neofetch 有一个问题，因为使用 bash script 实现，性能一般，明�
 fastfetch
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-15.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-15.png" >}}
 
 ### 配置
 
@@ -244,7 +244,7 @@ fastfetch
 }
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-17.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-17.png" >}}
 
 只展示摘要信息，命令如下：
 
@@ -252,7 +252,7 @@ fastfetch
 fastfetch --logo none
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-16.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-16.png" >}}
 
 与 `fortune | cowsay | lolcat` 结合，如下所示：
 
@@ -260,7 +260,7 @@ fastfetch --logo none
 fastfetch --data-raw "$(fortune | cowsay -W 30 | lolcat -f)"
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-18.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-18.png" >}}
 
 显示图片，在 iterm2 的命令如下所示：
 
@@ -268,7 +268,7 @@ fastfetch --data-raw "$(fortune | cowsay -W 30 | lolcat -f)"
 fastfetch --logo ~/Pictures/avatar-transparency.png --logo-type iterm --logo-width 30 --logo-height 15
 ```
 
-{{< image "./2023-11-16-beautify-your-terminal-welcome-using-fetch-19.png" >}}
+{{< image "2023-11/2023-11-16-beautify-your-terminal-welcome-using-fetch-19.png" >}}
 
 相对于 neofetch，fastfetch 不支持 neofetch 的图片处理能力。
 
