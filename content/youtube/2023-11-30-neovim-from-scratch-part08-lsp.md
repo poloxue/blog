@@ -1,9 +1,9 @@
 ---
 title: "从零开始 NeoVim IDE Part12 - 语言服务协议 LSP"
-date: 2023-12-08T21:37:57+08:00
+date: 2023-11-30T21:37:57+08:00
 draft: false
 comment: true
-description: ""
+description: "本教程介绍 neovim 如何配置 LSP 语言服务器协议。"
 ---
 
 {{< video bb_id="834126471" >}}
