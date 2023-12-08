@@ -1,5 +1,5 @@
 ---
-title: "从零开始 NeoVim IDE Part10 - telescope"
+title: "从零开始 NeoVim IDE Part09 - telescope"
 date: 2023-12-01T21:24:45+08:00
 draft: false
 comment: true
