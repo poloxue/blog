@@ -1,5 +1,5 @@
 ---
-title: "从零开始 NeoVim IDE Part12 - 语言服务协议 LSP"
+title: "从零开始 NeoVim IDE Part08 - 语言服务协议 LSP"
 date: 2023-11-30T21:37:57+08:00
 draft: false
 comment: true
