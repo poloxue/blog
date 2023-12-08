@@ -1,5 +1,5 @@
 ---
-title: "从零开始 NeoVim IDE Part13 - GitSigns"
+title: "从零开始 NeoVim IDE Part13 - Git 插件 GitSigns"
 date: 2023-12-05T19:28:46+08:00
 draft: false
 comment: true
