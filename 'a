@@ -35,8 +35,6 @@ description: "本文如何搭建一套免费的博客，实现可基于 markdown
 
 将 markdown 转化 html，我推荐使用 Hugo。
 
-{{< image "2023-12/2023-12-06-create-your-own-free-blog-06.png" >}}
-
 什么是 Hugo？Hugo 是 Go 编写的静态网页生成器，阅读它的 [官方文档](https://gohugo.io/documentation/)。
 
 Hugo 利用的是 markdown 语法编写的文章渲染成 HTML 网页，它除了提供了大量的模版样式，还支持语法函数，实现站点的定制化。
@@ -51,7 +49,8 @@ Hugo 对于 blog 个人站点类的需求是特别适合，快速上手，简单
 
 GitHub Page，是GitHub 提供的免费云服务，它是以代码仓库形式托管 HTML 静态页面的服务。
 
-GitHub Page 的优势在于，第一点是免费，无需购买机器。再者，使用云服务，能减少日常维护的时间，省心省力，还有一点，无需担心扩容问题。
+GitHub Page 的优势在于，第一点是免费，无需购买机器。再者，对于云服务的话，自然也就剩下了日常维护的时间，省心省力。
+
 
 ## 其他组件
 
@@ -61,21 +60,17 @@ GitHub Page 的优势在于，第一点是免费，无需购买机器。再者�
 
 评论功能可使用 utterances 实现，一个轻量级的评论组件。它是基于 GitHub issue 实现，数据全部存储于 GitHub 中。
 
-{{< image "2023-12/2023-12-06-create-your-own-free-blog-05.png" >}}
-
 评论区的效果如下所示：
 
 {{< image "2023-12/2023-12-06-create-your-own-free-blog-01.png" >}}
 
-和其他一些组件相比，这也是一个纯净版的评论组件，干净整洁无广告。它的 GitHub 仓库地址：[utterances](https://github.com/utterance/utterances)
+和其他一些组件相比，这也是一个纯净版的评论组件。它的 GitHub 仓库地址：[utterances](https://github.com/utterance/utterances)
 
 ### 图床 jsdelivr CDN
 
 对于博客而言，图片是必不可少的一部分，没有图片的博客，固然会少了一些趣味。我的方案中，图床是通过 jsdelivr CDN 加速访问 GitHub 中存储的图片。
 
 [jsdelivr](https://github.com/jsdelivr/jsdelivr) 是一款用于开源项目的免费 CDN，它支持加速入 npm、ESM、GitHub、WordPress。
-
-{{< image "2023-12/2023-12-06-create-your-own-free-blog-04.png" >}}
 
 它的使用方式也非常简单。
 
@@ -86,8 +81,6 @@ https://cdn.jsdelivr.net/gh/poloxue/images/@main/tag-zsh.png
 ```
 
 还是非常简单的。
-
-本质上这使用的还是 GitHub 作为存储方案，这是势必要将 GitHub 的羊毛耗光啊。
 
 ### 统计能力 - goatcounter
 
