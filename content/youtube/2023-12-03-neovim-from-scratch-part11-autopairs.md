@@ -1,7 +1,7 @@
 ---
 title: "从零开始 NeoVim IDE Part11 - Git 插件 autopairs"
 date: 2023-12-08T20:31:30+08:00
-draft: true
+draft: false
 comment: true
 description: "本视频教程关于如何使用 NeoVim 的插件 autopairs 实现自动配对效果。"
 ---
