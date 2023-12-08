@@ -1,5 +1,5 @@
 ---
-title: "2023 12 02 Neovim From Scratch Part10 Treesitter"
+title: "从零开始 NeoVim IDE Part10 - treesitter"
 date: 2023-12-02T21:10:53+08:00
 draft: false
 comment: true
