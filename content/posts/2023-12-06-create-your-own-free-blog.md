@@ -1,7 +1,7 @@
 ---
 title: "搭建一个免费博客的完整方案"
 date: 2023-12-08T15:01:02+08:00
-draft: true
+draft: false
 comment: true
 ---
 
