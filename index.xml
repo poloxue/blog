@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 08 Dec 2023 15:01:02 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>介绍一个搭建免费博客的实现方案</title><link>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</link><pubDate>Fri, 08 Dec 2023 15:01:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</guid><description>本文如何搭建一套免费的博客，实现可基于 markdown 撰写博客，使用免费环境部署，以及添加评论、图床和统计等附加能力。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 09 Dec 2023 01:18:23 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>基于 Python 视频搬运 Part3 - 代码布局</title><link>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</link><pubDate>Sat, 09 Dec 2023 01:18:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</guid><description>本文介绍基于 Python 视频搬运项目的代码布局。
+前言概述 项目的代码布局要从需求出发，一方面是既要满足当前的项目功能，也能保证一定的结构性便于后续扩展代码。
+这个工具本质是一个命令行工具，我在 先导篇 中介绍了该项目的目标。
+我们用了大量的子命令，我将用 click 这个 python 包解耦分离这个命令的功能。关于 click 的介绍，可查看其 官方文档。
+命令布局 本项目核心子命令一共 4 个，分别是 init、trascribe、make 和 publish，统一使用 click 包的 click.group 包裹为子命令。
+与之相应的一些核心文件的分布情况，如下所示：
+1 2 3 4 5 6 7 - mvideo/__init__.py - mvideo/main.py - mvideo/cmds/__init__.py - mvideo/cmds/init.py - mvideo/cmds/transcribe.py - mvideo/cmds/make.py - mvideo/cmds/publish.py cmds 目录下是所有我们要实现的子命令。
+main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
+代码如下所示：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import click import mvideo.</description></item><item><title>介绍一个搭建免费博客的实现方案</title><link>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</link><pubDate>Fri, 08 Dec 2023 15:01:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</guid><description>本文如何搭建一套免费的博客，实现可基于 markdown 撰写博客，使用免费环境部署，以及添加评论、图床和统计等附加能力。
 这是一整套的搭建免费博客的可用方案。
 前言概述 从几年前开始写博客，当时把博客建在一台云主机上。另外，还单独买了一个域名 - poloxue.com。大概猜测，最初的大家都是有这种方式搭建自己博客。
 这种方式有两点不令我满意：
