@@ -85,6 +85,7 @@ def init(
     playlist,
     playlist_start,
     playlist_end,
+    translator,
     translator_from_lang,
     translator_to_lang,
 ):
@@ -111,7 +112,7 @@ transcribe 代码如下所示：
 @click.option("--translator", type=click.STRING, help="Translator")
 @click.option("--translator-from-lang", type=click.STRING, help="Translator from lang")
 @click.option("--translator-to-lang", type=click.STRING, help="Translator to lang")
-def transcribe(whisper_mode, translator, translator_to_lang):
+def transcribe(whisper_mode, translator, translator_from_lang, translator_to_lang):
     pass
 ```
 
@@ -134,11 +135,11 @@ make 制作视频，代码如下：
 @click.option("--without-chapter", is_flag=True, help="Without chapter")
 @click.option("--smart", is_flag=True, help="If final video exists, dont override")
 @click.option(
-    "--subtitle",
+    "--subtitle-mode",
     type=click.STRING,
     help="Subtitle, options: all, origin, translate, none",
 )
-def make(cover_text, declaim_text, end_text, without_chapter, smart):
+def make(cover_text, declaim_text, end_text, without_chapter, smart, subtitle_mode):
     pass
 ```
 
