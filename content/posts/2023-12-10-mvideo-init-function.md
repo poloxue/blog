@@ -22,6 +22,8 @@ description: "本文介绍 mvideo 视频搬运项目的初始化与资源下载�
 
 我将按照这个流程，初始化项目，将资源下载到特定位置。
 
+如下是主流程的实现代码：
+
 ```python
 def init():
     env = Environment()
@@ -51,7 +53,7 @@ def init():
         env.flush()
 ```
 
-接下来实现 extract_videos 和 download_streams() 函数。
+我们接下来的重点，只要完成 extract_videos 和 download_streams() 函数即可。
 
 ## 查询可下载资源
 
