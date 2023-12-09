@@ -26,11 +26,11 @@ description: "本文介绍基于 Python 视频搬运项目的代码布局。"
 ```bash
 - mvideo/__init__.py
 - mvideo/main.py
-- cmds/__init__.py
-- cmds/init.py
-- cmds/transcribe.py
-- cmds/make.py
-- cmds/publish.py
+- mvideo/cmds/__init__.py
+- mvideo/cmds/init.py
+- mvideo/cmds/transcribe.py
+- mvideo/cmds/make.py
+- mvideo/cmds/publish.py
 ```
 
 cmds 目录下是所有我们要实现的子命令。
