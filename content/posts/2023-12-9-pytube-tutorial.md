@@ -1,6 +1,6 @@
 ---
-title: "基于 Python 视频搬运 Part2 - pytube 下载 YouTube 资源"
-date: 2023-12-07T14:06:15+08:00
+title: "基于 Python 视频搬运 Part3 - pytube 下载 YouTube 资源"
+date: 2023-12-09T14:06:15+08:00
 draft: false
 comment: true
 description: "本文是 pytube 教程，介绍如何使用 pytube 实现通过 Python 下载油管音视频等资源。"

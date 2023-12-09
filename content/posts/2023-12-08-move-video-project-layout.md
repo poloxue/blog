@@ -1,6 +1,6 @@
 ---
-title: "基于 Python 视频搬运 Part3 - 代码布局"
-date: 2023-12-09T01:18:23+08:00
+title: "基于 Python 视频搬运 Part2 - 代码布局"
+date: 2023-12-08T01:18:23+08:00
 draft: false
 comment: true
 description: "本文介绍基于 Python 视频搬运项目的代码布局。"
@@ -174,4 +174,4 @@ def publish(platform, title, source_url, keywords):
 
 ## 最后
 
-本文介绍了 mvideo 视频搬运项目的代码布局结构，接下来的重点就是结合如何实现其中的每个子命令的功能。
+本文介绍了 mvideo 视频搬运项目的代码布局结构，还有主要命令的入口，接下来的重点就是结合如何实现其中的每个子命令的功能。
