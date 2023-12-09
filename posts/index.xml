@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 09 Dec 2023 01:18:23 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>基于 Python 视频搬运 Part3 - 代码布局</title><link>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</link><pubDate>Sat, 09 Dec 2023 01:18:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</guid><description>本文介绍基于 Python 视频搬运项目的代码布局。
-前言概述 项目的代码布局要从需求出发，一方面是既要满足当前的项目功能，也能保证一定的结构性便于后续扩展代码。
-这个工具本质是一个命令行工具，我在 先导篇 中介绍了该项目的目标。
-我们用了大量的子命令，我将用 click 这个 python 包解耦分离这个命令的功能。关于 click 的介绍，可查看其 官方文档。
-命令布局 本项目核心子命令一共 4 个，分别是 init、trascribe、make 和 publish，统一使用 click 包的 click.group 包裹为子命令。
-与之相应的一些核心文件的分布情况，如下所示：
-1 2 3 4 5 6 7 - mvideo/__init__.py - mvideo/main.py - mvideo/cmds/__init__.py - mvideo/cmds/init.py - mvideo/cmds/transcribe.py - mvideo/cmds/make.py - mvideo/cmds/publish.py cmds 目录下是所有我们要实现的子命令。
-main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
-代码如下所示：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import click import mvideo.</description></item><item><title>介绍一个搭建免费博客的实现方案</title><link>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</link><pubDate>Fri, 08 Dec 2023 15:01:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</guid><description>本文如何搭建一套免费的博客，实现可基于 markdown 撰写博客，使用免费环境部署，以及添加评论、图床和统计等附加能力。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 09 Dec 2023 14:06:15 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>基于 Python 视频搬运 Part3 - pytube 下载 YouTube 资源</title><link>https://www.poloxue.com/posts/2023-12-9-pytube-tutorial/</link><pubDate>Sat, 09 Dec 2023 14:06:15 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-9-pytube-tutorial/</guid><description>本文是 pytube 教程，介绍如何通过 pytube 下载 YouTube 的音视频等资源。
+概述 pytube 是一款由 Python 实现，用于下载油管的第三方库，它的特点是无第三方的依赖，轻量，而且还有一个非常重要的点，它的接口灵活度高。
+而且，对于命令行，pytube 也提供了 pytube 命令也实现了通过命令行实现资源下载。当然，命令行下载视频的工具，更著名的 youtube-dl 和 you-get，它们比 pytube 出名，如果不是通过 Python 实现资源下载，它们或许是更好的选择。
+安装 如下命令安装 pytube：
+1 pip install pytube 快速开始 我们通过一个案例演示如何使用 pytube 下载视频，视频地址：www.youtube.com/watch?v=ceRYL271cao。
+YoutTube 是 pytube 的核心类，它可用于获取某个 YouTube 视频的信息，包括基本属性内容等，如标题、音视频流，字幕等。
+视频属性 1 2 3 4 from pytube import YouTube yt = YouTube(&amp;#34;https://www.youtube.com/watch?v=ceRYL271cao&amp;#34;) print(f&amp;#34;title: {yt.title}\nthumbnail_url: {yt.thumbnail_url}\nchannel_url: {yt.channel_url}&amp;#34;) 如上的代码获取了视频的标题、封面图和频道地址。
+输出结果：
+1 2 3 title: Be a tmux KING with Tmuxifier | My FAVORITE tmux tool thumbnail_url: https://i.</description></item><item><title>介绍一个搭建免费博客的实现方案</title><link>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</link><pubDate>Fri, 08 Dec 2023 15:01:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</guid><description>本文如何搭建一套免费的博客，实现可基于 markdown 撰写博客，使用免费环境部署，以及添加评论、图床和统计等附加能力。
 这是一整套的搭建免费博客的可用方案。
 前言概述 从几年前开始写博客，当时把博客建在一台云主机上。另外，还单独买了一个域名 - poloxue.com。大概猜测，最初的大家都是有这种方式搭建自己博客。
 这种方式有两点不令我满意：
@@ -25,15 +24,16 @@ GitHub Page 有了网页内容，下面就是要找可提供免费部署的服�
 什么是 GitHub Page？
 GitHub Page，是GitHub 提供的免费云服务，它是以代码仓库形式托管 HTML 静态页面的服务。
 GitHub Page 的优势在于，第一点是免费，无需购买机器。再者，使用云服务，能减少日常维护的时间，省心省力，还有一点，无需担心扩容问题。
-其他组件 一个 blog，即使是个人博客，也不是只要展示内容即可的，其他如评论、图床、统计等也是必不可少的。好在，这些组件同样也皆有使用免费的方案。</description></item><item><title>基于 Python 视频搬运 Part2 - pytube 下载 YouTube 资源</title><link>https://www.poloxue.com/posts/2023-12-07-pytube-tutorial/</link><pubDate>Thu, 07 Dec 2023 14:06:15 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-07-pytube-tutorial/</guid><description>本文是 pytube 教程，介绍如何通过 pytube 下载 YouTube 的音视频等资源。
-概述 pytube 是一款由 Python 实现，用于下载油管的第三方库，它的特点是无第三方的依赖，轻量，而且还有一个非常重要的点，它的接口灵活度高。
-而且，对于命令行，pytube 也提供了 pytube 命令也实现了通过命令行实现资源下载。当然，命令行下载视频的工具，更著名的 youtube-dl 和 you-get，它们比 pytube 出名，如果不是通过 Python 实现资源下载，它们或许是更好的选择。
-安装 如下命令安装 pytube：
-1 pip install pytube 快速开始 我们通过一个案例演示如何使用 pytube 下载视频，视频地址：www.youtube.com/watch?v=ceRYL271cao。
-YoutTube 是 pytube 的核心类，它可用于获取某个 YouTube 视频的信息，包括基本属性内容等，如标题、音视频流，字幕等。
-视频属性 1 2 3 4 from pytube import YouTube yt = YouTube(&amp;#34;https://www.youtube.com/watch?v=ceRYL271cao&amp;#34;) print(f&amp;#34;title: {yt.title}\nthumbnail_url: {yt.thumbnail_url}\nchannel_url: {yt.channel_url}&amp;#34;) 如上的代码获取了视频的标题、封面图和频道地址。
-输出结果：
-1 2 3 title: Be a tmux KING with Tmuxifier | My FAVORITE tmux tool thumbnail_url: https://i.</description></item><item><title>基于 Python 视频搬运 Part 1 - 先导篇</title><link>https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/</link><pubDate>Mon, 27 Nov 2023 14:15:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/</guid><description>本文介绍如何基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
+其他组件 一个 blog，即使是个人博客，也不是只要展示内容即可的，其他如评论、图床、统计等也是必不可少的。好在，这些组件同样也皆有使用免费的方案。</description></item><item><title>基于 Python 视频搬运 Part2 - 代码布局</title><link>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</link><pubDate>Fri, 08 Dec 2023 01:18:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</guid><description>本文介绍基于 Python 视频搬运项目的代码布局。
+前言概述 项目的代码布局要从需求出发，一方面是既要满足当前的项目功能，也能保证一定的结构性便于后续扩展代码。
+这个工具本质是一个命令行工具，我在 先导篇 中介绍了该项目的目标。
+我们用了大量的子命令，我将用 click 这个 python 包解耦分离这个命令的功能。关于 click 的介绍，可查看其 官方文档。
+命令布局 本项目核心子命令一共 4 个，分别是 init、trascribe、make 和 publish，统一使用 click 包的 click.group 包裹为子命令。
+与之相应的一些核心文件的分布情况，如下所示：
+1 2 3 4 5 6 7 - mvideo/__init__.py - mvideo/main.py - mvideo/cmds/__init__.py - mvideo/cmds/init.py - mvideo/cmds/transcribe.py - mvideo/cmds/make.py - mvideo/cmds/publish.py cmds 目录下是所有我们要实现的子命令。
+main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
+代码如下所示：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import click import mvideo.</description></item><item><title>基于 Python 视频搬运 Part 1 - 先导篇</title><link>https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/</link><pubDate>Mon, 27 Nov 2023 14:15:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/</guid><description>本文介绍如何基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
 这个工具我已经有了一个版本，但我想把它作为一个案例，把它做成一个系统化的工具，便于后续扩展，故而，就借着视频平台以视频的形式一步一步实现这第一个版本。
 前言 话说，我为什么会想开发这样一款视频搬运工具呢？
 出国的几年，在 Youtube 发现不少免费的教程视频。或许是因为 Youtube 广告机制收入不菲，与程序员有关的免费教程和频道非常之多。我就想着搬运一些视频分享到国内的小伙伴。
