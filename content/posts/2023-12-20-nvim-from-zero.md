@@ -1,6 +1,6 @@
 ---
 title: "Neovim 从 0 快速配置: QuickStart Guide"
-date: 2023-12-08T15:06:02+08:00
+date: 2023-12-20T15:06:02+08:00
 draft: true
 comment: true
 tags: ["vim", "neovim"]

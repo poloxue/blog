@@ -1,6 +1,6 @@
 ---
 title: "backtrader Part1 - 介绍、安装与快速体验"
-date: 2023-11-21T19:33:23+08:00
+date: 2023-12-21T19:33:23+08:00
 draft: true
 comment: true
 description: "本文是 backtrader 的起始篇，介绍如何使用 backtrader 回测我们的量化策略。"

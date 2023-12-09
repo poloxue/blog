@@ -1,6 +1,6 @@
 ---
 title: "我的终端环境：iTerm2 一些使用技巧"
-date: 2023-12-09T02:26:39+08:00
+date: 2023-12-15T02:26:39+08:00
 draft: true
 comment: true
 description: "本文介绍如何 iTerm2 一些技巧，用于提高日常的工作效率和体验。"

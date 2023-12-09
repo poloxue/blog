@@ -26,6 +26,7 @@ description: "本文如何搭建一套免费的博客，实现可基于 markdown
 
 我的新方案就是，利用 Hugo + GitHub Page 免费搭建我的博客，实现一套免费的解决方案。其他组件如评论、图床和统计也都有免费的服务可用。
 
+{{< image "2023-12/2023-12-06-create-your-own-free-blog-07.png" >}}
 
 ### Hugo
 

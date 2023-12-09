@@ -1,6 +1,6 @@
 ---
 title: "TradingView 基础入门"
-date: 2023-12-01T17:29:19+08:00
+date: 2023-12-30T17:29:19+08:00
 comment: true
 draft: true
 tags: ["tradingview"]
