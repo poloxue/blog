@@ -1,6 +1,6 @@
 ---
 title: "基于 Python 视频搬运 Part2 - 代码布局"
-date: 2023-12-08T01:18:23+08:00
+date: 2023-12-02T01:18:23+08:00
 draft: false
 comment: true
 description: "本文介绍基于 Python 视频搬运项目的代码布局。"
