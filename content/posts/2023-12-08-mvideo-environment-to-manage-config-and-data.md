@@ -77,7 +77,7 @@ class Environment:
 
 Environment 还将一些这些属性通过辅助函数的形式提供出来。
 
-代码如下：
+如下是一些配置获取的辅助方法：
 
 ```python
     @property
@@ -112,6 +112,11 @@ Environment 还将一些这些属性通过辅助函数的形式提供出来。
             return to_lang
         return self._translator.get("to_lang")
 
+```
+
+一些视频相关的辅助方法：
+
+```python
     @property
     def videos(self):
         return self._videos
