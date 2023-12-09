@@ -6,7 +6,7 @@ comment: true
 description: "本文是 pytube 教程，介绍如何使用 pytube 实现通过 Python 下载油管音视频等资源。"
 ---
 
-本文是 pytube 教程，介绍如何通过 pytube 下载 YouTube 的音视频等资源。
+本文是基于 Python 视频搬运的第三篇，也是一篇完整的 pytube 教程，介绍如何通过 pytube 下载 YouTube 的音视频等资源。
 
 ## 概述
 
