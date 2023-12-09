@@ -44,7 +44,7 @@ main.py 中是命令的入口文件，用于定义 main 命令。
 ```python
 import click
 
-import mvideo.cmds
+import mvideo.cmds as cmds
 
 click.group()
 def cli():
