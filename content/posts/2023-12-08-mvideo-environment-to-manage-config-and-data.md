@@ -33,7 +33,7 @@ description: "本文介绍 mvideo 项目如何管理配置和视频搬运过程�
 
 如果每个功能函数都管理这些文件名，将着实很恼人，而且说不定还有写错。
 
-## Environment
+## 管理类 Environment
 
 我将定义一个类，名为 Environment，单独处理这类信息。
 
