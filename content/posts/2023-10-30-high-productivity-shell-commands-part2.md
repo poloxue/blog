@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：高效 shell 命令（二）之文件查找与内容搜索 - fd ripgrep fzf"
+title: "我的终端环境：高效 shell 命令（二）之查找搜索 - fd ripgrep fzf"
 date: 2023-10-30T20:13:53+08:00
 draft: false
 comment: true
