@@ -1,5 +1,5 @@
 ---
-title: "从零开始回测量化交易策略 Part 2: 量化策略篇"
+title: "从零量化交易 Part 2: 量化策略篇"
 date: 2023-08-06T16:37:03+08:00
 draft: true
 comment: true
