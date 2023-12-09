@@ -1,6 +1,6 @@
 ---
 title: "从零量化交易 Part 2: 数据准备篇"
-date: 2023-08-06T16:37:03+08:00
+date: 2024-08-06T16:37:03+08:00
 draft: true
 comment: true
 toc: "floating"
