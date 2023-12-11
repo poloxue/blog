@@ -6,5 +6,15 @@ comment: true
 description: "本文介绍如何使用 OpenAI whisper 进行语音文字识别。"
 ---
 
+本文介绍如何使用 OpenAI 开源项目 whisper 实现语音的文字识别。
 
+## 前言
+
+语音识别
+
+## 安装
+
+```bash
+pip install whisper
+```
 
