@@ -6,7 +6,7 @@ comment: true
 description: "本文介绍如何使用 OpenAI whisper 进行语音文字识别。"
 ---
 
-本文介绍如何基于 OpenAI 的开源模型 whisper 实现语音的文字识别。Whisper 是 OpenAI 开源的一款强大的语音识别模型，识别准确率完全不亚于甚至高于付费软件。
+本文介绍如何基于 OpenAI 的开源模型 whisper， OpenAI 开源的一款强大的语音识别模型，它的识别准确率完全不亚于甚至高于付费软件。
 
 ## 使用场景
 
