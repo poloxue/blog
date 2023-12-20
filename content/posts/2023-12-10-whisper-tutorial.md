@@ -68,7 +68,7 @@ whisper 的默认模型是 small，如果语音的质量较高，不同模型的
 
 一般情况下，medium 模型已经使用了。
 
-如果想用 large 模型，由于它对硬件要求较高，且速度较慢，最好有较好的硬件支持。亦或者也可直接使用 OpenAI 开放 API 提供的语音文字能力。具体如何使用，本文后面会有介绍。
+如果想用 large 模型，由于它对硬件要求较高，且速度较慢，最好有硬件支持。除此之外，也可使用 OpenAI 开放 API，其中也有提供的语音识别能力，具体使用方法，本文后面会有介绍。
 
 ## 如何使用
 
@@ -107,11 +107,20 @@ audio.json  audio.srt  audio.tsv  audio.txt  audio.vtt  audio.wav
 
 除了 audio.wav，其他都是生成的结果文件，只是文件格式不同而已。
 
-### Whisper 库
+### 代码库
 
-从前面的安装步骤推测，whipser 提供了 python 库供我们调用。
+从前面的安装步骤，whipser 其实提供了 python 库。接下来，我们直接通过 python 调用 whisper 实现语音识别。
 
-## 更多配置
+演示案例代码，如下所示：
+
+```python
+import whisper
+
+model = whisper.load_model('medium')
+result = model.transcribe("audio.wav")
+```
+
+## 配置选项
 
 本小节介绍 whisper 的配置项。whipser 提供了众多选项，在命令行和代码中，我们均可设置。
 
@@ -174,7 +183,7 @@ whisper audio.wav --model medium
 
 本地使用的话，medium 一般已经足够使用了。
 
-## 输出格式
+### 输出格式
 
 当一个 whisper 任务运行结束，默认会在当前目录下生成如 audio.srt、audio.txt、audio.tsv、audio.vtt 等不同格式的文件。
 
@@ -202,3 +211,14 @@ whisper audio.wav --output_format  srt
 
 首先，word timestamp，即单词级别的时间戳。
 
+## OpenAI 接口
+
+Whisper 是免费的开源模型，但如果受限于硬件条件，想要更快的速度，可使用 OpenAI 的语音识别开放接口。
+
+通过一个案例介绍它的使用，代码如下所示：
+
+```python
+from openai import OpenAI
+```
+
+## 实时转录
