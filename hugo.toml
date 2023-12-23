@@ -41,11 +41,6 @@ copyright = "Polo Xue All rights reserved"
   #   url = "/courses"
   #   weight = 4
   [[menu.main]]
-    identifier = "youtube"
-    name = "油管精选"
-    url = "/youtube"
-    weight = 5
-  [[menu.main]]
     identifier = "about"
     name = "关于我"
     url = "/about/"
