@@ -36,6 +36,36 @@ txt_clip.write_videofile("text_clip.mp4", fps=24)
 
 注意一点，对于 TextClip，如果希望保存为视频，则必须执行 fps。我们接下来将要介绍的 ImageClip 也是如此。
 
+
+**TextClip 的字体**
+
+MoviePy 中内置了一些常用的字体，您可以直接在 TextClip 中使用这些内置字体，而无需指定字体的具体路径。
+
+在 TextClip 的内置字体，可使用 TextClip.list('font') 方法来列出。
+
+示例代码如下，演示了如何查看 TextClip 内置的字体：
+
+```python
+builtin_fonts = txt_clip.list('font')
+
+# 打印内置字体列表
+print("Built-in Fonts in TextClip:")
+print(builtin_fonts)
+```
+
+要在 TextClip 中使用特定字体，需要在系统中安装该字体，并在代码中指定字体路径。
+
+示例代码如下：
+
+```python
+# 指定自定义字体的路径
+custom_font_path = "/path/to/your/custom/font.ttf"  # 替换为您自定义字体的路径
+
+# 创建一个包含文本的视频片段，并指定字体路径
+text = "Hello MoviePy!"
+txt_clip = TextClip(text, fontsize=70, color='white', font=custom_font_path)
+```
+
 ## ImageClip
 
 ImageClip，即基于图片生成文本内容。
@@ -63,6 +93,7 @@ img_clip.write_videofile("image_clip.mp4", fps=24)
 
 代码的具体作用，将指定路径的图像文件转换为一个持续时间为 10 秒的视频片段。您可以根据需要更改图像文件的路径，并调整视频的持续时间和其他参数。
 
+
 ## ColorClip
 
 基于 Color 颜色生成视频内容。
@@ -85,7 +116,9 @@ color_clip = color_clip.set_duration(video_duration)
 color_clip.write_videofile("color_clip.mp4", fps=24)
 ```
 
-这个例子创建了一个 1920x1080 的纯色视频片段，背景为红色。我们可以根据需要更改尺寸、颜色值以及视频的持续时间等参数。我们还可以通过调整尺寸和颜色参数，使用 ColorClip 创建不同背景颜色的视频片段。
+这个例子创建了一个 1920x1080 的纯色视频片段，背景为红色。
+
+我们可以根据需要更改尺寸、颜色以及视频的 duration 持续时间等参数。当然，也可以通过调整尺寸和颜色参数，使用 ColorClip 创建不同背景颜色的视频片段。
 
 此外，您还可以将不同的颜色片段叠加、混合或添加到您的视频中，以获得特定的视觉效果。这块内容我们在讲到视频合成的再具体介绍。
 
