@@ -3,7 +3,7 @@ title: "Python 视频剪辑库 - MoviePy 中 TextClip、ImageClip 和 ColorClip"
 date: 2024-01-03T20:55:53+08:00
 draft: false
 comment: true
-description: "前面的两篇教程，已经介绍了 MoviePy 的 VideoFileClip 和 AudioFileClip 的使用。本文将介绍 MoviePy 剩余的三种基础 Clip，分别是 TextClip、ImageClip 与 ColorClip。"
+description: "本文将介绍 MoviePy 剩余的三种基础 Clip，分别是 TextClip、ImageClip 与 ColorClip。"
 ---
 
 前面的两篇教程，已经介绍了 MoviePy 的 VideoFileClip 和 AudioFileClip 的使用。本文将介绍 MoviePy 剩余的三种基础 Clip，分别是 TextClip、ImageClip 与 ColorClip。
