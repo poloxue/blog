@@ -126,7 +126,7 @@ video.subclip(5, 15).resize(width=404).rotate(180).to_gif("output_video.gif")
 
 我们从第 5 秒到第 15 秒提取视频片段，然后将其调整为 404 像素宽度并旋转 180 度。使用 to_gif 方法将其转换为名为 "output.gif" 的 GIF。
 
-最后，让我们来看看它的文档中的一些复杂示例。
+最后，让我们来看看 MoviePy 官方文档中的一些复杂示例。
 
 - [视频链接1](https://www.youtube.com/watch?v=rIehsqqYFEM)
 - [视频链接2](https://www.youtube.com/watch?v=1hdgNxX-ta)
