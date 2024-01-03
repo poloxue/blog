@@ -1,5 +1,5 @@
 ---
-title: "Python 视频剪辑库 - MoviePy 的 AudioFileClip 使用"
+title: "Python 视频剪辑库 - MoviePy 的音频操作"
 date: 2024-01-03T18:09:20+08:00
 draft: false
 comment: true
@@ -80,6 +80,16 @@ audio = audio.volumex(0.5)
 ```python
 audio = audio.subclip(5, 15)
 ```
+
+### 删除视频中的音频
+
+我们再介绍一个小技巧，如果希望删除一个视频中的音频，我们可以在通过 VideoFileClip 读取视频文件时，指定参数 `audio` 为 `False`。
+
+```python
+video = VideoFileClip("input_video", audio=False)
+```
+
+是不是非常简单。
 
 ## 总结
 
