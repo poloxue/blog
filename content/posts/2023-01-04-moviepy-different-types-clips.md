@@ -38,7 +38,7 @@ txt_clip.write_videofile("text_clip.mp4", fps=24)
 
 **TextClip 的字体**
 
-MoviePy 中内置了一些常用的字体，您可以直接在 TextClip 中使用这些内置字体，而无需指定字体的具体路径。
+MoviePy 中内置了一些常用的字体，我们可以直接在 TextClip 中使用这些内置字体，而无需指定字体的具体路径。
 
 在 TextClip 的内置字体，可使用 TextClip.list('font') 方法来列出。
 
@@ -58,7 +58,7 @@ print(builtin_fonts)
 
 ```python
 # 指定自定义字体的路径
-custom_font_path = "/path/to/your/custom/font.ttf"  # 替换为您自定义字体的路径
+custom_font_path = "/path/to/your/custom/font.ttf"  # 替换为自定义字体的路径
 
 # 创建一个包含文本的视频片段，并指定字体路径
 text = "Hello MoviePy!"
@@ -77,7 +77,7 @@ ImageClip，即基于图片生成文本内容。
 from moviepy.editor import *
 
 # 导入图像文件并创建一个图像片段
-image_path = "path/to/your/image.jpg"  # 指定您图像的路径
+image_path = "path/to/your/image.jpg"  # 指定我们的图像的路径
 img_clip = ImageClip(image_path)
 
 # 设置视频持续时间
@@ -90,8 +90,7 @@ img_clip.write_videofile("image_clip.mp4", fps=24)
 
 这个例子演示了如何使用 ImageClip 类创建一个图片的视频片段。
 
-代码的具体作用，将指定路径的图像文件转换为一个持续时间为 10 秒的视频片段。您可以根据需要更改图像文件的路径，并调整视频的持续时间和其他参数。
-
+代码的具体作用，将指定路径的图像文件转换为一个持续时间为 10 秒的视频片段。我们可以根据需要更改图像文件的路径，调整视频持续时间或其他参数。
 
 ## ColorClip
 
