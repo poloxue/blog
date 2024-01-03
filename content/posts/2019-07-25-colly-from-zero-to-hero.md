@@ -7,9 +7,9 @@ comment: true
 tags: ["Golang", "Crawler"]
 ---
 
-最近发现知乎上感兴趣的问题越来越少，于是准备聚合下其他平台技术问答，比如 segmentfault、stackoverflow 等。
+平时比较喜欢逛逛问答平台，比如 stackvoerflow，最近想聚合下一些平台的技术问答，比如 stackoverflow。
 
-要完成这个工作，肯定是离不开爬虫的。我就顺便抽时间研究了 Go 的一款爬虫框架 colly。
+要完成这个工作，肯定是离不开爬虫工具。于是，我就想着顺便抽时间研究了 Go 的一款爬虫框架 colly。
 
 # 概要介绍
 
