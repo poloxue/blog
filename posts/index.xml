@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 09 Dec 2023 15:37:15 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>基于 Python 视频搬运 Part5 - 初始化与资源下载</title><link>https://www.poloxue.com/posts/2023-12-10-mvideo-init-function/</link><pubDate>Sat, 09 Dec 2023 15:37:15 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-10-mvideo-init-function/</guid><description>本文是基于 Python 视频搬运系列教程的第 5 篇，介绍 mvideo 项目的初始化与资源下载的实现。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 03 Jan 2024 17:41:45 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Python 视频剪辑库 - MoviePy 的基础使用</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</link><pubDate>Wed, 03 Jan 2024 17:41:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</guid><description>短视频时代，有许多用户友好的剪辑软件可选择。而对于某些专门的视频，如电子书演示或漫画朗读，自动化简化视频制作对于提高效率至关重要。
+这是本视频将讨论的内容。我们将利用一个名为 MoviePy 的 Python 库自动化您的视频制作过程。
+本教程中，我们将探索 MoviePy 的功能，展示它如何通过一些简单的 Python 代码简化视频剪辑。
+让我们开始吧。
+安装 要使用 MoviePy，首先需要进行安装。
+我们可以使用 Python 的包管理器 - pip 来完成这一步。让我们打开终端并执行 pip install moviepy。
+1 pip install moviepy 必要的依赖项，如 ffmpeg，将会自动安装。
+如果你想要创建文本片段，你将需要 imagemagick。你可以轻松使用 HomeBrew 进行安装。执行命令：
+1 brew install imagemagick 另一个重要的依赖是 pygame，特别适用于预览正在创建的视频。这很重要，因为生成新视频可能需要一些时间。如果您希望在制作过程中预览您的工作，您将需要安装 pygame。
+当然！要安装 pygame，你可以在终端中执行:
+1 pip install pygame 现在，MoviePy 的安装已经完成。让我们继续下一步 - 了解如何使用 MoviePy 编写代码。
+示例 当然！为了演示如何使用 MoviePy，让我们创建一个文件，展示示例。
+在 MoviePy 中，要访问所有必要的函数和类，你只需输入：
+1 from moviepy.editor import * 调整大小 我当前目录中有一个大小为 808x440 的视频文件。可以使用 VideoFileClip 大小属性检查尺寸。</description></item><item><title>基于 Python 视频搬运 Part5 - 初始化与资源下载</title><link>https://www.poloxue.com/posts/2023-12-10-mvideo-init-function/</link><pubDate>Sat, 09 Dec 2023 15:37:15 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-10-mvideo-init-function/</guid><description>本文是基于 Python 视频搬运系列教程的第 5 篇，介绍 mvideo 项目的初始化与资源下载的实现。
 前言 我们在上文介绍了如何基于 pytube 实现 YouTube 资源的下载，包括视频音频，甚至是字幕的下载。当然，字幕在本项目中暂时不在本项目的计划之中。
 本教程将会利用 pytube 这个 python 第三方包，我们将利用完成 YouTube 资源的下载。
 主流程 在编写代码之前，初始化这部分的基本流程，如下所示：
