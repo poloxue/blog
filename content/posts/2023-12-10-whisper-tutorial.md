@@ -1,5 +1,5 @@
 ---
-title: "基于 Python 视频搬运 Part6 - 语音识别 OpenAI whisper 完全指南"
+title: "语音识别 OpenAI whisper 完全指南"
 date: 2023-12-09T20:25:35+08:00
 draft: true
 comment: true
@@ -470,13 +470,12 @@ result = client.audio.transcriptions.create(
 
 但其实问题还没有根本解决，因为 mp3 格式压缩大小，但大文件依然还是会超过大小限制。
 
-永久解决方式是，通过 pydub 切分语音文件，切分为十分钟一个文件，再进行上传。
+永久解决方式是，通过 pydub 切分语音文件，如切分为十分钟一个文件，再上传。
 
-示例代码如下所示：
+示例代码，如下所示：
 
 ```python
 from pydub import AudioSegment
-
 ```
 
 ## 实时转录
