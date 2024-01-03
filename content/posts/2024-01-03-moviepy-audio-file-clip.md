@@ -89,6 +89,12 @@ audio = audio.subclip(5, 15)
 video = VideoFileClip("input_video", audio=False)
 ```
 
+或者亦可通过调用 VideoFileClip 的 `without_audio` 方法删除视频片段中的音频。
+
+```python
+video = video.without_audio()
+```
+
 是不是非常简单。
 
 ## 总结
