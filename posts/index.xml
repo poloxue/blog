@@ -11,7 +11,13 @@
 代码如下：
 1 2 video.audio = audio video.write_audio(&amp;#34;text_video.mp4&amp;#34;) 可打开视频，检查下效果。
 音频操作 介绍些 AudioClip 基础的操作，如音量的放大减小，音频片段裁剪等。
-音量控制 音频片段的音量控制，直接通过 AudioClip 的 volumex 方法实现。</description></item><item><title>Python 视频剪辑库 - MoviePy 的基础使用</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</link><pubDate>Wed, 03 Jan 2024 17:41:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</guid><description>短视频时代，有许多用户友好的剪辑软件可选择。而对于某些专门的视频，如电子书演示或漫画朗读，自动化简化视频制作对于提高效率至关重要。
+音量控制 音频片段的音量控制，直接通过 AudioClip 的 volumex 方法实现。</description></item><item><title>Python 视频剪辑库 - MoviePy 中 TextClip、ImageClip 和 ColorClip</title><link>https://www.poloxue.com/posts/2023-01-04-moviepy-different-types-clips/</link><pubDate>Wed, 03 Jan 2024 17:55:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-01-04-moviepy-different-types-clips/</guid><description>前面的两篇教程，已经介绍了 MoviePy 的 VideoFileClip 和 AudioFileClip 的使用。本文将介绍 MoviePy 剩余的三种基础 Clip，分别是 TextClip、ImageClip 与 ColorClip。
+TextClip TextClip，即用于基于文本生成视频片段类。
+使用 TextClip 类时，可以创建包含文本的视频片段，这些文本片段可以添加到你的视频中。这对于制作标题、字幕或说明等内容非常有用。
+一个简单的案例，如下所示：
+1 2 3 4 5 6 7 8 9 10 # 创建一个包含文本的视频片段 text = &amp;#34;Hello MoviePy!&amp;#34; txt_clip = TextClip(text, fontsize=70, color=&amp;#39;white&amp;#39;) # 为视频片段设置持续时间 video_duration = 10 # 设置视频持续时间为 10 秒 txt_clip = txt_clip.set_duration(video_duration) # 保存生成的文本视频片段 txt_clip.write_videofile(&amp;#34;text_clip.mp4&amp;#34;, fps=24) 这个例子展示了如何使用 TextClip 类创建一个显示文本的视频片段。
+代码具体作用是，创建了一个持续时间为 10 秒的视频片段，其中包含着 &amp;ldquo;Hello MoviePy!&amp;rdquo; 文本内容。我们可以根据需要调整文本内容、字体大小、颜色等，并设置不同的持续时间以满足我们的需求。
+注意一点，对于 TextClip，如果希望保存为视频，则必须执行 fps。我们接下来将要介绍的 ImageClip 也是如此。</description></item><item><title>Python 视频剪辑库 - MoviePy 的基础使用</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</link><pubDate>Wed, 03 Jan 2024 17:41:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</guid><description>短视频时代，有许多用户友好的剪辑软件可选择。而对于某些专门的视频，如电子书演示或漫画朗读，自动化简化视频制作对于提高效率至关重要。
 这是本视频将讨论的内容。我们将利用一个名为 MoviePy 的 Python 库自动化您的视频制作过程。
 本教程中，我们将探索 MoviePy 的功能，展示它如何通过一些简单的 Python 代码简化视频剪辑。
 让我们开始吧。
