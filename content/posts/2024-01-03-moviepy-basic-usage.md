@@ -128,10 +128,10 @@ video.subclip(5, 15).resize(width=404).rotate(180).to_gif("output_video.gif")
 
 最后，让我们来看看 MoviePy 官方文档中的一些复杂示例。
 
-- [视频链接1](https://www.youtube.com/watch?v=rIehsqqYFEM)
-- [视频链接2](https://www.youtube.com/watch?v=1hdgNxX-ta)
-- [视频链接3](https://www.youtube.com/watch?v=zGhoZ4UBxEQ)
-- [视频链接4](https://www.youtube.com/watch?v=M9R21SquDSk)
+- [Cup Song](https://www.youtube.com/watch?v=rIehsqqYFEM)
+- [视频布局](https://www.youtube.com/watch?v=1hdgNxX-ta)
+- [马赛克追踪](https://www.youtube.com/watch?v=zGhoZ4UBxEQ)
+- [3D 效果](https://www.youtube.com/watch?v=M9R21SquDSk)
 
 好了，以上就是今天的视频内容，我们涵盖了 MoviePy 的一些简单示例。
 
