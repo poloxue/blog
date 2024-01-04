@@ -24,7 +24,7 @@ MoviePy 中创建音频 Clip 的方法有两种，分别是从视频文件中提
 from moviepy.editor import * 
 
 video = VideoFileClip("input_video.mp4")
-audio = video.audiowrite_audiofile
+audio = video.audio
 audio.write_audiofile("ouput_audio.mp3")
 ```
 
@@ -43,7 +43,8 @@ audio = AudioFileClip("output_audio.mp3")
 直接使用 TextClip 创建一个视频，我们通过 audio.duration 设置视频片段的播放时长。
 
 ```python
-video = TextClip("Hello MoviePy").set_duration(audio.duration).set_fps(1)
+video = TextClip("Hello MoviePy", color="orange", size=(100, 100))
+video = video.set_duration(audio.duration).set_fps(1)
 ```
 
 让我们将音频加载到这个视频上。
@@ -55,7 +56,14 @@ video.audio = audio
 video.write_audio("text_video.mp4")
 ```
 
-可打开视频，检查下效果。
+
+如果使用 mac 的 quicktimeplayer 打开，记得在写入的时候，加上参数 audio_codec="aac"，即如下所示：
+
+```python
+video.write_audio("text_video.mp4", audio_codec="aac")
+```
+
+完成之后，即可打开视频，检查下效果。
 
 ## 音频操作
 
