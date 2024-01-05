@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 03 Jan 2024 18:09:20 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Python 视频剪辑库 - MoviePy 的音频操作</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-audio-file-clip/</link><pubDate>Wed, 03 Jan 2024 18:09:20 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-audio-file-clip/</guid><description>上文介绍了如何安装 MoviePy 和利用 VideoFileClip 类读取视频文件，并进行一些简单的剪辑，如大小调整、旋转和片段剪辑等。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 03 Jan 2024 20:55:53 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Python 视频剪辑库 - MoviePy 中 TextClip</title><link>https://www.poloxue.com/posts/2024-01-04-moviepy-text-clip/</link><pubDate>Wed, 03 Jan 2024 20:55:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-04-moviepy-text-clip/</guid><description>前面的两篇教程，已经介绍了 MoviePy 的 VideoFileClip 和 AudioFileClip 的使用。本文将介绍 MoviePy 第三种基础 Clip - TextClip。
+前言 什么是 TextClip？TextClip，即是用于生成基于文本视频片段的类。
+TextClip 创建的包含文本的视频片段，一方面，我们可以将其作为单独的片段保存。另一方面，我们可以将其合成到其他视频中，这对于制作视频标题、说明，甚至字幕等内容非常有用。
+关于字幕制作，会有单独一篇博文，如介绍何基于 MoviePy 和 Whisper 实现自动给视频添加字幕。
+我们开始进入正题吧。
+快速上手 让我们直接创建一个 TextClip。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 # 创建一个包含文本的视频片段 text = &amp;#34;Hello MoviePy!&amp;#34; txt_clip = TextClip(text, color=&amp;#39;orange&amp;#39;, size=(100, 100)) # 为视频片段设置持续时间 video_duration = 10 # 设置视频持续时间为 10 秒 txt_clip = txt_clip.set_duration(video_duration).set_fps(1) # 保存生成的文本视频片段 txt_clip.write_videofile(&amp;#34;text_clip.mp4&amp;#34;) 这个例子展示了如何使用 TextClip 类创建一个文本视频片段。
+代码具体作用是，创建了一个持续时间为 10 秒的视频片段，其中包含 &amp;ldquo;Hello MoviePy!</description></item><item><title>Python 视频剪辑库 - MoviePy 的音频操作</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-audio-file-clip/</link><pubDate>Wed, 03 Jan 2024 18:09:20 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-audio-file-clip/</guid><description>上文介绍了如何安装 MoviePy 和利用 VideoFileClip 类读取视频文件，并进行一些简单的剪辑，如大小调整、旋转和片段剪辑等。
 本文将重点介绍 MoviePy 音频的一些操作。
 创建音频片段 AudioClip MoviePy 中创建音频 Clip 的方法有两种，分别是从视频文件中提取音频，和基于音频文件创建。
 基于视频文件提取音频片段 我们现在有一个视频文件，名为 input_vidoe.mp4。
@@ -9,7 +17,7 @@
 直接使用 TextClip 创建一个视频，我们通过 audio.duration 设置视频片段的播放时长。
 1 2 video = TextClip(&amp;#34;Hello MoviePy&amp;#34;, color=&amp;#34;orange&amp;#34;, size=(100, 100)) video = video.set_duration(audio.duration).set_fps(1) 让我们将音频加载到这个视频上。
 代码如下：
-1 2 video.audio = audio video.write_audio(&amp;#34;text_video.mp4&amp;#34;) 如果使用 mac 的 quicktimeplayer 打开，记得在写入的时候，加上参数 audio_codec=&amp;ldquo;aac&amp;rdquo;，即如下所示：</description></item><item><title>Python 视频剪辑库 - MoviePy 的基础使用</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</link><pubDate>Wed, 03 Jan 2024 17:41:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</guid><description>短视频时代，有许多用户友好的剪辑软件可选择。而对于某些专门的视频，如电子书演示或漫画朗读，自动化简化视频制作对于提高效率至关重要。
+1 2 video.audio = audio video.write_audio(&amp;#34;text_video.mp4&amp;#34;) 如果使用 mac 的 quicktimeplayer 打开，记得在写入的时候，加上参数 audio_codec=&amp;ldquo;aac&amp;rdquo;，即如下所示：</description></item><item><title>Python 视频剪辑库 - MoviePy 的基础使用</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</link><pubDate>Tue, 02 Jan 2024 17:41:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</guid><description>短视频时代，有许多用户友好的剪辑软件可选择。而对于某些专门的视频，如电子书演示或漫画朗读，自动化简化视频制作对于提高效率至关重要。
 这是本视频将讨论的内容。我们将利用一个名为 MoviePy 的 Python 库自动化您的视频制作过程。
 本教程中，我们将探索 MoviePy 的功能，展示它如何通过一些简单的 Python 代码简化视频剪辑。
 让我们开始吧。
