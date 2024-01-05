@@ -3,7 +3,7 @@ title: "Python 视频剪辑库 - MoviePy 的音频操作"
 date: 2024-01-03T18:09:20+08:00
 draft: false
 comment: true
-description: "本文将重点介绍 MoviePy 音频的一些操作，如音频提取创建、放大与片段剪辑等"
+description: "本文将重点介绍 MoviePy 音频的一些操作，如音频提取创建、放大与片段剪辑等。"
 ---
 
 上文介绍了如何安装 MoviePy 和利用 VideoFileClip 类读取视频文件，并进行一些简单的剪辑，如大小调整、旋转和片段剪辑等。
