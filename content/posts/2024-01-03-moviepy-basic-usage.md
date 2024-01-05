@@ -1,6 +1,6 @@
 ---
 title: "Python 视频剪辑库 - MoviePy 的基础使用"
-date: 2024-01-03T17:41:45+08:00
+date: 2024-01-02T17:41:45+08:00
 draft: false
 comment: true
 description: "本视频将讨论的内容，介绍一个名为 MoviePy 的 Python 库，希望它能简化一些流程化的视频创作过程。本文是起始篇。"
