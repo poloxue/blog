@@ -1,42 +1,45 @@
 ---
-title: "Python 视频剪辑库 - MoviePy 中 TextClip、ImageClip 和 ColorClip"
+title: "Python 视频剪辑库 - MoviePy 中 TextClip"
 date: 2024-01-03T20:55:53+08:00
-draft: false
+draft: true
 comment: true
 description: "本文将介绍 MoviePy 剩余的三种基础 Clip，分别是 TextClip、ImageClip 与 ColorClip。"
 ---
 
 前面的两篇教程，已经介绍了 MoviePy 的 VideoFileClip 和 AudioFileClip 的使用。本文将介绍 MoviePy 剩余的三种基础 Clip，分别是 TextClip、ImageClip 与 ColorClip。
 
-## TextClip
+## 前言
 
-TextClip，即用于基于文本生成视频片段类。
+TextClip，即用于生成基于文本视频片段的类。
 
-使用 TextClip 类时，可以创建包含文本的视频片段，这些文本片段可以添加到你的视频中。这对于制作标题、字幕或说明等内容非常有用。
+使用 TextClip 创建的包含文本的视频片段。我们可以将它们直接添加到其他视频中，这对于制作标题、字幕或说明等内容非常有用。亦或者是，我们可以将 TextClip 制作的片段作为单独的视频保存。
 
-一个简单的案例，如下所示：
+## 快速上手
+
+我们看看上一篇博文的案例，代码如下所示：
 
 ```python
 # 创建一个包含文本的视频片段
 text = "Hello MoviePy!"
-txt_clip = TextClip(text, fontsize=70, color='white')
+txt_clip = TextClip(text, color='orange', size=(100, 100))
 
 # 为视频片段设置持续时间
 video_duration = 10  # 设置视频持续时间为 10 秒
-txt_clip = txt_clip.set_duration(video_duration)
+txt_clip = txt_clip.set_duration(video_duration).set_fps(1)
 
 # 保存生成的文本视频片段
 txt_clip.write_videofile("text_clip.mp4", fps=24)
 ```
 
-这个例子展示了如何使用 TextClip 类创建一个显示文本的视频片段。
+这个例子展示了如何使用 TextClip 类创建一个文本视频片段。
 
-代码具体作用是，创建了一个持续时间为 10 秒的视频片段，其中包含着 "Hello MoviePy!" 文本内容。我们可以根据需要调整文本内容、字体大小、颜色等，并设置不同的持续时间以满足我们的需求。
+代码具体作用是，创建了一个持续时间为 10 秒的视频片段，其中包含着 "Hello MoviePy!" 文本内容，文本颜色是 orange，大小是 (100,100)。
 
-注意一点，对于 TextClip，如果希望保存为视频，则必须执行 fps。我们接下来将要介绍的 ImageClip 也是如此。
+我们可以根据按需调整文本内容、视频大小、颜色等，以及通过 set_duration 方法设置视频时长。
 
+注意一点，对于 TextClip，如果希望保存为视频，则必须指定 fps。我们接下来将要介绍的 ImageClip 也是如此。
 
-**TextClip 的字体**
+## 文本字体
 
 MoviePy 中内置了一些常用的字体，我们可以直接在 TextClip 中使用这些内置字体，而无需指定字体的具体路径。
 
