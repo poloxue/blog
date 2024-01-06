@@ -1,7 +1,7 @@
 ---
 title: "使用 Whisper 和 MoviePy 实现视频自动加字幕"
 date: 2024-01-05T21:39:29+08:00
-draft: true
+draft: false
 comment: true
 description: "本博文将就此主题展开，介绍如何基于 openai-whisper 和 moviepy 实现通过 Python 快速给视频添加字幕。"
 ---
@@ -142,8 +142,13 @@ video = CompositeVideoClip([video, subtitles_clip])
 video.write_videofile("output_with_subtitles.mp4", audio_codec="aac")
 ```
 
-
 执行完代码，就可以生成带有字幕的视频文件。
+
+效果如下所示：
+
+{{< image "2024-01/2024-01-06-add-subtitles-using-moviepy-and-whipser-01.png" >}}
+
+仔细观察左上角，可以看到字幕已经添加到视频上。
 
 ## 字幕位置
 
@@ -161,6 +166,12 @@ pos = ("center", height 0.8)
 subtitles_clip = subtitles_clip.set_position(pos)
 ```
 
+效果如下所示：
+
+{{< image "2024-01/2024-01-06-add-subtitles-using-moviepy-and-whipser-02.png" >}}
+
+字幕在视频底部。
+
 ## 字幕样式
 
 如果发现字体太小或者想修改字体或颜色，我们可以覆盖创建的 `SubtitlesClip` 的第三个三个参数 `make_textclip`。
@@ -176,7 +187,7 @@ def make_textclip(txt):
 subtitles_clip = SubtitlesClip(subtitles, make_textclip)
 ```
 
-如果发现生成字幕超出了原视频范围，可通过设置 `TextClip` 的参数 size 限制字幕宽度，设置参数 `method` 为 caption 实现自动换行。
+如果发现生成字幕超出了原视频范围，可设置 `TextClip` 的参数 size 限制字幕宽度，设置参数 `method` 为 caption 实现自动换行。
 
 实现代码，如下所示，
 ```python
@@ -184,7 +195,11 @@ def make_textclip(txt):
     return TextClip(txt, fontsize=48, font="Arial", color="orange", size=(width * 0.8, None), method="caption")
 ```
 
-字幕的宽度为原始视频的 0.8 倍。
+字幕宽度为原始视频宽度的 0.8 倍，如果大于设置宽度则自动换成。
+
+效果如下：
+
+{{< image "2024-01/2024-01-06-add-subtitles-using-moviepy-and-whipser-03.png" >}}
 
 到此，我们通过 openai-whisper 和 moviepy 制作自动化制作视频字幕的教程就完成了。 
 
