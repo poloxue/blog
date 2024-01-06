@@ -151,14 +151,14 @@ video.write_videofile("output_with_subtitles.mp4", audio_codec="aac")
 
 正常的字幕应该是位于视频下方居中的。我们可以通过 `SubtitlesClip` 的方法 `set_pos` 调整字幕位置。
 
-我们的目标是基于原视频，将字母调整到位于视频底部 1/5 的位置。
+我们的目标是基于原视频，将字母调整到位于视频底部上下 0.2 的位置，即坐标向下 0.8 的位置。
 
 实现代码如下所示：
 
 ```python
 width, height = video.size
-position = ("center", 4/5 * height)
-subtitles_clip = subtitles_clip.set_pos(("center"))
+pos = ("center", height 0.8)
+subtitles_clip = subtitles_clip.set_position(pos)
 ```
 
 ## 字幕样式
