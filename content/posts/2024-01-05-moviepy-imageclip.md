@@ -1,10 +1,12 @@
 ---
-title: "2024 01 05 Moviepy Imageclip"
+title: "Python 视频剪辑库 - Moviepy 中的 Imageclip 和 ColorClip"
 date: 2024-01-05T16:31:15+08:00
 draft: true
 comment: true
-description: ""
+description: "本博文介绍如何使用 MoviePy 中的 ImageClip 和 ColorClip。"
 ---
+
+本博文介绍如何使用 MoviePy 中的 ImageClip 和 ColorClip。
 
 ## ImageClip
 
