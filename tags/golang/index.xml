@@ -375,8 +375,8 @@ Go 的数据结构 Go 内置的数据结构并不多。工作中，我们最常�
 我们今天将来聊的是 set 和 bitset。据我所知，其他一些语言，比如 Java，是有这两种数据结构。但 Go 当前还没有以任何形式提供。
 实现思路 先来看一篇文章，访问地址 2 basic set implementations 阅读。文中介绍了两种 go 实现 set 的思路， 分别是 map 和 bitset。
 有兴趣可以读读这篇文章，我们接下来具体介绍下。
-map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些思考，并给大家介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
-背景介绍 Go 的版本管理，并非包的依赖管理。平时的工作中，很多时候并不会遇到这样的需求，所以可能并不是很明白它的价值。
+map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些想法。让后，我将介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
+背景介绍 Go 的版本管理，并非包的依赖管理，而且关于如何在不同的 Go 版本之间切换。平时的工作中，正常情况，我们不会遇到这样的需求，所以可能并不明白它的价值。
 简单说下我写这篇文章的背景吧。
 最近几周，Go 最重要的一则消息应该莫过 9月份 Go 1.13 的正式发布。它的相关升级可查看 Go 1.13 正式发布，看看都有哪些值得关注的特性 或官方 Go 1.13 Relase Notes。
 对于一名 gopher 而言，可能早已按捺不住自己那颗躁动的心，想尽快体验下新版的升级项。但问题是，切换至新版 Go 通常会遇到一些问题，比如不同版本的环境配置，安装的辅助工具和程序包在不同版本下可能会存在兼容或被覆盖等问题。
@@ -386,12 +386,12 @@ map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特�
 最近，刚答过一个关于 Go 环境变量的问题，查看回答。其中对每个变量的作用进行了比较细致的描述。
 如何实现 现在，我要实现我自己电脑上的两个版本的 Go 自由切换，该如何做呢？
 假设它们分别位于 ~/.goversions/sdk/ 目录下的 go1.11/ 和 go1.13/。我现在要启用 go 1.11，运行如下命令即可：
-1 $ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.goversions/sdk/go1.11/。Go 相关的工具链，源码，标准库都在这个目录下。</description></item><item><title>Go 的那些 IDE</title><link>https://www.poloxue.com/posts/2019-05-06-golang-ide/</link><pubDate>Mon, 06 May 2019 12:28:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-06-golang-ide/</guid><description>经过前面的一系列工作后，Go 的语言环境已经搭建完成。
+1 $ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.</description></item><item><title>Go 的那些 IDE</title><link>https://www.poloxue.com/posts/2019-05-06-golang-ide/</link><pubDate>Mon, 06 May 2019 12:28:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-06-golang-ide/</guid><description>经过前面的一系列工作后，Go 的语言环境已经搭建完成。
 我们初步体验了 Go 提供的大部分命令。但在正式进入开发之前，还有件工作要做，那就是选择一款适合自己的 IDE。
 为什么使用IDE &amp;ldquo;程序员为什么要使用 IDE&amp;rdquo;，在一些社区论坛，经常可以看到这样的提问。关于是否应该使用IDE，每个人都有着自己的看法。
 早期，程序的开发并不需要 IDE，那是以机器码编程为主的时代。后来随着计算机行业发展，为了进一步提升工程开发效率，IDE就产生了。
 要明白的是，IDE主要是通过把各类命令工具集整合起来，开发的一套易于程序开发的软件，通常它帮我们形成一套高效的编程开发习惯。最终目标是为了提升项目的开发效率。
-了解了 IDE 的本质，如果喜欢折腾，我们完全可以把诸如vim或emacs等文本编辑器打造一款属于自己的IDE。
+了解了 IDE 的本质，如果喜欢折腾，我们完全可以把诸如 vim 或 emacs 等文本编辑器打造一款属于自己的IDE。
 支持哪些功能 无论用的是市面上已有的 IDE，还是 vim 纯手动打造的IDE，都离不开一个话题：IDE 涉及的功能有哪些？文本编辑的能力就不必介绍了，它是最基本的功能。
 快捷键 双手不离键盘是高效开发中非常重要的一点，要做到它，我们就需要依赖功能强大的快捷键。IDE 通常都有一套独有的快捷键规范。当习惯了一款 IDE，快捷键或许是大家轻易不愿更换 IDE 的重要原因之一。
 代码高亮 代码高亮主要涉及变量、函数定义、类、常量、特殊符号、关键词等。代码高亮可以提高代码阅读体验，对不同语法采用不同的配色方案，也可降低代码错误的发生几率。而且，IDE一般都支持自定义配色，可以由个人爱好自由设置。
@@ -400,13 +400,9 @@ map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特�
 导航跳转 大型项目的代码量通常较大，涉及文件也较多。在开发时，我们经常需要在变量、函数、类等代码间跳转。最不便利的方式，我们可以通过键盘方向键或鼠标实现切换。IDE通常都实现了在变量、类型定义、函数定义、文件之间快速跳转的方法。
 代码调试 多数情况下，通过打印函数就可以实现代码调试。但通过系统化工具提供的调试功能，我们就能应付各种复杂的场景。调试工具通常支持各种断点调试能力、变量观察等功能。
 构建编译 Linux 下最常用的构建工具应该是 Makefile，之前开发C/C++用的便是make。但有些语言项目用它构建会很复杂，比如 Java。IDE 的构建编译功能可以快捷地生成目标文件。编译功能通常使用的是语言自带编译器，比如 Go 用 go build 命令。
-其他功能 当然，除上面介绍的这些，IDE可能还有很多其他能力，比如代码重构、文件历史记录、语言环境管理、数据库管理等。只要是能想到的功能，基本都可集成进来，现在的IDE俨然已经完全超出了传统IDE的范畴。
-GO有哪些IDE 2019年，GO的发展已有十年之久。在这期间出现了很多能被GO语言使用的IDE，把它们都详细介绍一遍是不现实的。接下来，重点介绍我比较了解几款IDE。
-Goland Goland，商业公司jetbrains 近两年推出的 Go 集成开发环境，它真的是无比强大。
-我相信很多程序都用过他们家的IDE，比如Java的 Intellj IDEA、PHP的PHPStorm、Python的PyCharm、C++的CLion、前端的WebStorm等。使用JetBrains的IDE，我们可以享受到它优秀的开箱即用的体验和 jetbrains 积累十几年的插件体系。
-前些年，也就是Goland发布之前，如果我们希望用jetbrain的IDE进行GO的开发，需要通过它提供的插件支持。Goland发布后，这些插件似乎已经下架了。
-不得不承认，Goland的功能层面做的确实非常完美。不过有几点我想吐槽一下，首先必须要提的是，Jetbrians的IDE基本都存在着卡顿的毛病，资源消耗比较严重。虽然一些大牛提供了优化方案，但体验下来，和其他IDE依然没有相比。
-Goland的开箱即用，使它的问题很少，确实没有多少可介绍的，装起来基本就可以开干！</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
+其他功能 当然，除上面介绍的这些，IDE可能还有很多其他能力，比如代码重构、文件历史记录、语言环境管理、数据库管理等。只要是能想到的功能，基本都可集成进来，现在的 IDE 俨然已经完全超出了传统IDE的范畴。
+GO有哪些IDE GO的发展已有十几年之久。在这期间出现了很多能编写 GO 语言的 IDE，把它们都详细介绍一遍是不现实的。接下来，重点介绍我比较了解几款IDE。
+Goland Goland，商业公司 jetbrains 推出的 Go 集成开发环境，它真的是无比强大。</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
 本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
 概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 $ go Go is a tool for managing Go source code.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
