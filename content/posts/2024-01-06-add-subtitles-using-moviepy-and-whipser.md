@@ -164,7 +164,7 @@ video.write_videofile("output_with_subtitles.mp4", audio_codec="aac")
 
 ```python
 width, height = video.size
-pos = ("center", height 0.8)
+pos = ("center", height * 0.8)
 subtitles_clip = subtitles_clip.set_position(pos)
 ```
 

@@ -6,11 +6,13 @@ comment: true
 tags: ["Golang"]
 ---
 
-本文谈下我对 Go 版本管理的一些思考，并给大家介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-08-golang-virtualenv-tool-gvm-01.png)
+
+本文谈下我对 Go 版本管理的一些想法。让后，我将介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
 
 # 背景介绍
 
-Go 的版本管理，并非包的依赖管理。平时的工作中，很多时候并不会遇到这样的需求，所以可能并不是很明白它的价值。
+Go 的版本管理，并非包的依赖管理，而且关于如何在不同的 Go 版本之间切换。平时的工作中，正常情况，我们不会遇到这样的需求，所以可能并不明白它的价值。
 
 简单说下我写这篇文章的背景吧。
 
@@ -40,7 +42,7 @@ $ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH
 
 此时，GOROOT 已经自动识别，为 ~/.goversions/sdk/go1.11/。Go 相关的工具链，源码，标准库都在这个目录下。
 
-但除 Go 自带外，还有其他第三方标准库、编译生成的库文件等内容，它们都位于 GOPATH 下，如果不设置，默认为 ~/go，在切换多版本的时候，就会产生混乱。我们可以为每个版本单独设置个 GOPATH。
+但除 Go 本身相关的，还有其他第三方标准库、编译生成的库文件等内容，它们都位于 GOPATH 下，如果不设置，默认为 ~/go，在切换多版本的时候，就会产生混乱。我们可以为每个版本单独设置个 GOPATH。
 
 如 go1.11，设置 GOPATH 为 ~/.goversions/gopath/go1.11-global/。
 
@@ -109,7 +111,12 @@ Please restart your terminal session or to get started right away run
 
 gvm 通过从 github 下载源码编译 Go 的安装。而版本则是基于源码中的 tag。因为 1.5 版本及之后，Go 已经实现了自编译，因而要使用 gvm 安装 Go，我们要提前有可用的 Go 环境。
 
-Go 的安装可以阅读我之前的一篇文章 [详细聊聊如何安装 Go](https://mp.weixin.qq.com/s/dDl2A2xHA_xFAKLRZUrQ6A)，我认为介绍的还算详细。
+好在，gvm 也提供直接通过下载二进制包的方式安装 Go。
+
+```bash
+❯ gvm install go1.19 --binary
+Installing go1.19 from binary source
+```
 
 Go 安装完成，就可以使用 gvm 随意安装切换任意版本的 Go 了。
 
