@@ -159,28 +159,70 @@ txt_clip = txt_clip.set_position(("center", "center"))
 
 本段介绍下如何配置 Clip 的显示时间，其核心是三个函数，`set_start`、`set_end` 和 `set_duration`，分别用于设置 Clip 的开始时间、结束时间和时间长度。
 
-一个案例，目标是在视频上一次显示 "3"、"2"、"1"，实现倒计时的效果。
+一个案例，假设我们想在视频添加另一个片段，依次显示 "3"、"2"、"1"，实现倒计时的效果。
 
 ```python
+from moviepy.editor import *
+
+video = VideoFileClip("input_video2.mp4")
+txt_clips = []
+start = 0
+duration = 1
+for text in range(3, 0, -1):
+    txt_clip = TextClip(f"{text}", color="white", fontsize=128).set_start(start).set_duration(duration).set_fps(1)
+    txt_clip = txt_clip.set_position(("center", "center"))
+    txt_clips.append(txt_clip)
+    start += duration
+
+video = CompositeVideoClip([video] + txt_clips)
 ```
+
+通过 for 循环依次生成 TextClip 并设置每个 Clip 的显示时间段。
+
+效果如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-06-moviepy-mix-clips-06.gif)
 
 ### 音频合成
 
 我们使用 CompositeAudioClip 类合成音频。常见的场景是，我们想在原视频的基础上，添加背景音乐。
 
-由于，音频不存在位置的问题，问题变的简单了很多，主要关注如何时间设置即可。
+由于，音频不存在位置的问题，就简单了很多，我们主要关注如何时间设置即可。
 
-我们来通过一个案例演示它的使用。
+一个案例，我们有三个音频文件，分别 1st-second.wav、2nd-second.wav 和 3rd-second.wav，我们使用 concatenate_videoclips 依次播放，且在 1-5 秒加上背景因为。 
+
+演示代码如下所示：
+
+```python
+from moviepy.editor import *
+
+clip1 = AudioFileClip("./1st-second.wav")
+clip2 = AudioFileClip("./2nd-second.wav")
+clip3 = AudioFileClip("./3rd-second.wav")
+
+bg_music = AudioFileClip("./bg-music.mp3")
+
+clip1 = clip1.set_start(0).set_duration(1)
+clip2 = clip2.set_start(1).set_duration(1)
+clip3 = clip3.set_start(2).set_duration(1)
+bg_music = bg_music.set_start(1).set_duration(4)
+
+clips = [clip1, clip2, clip3, bg_music]
+audio = CompositeAudioClip(clips).set_fps(44100)
+
+audio.write_audiofile("CompositeAudioClip.mp3")
+```
+
+如此，我们就生成了一个带有背景音乐的音频文件。
 
 ## 特别说明
 
-合成方法要在相同类型片段上进行，怎么理解呢？
+Clip 的合成要在相同类型 Clip 上进行，怎么理解？
 
-比如说，我们想依次播放视频通过 concantenate_video_clip，依次播放音频则通过 concantenate_audio_clips 合成。而要在视频上添加音频，直接通过 set_audio 添加，视频上添加蒙层 mask 使用 set_mask 添加即可。
-
-简单而言，不同类型 Clip 无需使用我们上面介绍的三种方式合成视频。
+简单来说，假设要在视频上添加音频，直接通过 set_audio 添加，视频上添加蒙层 mask 使用 set_mask 添加即可，而不是使用 concantenate_clips 或者 CompositeClips 实现。
 
 ## 总结
 
+本博文详细介绍了 MoviePy 的各种混合剪辑方法，这块内容算是 MoviePy 中比较难理解的内容了，希望帮助大家更好地理解和使用这些功能。
 
 
