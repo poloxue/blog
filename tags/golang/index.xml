@@ -346,7 +346,8 @@ Go 的并发原语使我们非常轻松地就构建出可以高效利用 IO 和�
 从上游的输入 channel 中接收数据； 对接收到的数据进行一些处理，（通常）并产生新的数据； 将数据通过输出 channel 发送给下游； 除了第一个 stage 和最后一个 stage ，每个 stage 都包含一定数量的输入和输出 channel。第一个 stage 只有输出，通常会把它称为 &amp;ldquo;生产者&amp;rdquo;，最后一个 stage 只有输入，通常我们会把它称为 &amp;ldquo;消费者&amp;rdquo;。
 我们先来看一个很简单例子，通过它来解释上面提到那些与 pipeline 相关的概念和技术。了解了这些后，我们再看其它的更实际的例子。
 计算平方数 一个涉及三个 stage 的 pipeline。
-第一个 stage，gen 函数。它负责将把从参数中拿到的一系列整数发送给指定 channel。它启动了一个 goroutine 来发送数据，当数据全部发送结束，channel 会被关闭。</description></item><item><title>如何理解 Go 的接口</title><link>https://www.poloxue.com/posts/2019-06-18-understand-golang-interface/</link><pubDate>Tue, 18 Jun 2019 16:09:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-18-understand-golang-interface/</guid><description>如何理解 Golang 中的接口。个人认为，要理解 Go 的接口，一定先了解下鸭子模型。
+第一个 stage，gen 函数。它负责将把从参数中拿到的一系列整数发送给指定 channel。它启动了一个 goroutine 来发送数据，当数据全部发送结束，channel 会被关闭。</description></item><item><title>如何理解 Go 的接口</title><link>https://www.poloxue.com/posts/2019-06-18-understand-golang-interface/</link><pubDate>Tue, 18 Jun 2019 16:09:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-18-understand-golang-interface/</guid><description>如何理解 Golang 中的接口。
+个人认为，要理解 Go 的接口，一定先了解下鸭子模型。
 鸭子模型 那什么鸭子模型？
 鸭子模型的解释，通常会用了一个非常有趣的例子，一个东西究竟是不是鸭子，取决于它的能力。游泳起来像鸭子、叫起来也像鸭子，那么就可以是鸭子。
 动态语言，比如 Python 和 Javascript 天然支持这种特性，不过相对于静态语言，动态语言的类型缺乏了必要的类型检查。
@@ -355,7 +356,7 @@ Go 接口设计和鸭子模型有密切关系，但又和动态语言的鸭子�
 举个例子，假设定义一个鸭子的接口。如下：
 1 2 3 4 type Duck interface { Quack() // 鸭子叫 DuckGo() // 鸭子走 } 假设现在有一个鸡类型，结构如下：
 1 2 3 4 5 6 type Chicken struct { } func (c Chicken) IsChicken() bool { fmt.Println(&amp;#34;我是小鸡&amp;#34;) } 这只鸡和一般的小鸡不一样，它比较聪明，也可以做鸭子能做的事情。
-1 2 3 4 5 6 7 func (c Chicken) Quack() { fmt.Println(&amp;#34;嘎嘎&amp;#34;) } func (c Chicken) DuckGo() { fmt.</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+1 2 3 4 5 6 7 func (c Chicken) Quack() { fmt.</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
 简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
 注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
 NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
@@ -368,14 +369,15 @@ NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 gor
 接下来，我将会分两篇文章分别从这两个角度进行介绍，今天先谈第一点。
 如何监控泄露 本文主要集中在第一点上，但为了更好的演示效果，可以先介绍一个最简单的监控方式。通过 runtime.NumGoroutine() 获取当前运行中的 goroutine 数量，通过它确认是否发生泄漏。它的使用非常简单，就不为它专门写个例子了。
 一个简单的例子 语言级别的并发支持是 Go 的一大优势，但这个优势也很容易被滥用。通常我们在开始 Go 并发学习时，常常听别人说，Go 的并发非常简单，在调用函数前加上 go 关键词便可启动 goroutine，即一个并发单元，但很多人可能只听到了这句话，然后就出现了类似下面的代码：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func sayHello() { for { fmt.Println(&amp;#34;Hello gorotine&amp;#34;) time.Sleep(time.Second) } } func main() { defer func() { fmt.</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</guid><description>今天来聊一下 Go 如何使用 set，本文将会涉及 set 和 bitset 两种数据结构。
-注：花了点时间，将这个专题录制成了视频，上B 站查看 视频。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func sayHello() { for { fmt.Println(&amp;#34;Hello gorotine&amp;#34;) time.Sleep(time.Second) } } func main() { defer func() { fmt.</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</guid><description>在Go编程中，数据结构的选择对解决问题至关重要。本文将探讨如何使用set和bitset两种数据结构，以及它们在Go中的应用场景。
 Go 的数据结构 Go 内置的数据结构并不多。工作中，我们最常用的两种数据结构分别是 slice 和 map，即切片和映射。 其实，Go 中也有数组，切片的底层就是数组，只不过因为切片的存在，我们平时很少使用它。
 除了 Go 内置的数据结构，还有一些数据结构是由 Go 的官方 container 包提供，如 heap 堆、list 双向链表和ring 回环链表。但今天我们不讲它们，这些数据结构，对于熟手来说，看看文档就会使用了。
 我们今天将来聊的是 set 和 bitset。据我所知，其他一些语言，比如 Java，是有这两种数据结构。但 Go 当前还没有以任何形式提供。
 实现思路 先来看一篇文章，访问地址 2 basic set implementations 阅读。文中介绍了两种 go 实现 set 的思路， 分别是 map 和 bitset。
 有兴趣可以读读这篇文章，我们接下来具体介绍下。
-map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些想法。让后，我将介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
+map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。
+先来看一个简单的实现，如下：
+1 2 3 4 5 6 7 8 set := make(map[string]bool) // New empty set set[&amp;#34;Foo&amp;#34;] = true // Add for k := range set { // Loop fmt.</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些想法。让后，我将介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
 背景介绍 Go 的版本管理，并非包的依赖管理，而且关于如何在不同的 Go 版本之间切换。平时的工作中，正常情况，我们不会遇到这样的需求，所以可能并不明白它的价值。
 简单说下我写这篇文章的背景吧。
 最近几周，Go 最重要的一则消息应该莫过 9月份 Go 1.13 的正式发布。它的相关升级可查看 Go 1.13 正式发布，看看都有哪些值得关注的特性 或官方 Go 1.13 Relase Notes。
