@@ -6,7 +6,9 @@ comment: true
 tags: ["Golang"]
 ---
 
-[如何理解 Golang 中的接口](https://www.zhihu.com/question/318138275/answer/699989214)。个人认为，要理解 Go 的接口，一定先了解下鸭子模型。
+[如何理解 Golang 中的接口](https://www.zhihu.com/question/318138275/answer/699989214)。
+
+个人认为，要理解 Go 的接口，一定先了解下鸭子模型。
 
 # 鸭子模型
 

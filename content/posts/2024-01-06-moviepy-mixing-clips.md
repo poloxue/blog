@@ -6,14 +6,15 @@ comment: true
 description: "今天我们来介绍 MoviePy 的混合剪辑 - mixing clips。"
 ---
 
-今天，介绍下 MoviePy 的混合剪辑 - mixing clips，即如何将多个 clip 合并为一个 clip 以生成最终视频的方法。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-06-moviepy-mix-clips-07.png)
+
+今天，介绍下 MoviePy 的混合剪辑 - mixing clips，即如何将多个 clip 合并为一个 clip 生成最终视频。
 
 ## 前言概述
 
 混合剪辑，主要指的是如何将多个 Clip 合成为一个 Clip。Clip 的类型可以是 VideoClip、或者是 AudioClip。
 
 MoviePy 中的混合剪辑 mixing clips 提供的方法，我大致上分三类，即是基于时间的 concantenate_clips、基于空间 clips_array 和随意合成 CompositeClips。不过，因为 audio 音频没有空间的概念，clips_array 只适用于 VideoClip 对象。
-
 
 Ok, 那让我们具体介绍具体的使用吧。
 

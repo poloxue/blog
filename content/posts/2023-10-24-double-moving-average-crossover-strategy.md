@@ -1,6 +1,6 @@
 ---
 title: "每周策略：宽基指数-双均线策略"
-date: 2023-12-30T22:55:27+08:00
+date: 2024-12-30T22:55:27+08:00
 draft: true
 comment: true
 description: ""

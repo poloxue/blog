@@ -6,9 +6,7 @@ comment: true
 tags: ["Golang"]
 ---
 
-今天来聊一下 Go 如何使用 set，本文将会涉及 set 和 bitset 两种数据结构。
-
-注：花了点时间，将这个专题录制成了视频，上B 站查看 [视频](https://www.bilibili.com/video/av75078755)。
+在Go编程中，数据结构的选择对解决问题至关重要。本文将探讨如何使用set和bitset两种数据结构，以及它们在Go中的应用场景。
 
 # Go 的数据结构
 
