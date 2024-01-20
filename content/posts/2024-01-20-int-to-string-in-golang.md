@@ -1,14 +1,18 @@
 ---
 title: "GO 中高效 int 转换 string 的方法"
 date: 2024-01-20T16:11:18+08:00
-draft: true
+draft: false
 comment: true
 description: "本文将从逐步介绍几种在 Go 中将 int 转换为 string 的常见方法，并重点分析这几种方法在性能上的特点。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-04.png)
+
 Go 语言 中，将整数（int）转换为字符串（string）是一项常见的操作。
 
 本文将从逐步介绍几种在 Go 中将 int 转换为 string 的常见方法，并重点剖析这几种方法在性能上的特点。另外，还会重点介绍 `FormatInt` 高效的算法实现。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-01.png)
 
 ## 使用 `strconv.Itoa`
 
@@ -99,6 +103,9 @@ func Itoa(i int) string {
 
 以下是对其核心部分的详细解读，突出了其性能优化的关键方面，并结合了具体的源码实现。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-02.png)
+
+
 ### 1. 快速路径处理小整数
 
 对于常见的小整数，`strconv` 包提供了一个快速路径，直接返回预先计算好的字符串，避免了运行时的计算开销。
@@ -146,6 +153,8 @@ const digits = "0123456789abcdefghijklmnopqrstuvwxyz"
 ### 2. formatBits 函数的高效实现
 
 `formatBits` 函数是整数到字符串转换的核心，它针对不同的基数进行了优化。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-03.png)
 
 **10进制转换的优化**
 
