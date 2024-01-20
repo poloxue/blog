@@ -37,7 +37,7 @@ func main() {
 
 `strconv.Itoa` 是通过直接将整数转换为其 ASCII 字符串表示形式。这个过程中尽量减少了额外的内存分配，没有复杂逻辑。
 
-####  使用 `fmt.Sprintf`
+##  使用 `fmt.Sprintf`
 
 另一种方法是，使用 `fmt` 包的 `Sprintf` 函数。这个方法在功能上更为强大和灵活，因为它能处理各种类型并按照指定的格式输出。
 
@@ -63,7 +63,7 @@ func main() {
 
 因为 `fmt.Sprintf` 内部使用了反射（reflection）确定输入值类型，并且在处理过程中涉及到更多的字符串拼接和内存分配。
 
-#### 方法3: 使用 `strconv.FormatInt`
+## 使用 `strconv.FormatInt`
 
 当需要更多控制或处理非 int 类型的整数（如 int64）时，可以使用 `strconv` 包的 `FormatInt` 函数。
 
@@ -95,7 +95,7 @@ func Itoa(i int) string {
 }
 ```
 
-现在深入剖析 `Itoa` 和 `FormatInt` 的高性能原因，重点就变成了剖析 `FormatInt`。
+现在 int 转 string 的高性能源码剖析，就变成了重点剖析 `FormatInt`。
 
 ## FormatInt 深入剖析
 
@@ -222,9 +222,10 @@ if base == 10 {
 
 我觉得最核心的算法就是利用移位和特殊路径预置映射关系。另外，由于算法足够优秀，还避免了一些不必要内存分配。
 
-### 结论
+## 结论
 
-将 int 转化为 string 是一个非常常见的需求。Go 语言的 `strconv` 包中的整数到字符串转换函数展示了 Go 标准库对性能的深刻理解和关注。
+将 int 转化为 string 是一个非常常见的需求。Go 语言的 `strconv` 包中的 int 到 string 的转换函数展示了 Go 标准库对性能的深刻理解和关注。
 
-通过快速处理小整数、优化的10进制转换算法、以及对2的幂基数的特别处理，这些函数能够提供高效且稳定的性能。这些优化确保了即使在大量数据或在性能敏感的场景中，`strconv` 包的函数也能提供出色的性能
+通过快速处理小整数、优化的 10 进制转换算法、以及2^n 基数的特别处理，这些函数能够提供高效且稳定的性能。这些优化确保了即使在大量数据或在性能敏感的场景中，`strconv` 包的函数也能提供出色的性能
 
+博文地址：[GO 中高效 int 转换 string 的方法与源码剖析](https://www.poloxue.com/posts/2024-01-20-int-to-string-in-golang/)
