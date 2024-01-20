@@ -1,7 +1,7 @@
 ---
 title: "利用 ChatGPT 高效搜索：举一反三的思考方式，高效查找解决方案"
 date: 2024-01-15T19:07:52+08:00
-draft: true
+draft: false
 comment: true
 description: "本文只是我的一些尝试，基于 ChatGPT 实现系统化快速搜索某编程语言的特定领域相关包或者基于其他语言类推荐落地方案的尝试。"
 ---
