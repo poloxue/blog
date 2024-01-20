@@ -1,4 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 05 Jan 2024 21:39:29 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Whisper 和 MoviePy 实现视频自动加字幕</title><link>https://www.poloxue.com/posts/2024-01-06-add-subtitles-using-moviepy-and-whipser/</link><pubDate>Fri, 05 Jan 2024 21:39:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-06-add-subtitles-using-moviepy-and-whipser/</guid><description>对于视频编辑而言，给视频添加字幕是一个常见的需求。而利用 python 的三方库 moviepy 和 openai-whisper，就可以轻松实现为视频添加字幕。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 20 Jan 2024 16:11:18 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>GO 中高效 int 转换 string 的方法</title><link>https://www.poloxue.com/posts/2024-01-20-int-to-string-in-golang/</link><pubDate>Sat, 20 Jan 2024 16:11:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-20-int-to-string-in-golang/</guid><description>Go 语言 中，将整数（int）转换为字符串（string）是一项常见的操作。
+本文将从逐步介绍几种在 Go 中将 int 转换为 string 的常见方法，并重点剖析这几种方法在性能上的特点。另外，还会重点介绍 FormatInt 高效的算法实现。
+使用 strconv.Itoa 最直接且常用的方法是使用 strconv 包中的 Itoa 函数。Itoa 是 “Integer to ASCII” 的简写，它提供了一种快速且简洁的方式实现整数到字符串之间的转换。
+示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 package main import ( &amp;#34;strconv&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { i := 123 s := strconv.Itoa(i) fmt.Println(s) } strconv.Itoa 是通过直接将整数转换为其 ASCII 字符串表示形式。这个过程中尽量减少了额外的内存分配，没有复杂逻辑。
+使用 fmt.Sprintf 另一种方法是，使用 fmt 包的 Sprintf 函数。这个方法在功能上更为强大和灵活，因为它能处理各种类型并按照指定的格式输出。
+示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 package main import ( &amp;#34;fmt&amp;#34; ) func main() { i := 123 s := fmt.</description></item><item><title>Go 中实现 slice 高效拼接与 GO 1.22 的实现新函数</title><link>https://www.poloxue.com/posts/2024-01-17-slices-concatenation-in-golang/</link><pubDate>Wed, 17 Jan 2024 16:31:39 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-17-slices-concatenation-in-golang/</guid><description>在 Go 语言中，切片拼接是一项常见的操作，但如果处理不当，可能会导致性能问题或意外的副作用。
+本文将详细介绍几种高效的切片拼接方法，包括它们的优缺点以及适用场景。还会介绍 Go1.22 提供的一个拼接字符串的新方法。
+切片拼接的必要性 在 Go 中，切片是一种动态数组，常用于存储和处理一系列相同类型的数据。
+在实际应用中，我们经常需要将两个或多个切片合并为一个新的切片，例如在处理字符串、整数列表或自定义结构体数组时。
+这种需求促使我们探索更高效的切片拼接方法。
+基本拼接方法及其局限性 使用 append 函数 最直接的方法是使用 append 函数，它可以将一个切片的元素追加到另一个切片的末尾。
+1 2 3 slice1 := []int{1, 2} slice2 := []int{3, 4} result := append(slice1, slice2...) 虽然这种方法简单快捷，但它有一个局限性：当 slice1 的容量不足以容纳所有元素时，Go 会分配一个新的底层数组。这可能导致性能问题，特别是在处理大型切片时。
+高效拼接的策略 为了克服基本方法的局限性，我们可以采取以下策略：
+控制容量和避免副作用 为了避免不必要的内存分配和潜在的副作用，我们可以先检查第一个切片的容量是否足够。如果不够，可以先创建一个新的切片，确保足够的容量。
+1 2 3 4 5 a := []int{1, 2} b := []int{3, 4} c := make([]int, len(a), len(a)+len(b)) copy(c, a) c = append(c, b...) 这种方法虽然代码稍长，但可以有效避免不必要的内存分配和对原始切片的影响。
+利用 Go 1.</description></item><item><title>使用 Whisper 和 MoviePy 实现视频自动加字幕</title><link>https://www.poloxue.com/posts/2024-01-06-add-subtitles-using-moviepy-and-whipser/</link><pubDate>Fri, 05 Jan 2024 21:39:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-06-add-subtitles-using-moviepy-and-whipser/</guid><description>对于视频编辑而言，给视频添加字幕是一个常见的需求。而利用 python 的三方库 moviepy 和 openai-whisper，就可以轻松实现为视频添加字幕。
 本博文将就此主题展开，介绍如何通过 Python 快速添加视频字幕。
 前言概述 编辑视频时，为视频添加字幕不仅仅可以让内容易于理解性，而且可以增加视频的吸引力。
 Python 提供了 MoviePy 库，同时近期开源的 openai-whisper 模块使得为视频添加字幕变得十分简单。
