@@ -103,7 +103,7 @@ func Itoa(i int) string {
 
 以下是对其核心部分的详细解读，突出了其性能优化的关键方面，并结合了具体的源码实现。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-02-en.png)
 
 
 ### 1. 快速路径处理小整数
@@ -154,7 +154,7 @@ const digits = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 `formatBits` 函数是整数到字符串转换的核心，它针对不同的基数进行了优化。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-03-en.png)
 
 **10进制转换的优化**
 
@@ -201,7 +201,7 @@ if base == 10 {
 - 位操作是直接在二进制上进行，比除法和取余操作更快。
 - 利用 2 的幂基数的特性，通过移位和掩码操作获取数字的各个位。
 
-### 通用情况的处理
+**通用情况的处理**
 
 对于其他基数，`formatBits` 使用了通用的算法，但仍然尽量减少了除法和取余操作的使用。
 
