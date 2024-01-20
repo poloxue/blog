@@ -101,22 +101,26 @@ func Itoa(i int) string {
 
 基于 Go 1.21 版本的 `itoa.go` 源码，我们可以深入理解 `strconv` 包中整数到字符串转换函数的高效实现。
 
-以下是对其核心部分的详细解读，突出了其性能优化的关键方面，并结合了具体的源码实现。
+```go
+func FormatInt(i int64, base int) string {
+	if fastSmalls && 0 <= i && i < nSmalls && base == 10 {
+		return small(int(i)) // 100 以内的十进制小整数，使用 small 函数转化
+	}
+  	_, s := formatBits(nil, uint64(i), base, i < 0, false) // 其他情况使用 formatBits
+	return s
+}
+```
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-02-en.png)
+以下是对其核心部分的详细解读，将会突出了其性能优化的关键方面，结合具体的源码实现说明。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-02.png)
 
 
 ### 1. 快速路径处理小整数
 
-对于常见的小整数，`strconv` 包提供了一个快速路径，直接返回预先计算好的字符串，避免了运行时的计算开销。
+对于常见的小整数，`strconv` 包提供了一个快速路径，small 函数，直接返回预先计算好的字符串，避免了运行时的计算开销。
 
 ```go
-func FormatInt(i int64, base int) string {
-	if fastSmalls && 0 <= i && i < nSmalls && base == 10 {
-		return small(int(i))
-	}
-}
-
 func small(i int) string {
 	if i < 10 {
 		return digits[i : i+1]
@@ -125,12 +129,9 @@ func small(i int) string {
 }
 ```
 
-`fastSmalls` 标志启用了对小整数的快速处理。`nSmalls` 定义了小整数的上限（具体值 100），`base == 10`  确保只有10进制整数使用这个快速路径。
+对于小于 100 的十进制整数，采用这个快速实现方案，或许这也是整数转字符串的最常见使用场景吧。
 
-简单而言，即对于小于 100 的十进制整数，采用这个快速实现方案，这或许也是整数转字符串的常见使用场景把。
-
-`small` 函数通过索引到 `smallsString` 获取小整数的字符串表示，这个过程非常快速。
-
+`small` 函数通过索引到 `smallsString`  和 `digits` 获取小整数的字符串表示，这个过程非常快速。
 `digits` 和 `smallsString` 的值，如下所示：
 
 ```go
@@ -152,9 +153,9 @@ const digits = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 ### 2. formatBits 函数的高效实现
 
-`formatBits` 函数是整数到字符串转换的核心，它针对不同的基数进行了优化。
+FormatInt 最复杂的部分是 `formatBits` 函数，它是整数到字符串转换的核心，它针对不同的基数进行了优化。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-03-en.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-03.png)
 
 **10进制转换的优化**
 
