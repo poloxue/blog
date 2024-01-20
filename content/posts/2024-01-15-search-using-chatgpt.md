@@ -1,6 +1,6 @@
 ---
-title: "2024 01 15 Search Using Chatgpt"
-date: 2024-01-20T19:07:52+08:00
+title: "利用 ChatGPT 高效搜索：举一反三的思考方式，高效查找解决方案"
+date: 2024-01-15T19:07:52+08:00
 draft: true
 comment: true
 description: "本文只是我的一些尝试，基于 ChatGPT 实现系统化快速搜索某编程语言的特定领域相关包或者基于其他语言类推荐落地方案的尝试。"
@@ -134,5 +134,4 @@ chatGPT 回答如下：
 
 这种结合 AI 技术的搜索方法不仅节省了我们的时间，还为我们提供了更加精确和深入的技术见解，而非是简单的列举。
 
-
-
+博文地址：[利用 ChatGPT 高效搜索：举一反三的思考方式，高效查找解决方案](https://www.poloxue.com/posts/2024-01-15-search-using-chatgpt)
