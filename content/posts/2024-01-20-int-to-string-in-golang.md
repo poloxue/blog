@@ -1,5 +1,5 @@
 ---
-title: "GO 中高效 int 转换 string 的方法"
+title: "GO 中高效 int 转换 string 的方法与源码剖析"
 date: 2024-01-20T16:11:18+08:00
 draft: false
 comment: true
