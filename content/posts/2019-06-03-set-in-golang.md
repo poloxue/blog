@@ -287,3 +287,4 @@ next 20 is 22
 
 除这两个包，再补充两个，[zoumo/goset](https://github.com/zoumo/goset) 和 [github.com/willf/bitset](https://github.com/willf/bitset)。
 
+博文地址：[https://www.poloxue.com/posts/2019-06-03-set-in-golang/]
