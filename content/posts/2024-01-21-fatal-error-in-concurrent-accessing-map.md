@@ -8,7 +8,7 @@ description: "为什么 Go 语言在多个 goroutine 同时访问和修改同一
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-21-fatal-error-in-concurrent-accessing-map-02.png)
 
-为什么 Go 语言在多个 goroutine 同时访问和修改同一个 map 时，会报出fatal错误而不是panic？
+为什么 Go 语言在多个 goroutine 同时访问和修改同一个 map 时，会报出 fatal 错误而不是 panic？我们该如何应对 map 的数据竞争问题呢？
 
 这篇文章将带你一步步了解背后的原理，并引出解决 map 并发问题的方案。
 
