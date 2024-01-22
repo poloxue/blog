@@ -56,6 +56,11 @@ name = "RSS"
 icon = "rss"
 url = "/posts/index.xml"
 
+[[params.social]]
+name = "Wechat"
+icon = "message-circle"
+url = "/"
+
 [markup]
   [markup.highlight]
     codeFences = true
