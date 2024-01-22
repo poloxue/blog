@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 22 Jan 2024 15:22:53 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>如何有效获取 Go 变量类型？探索多种方法</title><link>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</link><pubDate>Mon, 22 Jan 2024 15:22:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</guid><description>在 Python 中，可以使用 type(x) 获取变量 x 的类型。在 JavaScript 中，typeof x 会返回变量 x 的类型。这些操作都很直观。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 22 Jan 2024 20:36:04 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>2024 01 18 Why Fasthttp Opts for Slice Over Map</title><link>https://www.poloxue.com/posts/2024-01-18-why-fasthttp-opts-for-slice-over-map/</link><pubDate>Mon, 22 Jan 2024 20:36:04 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-18-why-fasthttp-opts-for-slice-over-map/</guid><description>Fasthttp 是一个高性能的 Golang HTTP 框架，它在设计上做了许多优化以提高性能。其中一个显著的设计选择是使用 slice 而非 map 来存储数据，尤其是在处理 HTTP headers 时。
+为什么呢？
+本文将从简单到复杂，逐步剖析为什么 Fasthttp 选择使用 slice 而非 map，并通过代码示例解释这一选择背后高性能的原因
+Slice vs Map：基本概念 首先，这个设计选择背后有着深思熟虑的考量，主要围绕性能优化展开。在深入探讨之前，我们需要理解 slice 和 map 在 Go 语言中的基本概念和性能特点。
+Slice：Slice 是对数组的封装，它提供了一个动态大小的、灵活的视图。Slices 的底层实际上是数组，这意味着它们的元素在内存中是连续存储的。 Map：Map 是一种无序的键值对的集合，它通过哈希表实现。Map 提供了快速的查找、添加和删除操作，但这些操作的性能并不总是稳定。 内存分配和性能 在高性能的应用场景中，内存分配和回收是性能的关键因素之一。Fasthttp 在这方面做了考量。
+Slice 的内存效率
+由于 slice 的元素在内存中是连续存储的，它们访问速度快，且能有效利用 CPU 缓存。此外，slice 可以通过重新切片来复用已有的数组，减少内存分配和垃圾回收的压力。
+Map 的内存开销
+相比之下，map 的内存开销较大。
+在 map 中，键和值通常是散布在内存中的，这导致 CPU 缓存利用率不高。而且，map 的增长通常涉及重新哈希和重新分配内存，这些操作在性能敏感的应用中可能成为瓶颈。
+Fasthttp 中的 SliceMap Fasthttp 选择使用自定义的 sliceMap 结构来存储键值对，而非标准的 map。
+下面是 sliceMap 的一个简化实现和它的 Add 方法：</description></item><item><title>如何有效获取 Go 变量类型？探索多种方法</title><link>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</link><pubDate>Mon, 22 Jan 2024 15:22:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</guid><description>在 Python 中，可以使用 type(x) 获取变量 x 的类型。在 JavaScript 中，typeof x 会返回变量 x 的类型。这些操作都很直观。
 那么，在 Go 语言中，如何快速获取一个变量的类型？
 我相信很多 Go 语言初学者都会遇到这样的问题。本文将介绍 Go 中几种常用方法，用于获取 GO 变量类型。
 Go 的类型系统 在 Go 中，每个变量都由两部分组成：类型（type）和值（value）。
