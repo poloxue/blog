@@ -1,5 +1,5 @@
 ---
-title: "2024 01 18 Why Fasthttp Opts for Slice Over Map"
+title: "为什么 Golang Fasthttp 选择使用 slice 而非 map 存储请求数据"
 date: 2024-01-22T20:36:04+08:00
 draft: false
 comment: true
