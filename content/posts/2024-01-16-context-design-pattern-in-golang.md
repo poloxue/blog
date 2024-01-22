@@ -1,6 +1,6 @@
 ---
 title: "从 Context 看 Go 设计模式：接口、封装和并发控制"
-date: 2024-01-22T20:10:26+08:00
+date: 2024-01-16T20:10:26+08:00
 draft: false
 comment: true
 description: "在 Go 语言中，`context` 包是并发编程的核心，用于传递取消信号和请求范围的值。但其传值机制，特别是为什么不通过指针传递，而是通过接口。虽然是简单问题，但值得引发我的一些思考。"
@@ -185,3 +185,4 @@ func main() {
 
 总结来说，无论是在 `context` 包的设计中，还是在我们的 `DataStore` 示例中，Go 语言的接口和封装都展现了其在构建并发安全且易于维护的系统方面的强大能力。通过这些机制，Go 语言为开发者提供了一种清晰、一致且灵活的方式来管理和传递程序的状态和行为。
 
+博文地址：[从 Context 看 Go 设计模式：接口、封装和并发控制](https://www.poloxue.com/posts/2024-01-16-context-design-pattern-in-golang/)
