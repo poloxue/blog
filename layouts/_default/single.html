@@ -8,14 +8,21 @@
     {{ partial "head.html" . }}
 
     {{ partial "content_floating_toc.html" . }}
+
+    <div class="post">
+      <img style="width: 85%" src="https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png" />
+      {{ partial "utterance.html" . }}
+    </div>
   </div>
   {{ else }}
   <div class="container wrapper">
     {{ partial "head.html" . }}
 
     {{ partial "content_static.html" . }}
-
-    {{ partial "utterance.html" . }}
+    <div class="post">
+      <img style="width: 85%" src="https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png" />
+      {{ partial "utterance.html" . }}
+    </div>
   </div>
   {{ end }}
 
