@@ -614,3 +614,4 @@ r, err := client.Get("https://google.com")
 
 本文以 Python 的 requests 文档为指导方向，整理了 requests 快速入门文档中的案例在 GO 的是如何实现的。要说明的是， GO 其实也提供了对应于 requests 的克隆版本，[github地址](https://github.com/levigross/grequests)。暂时我也还没有看，有兴趣的朋友可以去研究一下。
 
+博文地址：[Go 的 Http 请求系统指南](https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/)

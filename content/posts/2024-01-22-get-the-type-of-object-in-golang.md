@@ -24,8 +24,7 @@ description: "但在 Go 语言中，如何快速获取一个变量的类型？�
 
 ## 类型获取
 
-我将介绍三种不同的获取变量类型的方式。
-
+我将介绍几种不同的获取变量类型的方式。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-22-get-the-type-of-object-in-golang-03.png)
 
