@@ -106,3 +106,4 @@ Fasthttp 使用 `sliceMap` 而非 map 的决策不仅仅是基于内存和性能
 
 Fasthttp 的设计选择反映了对性能细节的深入理解和精心优化。通过使用 slice 而非 map，Fasthttp 在内存分配、垃圾回收以及 CPU 缓存利用等方面实现了优化，为高性能的 HTTP 应用提供了坚实的基础。这种设计不仅仅是技术上的选择，更是对实际应用场景和性能需求的深入洞察。
 
+博文地址：[为什么 Golang Fasthttp 选择使用 slice 而非 map 存储请求数据](https://www.poloxue.com/posts/2024-01-18-why-fasthttp-opts-for-slice-over-map/)
