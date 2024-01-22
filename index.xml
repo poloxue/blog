@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 21 Jan 2024 15:34:16 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>从 fatal 错误到 sync.Map：Go中 Map 的并发策略</title><link>https://www.poloxue.com/posts/2024-01-21-fatal-error-in-concurrent-accessing-map/</link><pubDate>Sun, 21 Jan 2024 15:34:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-21-fatal-error-in-concurrent-accessing-map/</guid><description>为什么 Go 语言在多个 goroutine 同时访问和修改同一个 map 时，会报出 fatal 错误而不是 panic？我们该如何应对 map 的数据竞争问题呢？
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 22 Jan 2024 15:22:53 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>如何有效获取 Go 变量类型？探索多种方法</title><link>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</link><pubDate>Mon, 22 Jan 2024 15:22:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</guid><description>在 Python 中，可以使用 type(x) 获取变量 x 的类型。在 JavaScript 中，typeof x 会返回变量 x 的类型。这些操作都很直观。
+那么，在 Go 语言中，如何快速获取一个变量的类型？
+我相信很多 Go 语言初学者都会遇到这样的问题。本文将介绍 Go 中几种常用方法，用于获取 GO 变量类型。
+Go 的类型系统 在 Go 中，每个变量都由两部分组成：类型（type）和值（value）。
+类型是编译时的属性，它定义了变量可以存储的数据种类和对这些数据可以进行的操作。值是变量在运行时的数据。
+类型获取 我将介绍三种不同的获取变量类型的方式。
+使用 fmt.Printf 最简单直接的方式，通过 fmt.Printf 的 %T 打印变量的类型。
+1 2 3 4 func main() { var x float64 = 3.4 fmt.Printf(&amp;#34;Type of x: %T\n&amp;#34;, x) } 输出:
+1 Type of x: float64 这种方式简单直接，非常适合在代码调试阶段使用。
+类型选择 Go 中提供了类型断言检测变量类型，是 Go 语言中提供的类型检查和转换的一种方式。
+示例如下所示：</description></item><item><title>从 fatal 错误到 sync.Map：Go中 Map 的并发策略</title><link>https://www.poloxue.com/posts/2024-01-21-fatal-error-in-concurrent-accessing-map/</link><pubDate>Sun, 21 Jan 2024 15:34:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-21-fatal-error-in-concurrent-accessing-map/</guid><description>为什么 Go 语言在多个 goroutine 同时访问和修改同一个 map 时，会报出 fatal 错误而不是 panic？我们该如何应对 map 的数据竞争问题呢？
 这篇文章将带你一步步了解背后的原理，并引出解决 map 并发问题的方案。
 Map 数据竞争 首先，什么是 Map 数据竞争。
 当两个或多个 goroutine 在没有适当同步机制的情况下，同时访问同一块数据，且至少有一个 goroutine 在修改这块数据，就会发生数据竞争。这种情况可能导致程序的行为异常，甚至崩溃。
