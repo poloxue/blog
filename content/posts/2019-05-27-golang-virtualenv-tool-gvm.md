@@ -226,3 +226,4 @@ pkgsets             # 每个独立环境 gopath 所在路径
 [moovweb/gvm](https://github.com/moovweb/gvm)
 [gvm + go mod](https://medium.com/golang-%E7%AD%86%E8%A8%98/gvm-go-mod-492a54c15c41)
 
+博文地址：[Go 虚拟环境管理工具 gvm](https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm)
