@@ -1,10 +1,12 @@
 ---
 title: "Go 定时器：如何避免潜在的内存泄漏陷阱"
 date: 2024-01-24T13:28:13+08:00
-draft: true
+draft: false
 comment: true
 description: "这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。"
 ---
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-timer-potential-leaking-in-golang-01.png)
 
 这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。
 
@@ -119,3 +121,4 @@ for {
 
 本文通过一个代码案例演示了 GO 中 `timer.After` 可能产生的潜在内存泄漏问题。通过使用官方推荐的方案，利用重置定时器时间实现 `Timer` 的重复利用，避免了潜在的内存泄漏问题。
 
+博文地址：[Go 定时器：如何避免潜在的内存泄漏陷阱](https://www.poloxue.com/posts/2024-01-24-timer-potential-leaking-in-golang/)
