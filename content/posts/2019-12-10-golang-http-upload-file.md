@@ -6,7 +6,9 @@ tags: ["Golang"]
 comment: true
 ---
 
-早前写过一篇文章，[Go HTTP 请求 QuickStart](https://juejin.im/post/5ce242c2f265da1b6e6574de "Go HTTP 请求 QuickStart")。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-http-upload-file-in-golang-01.png)
+
+早前写过一篇文章，[Go HTTP 请求 QuickStart](https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/)。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
 
 最近，尝试录成它的视频，[访问地址](https://www.bilibili.com/video/av77753893 "访问地址")。发现当时写得挺详细的，发现当时虽然写得比较详细，但也只是介绍用法，可能不知其所以然。比如文件上传那部分，如果不了解 http 文件上传协议 [RFC 1867](https://tools.ietf.org/html/rfc1867 "RFC 1867")，就很难搞懂为什么代码这么写。
 
@@ -208,3 +210,4 @@ r, err := http.Post(
 
 本篇文章主要介绍了如何使用 Go 实现文件上传，本质上是组织提交文件的请求体。而为了能清晰地了解请求体的组织过程，就必须清楚相关的 HTTP 协议，[rfc 1867](https://tools.ietf.org/html/rfc1867 "rfc 1867")。
 
+博文地址：[Go 如何实现 HTTP 文件上传](http://localhost:1313/posts/2019-12-10-golang-http-upload-file/)
