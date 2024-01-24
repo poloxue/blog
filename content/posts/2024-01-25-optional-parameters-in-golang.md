@@ -145,9 +145,9 @@ func main() {
 
 在这个例子中，我们定义了`Config` 结构体和 `Option` 类型，`Option` 是一个函数，它接受一个`*Config`参数。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-25-optional-parameters-in-golang-05-v1.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-25-optional-parameters-in-golang-05-v2.png)
 
-我们还定义了`WithTimeout`和`WithPath`函数，它们返回一个`Option`。这样，我们就可以在调用`NewConfig`函数时，通过传递不同的选项来构建不同的配置。
+我们还定义了`WithTimeout`和`WithPath`函数，它们返回一个`Option`。这样，我们就可以在调用`NewConfig`函数时，通过传递不同的选项修改 `Config` 结构中的字段，构建不同的配置。
 
 这种方法的好处是非常灵活，并且可以在不破坏现有代码的情况下扩展 API。缺点是实现起来比较复杂，可能需要一些时间来理解。
 
