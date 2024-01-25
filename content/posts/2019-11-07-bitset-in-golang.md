@@ -6,7 +6,9 @@ comment: true
 tags: ["Golang"]
 ---
 
-最近尝试在 B 站录些小视频，我的 [B 站主页](https://space.bilibili.com/314069695)。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
+最近尝试在 B 站录些小视频，我的 [B 站主页](https://space.bilibili.com/314069695)。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
+
+在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
 
 相关代码已经放在了 github，地址如下：[go-set-example](https://github.com/poloxue/go-set-example)
 
@@ -58,7 +60,7 @@ func (set *BitSet) Size() int {
 
 先看下 `BitSet` 的二进制位的分布情况。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2017-11-07-bitset-in-golang-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-11-07-bitset-in-golang-03.png)
 
 类似行列的效果，假设用 `index` 表示行（索引），`pos` 表示列（位置）。切片索引从 0 到 n，n 与集合中的最大元素有关。
 
