@@ -1,6 +1,6 @@
 ---
 title: "Go 中 struct tag 如何用？基于它实现字段级别的权限控制"
-date: 2024-01-26T18:56:59+08:00
+date: 2024-01-24T18:56:59+08:00
 draft: true
 comment: true
 description: "在Go 中，结构体主要是用于定义复杂数据类型。而 struct tag 则是附加在 struct 字段后的字符串，提供了一种方式来存储关于字段的元信息。然后，tag 在程序运行时不会直接影响程序逻辑。"
