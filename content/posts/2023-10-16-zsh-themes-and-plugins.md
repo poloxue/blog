@@ -1,5 +1,5 @@
 ---
-title: "终端环境：zsh 、oh-my-zsh、提示符主题与 7 效率插件"
+title: "终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件"
 date: "2023-10-16T15:00:06+08:00"
 draft: false
 comment: true
@@ -136,6 +136,16 @@ zsh
 
 oh-my-zsh 这个名字起的很骚气的，大概就是下面这样表情。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-13.gif)
+
+想表达的可能是，当别人看你用 oh-my-zsh 配置的终端，大概率发出 "wow! 你的终端太赞了！"
+
+OK，那下面让我们尝试让它赞起来吧。
+
+## 安装
+
+首先，oh-my-zsh 的安装很简单。
+
 安装命令，如下所示：
 
 ```bash
@@ -144,13 +154,15 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 安装后，就已经有一些默认效果，如命令行提示符的主题变化。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-01.png)
 
-### 主题
+这是默认的  oh-my-zsh 主题 "robbyrussell"。
 
-oh-my-zsh 提供了许多内置主题，可查看 [themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes)。
+## 主题
 
-我们打开 ~/.zshrc 配置文件，可执行更新主题配置：
+oh-my-zsh 提供了许多内置主题，可查看 [themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes) 获取一系列的主题。
+
+我们可直接通过 ~/.zshrc 配置更新主题配置，将内容修改如下：
 
 ```bash
 ZSH_THEME="agnoster"` # 默认为 robbyrussell
@@ -160,9 +172,9 @@ ZSH_THEME="agnoster"` # 默认为 robbyrussell
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-02.png)
 
-另外，oh-my-zsh 还提供了 random 主题，它会在 oh-my-zsh 内置主题中随机选择一个主题展示。
+另外，oh-my-zsh 还提供了 random 主题，它会在 oh-my-zsh 内置主题中随机选择一个主题展示。只需编辑 `~/.zshrc`，将 ZSH_THEME 更新为 random 即可。
 
-编辑 `~/.zshrc`，配置如下：
+配置如下所示：
 
 ```bash
 ZSH_THEME="random"
@@ -174,93 +186,139 @@ ZSH_THEME="random"
 
 说实话，我觉得没人会这么用吧。这明显很鸡肋的功能啊。
 
-### 内置插件
+## 内置插件
 
-重点来了，接下来我们一起来看看 zsh 的效率神器 - 插件能力吧。我先给大家推荐 7 款常用的插件，其中 5 个是 oh-my-zsh 的内置插件。下期会再给推荐 6 个插件。
+重点来了，接下来我们一起来看看 zsh 的效率神器 - 插件能力吧。
 
-oh-my-zsh 提供的所有内置插件，都可以在仓库 [ohmyzsh/ohmyzsh/plugins](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)  中找到。本教程将要介绍的 oh-my-zsh  内置插件，如下所示：
+我先给大家推荐 7 款常用的插件，其中 5 个是 oh-my-zsh 的内置插件。考虑内容不宜太长，下期会再推荐 6 个插件。
 
-- [git](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git)，内置插件
-- [web-search](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search)，搜索引擎搜索；
-- [jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools)，用于处理 json 数据；
-- [z](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z)，目录快速跳转；
+oh-my-zsh 提供的所有内置插件，都可以在仓库 [ohmyzsh/ohmyzsh/plugins](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)  中找到，每个插件都有相应的介绍文档。
+
+本教程将要介绍的 5 个 oh-my-zsh  内置插件，如下所示：
+
+- [git](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git)，Git 插件，其实就是提供一些常用的 git 命令别名。
+- [web-search](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search)，命令行打开搜索引擎，已支持大部分搜索引擎；
+- [jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools)，用于格式化 json 数据；
+- [z](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z)，基于历史访问目录的快速跳转；
 - [vi-mode](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode)，使用 vi 模式编辑命令行；
 
-#### 插件 1 - git
+启用所有插件，打开 `zshrc` 配置，把这些内置插件都打开，如下所示：
 
-这个插件提供了 git 命令的大量别名，查看[git 插件文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
+```bash
+plugins=(git web-search jsontools z vi-mode)
+```
 
-如一些常用命令的别名：
+### 插件 1 - git
 
-cmd           | alias
-------------- | ------------
-git clone     | gcl
-git status    | gst
-git commit    | gc
-git add       | ga
-git add --all | gaa
-git diff      | gd
-git push      | gp
-git pull      | gl
+Git 插件提供了 git 命令的大量别名，查看[git 插件文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
 
-更多命令，可自行查看[文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
+如下一些常用命令的别名：
 
-#### 插件 2 - web-search
+```bash
+git clone     -> gcl
+git status    -> gst
+git commit    -> gc
+git add       -> ga
+git add --all -> gaa
+git diff      -> gd
+git push      -> gp
+git pull      -> gl
+```
 
-[web-search](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search/) 提供在终端直接搜索信息能力，将自动跳转浏览器，到指定的搜索引擎执行搜索请求。
+更多命令的映射关键关系，可自行查看它的[文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/)。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-04.gif)
+这个插件不错，但有个缺点，这么多可用别名，我又记不住，岂不是成了摆设。如果想用好，我每次都用去查文档吗？不查文档行不行呢？
+
+当然也是可以的，oh-my-zsh 中启用的一些其他插件可能也会有别名。
+
+其实，有一个插件可帮忙我们解决这个问题，叫做 `you-should-use`，这是下期要介绍的一个插件。简单说下，它就是在我们输入一个命令的时候，如果这个命令存在更好用的命令，它会提示我们使用别名。
+
+### 插件 2 - web-search
+
+[web-search](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search/) 提供了在终端直接搜索信息的能力。
+
+当然，其实也不是完全在终端完成，它会自动跳转浏览器，转到指定的搜索引擎执行搜索请求。
+
+效果大概就是下面这样：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-04.gif)
 
 常见的搜索引擎基本都是支持的，诸如 google, bing, baidu, 甚至是 github 等。
 
-这个插件一般我很少用，因为我已经安装了另外一个工具 alfred（用于替代 mac 默认的 spotlight），通常都是通过它直接启动搜索，。
+不过，我也得承认，其实这个插件一般我本人很少用，因为我已经安装了另外一个工具 alfred（替代 mac 默认的 spotlight），我都是通过它直接启动搜索。
 
-#### 插件 3 - jsontools
+### 插件 3 - jsontools
 
 [jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) 提供了一些用于操作 json 数据的命令，如:
 
-- pp_json 格式化 json；
+- pp_json 实现 json 字符串格式化；
 - is_json 判断是否是 json；
 
-演示效果如下：
+我们直接看下演示效果吧，如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-05.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-05.gif)
 
-#### 插件 4 - z
+还是得说明，如果你没有更好的方案，安装了 oh-my-zsh，这是个选择。不过其实这个插件呢。
 
-[z 插件](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z) 可用于快速的目录跳转，我觉得大部分人在使用 Linux 都被它的目录跳转烦恼过。z 就是这个烦恼的救星。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-14.gif)
 
-想查看更多信息可找 [z 原仓库](https://github.com/agkozak/zsh-z) 查看。
+我也很少用，我习惯使用一款叫做 jq 的命令，如果你了解它，就知道它多强大。
 
-介绍它的用法：
+### 插件 4 - z
 
-1. 输入 z，紧跟 tab 键，会直接列出访问过的目录，效果如下：
+[z 插件](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z) 可用于快速的目录跳转，我觉得大部分人在使用 Linux 都被 cd 跳转目录跳转烦恼过。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-06.gif)
+z 就是这个烦恼的救星。
 
-2. 输入 z blog，紧跟 tab 键，会直接列出访问过包含 blog 的目录，效果如下：
+想查看更多信息可找 [z 原仓库 - zsh-z](https://github.com/agkozak/zsh-z) 查看。oh-my-zsh 下的 z 文档说明中提到，它是从这个 zsh-z 的插件中拷贝而来的。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-07.gif)
+我们来介绍它的用法，简单来说，它是基于历史访问过的目录快速跳转。我们无需输入全路径，即可完成目录切换。
 
-3. 输入 z tmux，因为包含 tmux 的目录只有一个，直接选中，效果如下：
+下面是一些实际案例。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-08.gif)
+首先，我直接输入 z，紧跟 tab 键，会看到如下的效果。它会直接将访问过的目录都列出来。
 
-4. 输入 z tmux，直接 Enter 确认，进入到目录，效果如下：
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-06.gif)
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-09.gif)
+这些由 tab 产生的自动补全目录都是历史访问过的目录。因为，在没有输入任何内容的情况下，我们输入 tab 的，它列出最近访问过的目录。
 
-#### 插件 5 - vi-mode
+如果我们输入形如 z substring，即提供子字符串，它们将所有匹配 substring 的目录都列举出来。
+
+效果如下：
+
+例如，我们输入 z blog，紧跟 tab 键，会直接列出访问过包含 blog 的目录。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-07.gif)
+
+如果输入内容只有一个关联的目录名，它会如图上一样直接补全。
+
+演示效果：
+
+我们输入 z tmux，因为匹配 tmux 的目录只有一个，将会被直接选中。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-08.gif)
+
+当然，其实这里匹配的目录名只有一个，直接输入 Enter 就可以进入目录，无需 tab 选择多次一举了。
+
+演示效果：
+
+我们输入 z tmux，直接 Enter 确认，即可进入到目录。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-09.gif)
+
+### 插件 5 - vi-mode
 
 [vi-mode 插件](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode) 支持在命令行开启 vi 模式，利用 vi 键进行命令行编辑。这个插件，视个人情况，是否使用吧。如果你是一个 vi 忠实用户，可考虑开启。否则，还是简单最好，否则容易影响心情。
 
-这个插件就不多介绍了，更多查看 [它的文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode)。
+这个插件就不多介绍了，更多查看 [它的文档](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode)。另外，如果确实对 vim 感兴趣，也可以考虑另外一个 vi 插件，名为 [zsh-vi-mode](https://github.com/jeffreytse/zsh-vi-mode)，它的能力更强大，也解决这个默认 vi 插件的一些不好用的 bug，不过它的配置有点复杂。
 
-### 三方插件
+## 三方插件
 
-将介绍 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。之前的演示，我其实已经把这个插件已经开启了。
+我们再来了解 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。这两个插件都在社区开发的时间。
 
-开始介绍前，让我们先将这两个插件全部安装配置完成。
+开始介绍前，先将这两个插件全部安装配置完成。
+
+### 下载
 
 下载命令如下所示：
 
@@ -268,6 +326,8 @@ git pull      | gl
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 ```
+
+### 配置
 
 打开 `.zshrc` 完成配置：
     
@@ -277,34 +337,46 @@ plugins=(git web-search jsontools z vi-mode zsh-syntax-highlighting zsh-autosugg
 
 记得执行 `source ~/.zshrc` 生效配置。
 
-#### 插件 6 - zsh-syntax-highlighting
+### 插件 6 - zsh-syntax-highlighting
 
-zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或存在明显的错误，将会自动以红色表示。
+zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，终端输入 shell 语法不正确，将会自动以红色表示。它的优点就是，当我们在终端输入，有实时得到反馈的能力。
 
-演示效果，如下所示：
+首先，我们尝试下错误命令，提示效果，如下所示：
 
-错误命令提示
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-10.gif)
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-10.gif)
+再来看看，正确命令提示效果，如下所示：
 
-正确命令提示
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-11.gif)
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-11.gif)
+对，就是这么简单。通过这个插件，能提供实时反馈，而不是将命令执行后，才知道打错了。
 
-#### 插件 7 - zsh-autosuggestions
+### 插件 7 - zsh-autosuggestions
 
-zsh-autosuggestions 用于提示补全建议，当输入字符后，它会自动给我们一些建议。输入 -> 右方向键可将建议直接输入终端。
+zsh-autosuggestions 可以说是我最喜欢的插件了。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-16-zsh-themes-and-plugin-12.gif)
+它的作用是什么呢？
 
-如果想改变接受建议的默认按键，例如，希望通过输入 `Ctrl + /` 接受建议，配置实现，如下所示：
+它可用于提示补全建议，当输入字符，它会自动基于我们的历史命令给我们提供输入建议。还记得前面提到的，zsh 的历史命令是在不同的会话间共享。现在，再结合 zsh-autosuggestions 插件，简直不要太爽。哈哈。
+
+默认情况下，输入右方向键 → 可将建议直接输入终端。
+
+如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-12.gif)
+
+但这个其实体验很差，对于一个双手不想离开键盘中心区域的人而言，通过右键接受提示建议，这简直不能忍啊。是否能改变这个默认快捷键呢？
+
+我的目标是希望通过输入 `Ctrl + /` 接受建议，配置实现，如下所示：
 
 ```
 # <Ctrl+/> 接受 auto-suggestion 的补全建议
 bindkey '^_' autosuggest-accept
 ```
 
-另外，如果希望 zsh-autosuggestion 不仅支持 history，也支持自动补全的建议提示， 即使如子命令、命令选项、目录文件等提示，可增加配置，如下所示：
+另外，如果希望 zsh-autosuggestion 不仅支持 history，也支持自动补全的建议提示，即原来那些要输入 tab 才能出现的内容，如子命令、命令选项、目录文件等提示，也能在提示建议的范围中。我们只需增加 completeion 这个配置项。
+
+如下所示：
 
 ```zsh
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -312,7 +384,9 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 ## 总结
 
-本教程主要介绍了 zsh 的安装，以及常用主题和插件的配置，其中介绍的 7 个插件，希望能给大家的日常工作提供一定的帮助。
+到此，本文想要介绍的内容已完成。我们从 zsh 与 bash 对比，了解到 zsh 的强大。接着开始实操，从安装 zsh，oh-my-zsh、主题配置，到介绍 5 个内置插件，2 个三方插件。
 
-我的博文：[我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+最后，希望本文能对你的终端操作效率提到一点点帮助，我就心满意足了。
+
+我的博文：[我的终端环境：zsh、oh-my-zsh，提示主题和 7 个效率插件](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
 
