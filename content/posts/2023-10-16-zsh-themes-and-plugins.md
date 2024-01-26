@@ -349,7 +349,7 @@ zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-11.gif)
 
-对，就是这么简单。通过这个插件，能提供实时反馈，而不是将命令执行后，才知道打错了。
+对，就是这么简单。通过这个插件提供的实时反馈，可以防止我们在命令执行后，才知道输入错了。
 
 ### 插件 7 - zsh-autosuggestions
 
@@ -357,13 +357,13 @@ zsh-autosuggestions 可以说是我最喜欢的插件了。
 
 它的作用是什么呢？
 
-它可用于提示补全建议，当输入字符，它会自动基于我们的历史命令给我们提供输入建议。还记得前面提到的，zsh 的历史命令是在不同的会话间共享。现在，再结合 zsh-autosuggestions 插件，简直不要太爽。哈哈。
+它可用于提示补全建议，当输入字符，默认情况下，它基于我们的历史命令自动提供输入建议。还记得前面提到的，zsh 的历史命令是在不同的会话间共享。现在，再结合 zsh-autosuggestions 插件，简直不要太爽。哈哈。
 
-默认情况下，输入右方向键 → 可将建议直接输入终端。
-
-如下所示：
+我们先看下效果，如下所示：
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-12.gif)
+
+默认情况下，输入右方向键 → 可将建议直接输入终端。
 
 但这个其实体验很差，对于一个双手不想离开键盘中心区域的人而言，通过右键接受提示建议，这简直不能忍啊。是否能改变这个默认快捷键呢？
 
@@ -373,6 +373,12 @@ zsh-autosuggestions 可以说是我最喜欢的插件了。
 # <Ctrl+/> 接受 auto-suggestion 的补全建议
 bindkey '^_' autosuggest-accept
 ```
+
+对！不要怀疑，CTRL+/ 的的字符表示就是 '^_'，我们可以通过执行 cat 命令查看，输入 CTRL+/，会到看如下输出。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-15-v1.gif)
+
+如果你不知道想要设置的快捷键的字符表示，可以通过这种方式找到。
 
 另外，如果希望 zsh-autosuggestion 不仅支持 history，也支持自动补全的建议提示，即原来那些要输入 tab 才能出现的内容，如子命令、命令选项、目录文件等提示，也能在提示建议的范围中。我们只需增加 completeion 这个配置项。
 
