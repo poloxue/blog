@@ -394,4 +394,4 @@ for _, cmd := range bigCmd.Commands {
 
 本文最后，分析了 Go 源码中 `go` 如何使用 flag 实现。因为是纯粹使用 flag 包裸写，读起来稍微有点难度。本文只算是一个引子，至少帮助大家在大的方向不至于迷路，里面更多的细节还需要自己挖掘。
 
-博文地址：[Go 命令行解析 flag 包之通过子命令实现看 go 命令源码]()
+博文地址：[Go 命令行解析 flag 包之通过子命令实现看 go 命令源码](https://www.poloxue.com/posts/2019-11-30-golang-flag-sub-commandline)

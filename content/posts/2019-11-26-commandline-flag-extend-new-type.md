@@ -6,6 +6,8 @@ comment: true
 tags: ["Golang"]
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-26-commandline-flag-extend-new-type-01.png)
+
 [上篇文章](https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/) 说到，除布尔类型 `Flag`，flag 支持的还有整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
 
 flag 内置支持能满足大部分的需求，但某些场景，需要自定义解析规则。一个优秀的库肯定要支持扩展的。本文将介绍如何为 flag 扩展一个新的类型支持？
