@@ -314,5 +314,5 @@ Python API 的使用就演示这两个案例。想了解它的更多能力，可
 
 本文重点介绍了 iTerm2 的安装、颜色面板的配置，还有体验其核心的能力，最有趣的部分是通过 iTerm2 的 Python API 能力，实现了一些自动化任务（自动更换背景和布局管理），提高趣味性和效率。
 
-博文地址：[终端环境：终端环境：iTerm2 的安装与体验](2023-09-25-install-iterm2-as-my-developing-environment/)
+博文地址：[终端环境：iTerm2 的安装、体验，还有自动换背景、自动管理布局](2023-09-25-install-iterm2-as-my-developing-environment/)
 
