@@ -314,7 +314,7 @@ z 就是这个烦恼的救星。
 
 ## 三方插件
 
-我们再来了解 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。这两个插件都在社区开发的时间。
+我们再来了解 2 个非 oh-my-zsh 内置插件，即 zsh-syntax-highlighting 和 zsh-autosuggestions。这两个插件由 zsh 社区开发。
 
 开始介绍前，先将这两个插件全部安装配置完成。
 
