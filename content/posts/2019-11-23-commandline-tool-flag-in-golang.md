@@ -6,6 +6,8 @@ comment: true
 tags: ["Golang"]
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-23-commandline-tool-flag-in-golang-01.png)
+
 本篇文章是 Go 标准库 flag 包的快速上手篇。
 
 ## 概述
@@ -188,7 +190,7 @@ help false
 
 在网上找到一个搞笑漫画。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-11-23-commandline-tool-flag-in-golang-01.jpeg)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-23-commandline-tool-flag-in-golang-02.jpeg)
 
 查看系统进程有两种写法， `ps aux`（BSD 风格） 和 `ps -elf`（Unix 风格）。之前，我一直很郁闷为什么有这个区别。现在算是明白了。哈哈。
 
@@ -200,3 +202,4 @@ POSIX 的命令行风格算是取长补短的集合吧。什么是 POSIX 风格�
 
 本文介绍了 Go 中 flag 包的使用，一般的场景已经足够使用了。
 
+博文地址：[Go 命令行解析 flag 包之快速上手](https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/)
