@@ -1,11 +1,15 @@
 ---
-title: "终端环境：iTerm2 的安装、体验，还有自动换背景、自动管理布局"
+title: "终端环境：iTerm2"
 date: "2023-09-28T19:23:22+08:00"
 draft: false
 comment: true
 tags: ["zsh", "iterm2"]
 description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境"
 ---
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-15.png)
+
+视频版本，没有文章详细：
 
 {{< video bb_id=619786097 yt_id=vNX_sReGZ5E >}}
 
@@ -25,7 +29,7 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 为什么要用 iTerm2 替换默认的系统终端呢？这总要一些原因吧。
 
-首先，iTerm2 相较于 Terminal 的优势就是，它更加美观，相对于默认终端，iTerm2 支持真彩，简单点说，你可以在终端显示图片，甚至是 gif 动图，无马赛克效果。
+首先，iTerm2 相较于 Terminal 的优势就是，它更加美观，相对于默认终端，iTerm2 支持真彩，而且，你可以在终端显示图片，甚至是 gif 动图。
 
 其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，快捷键的定制性更强。另外，iTerm2，支持如 python 编程控制，可实现自动换背景效果。
 
@@ -33,7 +37,7 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 > 系列阅读：
 >
-> - [终端环境：iTerm2 的安装、体验与高级技巧](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
+> - [终端环境：iTerm2](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
 > - [终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
 > - [终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
 > - [终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
@@ -157,9 +161,38 @@ curl -Ls https://raw.githubusercontent.com/dracula/iterm/master/Dracula.itermcol
 
 > 注：图片取自 [Terminal vs iTerm2: Comparing Two CLI Tools on macOS](https://techwiser.com/terminal-vs-iterm2-comparison/#:~:text=1.-,Multiple%20Panes,panes%2C%20in%20the%20same%20window)
 
-## 高级能力
+iTerm2 的搜索能力更强大，可以在搜索框下拉仔细检查下它能力。
 
-这部分主要介绍 iTerm2 提供的 Python API，利用它，带你实现一些不一样的能力。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-10.png)
+
+诸如默认的 smartcase 模式、大小写敏感和不敏感模式、正则。可能你觉得这些不是很正常吗？俗话说，没有对比就没有伤害，如果你和系统默认的终端对比下就知道它的优秀之处了。
+
+### 其他
+
+iTerm2 是真彩 256 colors，这才让我们可以在 iTerm2 将 neovim 打造成媲美 vscode 的 IDE。
+
+真彩测试，如下所示；
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-12.png)
+
+获取脚本，访问[脚本地址](https://github.com/gnachman/iTerm2/blob/master/tests/24-bit-color.sh)。
+
+IDE 效果：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-14.png)
+
+还有，我们可以直接在 iTerm2 查看图片，静态图片和 GIF 都是支持的。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-11.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-13.gif)
+
+我现在就希望有一天终端支持内置浏览器，实现我 360 度无死角不用离开终端的梦想。我知道有一些文本 browser，如 w3m、lynx、links 等等。还有 browsh 这样的利用 firefox 渲染，终端展示的图形化支持的浏览器。但体验都巨差，无法真正意义上替换浏览器。
+
+我的梦啊！
+
+## 高级能力 Python API
+
+这部分主要介绍 iTerm2 提供的 Python API，利用它，带你实现一些不一样的能力。我将演示两个案例，分别是背景图自动更换和分屏创建自动化。
 
 ### 自动更换背景图
 
@@ -314,5 +347,5 @@ Python API 的使用就演示这两个案例。想了解它的更多能力，可
 
 本文重点介绍了 iTerm2 的安装、颜色面板的配置，还有体验其核心的能力，最有趣的部分是通过 iTerm2 的 Python API 能力，实现了一些自动化任务（自动更换背景和布局管理），提高趣味性和效率。
 
-博文地址：[终端环境：iTerm2 的安装、体验，还有自动换背景、自动管理布局](2023-09-25-install-iterm2-as-my-developing-environment/)
+博文地址：[终端环境：iTerm2 的安装、体验，还有自动换背景、自动管理布局](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
 
