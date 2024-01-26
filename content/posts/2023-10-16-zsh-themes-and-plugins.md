@@ -339,7 +339,7 @@ plugins=(git web-search jsontools z vi-mode zsh-syntax-highlighting zsh-autosugg
 
 ### 插件 6 - zsh-syntax-highlighting
 
-zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，终端输入 shell 语法不正确，将会自动以红色表示。它的优点就是，当我们在终端输入，有实时得到反馈的能力。
+zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或者输入 shell 语法不正确，将会自动以红色表示。它的优点就是，当我们在终端输入，有实时得到反馈的能力。
 
 首先，我们尝试下错误命令，提示效果，如下所示：
 
