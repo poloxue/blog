@@ -308,7 +308,7 @@ iterm2.run_until_complete(main)
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-09.gif)
 
-Python API 的使用就演示者两个案例。想了解它的更多能力，可直接查看它的官方文档，访问 [iTemr2 Python API Documentation](https://iterm2.com/python-api/)。
+Python API 的使用就演示这两个案例。想了解它的更多能力，可直接查看它的官方文档，访问 [iTemr2 Python API Documentation](https://iterm2.com/python-api/)。
 
 ## 最后
 
