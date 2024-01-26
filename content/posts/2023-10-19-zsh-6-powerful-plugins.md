@@ -70,11 +70,11 @@ plugins=(... copypath copyfile copybuffer sudo ...)
 
 copypath: 无参数，直接拷贝当前路径；
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-01.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-01.gif)
 
 copypath <文件或目录>：拷贝指定文件或目录的绝对路径；
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-02.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-02.gif)
 
 相比于 `pwd` 之后再拷贝，这种方式真的是省心省力的方式。
 
@@ -93,7 +93,7 @@ Hello oh my zsh
 
 效果如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-03.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-03.gif)
 
 无需鼠标选中复制粘贴。
 
@@ -113,7 +113,7 @@ sudo 的主要作用是，当我们输入某个命令，如 vim /etc/zshrc，发
 
 演示效果如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-06.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-06.gif)
 
 ## 其他插件
 
@@ -179,7 +179,7 @@ bindkey -M vicmd 'j' history-substring-search-up
 
 保存生效配置，测试下最终的成功成果吧。效果如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-04.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-04.gif)
 
 另外，高亮样色可配置化的，可通过类似如下语法实现：
 
@@ -189,7 +189,7 @@ export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=(bg=none,fg=magenta,bold)
 
 设置 background 为 none，即无色，而 front 设置为 magenta,bold。效果如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-07.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-07.png)
 
 如上的 zsh 的颜色变量，可查看 [zsh 仓库文档](https://github.com/zsh-users/zsh/blob/master/Functions/Misc/colors) 发现更多颜色。
 
@@ -240,7 +240,7 @@ export YSU_MESSAGE_POSITION="after"
 
 最终效果演示，如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2023-10-19-zsh-6-powerful-plugins-05.gif)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-05.gif)
 
 ## 总结
 
