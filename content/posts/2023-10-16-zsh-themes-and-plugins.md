@@ -249,7 +249,7 @@ git pull      -> gl
 
 ### 插件 3 - jsontools
 
-[jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) 提供了一些用于操作 json 数据的命令，如:
+接下的这个插件，名为 [jsontools](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools/) ，即用于 json 的 tool。其实它只提供了一些操作 json 的基本命令，如下:
 
 - pp_json 实现 json 字符串格式化；
 - is_json 判断是否是 json；
@@ -258,11 +258,13 @@ git pull      -> gl
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-05.gif)
 
-还是得说明，如果你没有更好的方案，安装了 oh-my-zsh，这是个选择。不过其实这个插件呢。
+还是得说明，如果你没有更好的方案，安装了 oh-my-zsh，这是个不错的选择，因为你可能以前都没用过这类工具。
+
+不过其实这个插件呢？我也很少用。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-14.gif)
 
-我也很少用，我习惯使用一款叫做 jq 的命令，如果你了解它，就知道它多强大。
+我习惯使用一款叫做 jq 的命令，如果你了解它，就知道它多强大。后面说到高效命令的时候，会介绍到它的。
 
 ### 插件 4 - z
 
@@ -305,6 +307,12 @@ z 就是这个烦恼的救星。
 我们输入 z tmux，直接 Enter 确认，即可进入到目录。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-09.gif)
+
+z 非常强大是吧？
+
+其实，有一款更强大的命令，名为 zoxide，也提供了类似的能力，它的灵感是来源于 z。我一般用的是它，后面我会介绍。
+
+当然，这不妨碍你继续使用 oh-my-zsh 内置的工具 z，毕竟它很容易配置。
 
 ### 插件 5 - vi-mode
 
@@ -354,6 +362,8 @@ zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不
 ### 插件 7 - zsh-autosuggestions
 
 zsh-autosuggestions 可以说是我最喜欢的插件了。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-16.gif)
 
 它的作用是什么呢？
 
