@@ -9,7 +9,7 @@ iTerm2 vs 默认 Terminal 为什么要用 iTerm2 替换默认的系统终端呢�
 其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。另外，iTerm2，支持如 python 编程控制，可实现自动换背景效果。
 还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
 系列阅读：
-终端环境：iTerm2 终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 终端环境：6 个强大的 zsh 插件 终端环境：与众不同的 zsh 主题 - powerlevel10k 终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 终端环境：终端启动消息 - ASCII art 终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
+终端环境：iTerm2 终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件 终端环境：6 个强大的 zsh 插件 终端环境：与众不同的 zsh 主题 - powerlevel10k 终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 终端环境：终端启动消息 - ASCII art 终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
 我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
 非常简单！
 核心脚本介绍
