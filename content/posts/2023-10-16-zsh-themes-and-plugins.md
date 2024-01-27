@@ -7,9 +7,13 @@ tags: ["zsh"]
 description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-17.png)
+
+视频版本，没有文章详细：
+
 {{< video bb_id=619786097 yt_id=1zJcH4hZW4o >}}
 
-前文中，对iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
+前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 
 本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
 
@@ -17,23 +21,31 @@ description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 �
 
 开始前，先问为什么，知其然，要知其所以然，是个好习惯。
 
-所以，为什么要用 zsh呢？
+所以，为什么要用 zsh 呢？
 
 大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？
 
 ### 改进的自动补全能力
 
-zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。对于命令参数，zsh甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
+zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-18.gif)
+
+对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
 
 ### 更好的脚本和插件支持
 
-zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
+zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。
 
-本文将会介绍 oh-my-zsh 的安装过程。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-21.gif)
+
+这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
 
 ### 高级的主题和提示符定制
 
 zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-19.png)
 
 我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
 
@@ -62,7 +74,14 @@ zsh 的文件匹配和通配符功能确实比 Bash 要强大得多，除了常�
 
 zsh 的可配置性更强，zsh 提供了比 bash 更多的选项和特性，我们都可通过配置文件调整。
 
-由于，本文还是注重实践，比较的部分就先写这么多。
+如果你想深入学习 zsh，推荐 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins) 这个仓库。或者推荐看一个关于 zsh 的深度系列文章：
+
+- [Configuring Zsh Without Dependencies](https://thevaluable.dev/zsh-install-configure-mouseless/)
+- [A Guide to Zsh Expansion with Examples](https://thevaluable.dev/zsh-expansion-guide-example/)
+- [A Guide to the Zsh Completion with Examples](https://thevaluable.dev/zsh-completion-guide-examples/)
+- [A Guide to the Zsh Line Editor with Examples](https://thevaluable.dev/zsh-line-editor-configuration-mouseless/)
+
+好吧，前导部分写的有点长。本文还是注重实践，比较的部分就先写这么多。
 
 > 系列阅读：
 >
@@ -81,11 +100,7 @@ zsh 的可配置性更强，zsh 提供了比 bash 更多的选项和特性，我
 
 ## 安装
 
-
-当然如果是更早版本，或其他 Linux 发行版本，则这个步骤无法跳过。
-
 对于不同系统，zsh 的安装命令，如下所示： 
-
 
 Debian
 ```bash
@@ -398,11 +413,20 @@ bindkey '^_' autosuggest-accept
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ```
 
+现在，如果输入时，还没有历史命令可作为建议，会提供类似于目录、参数选项等建议。
+
+类似于如下的效果：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-22.gif)
+
+这是一篇含 GIF 量很高的文章啊。
+
 ## 总结
 
-到此，本文想要介绍的内容已完成。我们从 zsh 与 bash 对比，了解到 zsh 的强大。接着开始实操，从安装 zsh，oh-my-zsh、主题配置，到介绍 5 个内置插件，2 个三方插件。
+本文想要介绍的内容已完成。我们从 zsh 与 bash 对比，了解到 zsh 的强大。接着开始实操，从安装 zsh，oh-my-zsh、主题配置，到介绍 5 个内置插件，2 个三方插件。
 
 最后，希望本文能对你的终端操作效率提到一点点帮助，我就心满意足了。
 
 我的博文：[我的终端环境：zsh、oh-my-zsh，提示主题和 7 个效率插件](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+
 
