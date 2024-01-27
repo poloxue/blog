@@ -6,7 +6,7 @@ draft: false
 tags: ["golang"]
 ---
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2021-07-17-powermock-autotest-your-code-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2021-07/2021-07-17-powermock-autotest-your-code-03.png)
 
 本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
 
@@ -20,7 +20,7 @@ tags: ["golang"]
 
 一个常见拉新活动的业务图为例，如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2021-07-17-powermock-autotest-your-code-01.webp)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2021-07/2021-07-17-powermock-autotest-your-code-01.webp)
 
 用户场景是，假设一名用户通过我的邀请码完成平台注册，并且完成首次购物，他才能算作我的成功邀请用户，我才能得到我想要的奖励。
 
@@ -44,7 +44,7 @@ tags: ["golang"]
 
 为便于针对 powermock 二次开发，通过阅读源码，我整理出 powermock 的主体架构，如下所示：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2021-07-17-powermock-autotest-your-code-02.webp)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2021-07/2021-07-17-powermock-autotest-your-code-02.webp)
 
 从上图可以看出， powermock 本身是一个 server，提供了 HTTP 和 gRPC 两种接入方式，即通过它可以 mock HTTP 和 gRPC 两种服务。
 
