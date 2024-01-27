@@ -6,6 +6,8 @@ draft: false
 tags: ["golang"]
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2021-07-17-powermock-autotest-your-code-03.png)
+
 本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
 
 ## 背景
@@ -484,4 +486,6 @@ $ grpcurl -d '{"id": 100}' -plaintext -protoset user.protoset 127.0.0.1:30002 ex
 - [Mock Server 实践](https://tech.meituan.com/2015/10/19/mock-server-in-action.html)
 - [阿里Mock平台使用方法揭秘！](https://developer.aliyun.com/article/236198)
 - [powermock 代码仓库](https://github.com/bilibili-base/powermock)
+
+博客地址：[powermock: 一个支持 gRPC 的 Mock Server](https://www.poloxue.com/posts/2021-07-17-powermock-autotest-your-code/)
 
