@@ -39,7 +39,7 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 > 系列阅读：
 >
 > - [终端环境：iTerm2](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
-> - [终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
+> - [终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
 > - [终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
 > - [终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
 > - [终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
