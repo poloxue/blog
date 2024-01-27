@@ -15,9 +15,9 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 
-本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常开发环境。
+本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
 
-本文是搭建我的开发环境系列中的第一篇，将介绍第一个必不可可少的工具终端 - iTerm2，Mac 系统上的终端神器。
+本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
 
 ## 前言介绍
 
@@ -31,7 +31,10 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 首先，iTerm2 相较于 Terminal 的优势就是，它更加美观，相对于默认终端，iTerm2 支持真彩，而且，你可以在终端显示图片，甚至是 gif 动图。
 
-其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。另外，iTerm2，支持如 python 编程控制，可实现自动换背景效果。
+其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。
+
+iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
+
 
 
 还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
@@ -56,7 +59,7 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 ## 下载安装
 
-安装可通过 [iTerm2 官网](https://iterm2.com/) 下载或者 MacOS 中 `brew` 安装，我将以 brew 安装为例。
+首先是安装，可通过 [iTerm2 官网](https://iterm2.com/) 下载或者 MacOS 中 `brew` 安装，我将以 brew 安装为例。
 
 如果还未安装 brew，安装命令：
 
@@ -215,6 +218,9 @@ import sys
 async def change_background(session, image_path):
     # 获取当前会话的配置文件
     profile = await session.async_get_profile()
+
+    # 设置透明度，值在0（完全透明）到1（完全不透明）之间
+    await profile.async_set_transparency(0.2)  # 设置为50%透明度
     # 设置背景图像位置
     await profile.async_set_background_image_location(image_path)
 
@@ -256,7 +262,7 @@ async def main(connection):
 iterm2.run_until_complete(main)
 ```
 
-代码中提供了注释说明。
+代码中提供了注释说明，不熟悉 Python 直接考虑即可，命令的接收参数是存放图片的目录。
 
 定时能力，我们是通过 `sleep(3600)` 实现每小时随机更换背景图片。特别说明，不要用 crontab，因为存在环境上下文问题，crontab 无法知道 iTerm2 的存在。
 
@@ -266,9 +272,15 @@ iterm2.run_until_complete(main)
 python random-bg.py your-images-directory &
 ```
 
+我假设将它设置为 1 秒换一次图片，效果如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-17.gif)
+
 ### 布局自动化
 
-如果，你用 tmux 的话，可能知道有布局管理工具是可帮你将布局自动创建的。其实，裸用 iTerm2 的情况下，同样可实现，因为 iTerm2 的 Python API 提供了分屏创建接口。
+如果你用 tmux 的话，可能知道有些布局管理工具，如 tmuxifier 和 tmuxinator， 可自动创建布局。其实，只用 iTerm2，同样可实现这样的功能。
+
+因为 iTerm2 的 Python API 提供了创建分屏的接口。
 
 示例代码如下所示：
 
@@ -278,19 +290,24 @@ import iterm2
 async def main(connection):
     app = await iterm2.async_get_app(connection)
     window = app.current_terminal_window
-    if window is not None:
-        session = window.current_tab.current_session
-        # 垂直分屏
-        await session.async_split_pane(vertical=True)
-        # 如果你想要水平分屏，将vertical参数设置为False
-        # await session.async_split_pane(vertical=False)
-    else:
+    if window is None:
         print("No current window")
+        return
+
+    session = window.current_tab.current_session
+    # 垂直分屏
+    await session.async_split_pane(vertical=True)
+    # 如果你想要水平分屏，将vertical参数设置为False
+    # await session.async_split_pane(vertical=False)
 
 iterm2.run_until_complete(main)
 ```
 
 重点就是那句 `await session.async_split_pane(vertical=True)`，执行这个角度会自动进行左右分屏，即垂直分屏。
+
+演示效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-16.gif)
 
 假设，你想自定义一些布局的话，如前面提到这个效果，如下所示：
 
