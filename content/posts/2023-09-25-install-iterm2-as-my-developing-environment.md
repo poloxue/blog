@@ -117,6 +117,10 @@ curl -Ls https://raw.githubusercontent.com/dracula/iterm/master/Dracula.itermcol
 
 如果还没有满意的，可以从 [Iterm2-color-schemes](https://iterm2colorschemes.com/) 查找更多配色方案
 
+主题切换效果，如下所示：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-18.gif)
+
 ## 如何使用
 
 打开 'iTerm2'，快速使用体验一下吧。
