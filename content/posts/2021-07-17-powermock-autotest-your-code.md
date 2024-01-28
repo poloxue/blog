@@ -8,6 +8,8 @@ tags: ["golang"]
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2021-07/2021-07-17-powermock-autotest-your-code-03.png)
 
+> 写于 2021 年 7 月份，当时公司在推自动化测试方案，集成流水线的时候，研究了这个方案。
+
 本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
 
 ## 背景
