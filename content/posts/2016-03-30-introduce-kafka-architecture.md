@@ -113,4 +113,5 @@ Kafka可用于监控运行中的应用系统。如收集分布式应用的数据
 
 本文总结了大数据中常用的消息队列服务 Kafka。本篇主要从架构角度介绍。个人感觉，介绍系统架构比操作实战更加困难，文章如有错误，请帮忙请指正。
 
+博文地址：[快速了解 Kafka 基础架构](https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/)
 
