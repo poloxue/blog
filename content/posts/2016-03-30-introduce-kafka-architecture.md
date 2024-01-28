@@ -6,6 +6,8 @@ comment: true
 tags: ["mq", "kafka"]
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-06.png)
+
 今天来聊下大数据场景下比较流行的消息队列组件 kafka。本篇文章将主要从理论角度来介绍。
 
 kafka 是一款开源、追求高吞吐、实时性，可持久化的流式消息队列，可同时处理在线（消息）与离线应用(业务数据和日志)。在如今火热的大数据时代，得到了广泛的应用。
@@ -14,7 +16,7 @@ kafka 是一款开源、追求高吞吐、实时性，可持久化的流式消�
 
 kafka 的消息以 Topic 进行归类，支持分布式 distribution、可分区partition 和可复制 replicated 的特性。下面为本人梳理的一张 Kafka 系统架构图。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2016-03-30-introduce-kafka-architecture-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-01-v1.png)
 
 Kafka的架构相较于其他消息系统而言，比较简单。其整体流程简述如下
 
@@ -34,7 +36,7 @@ Zookeeper负责Kafka服务相关metadata的存储，如broker，topic和consumer
 
 首先，Kafka中的消息以Topic分类管理。在Kafka中，一个topic可被多个Consumer订阅。通过集群管理，每个Topic可由多个Partition组成。如下图
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2016-03-30-introduce-kafka-architecture-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-02.png)
 
 从上图可以看出，Topic中数据是顺序不可变序列，采用log追加方式写入，因而kafka中无因随机写入导致性能低下的问题。
 
@@ -42,7 +44,7 @@ Topic的数据可存储在多个partition中，即可存放在不同的服务器
 
 Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定消息保存时长。Topic中每个partition中的消息都有一个唯一的标识，也称为offset。因数据不会因消费而丢失，所以只要consumer指定offset，一个消息可被不同的consumer多次消费。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2016-03-30-introduce-kafka-architecture-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-03.png)
 
 基于此，消息获取即可采用顺序访问，我们也可以指定任意offset随机访问，且不会对其他consumer产生影响。
 
@@ -61,7 +63,7 @@ Replication 主要用于容错，对一个 Partition 复制多份，存储在不
 为了更好了解 Partition 与 Replication 关系。举个例子，假设现有一个 Topic 名为 spark_topic，其 Partition 分区数量为 3，Replication 备份因子为 2。则效果如下图
 
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2016-03-30-introduce-kafka-architecture-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-04.png)
 
 spark_topic存在spark_topic-1，spark_topic-2，spark_topic-3共三个分区。而每个分区均有两处备份，如spark_topic-1，其同时存在于kafka节点broker0与broker1上，其中broker01上的分区角色为Leader。
 
@@ -77,7 +79,7 @@ Kafka 的 Consumer 提供分组功能，每个 Consumer 都属于一个分组。
 
 发布订阅模式，而不同组的多个Consumer订阅同一个Topic，一条消息会广播给在不同分组的所有Consumer。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2016-03-30-introduce-kafka-architecture-05.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-05.png)
 
 请注意，在 Kafka 中，同一 Consumer 分组中，一个 Consumer 只能订阅一个 Topic 中的 Partition，因而在一个 Consumer 分组中，同时订阅同一个 Topic 的 Consumer 的个数不能超过 Partition 分区数。可参看上图所示。
 
