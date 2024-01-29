@@ -165,15 +165,10 @@ curl -Ls https://raw.githubusercontent.com/dracula/iterm/master/Dracula.itermcol
 
 相对于 通过 "Command+f" 开启搜索框：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-05.jpeg)
-
-> 注：图片取自 [Terminal vs iTerm2: Comparing Two CLI Tools on macOS](https://techwiser.com/terminal-vs-iterm2-comparison/#:~:text=1.-,Multiple%20Panes,panes%2C%20in%20the%20same%20window)
-
-iTerm2 的搜索能力更强大，可以在搜索框下拉仔细检查下它能力。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-10.png)
 
-诸如默认的 smartcase 模式、大小写敏感和不敏感模式、正则。可能你觉得这些不是很正常吗？俗话说，没有对比就没有伤害，如果你和系统默认的终端对比下就知道它的优秀之处了。
+iTerm2 的搜索能力更强大，可以在搜索框下拉仔细检查下它能力。诸如默认的 smartcase 模式、大小写敏感和不敏感模式、正则。可能你觉得这些不是很正常吗？俗话说，没有对比就没有伤害，如果你和系统默认的终端对比下就知道它的优秀之处了。
 
 ### 其他
 
