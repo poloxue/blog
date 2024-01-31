@@ -59,6 +59,8 @@ fmt.Println(string(jsonData))
 
 结构体 tag 在 Go 语言中常见用途，我平时最常见有如下这些。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-26-struct-tag-uses-in-golang-05.png)
+
 ### JSON/XML 序列反序列化
 
 如前面的介绍的案例中，通过 `encoding/json` 或者其他的库如 `encoding/xml` 库，tag 可以控制如何将结构体字段转换为 JSON 或 XML，或者如何从它们转换回来。
