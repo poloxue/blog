@@ -8,6 +8,8 @@ description: "本文将从逐步介绍几种在 Go 中将 int 转换为 string �
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-04.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第一篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 Go 语言 中，将整数（int）转换为字符串（string）是一项常见的操作。
 
 本文将从逐步介绍几种在 Go 中将 int 转换为 string 的常见方法，并重点剖析这几种方法在性能上的特点。另外，还会重点介绍 `FormatInt` 高效的算法实现。

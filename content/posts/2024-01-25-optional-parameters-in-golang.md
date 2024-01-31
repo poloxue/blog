@@ -8,6 +8,8 @@ description: "在编程时，常会遇到这样的情况：一个函数偶尔需
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-25-optional-parameters-in-golang-01.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第八篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 我们编程时，常会遇到：一个函数在大多数情况下只需要几个参数，但偶尔也需要一些不固定的选项参数。在一些语言中，通过重载或者可选参数来解决这个问题。但 Go 中，情况有所不同，因为 Go 不支持函数重载，也没有内置可选参数功能。如果就想要这样的能力，如何在 Go 中实现？
 
 本文将基于这个主题展开，一步步介绍 GO 中实现可选参数的几种方法。

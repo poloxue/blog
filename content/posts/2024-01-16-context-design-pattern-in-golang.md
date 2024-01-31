@@ -8,6 +8,8 @@ description: "在 Go 语言中，`context` 包是并发编程的核心，用于�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-16-context-design-pattern-in-golang-01.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第五篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 在 Go 语言中，`context` 包是并发编程的核心，用于传递取消信号和请求范围的值。但其传值机制，特别是为什么不通过指针传递，而是通过接口。虽然是简单问题，但值得引发我的一些思考。
 
 考虑以下典型的代码片段：

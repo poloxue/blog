@@ -8,6 +8,8 @@ description: "但在 Go 语言中，如何快速获取一个变量的类型？�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-22-get-the-type-of-object-in-golang-01.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第九篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 在 Python 中，可以使用 `type(x)` 获取变量 `x` 的类型。在 JavaScript 中，`typeof x` 会返回变量 `x` 的类型。这些操作都很直观。
 
 那么，在 Go 语言中，如何快速获取一个变量的类型？

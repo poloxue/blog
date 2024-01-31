@@ -8,6 +8,8 @@ description: "Fasthttp 是一个高性能的 Golang HTTP 框架，它在设计�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-18-why-fasthttp-opts-for-slice-over-map-01.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第六篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 Fasthttp 是一个高性能的 Golang HTTP 框架，它在设计上做了许多优化以提高性能。其中一个显著的设计选择是使用 slice 而非 map 来存储数据，尤其是在处理 HTTP headers 时。
 
 为什么呢？

@@ -8,6 +8,8 @@ description: "在 Go 语言中，切片拼接是一项常见的操作，但如�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-17-slices-concatenation-in-golang-01.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第三篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 在 Go 语言中，切片拼接是一项常见的操作，但如果处理不当，可能会导致性能问题或意外的副作用。
 
 本文将详细介绍几种高效的切片拼接方法，包括它们的优缺点以及适用场景。

@@ -8,6 +8,8 @@ description: "这篇文章将探讨的是 Go 中如何高效使用 timer，特�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-timer-potential-leaking-in-golang-01.png)
 
+> 嗨，大家好！本文是系列文章 Go 小技巧第七篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+
 这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。
 
 ## 引出问题
