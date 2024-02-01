@@ -286,7 +286,7 @@ func main() {
 }
 ```
 
-核心就是那句 `(*Article)(nil)` 得到一个类型为 `*Article` 的 `nil`。也算是类型内存空间的占用。
+核心就是那句 `(*Article)(nil)` 得到一个类型为 `*Article` 的 `nil`，避免了内存空间的占用。
 
 ## 性能压测
 
