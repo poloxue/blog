@@ -270,7 +270,7 @@ if field.Type.Kind() == reflect.Pointer {
 
 即 `Elem()` 继续深入它的内部。
 
-当然，如果你希望得到结构体类型相关信息。`reflect` 甚至可以在结构体没有实例化打印其类型的详情。
+当然，如果你希望得到结构体类型相关信息，`reflect` 甚至可以在结构体没有实例化打印其类型的详情。
 
 ```go
 func printStructType(t reflect.Type) {
