@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 01 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中如何打印结构体？代码调试效率提升</title><link>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</link><pubDate>Thu, 01 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</guid><description>不知道大家是否遇到打印结构体的需求？
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 01 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中如何打印结构体？代码调试效率提升</title><link>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</link><pubDate>Thu, 01 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第十一篇，系列文章查看：Go 语言小技巧。
+不知道大家是否遇到打印结构体的需求？
 结构体的特点是，它有点像是一个盒子，但不用于 slice 与 map，它里面可以放很多不同类型的东西，如数字、字符串、slice、map 或者其他结构体。
 但，如果我们想看看盒子中内容，该怎么办呢？这时我们就要能打印结构体了。
 打印结构体的能力其实挺重要的，它能帮我们检查理解代码，提高调试效率，确保代码运行正确。
@@ -8,8 +9,7 @@
 代码如下所示：
 1 2 3 4 5 6 7 8 9 10 11 12 type Author struct { Name string Age int8 Sex string } type Article struct { ID int64 Title string Author *Author Content string } 我们定义了一个 Article 结构体用于表示一篇文章，内部包含内部实现了 ID、Title 和 Content 基础属性，还有一个字段是 Author 结构体指针，用于保存作者信息。
 我将先介绍四种基本的方式。
-使用 fmt.Printf 最简单的方法是使用 fmt.Printf 函数，如果希望显示一些详情，可和 %+v 格式化符号配合。这样可以直接打印出结构体的字段名和值。
-我们可以这样打印它，代码如下：</description></item><item><title>Go 中 struct tag 如何用？基于它实现字段级别的访问控制</title><link>https://www.poloxue.com/posts/2024-01-29-struct-tag-uses-in-golang/</link><pubDate>Sun, 28 Jan 2024 18:56:59 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-29-struct-tag-uses-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第九篇，系列文章查看：Go 语言小技巧。
+使用 fmt.Printf 最简单的方法是使用 fmt.Printf 函数，如果希望显示一些详情，可和 %+v 格式化符号配合。这样可以直接打印出结构体的字段名和值。</description></item><item><title>Go 中 struct tag 如何用？基于它实现字段级别的访问控制</title><link>https://www.poloxue.com/posts/2024-01-29-struct-tag-uses-in-golang/</link><pubDate>Sun, 28 Jan 2024 18:56:59 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-29-struct-tag-uses-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第十篇，系列文章查看：Go 语言小技巧。
 在 Go 中，结构体主要是用于定义复杂数据类型。而 struct tag 则是附加在 struct 字段后的字符串，提供了一种方式来存储关于字段的元信息。然后，tag 在程序运行时不会直接影响程序逻辑。
 本文将会基于这个主题展开，讨论 Go 中的结构体 tag 究竟是什么？我们该如何利用它？另外，文末还提供了一个实际案例，帮助我们进一步提升对 struct tag 的理解。
 struct tag 是什么？ 如下是一个定义了 tag 的结构体 Person 类型。
