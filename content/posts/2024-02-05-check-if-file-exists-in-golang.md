@@ -153,4 +153,5 @@ if err != nil {
 
 最后，还是希望本文能帮助各位在 GO 语言的学习道路上起到一点微末作用。
 
+博客地址：[Go 中如何检查文件是否存在？可能产生竞态条件？](https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/)
 
