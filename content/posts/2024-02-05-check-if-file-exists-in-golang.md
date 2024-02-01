@@ -6,28 +6,69 @@ comment: true
 description: "Go 语言如何检查文件是否存在呢？"
 ---
 
-Go 语言如何检查文件是否存在呢？
+Go 中如何检查文件是否存在呢？
 
 如果你用的是 Python，可通过 `os.path.exists` 这样的标准库函数实现。遗憾的是，Go 标准库没有提供这样直接的函数，但好在，没有直接的，却有不那么直接的方法。
 
 本文将基于这个话题展开，介绍 Go 中如何检查文件是否存在。
 
-另外，我们在最后还会了解到一个小注意点，即在判断文件是否存在时，如避免过程中潜在的竞态条件。
+另外，本文最后还会介绍一个小注意点，即在判断文件是否存在时，如何避免中潜在的竞态条件。
 
 ## `os.Stat` 检查文件状态
 
-虽说 Go 标准库没有提供类似于 `os.Exists` 这样的直接检查文件是否存在的函数。这种方法的基本思路是尝试获取文件的状态，然后检查返回的错误是否指示文件不存在。
+Go 标准库虽然没有提供类似于 `os.Exist` 这样直接的函数检查文件是否存在，但它提供另外一个函数 `os.Stat`。
 
-示例代码如下：
+`os.Stat` 函数的作用是获取文件状态信息，我们通过检查它返回的错误即可知晓文件是否存在。
+
+示例代码，如下所示：
 
 ```go
-_, err := os.Stat("/path/to/file")
-if os.IsNotExist(err) {
-    // 文件不存在
+func main() {
+  _, err := os.Stat("/path/to/file")
+  if err != nil {
+    if os.IsNotExist(err) {
+      // 文件不存在
+    } else {
+      // 其他错误
+    }
+  }
+  // 文件存在
 }
 ```
 
-我们使用 os.Stat 获取文件状态。如果文件不存在，它会返回一个 error。通过检查 os.IsNotExist 函数检查，确定文件是否存在。
+第一个返回值表示文件信息，第二个返回值表示错误 `error`。
+
+如果文件不存在，可通过检查 `os.IsNotExist` 检查 `error` 是否是 `os.ErrNotExist`，确定文件是否存在。
+
+## 与 C 对比
+
+上面的示例中，我们使用 `os.Stat` 函数获取文件的状态，通过 `errors.Is` 判断返回错误，如果是 `os.ErrNotExist`，则文件不存在。
+
+不得不说，这其实更底层更标准的做法。
+
+类似于 Python 等高级语言，提供 `os.path.exist` 主要是为了方便编程，提高效率。
+
+如果使用 Unix C 实现同样的功能，示例代码如下：
+
+```clang
+#include <errno.h>
+#include <stdio.h>
+#include <sys/stat.h>
+
+int main() {
+  struct stat buffer;
+  int exist = stat("/path/to/file", &buffer);
+  if (exist != 0) {
+    if (errno == ENOENT) { /* 文件不存在*/ } 
+    else { /* 其他错误 */ }
+    return 0;
+  }
+  // 文件存在
+  return 0;
+}
+```
+
+是不是和我们前面的代码基本是一个模子的代码。
 
 ## Go1.13 后推荐使用 `errors.Is`
 
@@ -41,7 +82,6 @@ if _, err := os.Stat("/path/to/whatever"); errors.Is(err, os.ErrNotExist) {
 }
 ```
 
-在这个示例中，我们使用 `os.Stat` 函数来获取文件的状态，然后使用 `errors.Is` 函数来判断返回的错误是否是 `os.ErrNotExist`。
 
 ## 直接使用 Open 避免竞态条件
 

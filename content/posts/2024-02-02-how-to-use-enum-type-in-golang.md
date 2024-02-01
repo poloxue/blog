@@ -174,7 +174,7 @@ func (h HttpMethod) String() string {
 
 我们实现从 string 构造 enum 方法，和从 enum 类型转为 string 的 String 方法。
 
-这里存在的一个问题，如果希望支持友好的 JSON 序列化反序列化的话，则需要为 `HttpMethod` 新增方法，实现 json.Marshaler和json.Unmarshaler接口，自定义这个转化过程。
+这里存在的一个问题，如果希望支持友好的 JSON 序列化反序列化的话，即枚举值使用字符串形式表示，则需要为 `HttpMethod` 新增方法，实现 json.Marshaler 和 json.Unmarshaler 接口，自定义转化过程。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-02-how-to-use-enums-type-in-golang-05.png)
 
