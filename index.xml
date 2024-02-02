@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 01 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中如何打印结构体？代码调试效率提升</title><link>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</link><pubDate>Thu, 01 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第十一篇，系列文章查看：Go 语言小技巧。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 02 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言中 enum 实现方式有哪些？一定要绝对类型安全吗？</title><link>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</link><pubDate>Fri, 02 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十二篇，系列文章查看：Go 语言技巧。
+枚举，即 enum，可用于表示一组范围固定的值，它能助我们写出清晰、安全的代码。
+以编写游戏程序为一个简单案例：游戏中的角色有如战士、法师或者弓箭手，这种范围固定的值，就可以用枚举来表示。
+但 Go 中，枚举的表现方式不像在某些其他语言中那样直接。我们要想在 Go 中用好枚举，就要了解 Go 中枚举的不同表示形式和使用注意点。
+本文将以 Go 语言中如何使用枚举为主题，从最简单到复杂逐一介绍常见的方案。
+使用 iota 和常量 在 Go 中，使用 iota 和常量是最常见的表示枚举的方式。
+什么是 iota？
+iota 是 Go 中是一个非常特别的 Keyword，它可以帮助我们按一定规则创建一系列相关的常量，而无需手动为每个变量单独赋值。这一点与枚举的用途天然契合。
+不了解上面文字的含义？
+让我们来看一个例子，基于 iota 快速创建特定规则的常量。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 11 type Weekday int const ( Sunday Weekday = iota // 0 Monday // 1 Tuesday // 2 Wednesday // 3 Thursday // 4 Friday // 5 Saturday // 6 ) 例子中，Weekday 类型有 7 个值，分别代表一周的七天。内部值从 0 开始，iota 自动增加赋值给每个常量，从 Sunday 到 Saturday 分别赋值 0-7。</description></item><item><title>Go 中如何打印结构体？代码调试效率提升</title><link>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</link><pubDate>Thu, 01 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十一篇，系列文章查看：Go 语言技巧。
 不知道大家是否遇到打印结构体的需求？
 结构体的特点是，它有点像是一个盒子，但不用于 slice 与 map，它里面可以放很多不同类型的东西，如数字、字符串、slice、map 或者其他结构体。
 但，如果我们想看看盒子中内容，该怎么办呢？这时我们就要能打印结构体了。
