@@ -8,7 +8,7 @@ description: "不知道大家是否遇到打印结构体的需求呢？结构体
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-01-print-struct-in-golang-01.png)
 
-> 嗨，大家好！本文是系列文章 Go 小技巧第十一篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+> 嗨，大家好！本文是系列文章 Go 技巧第十一篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 
 不知道大家是否遇到打印结构体的需求？
 

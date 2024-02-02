@@ -1,6 +1,6 @@
 ---
 title: "Go 中如何实现三元运算符？"
-date: 2024-01-28T22:48:33+08:00
+date: 2024-02-02T12:48:33+08:00
 draft: true
 comment: true
 description: ""
@@ -8,93 +8,187 @@ description: ""
 
 今天来聊聊在Go语言中如何实现类似三元运算符的功能。
 
+
 首先，什么是三元运算符？
 
-在一些其他的编程语言中，比如C语言，三元运算符是一种可以在一行代码内根据条件选择不同结果的简便方法。
+在其他一些编程语言中，如 C 语言，三元运算符是一种可以用一行代码实现条件选择的简便方法。
 
-但 Go 语言中，我们没有这个运算符。不过别担心，我会告诉你我们怎么用其他方法来达到同样的目的。
+```c
+x = a ? b : c; // a = true 则 x = b，否则 x = c
+```
+
+大道至简的 Go 中肯定是没有这个运算符。
+
+今天这篇文章将会就此展开，介绍 Go 中三元运算符的一些实践。
+
+让我们正式开始吧。
 
 ## 使用 `if-else` 语句
 
-在Go语言中，最常用的方法是`if-else`语句。这就像是在说：“如果这个条件是真的，我就做这件事；否则，我就做另一件事。”虽然这比三元运算符要长一些，但它更容易理解，也是Go语言推荐的方式。
+三元运算符，本质上其实就是 `if-else` 的简化版本。自然，通过 `if-else` 实现就是最常用的做法。
 
-比如，我们有一个叫`val`的变量，我们想根据它的值是正还是负来赋值给`index`变量。我们可以这样写：
+虽然这比三元运算符要长一些，但它更容易理解，也是 Go 所推荐的方式。
 
 ```go
-var index int
-if val > 0 {
-    index = val
+var x int
+if condition {
+    x = a
 } else {
-    index = -val
+    x = b
 }
 ```
 
-## 使用立即执行的匿名函数
+非常简单且易理解。毕竟，这就应该是本来的样子。
 
-如果你需要在一行代码内完成这个操作，我们可以使用一个特殊的方法，叫做立即执行的匿名函数。这就像是我们创建了一个没有名字的小函数，并且马上使用它。这样做可以确保只有一个条件被执行。
+## 一行表达式
 
-看看这个例子：
+三元运算符之所以被人喜爱，我觉得重要的一个原因就是：它足够简洁。我们只要一行代码就实现条件判断。
+
+在 Go 中，如果想在一行代码实现，可能吗？
+
+如果了解 rust，你可能看过如下代码。
+
+```rust
+let x = {
+  if condition {
+    a
+  } else {
+    b
+  }
+};
+```
+
+我们创建了一个代码块，它的最后一个表达式会作为 `x` 的值。这是 rust 所支持的语法。
+
+如果你了解 Python，你可能看到这样的代码。
+
+```python
+x = a if condition else b
+```
+
+是不是更加简洁。
+
+Go 不支持这样的语法，我们要实现类似效果，就只能通过立刻执行的匿名函数实现。
+
+代码如下：
 
 ```go
-index := func() int {
-    if val > 0 {
-        return val
-    }
-    return -val
+x := func() int {
+  if condition {
+     return a
+  }
+  return b
 }()
 ```
 
-### If 函数
+算了，好丑，太麻烦了！
 
-我们还可以自己写一个叫`If`的函数来模拟三元运算符。这个函数接收一个布尔值和两个可能的返回值。根据布尔值的真假，它返回其中一个值。
+看起来还是 `if-else` 好用。但我还是不甘心，还是希望实现这样的效果，怎么办呢？
+
+## If 函数
+
+前面的示例中，通过匿名函数实现类似于三元运算符的功能，那不是说，我们实现一个函数就行。
+
+我们写一个 `If` 的函数来模拟三元运算符。这个函数接收一个布尔值和两个可能的返回值。根据布尔值的真假，它返回其中一个值。
 
 就像这样：
 
 ```go
-func If(bool_value bool, value1, value2 int) int {
-    if bool_value {
-        return value1
+func If(condition bool, a, b int) int {
+    if condition {
+        return a
     }
-    return value2
+    return b
 }
 
-index := If(val > 0, val, -val)
+x := If(3 > 2, x1, x2)
 ```
 
-## 奇淫巧技：基于 `map` 
+如果的代码，就清晰了许多。
 
-有些人提出了使用`map`的方法来模拟三元运算符。这是一种很有创意的方法，但可能会让代码变得难以理解，而且可能影响程序的运行效率。
+但这种方法还是有个缺点，就是针对不同的类型都要实现一个 `If` 函数，如 `IfInt()`、`IfString()`、`IfFloat()` 等等。
 
-## Go 1.18 泛型支持
+不过从 Go 1.18 开始，Go 成功引入泛型，我们可以通过泛型扩展一个更通用的 If 函数，不仅仅适用于整数，还可以用于其他类型。
 
-在Go 1.18版本中，引入了泛型的支持，这意味着我们可以创建一个可以处理不同类型的If函数。使用泛型，我们可以写一个更通用的If函数，它不仅仅适用于整数，还可以用于其他类型，比如字符串、浮点数等。
-
-让我们来看一个使用泛型的If函数的例子：
+示例代码如下：
 
 ```go
-package main
-
-import "fmt"
-
-func If[T any](condition bool, trueVal, falseVal T) T {
+func If[T any](condition bool, a, b T) T {
     if condition {
-        return trueVal
+        return a
     }
-    return falseVal
+    return b
 }
 
 func main() {
-    val := 10
-    result := If(val > 0, "positive", "negative")
+    x := 10
+    result := If(x > 0, "positive", "negative")
     fmt.Println(result) // 输出 "positive"
 }
 ```
 
+## 奇淫巧技：基于 `map` 
+
+在网上，我还发现了一个奇淫巧技：基于 Map 模拟三元运算法。
+
+代码如下：
+
+```go
+x = map[string]int{
+  true: b,
+  false: c,
+}[a]
+```
+
+基于 `true` 和 `false` 实现条件判断。
+
+这方法看起来挺有创意，让其实会增加代码的理解成本，降低可读性。再者，这种方法的效率是没有 `if-else` 的效率高的。
+
 ## 为什么 Go 没有三元运算符
 
-你可能会好奇，为什么Go语言没有三元运算符呢？原因是Go的设计者们认为三元运算符有时会让代码变得复杂和难以理解。Go语言鼓励写出更清晰、更直接的代码。
+你是否好奇，为什么 Go 语言没有三元运算符？
+
+官方认为三元运算符有时会让代码变得复杂和难以理解。Go 鼓励写出更清晰直接的代码。
+
+一个 C 语言版本的复杂三元运算符示例代码：
+
+```c
+#include <stdio.h>
+
+int main() {
+    int x = 5, y = 10, z = 15;
+    char *result;
+
+    result = x > y ? "X" : 
+             y > z ? "Y" : 
+             z > x ? "Z" : 
+             x == y ? "X equals Y" : 
+             y == z ? "Y equals Z" : 
+             x == z ? "X equals Z" : 
+             "All equal";
+
+    printf("%s\n", result);
+    return 0;
+}
+```
+
+看这个代码，头晕没？
+
+我们看看摘自官方文档的原文：
+
+> The reason ?: is absent from Go is that the language's designers had seen the operation used too often to create impenetrably complex expressions. The if-else form, although longer, is unquestionably clearer. A language needs only one conditional control flow construct.
+
+翻译内容：
+
+> Go 语言中没有 ?: 运算符的原因是，该语言的设计者们观察到这种运算符过于频繁地被用来创建难以理解的复杂表达式。尽管 if-else 形式更长，但它无疑更清晰。一种语言只需要一种条件控制流构造。
+
+从 rust 和 python 的决策上也可看出，这个观点得到了很多人的认同。但与 Go 不同的是，rust 和 python 虽然不支持传统的三元运算符，它们都提供了其他简洁的写法。
+
+我不禁思考：Go 强调大道至简。但 rust 和 python 其实也挺简单的，而且还保留了三运算法符的优点。
 
 ## 总结
 
-虽然Go没有内置的三元运算符，但我们可以通过`if-else`语句或立即执行的匿名函数等方式来实现类似的功能。这些方法都很有用，可以根据你的需要和你觉得哪种方法更容易理解来选择使用。
+本文介绍 Go 中三元运算符的最佳实践。我们通过 `if-else` 语句或立即执行的匿名函数等方式来实现类似的功能。
+
+除此以外，可以根据你的需要和你觉得哪种方法更容易理解来选择使用。
 

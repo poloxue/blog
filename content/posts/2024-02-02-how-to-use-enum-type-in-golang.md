@@ -8,7 +8,7 @@ description: "Go 语言中，枚举的表达方式并不像在一些其他语言
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-02-how-to-use-enums-type-in-golang-01.png)
 
-> 嗨，大家好！本文是系列文章 Go 小技巧第十二篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+> 嗨，大家好！本文是系列文章 Go 技巧第十二篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 
 枚举，即 enum，可用于表示一组范围固定的值，它能助我们写出清晰、安全的代码。
 
