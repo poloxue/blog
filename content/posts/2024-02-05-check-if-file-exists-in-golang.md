@@ -8,11 +8,11 @@ description: "Go 语言如何检查文件是否存在呢？如果你用的是 Py
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-05-check-if-file-exists-in-golang-01.png)
 
-> 嗨，大家好！本文是系列文章 Go 小技巧第十三篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
+> 嗨，大家好！本文是系列文章 Go 技巧第十三篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 
 Go 中如何检查文件是否存在呢？
 
-如果你用的是 Python，可通过 `os.path.exists` 这样的标准库函数实现。遗憾的是，Go 标准库没有提供这样直接的函数，但好在，没有直接的，却有不那么直接的方法。
+如果你用的是 Python，可通过标准库中 `os.path.exists` 函数实现。遗憾的是，Go 标准库没有提供这样直接的函数，好在，没有直接的，却有不那么直接的。
 
 本文将基于这个话题展开，介绍 Go 中如何检查文件是否存在。
 
