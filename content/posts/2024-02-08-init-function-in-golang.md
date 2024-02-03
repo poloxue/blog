@@ -31,6 +31,7 @@ func main() {
     }
 }
 ```
+
 在这个例子中，`AnswerToLife()` 函数（作为 `WhatIsThe` 变量的初始化表达式）保证在 `init()` 被调用之前执行，而 `init()` 又保证在 `main()` 之前执行。
 
 #### `init()` 函数与包的初始化

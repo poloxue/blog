@@ -1,9 +1,9 @@
 ---
-title: "Go 中如何按行读取文件？高效读取和处理大文件"
+title: "Go 中如何按行读取文件？从 bufio.Scanner 看高效文件读取和大文件处理"
 date: 2024-02-02T17:09:49+08:00
 draft: true
 comment: true
-description: ""
+description: "在编程时，按行读取文件是一个很常规的需求，它相较于一次性读出整个文件，有着诸如内存效率高、处理速度快、实时性高、可扩展性强等优势。"
 ---
 
 在编程时，按行读取文件是一个很常规的需求，它相较于一次性读出整个文件，有着诸如如下这些优势。
@@ -20,7 +20,7 @@ description: ""
 
 在 Python 中，按行读取文件非常直观和简单。好吧，我最喜欢拿 Python 作为对比语言，毕竟它最易用。
 
-示例代码如下：
+示例代码，如下所示：
 
 ```python
 with open('filename.txt', 'r') as file:
@@ -34,56 +34,77 @@ with open('filename.txt', 'r') as file:
 
 那么，Go 语言中，如何按行读取文件呢？
 
-本文将基于这个主题展开，介绍 Go 如何按行读取文件。毕竟，如果这个问题想不明白，处理大文件时，容易影响效率和心情。
+本文将基于这个主题展开，介绍 Go 如何按行读取文件，从基本的按行读到大文件读取，让我们一点展开，拨开迷雾。
 
-## GO 读取文件的优势
+这个问题想不明白，在处理大文件时，容易影响我们的效率和心情。
 
-通过 Go 实现文件读取，有这一些优势。
+让我们开始吧。
 
-首先，Go 语言有着其简洁和高效的并发处理能力。
+## 准备一个文本文件
 
-其次，当涉及到处理大型文件或需要高效读取时，Go 提供了一些强大的工具，这些工具在 Python 等语言中可能不那么显著。
+我们先准备一个短小的文本文件 example.txt，内容如下所示：
 
-## 使用 `bufio.Scanner` 实现
+```plain
+This post covers the Golang Interface. Let’s dive into it.
 
-最简单的方法是使用`bufio`包中的`Scanner`类型。
+Duck Typing
 
-这个方法适用于大多数常规文件，特别是当文件由许多短行组成时。下面是一个使用`bufio.Scanner`的示例：
+To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept.
+
+So, what’s Duck Typing?
+```
+
+## 使用 `bufio.Scanner`
+
+按行读取，Go 中最简单的实现方法是使用 `bufio` 包中的 `Scanner`。这个方法适用于大多数的常规文件，特别是文件由许多短行组成时。
+
+### 示例代码
+
+通过一个示例代码，我们即可了解 `bufio.Scanner` 的使用方法。
 
 ```go
-package main
+file, err := os.Open("example.txt")
+if err != nil {
+    panic(err)
+}
+defer file.Close()
 
-import (
-    "bufio"
-    "fmt"
-    "os"
-)
+// 创建文件的扫描器，用于逐行读取文件
+scanner := bufio.NewScanner(file)
+// 循环，直到文件结束
+for scanner.Scan() {
+    // 处理每行的内容：打印
+    fmt.Println(scanner.Text())
+}
 
-func main() {
-    file, err := os.Open("example.txt")
-    if err != nil {
-        panic(err)
-    }
-    defer file.Close()
-
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        fmt.Println(scanner.Text())
-    }
-
-    if err := scanner.Err(); err != nil {
-        panic(err)
-    }
+// 检查扫描过程中是否有错误发生
+if err := scanner.Err(); err != nil {
+    panic(err)
 }
 ```
 
-在这个例子中，我们首先打开一个文件，然后创建一个`bufio.Scanner`，它会逐行读取文件直到结束。
+输出：
 
-## 处理大行
+```
+This post covers the Golang Interface. Let’s dive into it.
+
+Duck Typing
+
+To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept.
+
+So, what’s Duck Typing?
+```
+
+这个例子中，我们基于打开的文件描述符，创建了一个 `bufio.Scanner` 变量 `scanner`，它通过逐行扫描祝我们读取文件，直到结束。
+
+
+### 如何读取大行？
 
 但是，如果遇到特别长的行怎么办呢？
 
-默认情况下，`bufio.Scanner`可能无法处理超过64KB的行。为了解决这个问题，我们可以调整缓冲区大小：
+因为，默认情况下，`bufio.Scanner` 缓冲区的最大大小是 64k，即无法处理超过 64KB 的行。
+
+为了解决这个问题，我们要调整默认的缓冲区大小。
 
 ```go
 const maxCapacity = 1024 * 1024 // 例如，1MB
@@ -91,15 +112,101 @@ buf := make([]byte, maxCapacity)
 scanner.Buffer(buf, maxCapacity)
 ```
 
-通过这种方式，我们就可以处理那些异常长的行。
+在 `scanner` 开始扫描前，加上这一段代码，我们就可以处理那些异常长的行了。
+
+我在处理字幕文件时，遇到过这种异常长的行。如果你用过 whisper 的话，可能了解我说的是什么。
+
+那除了直接读取整行，还有没有其他什么更好的方法呢？
+
+在解决这个问题前，我们先聊聊 `bufio.Scanner` 的一些源码逻辑吧。
+
+### 缓存逻辑
+
+它是如何 `bufio.Scanner` 是如何读取文件的？它的缓存逻辑是什么呢？
+
+默认，`bufio.Scanner` 内部有一个 `s.buf` 缓冲区，当我们调用 `scannder.Scan` 方法时，它会尝试从 `Reader` 中读取一个缓存大小的内容，在需要时也会自动扩容。
+
+说明：我们前面的案例中，`file` 变量就是这个 reader。
+
+它的实现代码在 `bufio.Scanner` 的 Scan 方法中实现。如果当缓冲区大小不足以容纳一个完整的 token，Scanner 会自动增加缓冲区的大小。
+
+什么是完整 token？
+
+我们在读取一行数据时，这一行数据就是完整 token。如果想修改这个完整 token 的自定义，也是可以修改的。
+
+接下来，让我们实现 `bufio.Scanner` 按单词读取。
+
+### 切割方式定义
+
+`bufio.Scanner` 在 Go 中是一个非常灵活的工具，除了按行读取文件，还可用于按不同方式分割输入数据。我们要做的就是它对完整 token 的定义，也就是修改它的字节切割方式 - `Scanner.split` 函数。
+
+默认情况下，Scanner 按行分割（ScanLines）。我们可以通过设置自定义的 Split 函数 来改变它的行为，使其按单词或其他任何方式分割数据。
+
+下面是将 Scanner 设置为按单词读取数据的示例：
+
+```go
+const input = "This is a test. This is only a test."
+scanner := bufio.NewScanner(strings.NewReader(input))
+
+// 设置分割函数为按单词分割
+scanner.Split(bufio.ScanWords)
+
+// 逐个读取单词
+for scanner.Scan() {
+    fmt.Println(scanner.Text())
+}
+
+if err := scanner.Err(); err != nil {
+    fmt.Fprintln(os.Stderr, "reading input:", err)
+}
+```
+
+输出：
+
+```bash
+This
+is
+a
+test.
+This
+is
+only
+a
+test.
+```
+
+现在，无论多大的文件，我们都可以通过巧妙定义切割方式来避免一次性读取的缺点了。
+
+如我前面介绍的超大字幕文件，通过句号分割即可。而我要做的定义一个按句号分割的函数。
+
+按句号分割的函数，如下所示：
+
+```go
+func ScanSentences(data []byte, atEOF bool) (advance int, token []byte, err error) {
+    // 如果我们处于 EOF 并且有数据，则返回剩余的数据
+    if atEOF && len(data) > 0 {
+        return len(data), data, nil
+    }
+
+    // 查找句号
+    if i := bytes.IndexByte(data, '.'); i >= 0 {
+        // 返回找到的句子（包括句号），以及下一个 token 的起始位置
+        return i + 1, data[:i+1], nil
+    }
+
+    return 0, nil, nil
+}
+```
+
+如果你查看 `ScanLines` 的源码，`ScanSentences` 基本就是它的复制版本，其实就改了个分割符，哈哈。
 
 ## 使用 `bufio.Reader`
 
-如果你需要更细粒度的控制，`bufio.Reader` 可能是一个更好的选择。它比`bufio.Scanner`稍微复杂一些，但提供了更多的灵活性。
+除了 `bufio.Scanner`，我们还可以使用 `bufio` 提供的 `Reader` 实现。它提供了更细粒度的控制，自由度高。当然，自由度高，带来的必然就是复杂度高。
 
-## 使用 `ReadString`
+我只会简单演示下它的使用，毕竟它的功能也很多，还是让文章不要太臃肿。
 
-`ReadString`方法允许你指定一个分隔符（通常是换行符）来读取数据。下面是一个使用`ReadString`的例子：
+演示一个例子，通过 `Reader` 读取文件。
 
 ```go
 reader := bufio.NewReader(file)
@@ -115,150 +222,24 @@ for {
 }
 ```
 
-## `ReadLine` 与 `ReadString` 的区别
+上面的代码中，我们通过 `ReaderString('\n')` 中指定 `\n` 分割符实现按行读取。
 
-`ReadLine` 是一个更低级的方法，它直接返回原始的字节数据，而不是字符串。它对长行的处理也更为复杂。
+如果想自定义 `Reader` 的缓存大小，可通过 `bufio.NewReaderSize(size)` 指定。
 
-## 性能测试
+相对于 `Scanner` 类型，`Reader` 更加底层，它提供更普遍的一些方法。
 
-为了比较`bufio.Scanner`和`bufio.Reader`的性能，我们可以编写一些测试代码。
+上面的例子中，`Reader` 没有像 `Scanner` 一样隐藏 `error`，而是直接返回，如我们在循环中通过识别文件结尾 `EOF` 结束文件读取。
 
-## 生成测试文件
+而且，由于 `Reader` 没有内置字符串分割的设计，如果要实现复杂的分割逻辑，如按单词分割，甚至是更复杂的分割逻辑，就要单独设计。
 
-首先，我们需要生成一些测试文件。这里是一个简单的函数，用于创建大文件和小文件：
+不过相对于 `Scanner`，它也有个易用点：按行读取无大小限制，即大行读取不会受缓存大小限制。它的底层逻辑是，如果一次读取没发现分隔符，会多次读取直到找到分隔符，然后将多次读取内容拼接返回。
 
-```go
-package main
+## 实际场景
 
-import (
-    "bufio"
-    "fmt"
-    "math/rand"
-    "os"
-    "time"
-)
-
-func main() {
-    // 生成小文件
-    if err := generateFile("small_test_file.txt", 100, 80); err != nil {
-        fmt.Println("Error generating small file:", err)
-        return
-    }
-
-    // 生成大文件
-    if err := generateFile("large_test_file.txt", 1000000, 100); err != nil {
-        fmt.Println("Error generating large file:", err)
-        return
-    }
-}
-
-// generateFile 创建一个具有指定行数和最大行长度的测试文件
-// fileName: 文件名
-// lines: 文件中的行数
-// maxLineLength: 每行的最大字符数
-func generateFile(fileName string, lines, maxLineLength int) error {
-    file, err := os.Create(fileName)
-    if err != nil {
-        return err
-    }
-    defer file.Close()
-
-    writer := bufio.NewWriter(file)
-    rand.Seed(time.Now().UnixNano())
-
-    for i := 0; i < lines; i++ {
-        lineLength := rand.Intn(maxLineLength) + 1 // 确保每行至少有一个字符
-        for j := 0; j < lineLength; j++ {
-            char := rand.Intn(26) + 97 // 生成一个小写字母
-            writer.WriteByte(byte(char))
-        }
-        writer.WriteByte('\n')
-    }
-
-    return writer.Flush()
-}
-```
-
-### 编写测试用例
-
-接下来，我们可以编写一些测试用例来比较这两种方法的性能。这里是一个基本的框架：
-
-```go
-package main
-
-import (
-    "bufio"
-    "fmt"
-    "os"
-    "time"
-)
-
-func testScanner(fileName string) {
-    start := time.Now()
-
-    file, err := os.Open(fileName)
-    if err != nil {
-        panic(err)
-    }
-    defer file.Close()
-
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        _ = scanner.Text() // 读取行，但不做任何处理
-    }
-
-    if err := scanner.Err(); err != nil {
-        panic(err)
-    }
-
-    duration := time.Since(start)
-    fmt.Printf("Scanner took: %v\n", duration)
-}
-
-func testReader(fileName string) {
-    start := time.Now()
-
-    file, err := os.Open(fileName)
-    if err != nil {
-        panic(err)
-    }
-    defer file.Close()
-
-    reader := bufio.NewReader(file)
-    for {
-        _, err := reader.ReadString('\n')
-        if err != nil {
-            if err == os.EOF {
-                break
-            }
-            panic(err)
-        }
-    }
-
-    duration := time.Since(start)
-    fmt.Printf("Reader took: %v\n", duration)
-}
-```
-
-要使用这些函数，你需要有一个文件来测试。你可以调用这些函数并传入文件名作为参数。例如：
-
-```go
-func main() {
-    fileName := "path/to/your/test/file.txt"
-    testScanner(fileName)
-    testReader(fileName)
-}
-```
-
-### 分析测试结果
-
-运行这些测试后，我们可以比较两种方法的运行时间。这将帮助我们了解在不同情况下哪种方法更有效。
+实际场景中，我们要提高文件读取的性能，我主要理解为是两类：
 
 ## 结论
 
-在Go中按行读取文件是一个常见且重要的任务。对于大多数情况，`bufio.Scanner`提供了一个简单且高效的解决方案。如果需要更细粒度控制，如处理特别长的行的情况，`bufio.Reader` 可能是更好的选择。
+在 Go 中按行读取文件是一个常见且重要的任务。
 
-本文通过性能测试，我们可以更好地理解这些方法在不同场景下的表现。
-
-希望这篇文章能帮助你理解Go中处理文件的不同方法，并为你的项目选择合适的工具。
 
