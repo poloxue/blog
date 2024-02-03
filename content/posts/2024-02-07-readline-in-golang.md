@@ -1,5 +1,5 @@
 ---
-title: "Go 中如何按行读取文件？从 bufio.Scanner 看高效文件读取和大文件处理"
+title: "Go 中如何按行读取文件？"
 date: 2024-02-02T17:09:49+08:00
 draft: true
 comment: true
