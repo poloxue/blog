@@ -372,6 +372,7 @@ B: When I talk to Paige, all she does is drive me crazy.
 A: There&amp;rsquo;s a thin line between affection and aggravation.</description></item><item><title>从头构建 Go Web 框架（三）：中间件的数据共享</title><link>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3/</link><pubDate>Fri, 29 Sep 2023 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3/</guid><description>本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。系统通过这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
 本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第二篇，将介绍中间件的最佳实践。
 第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 附加福利：上传文件到 s3，Bonus: File Upload REST API with Go and Amazon S3 我们在 上文 中介绍了 middleware 的实现，通过创建 func (http.</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
+本文是高效终端环境第一篇，系列查看：我的终端环境
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
 本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
@@ -382,8 +383,8 @@ iTerm2 vs 默认 Terminal 为什么要用 iTerm2 替换默认的系统终端呢�
 其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。
 iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
 还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
-系列阅读：
-终端环境：iTerm2 终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件 终端环境：6 个强大的 zsh 插件 终端环境：与众不同的 zsh 主题 - powerlevel10k 终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 终端环境：终端启动消息 - ASCII art 终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>基于 LunarVim 搭建不同编程语言 IDE</title><link>https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/</link><pubDate>Wed, 27 Sep 2023 15:22:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/</guid><description>本文介绍，如何基于 LunarVim 搭建不同编程语言的 Neovim IDE 开发环境。
+废话不多说，接下来，让我们进入安装使用流程。
+下载安装 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。</description></item><item><title>基于 LunarVim 搭建不同编程语言 IDE</title><link>https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/</link><pubDate>Wed, 27 Sep 2023 15:22:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/</guid><description>本文介绍，如何基于 LunarVim 搭建不同编程语言的 Neovim IDE 开发环境。
 前言 本文将用几行命令快速安装 Neovim IDE，完成不同编程语言的环境搭建。尽量不涉及到自定义配置，将完全基于 LunarVim 作者维护的配置实现。
 两个 Github 核心仓库，分别是：
 lunarvim/lunarvim，是 LunarVim 的核心仓库，集成配置 IDE 所需的核心能力； lunarvim/starter.lvim，这个仓库是 Lunarvim 针对不同编程语言的配置实现； starter.lvim 以分支形式保不同语言的配置，具体自行查看仓库。

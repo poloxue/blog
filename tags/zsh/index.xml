@@ -38,6 +38,7 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
 更智能的命令行交互 zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
 如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
+本文是高效终端环境第一篇，系列查看：我的终端环境
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
 本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
@@ -48,8 +49,8 @@ iTerm2 vs 默认 Terminal 为什么要用 iTerm2 替换默认的系统终端呢�
 其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。
 iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
 还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
-系列阅读：
-终端环境：iTerm2 终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件 终端环境：6 个强大的 zsh 插件 终端环境：与众不同的 zsh 主题 - powerlevel10k 终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 终端环境：终端启动消息 - ASCII art 终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
+废话不多说，接下来，让我们进入安装使用流程。
+下载安装 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
 zsh 为什么如此受欢迎？我们是否应该使用它呢？
 什么是 zsh？ “Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。
 Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。
