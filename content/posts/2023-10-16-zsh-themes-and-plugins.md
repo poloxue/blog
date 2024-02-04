@@ -11,8 +11,6 @@ description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 �
 
 本文是高效终端环境第二篇，系列查看：[我的终端环境][]
 
-
-
 视频版本，没有文章详细：
 
 {{< video bb_id=619786097 yt_id=1zJcH4hZW4o >}}
@@ -86,21 +84,6 @@ zsh 的可配置性更强，zsh 提供了比 bash 更多的选项和特性，我
 - [A Guide to the Zsh Line Editor with Examples](https://thevaluable.dev/zsh-line-editor-configuration-mouseless/)
 
 好吧，前导部分写的有点长。本文还是注重实践，比较的部分就先写这么多。
-
-> 系列阅读：
->
-> - [终端环境：iTerm2](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
-> - [终端环境：zsh 与 oh-my-zsh 的 7 效率插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
-> - [终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
-> - [终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
-> - [终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
-> - [终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/)
-> - [终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
-> - [终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
-> - [终端环境：终端启动消息 - ASCII art](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
-> - [终端环境：终端启动消息 - pfetch/neofetch/fastfetch](https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/)
->
-> 更多待续...
 
 ## 安装
 
