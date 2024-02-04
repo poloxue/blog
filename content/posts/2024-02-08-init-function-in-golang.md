@@ -1,63 +1,201 @@
 ---
-title: "Go 中的 init 如何用？一起看看它的常见应用场景吧"
+title: "Go 中的 init 如何用？它的常见应用场景有哪些呢？"
 date: 2024-02-03T17:26:50+08:00
 draft: true
 comment: true
 description: "Go 中有一个特别函数 `init()` 函数，它在 Go 中扮演着一个特殊的角色，可用于包的一些初始化操作。"
 ---
 
-Go 中有一个特别函数 `init()` 函数，它在 Go 中扮演着一个特殊的角色。
+Go 语言有一个特别的 `init()` 函数，它在 Go 中可用于包的初始化。具体而言，它在包被引入后会被自动执行。如果在 `main` 包中，也会在 `main()` 函数之前执行。
 
-它究竟有什么作用？
-
-Go 中的 `init()` 主要是用于每个包初始化。它会被引入后自动之后，如果在 `main`，也会运行 `main()` 函数执行之前。这个特性使得 `init()` 函数成为执行预先准备工作的理想场所。
-
-今天，让我们一步步来探索 `init()` 函数的使用和重要性。
+笨笨将以此为主题，介绍 Go 中 `init()` 函数的使用和它的常见使用场景。
 
 ## `init()` 函数的执行时机
 
-`init()` 函数在 Go 中用于进行包级别的初始化操作。
+首先，`init()` 的执行时机处于包级别变量声明和 main() 函数执行之间。
 
-它在所有变量声明在包内被评估完毕后、`main()` 函数执行之前被调用。这意味着，如果你在包中声明了全局变量，并且这些变量有初始化表达式，那么这些初始化表达式会在任何 `init()` 函数之前被执行。
+这意味着在包中声明的全局变量，如果附带初始化表达式，这些表达式将在任何 `init()` 函数执行之前进行初始化。
 
-例如，考虑以下代码：
+我们通过一个示例演示，代码如下：
 
 ```go
-var WhatIsThe = AnswerToLife()
+var Age = GetAge()
 
-func AnswerToLife() int {
-    return 42
+func GetAge() int {
+    return 18
 }
 
 func init() {
-    WhatIsThe = 0
+    fmt.Printf("You're %d years old.\n", Age)
+    Age = 3
 }
 
 func main() {
-    if WhatIsThe == 0 {
-        fmt.Println("It's all a lie.")
-    }
+    fmt.Printf("You're %d years old.\n", Age)
 }
 ```
 
-在这个例子中，`AnswerToLife()` 函数（作为 `WhatIsThe` 变量的初始化表达式）保证在 `init()` 被调用之前执行，而 `init()` 又保证在 `main()` 之前执行。
+输出：
 
-#### `init()` 函数与包的初始化
-如果一个包导入了其他包，那么被导入的包的初始化（包括它们的 `init()` 函数）会先于导入它的包执行。这确保了依赖项在使用之前已经被正确初始化。
+```bash
+You're 18 years old
+You're 3 years old
+```
 
-#### `init()` 函数的自动执行
-`init()` 函数不需要显式调用，它会自动被 Go 运行时系统调用。每个包的 `init()` 函数只会被执行一次。
+从输出可知，`GetAge()` 函数作为 `Age` 的初始化函数，于 `init()` 函数前执行，赋值 `Age` 为 `3`。而 `init()` 函数于其后执行，赋值 `Age` 为 `3`。`main()` 函数则在最后执行，输出最终的 `Age` 值。
 
-#### 多个 `init()` 函数
-一个包可以有多个 `init()` 函数，无论是在同一个文件中还是分布在多个文件中。如果分布在多个文件中，它们的执行顺序通常是按照文件名的字典顺序。
+这个顺序是符合我们预期的。
 
-#### `init()` 函数的用途
-`init()` 函数通常用于进行一些必要的设置或初始化操作，例如初始化包级别的变量、检查或修正程序状态、注册插件等。
+## `init()` 函数与被引入包的 `init()` 函数
 
-### 使用场景介绍
+如果一个包导入了其他包，被导入包的初始化 `init()` 则会先于导入它的包 `init` 函数前执行。
 
-#### 配置加载
-在程序启动之前加载配置文件。例如，你可能有一个 web 服务，需要在启动服务器之前加载数据库配置、API 密钥或其他服务配置。
+举例来说明吧！
+
+假设，我们有一个 `main` 包，它导入了 `sub` 包，并且同样有一个 `init()` 函数：
+
+```go
+// main.go
+
+package main
+
+import (
+    "fmt"
+    _ "demo/sub"
+)
+
+func init() {
+    fmt.Println("main package init")
+}
+
+func main() {
+    fmt.Println("main function")
+}
+```
+
+而 `sub` 包中包含定义的 `init()` 函数
+```go
+// sub/sub.go
+
+package sub
+
+import "fmt"
+
+func init() {
+    fmt.Println("sub package init")
+}
+
+// 其他可能的函数和声明
+```
+
+
+当你运行 `main.go` 时，输出将会按照以下顺序出现：
+
+```
+sub package init
+main package init
+main function
+```
+
+这个示例清晰地展示了包的初始化顺序：首先是被导入包（`sub`）的 `init()` 函数，然后是导入它的包（`main`）的 `init()` 函数，最后是 `main` 函数。
+
+这也确保了依赖包在使用前已经被正确初始化。
+
+> 特别说明：
+>
+> `init()` 区别于其他函数，不需要我们显式调用，它会自动被 Go runtime 调用。而且，每个包中的 `init()` 只会被执行一次。
+>
+
+一个包其实可有多个 `init()`，无论是在分部在包中的同一个文件中还是多个文件中。如果分布在多个文件中，执行顺序通常是按照文件名的字典顺序。
+
+为说明这个问题，我们首先修改 `sub.go` 文件，内容如下：
+
+```go
+// sub/sub.go
+
+package sub
+
+import "fmt"
+
+func init() {
+    fmt.Println("sub.go init 1")
+}
+
+func init() {
+    fmt.Println("sub.go init 2")
+}
+```
+
+新增一个 `sub1.go` 文件，如下所示：
+
+```go
+// sub/sub1.go
+
+package sub
+
+import "fmt"
+
+func init() {
+    fmt.Println("sub1.go init")
+}
+```
+
+输出：
+
+```bash
+sub.go init 1
+sub.go init 2
+sub1.go init
+main package init
+main function
+```
+
+结果符合预期。
+
+## `init()` 的使用场景
+
+`init()` 函数通常用于进行一些必要的设置或初始化操作，例如初始化包级别的变量与命令行参数、配置加载、环境检查、甚至注册插件等。
+
+项目开发中，组件依赖管理通常比较令人头疼。但一些简单的依赖关系，即使没有如 `wire` 这样依赖注入工具的加持，通过 `init` 也可管理。
+
+### 命令行参数
+
+对于开发一个简单的命令行应用，`init()` 和标准库 `flag` 包结合，可快速完成命令命令行参数的初始化。
+
+```go
+package main
+
+import (
+    "flag"
+    "fmt"
+)
+
+var name string
+var help bool
+
+func init() {
+    flag.StringVar(&name, "name", "World", "a name to say hello to")
+    flag.StringVar(&help, "name", "World", "display help information")
+    flag.Parse()
+}
+
+func main() {
+    if help {
+        fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+        flag.PrintDefaults()
+        os.Exit(1)
+    } 
+    fmt.Printf("Hello, %s!\n", name)
+}
+```
+
+以上示例中，`init()` 函数解析了命令行参数并初始化变量 `name` 和 `help` 变量。
+
+### 配置加载
+
+`init` 函数的领哇一个常见场景是配置加载。配置通常是程序启动时要尽早执行的操作。
+
+例如，你有一个 web 服务，要在启动服务器前加载数据库配置、API 密钥或其他服务配置。
 
 ```go
 var config AppConfig
@@ -73,30 +211,33 @@ func init() {
 }
 ```
 
-#### 环境检查
-检查和验证程序运行所需的环境。例如，确保必要的环境变量已设置，或者必要的外部服务可用。
+如果配置加载都出现问题，很大程度说明服务配置不正常，要立刻退出服务。我们可使用 `log.Fatal(err)` （更优雅）或 `panic(err)` 退出服务。
+
+### 环境检查
+
+`init()` 还可以用于检查和验证程序运行所需的环境。如，我们要确保必要的环境变量已设置，或者必要的外部服务可用。
+
+如我们的必须依赖一个需要认证的外部服务，示例代码：
 
 ```go
 func init() {
-    if os.Getenv("API_KEY") == "" {
-        log.Fatal("API_KEY environment variable not set")
+    if os.Getenv("XXX_API_KEY") == "" {
+        log.Fatal("XXX_API_KEY environment variable not set")
     }
+
+    apiKey := os.Getenv("XXX_API_KEY")
+    // instantiating Component
+    // ...
 }
 ```
 
-#### 初始化数据结构
-对于某些复杂的数据结构，可能需要执行非平凡的初始化过程。`init()` 函数是执行这些初始化步骤的好地方。
+通过，如果要实例化的组件不需要赖加载，创建和配置验证同时 `init()` 中完成即可。
 
-```go
-var complexStruct ComplexStruct
+### 注册插件或服务
 
-func init() {
-    complexStruct = NewComplexStruct()
-}
-```
+如果你的程序用的是插件架构，我们可以在程序启动时注册这些插件。`init()` 正可以用来自动注册这些插件。
 
-#### 注册插件或服务
-如果你的应用程序使用插件架构，你可能需要在程序启动时注册这些插件。`init()` 函数可以用来自动注册这些插件。
+示例代码：
 
 ```go
 func init() {
@@ -104,19 +245,76 @@ func init() {
 }
 ```
 
-#### 数据库迁移
-在应用程序启动时执行数据库迁移确保数据库结构是最新的。这对于维护数据库模式非常有用。
+Go 的数据库驱动管理可作为这种场景的典型案例。
+
+Go 的 database 操作通常依赖 `database/sql` 包，它提供了一种通用接口与 SQL 或类 SQL 数据库交互。而具体的驱动实现（如 MySQL、PostgreSQL、SQLite 等）通常是通过实现 `database/sql` 包定义接口来提供支持。
+
+这种架构下，`init()` 被用于驱动的自动注册。
+
+例如，如下这个 MySQL 驱动的实现：
 
 ```go
+package mysql
+
+import (
+    "database/sql"
+)
+
 func init() {
-    err := db.AutoMigrate(&User{}, &Product{})
-    if err != nil {
-        log.Fatal(err)
-    }
+    sql.Register("mysql", &MySQLDriver{})
+}
+
+type MySQLDriver struct {
+    // 驱动的实现
 }
 ```
 
-### 需要注意的事项
-在使用 `init()` 函数时，需要注意的是，由于 `init()` 函数在程序启动时自动执行，它可能会增加程序启动时间，特别是当执行长时间操作时。此外，过多或过于复杂的 `init()` 函数可能会使程序难以理解和维护，因此建议仅在必要时使用 `init()` 函数，并保持其尽可能简单。
 
-通过以上的讨论，我们可以看到 `init()` 函数在 Go 语言中的重要性和使用方式。它提供了一种强大的机制来初始化包和执行必要的设置，但也需要谨慎使用以避免不必要的复杂性。希望这篇文章能帮助你更好地理解和使用 Go 语言的 `init()` 函数。
+我们只要导入这个 database driver 包，它的 `init()` 就会被调用，将驱动注册到 `database/sql` 包中。
+
+我们使用的时候，通过 `database/sql` 接口即可使用该 `MySQL` 驱动，而不需关心它的实现细节。
+
+```go
+import (
+    "database/sql"
+    _ "github.com/go-sql-driver/mysql" // 导入 MySQL 驱动
+)
+
+func main() {
+    db, err := sql.Open("mysql", "user:password@/dbname")
+    // ...
+}
+```
+
+通过这种方式，Go 的数据库驱动代码更加模块化和灵活性。使用方只需关心与 `database/sql` 交互即可，而不必关心驱动的实现细节。
+
+实际的场景案例，我觉得肯定不止这么多。对于任何需要提前初始化和验证的场景，可适当考虑是否可通过使用 `init()` 来简化代码。
+
+## 注意点
+
+讲了那么多 `init()` 的使用，但我在平时发现，更多的时候 `init()` 函数是在被滥用。
+
+我这里不得不提一些注意点。
+
+### 启动耗时
+
+首先，由于 `init()` 函数在程序启动时自动执行，这就导致它可能会增加程序启动时间，特别是一些组件初始化，耗时较长，非必要场景，懒加载依然是不错的选择。
+
+什么是必要场景呢？简单来说，如果这个操作失败了，这个程序就没有继续启动的必要了。
+
+### 依赖关系 
+
+还有，过多或过于复杂的 `init()` 函数可能会导致程序难以理解和维护，导致依赖关系混乱。这点在单体项目中体现的特别明显，所有人维护一个项目，所以依赖都加载到 `init()` 中。
+
+如前面所有，一方面要仅在必要场景时使用 `init()` 函数初始化一些操作。
+
+另外，有条件的话，建议尽量保持服务简单，如果依赖过多，如出现要连接多个相同组件（多个数据库、多个 Redis），就是时候考虑优化设计架构了，将部分业务抽离为独立服务。
+
+
+## 总结
+
+本文介绍了到 `init()` 函数在 Go 中的特殊之处和使用方式。它提供了一种不同于其他语言的机制来初始化包，但也需谨慎使用以避免不必要的复杂性。
+
+最后，希望这篇文章能帮助你在更好地理解和使用 Go 的 `init()` 函数上起到一定的助力。
+
+感谢阅读。
