@@ -9,7 +9,7 @@ description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 �
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-17.png)
 
-本文是高效终端环境第二篇，系列查看：[我的终端环境][]
+本文是高效终端环境第二篇，系列查看：[我的终端环境][https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3299748150420979713#wechat_redirect]
 
 视频版本，没有文章详细：
 
