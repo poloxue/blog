@@ -13,6 +13,8 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 {{< video bb_id=619786097 yt_id=vNX_sReGZ5E >}}
 
+本文是高效终端环境第一篇，系列查看：[我的终端环境](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3299748150420979713#wechat_redirect)
+
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 
 本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
@@ -35,25 +37,7 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
 
-
-
 还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
-
-> 系列阅读：
->
-> - [终端环境：iTerm2](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
-> - [终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
-> - [终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
-> - [终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
-> - [终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
-> - [终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/)
-> - [终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
-> - [终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
-> - [终端环境：终端启动消息 - ASCII art](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
-> - [终端环境：终端启动消息 - pfetch/neofetch/fastfetch](https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/)
->
-> 更多待续...
-
 
 废话不多说，接下来，让我们进入安装使用流程。
 
