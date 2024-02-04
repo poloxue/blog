@@ -42,7 +42,7 @@ with open('filename.txt', 'r') as file:
 
 ## 准备一个文本文件
 
-我们先准备一个短小的文本文件 example.txt，内容如下所示：
+我们先准备一个短小的文本文件 example.txt，内容如下：
 
 ```plain
 This post covers the Golang Interface. Let’s dive into it.
@@ -52,6 +52,28 @@ Duck Typing
 To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept.
 
 So, what’s Duck Typing?
+```
+
+## 使用 `bufio.Reader`
+
+Go 中的按行读取，一种方法是，我们可以通过 `bufio` 提供的 `Reader` 实现。
+
+我只会简单演示下它的使用，毕竟它的功能也很多，还是让文章不要太臃肿。
+
+演示一个例子，通过 `Reader` 读取文件。
+
+```go
+reader := bufio.NewReader(file)
+for {
+    line, err := reader.ReadString('\n')
+    if err == io.EOF {
+        break
+    }
+    if err != nil {
+        panic(err)
+    }
+    fmt.Print(line)
+}
 ```
 
 ## 使用 `bufio.Scanner`
@@ -200,27 +222,6 @@ func ScanSentences(data []byte, atEOF bool) (advance int, token []byte, err erro
 
 如果你查看 `ScanLines` 的源码，`ScanSentences` 基本就是它的复制版本，其实就改了个分割符，哈哈。
 
-## 使用 `bufio.Reader`
-
-除了 `bufio.Scanner`，我们还可以使用 `bufio` 提供的 `Reader` 实现。它提供了更细粒度的控制，自由度高。当然，自由度高，带来的必然就是复杂度高。
-
-我只会简单演示下它的使用，毕竟它的功能也很多，还是让文章不要太臃肿。
-
-演示一个例子，通过 `Reader` 读取文件。
-
-```go
-reader := bufio.NewReader(file)
-for {
-    line, err := reader.ReadString('\n')
-    if err == io.EOF {
-        break
-    }
-    if err != nil {
-        panic(err)
-    }
-    fmt.Print(line)
-}
-```
 
 上面的代码中，我们通过 `ReaderString('\n')` 中指定 `\n` 分割符实现按行读取。
 
@@ -233,10 +234,6 @@ for {
 而且，由于 `Reader` 没有内置字符串分割的设计，如果要实现复杂的分割逻辑，如按单词分割，甚至是更复杂的分割逻辑，就要单独设计。
 
 不过相对于 `Scanner`，它也有个易用点：按行读取无大小限制，即大行读取不会受缓存大小限制。它的底层逻辑是，如果一次读取没发现分隔符，会多次读取直到找到分隔符，然后将多次读取内容拼接返回。
-
-## 实际场景
-
-实际场景中，我们要提高文件读取的性能，我主要理解为是两类：
 
 ## 结论
 
