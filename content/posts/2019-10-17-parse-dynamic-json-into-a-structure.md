@@ -166,7 +166,7 @@ fmt.Println(e)
 {UPDATE blog blog [map[blogId:100001 title:title content:this is a blog uid:1000012 state:1]]}
 ```
 
-接下来，数据的使用就方便了不少，比如事件类型获取，通过 event.Type 即可完成。不过，要泼盆冷水，因为 data 还是 []map[string]string 类型，依然有 map 的那些问题。
+接下来，数据解雇就方便了不少，比如事件类型获取，通过 event.Type 即可完成。不过，要泼盆冷水，因为 data 还是 []map[string]string 类型，依然有 map 的那些问题。
 
 能不能把 map 转化为 struct ?
 
