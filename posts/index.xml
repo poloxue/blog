@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 02 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go语言中 enum 实现方式有哪些？一定要绝对类型安全吗？</title><link>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</link><pubDate>Fri, 02 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十二篇，系列文章查看：Go 语言技巧。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 05 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中如何检查文件是否存在？可能产生竞态条件？</title><link>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</link><pubDate>Mon, 05 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十三篇，系列文章查看：Go 语言技巧。
+Go 中如何检查文件是否存在呢？
+如果你用的是 Python，可通过标准库中 os.path.exists 函数实现。遗憾的是，Go 标准库没有提供这样直接的函数，好在，没有直接的，却有不那么直接的。
+本文将基于这个话题展开，介绍 Go 中如何检查文件是否存在。
+另外，本文最后还会介绍一个小注意点，即在判断文件是否存在时，如何避免中潜在的竞态条件。
+os.Stat 检查文件状态 Go 标准库虽然没有提供类似于 os.Exist 这样直接的函数检查文件是否存在，但它提供另外一个函数 os.Stat。
+os.Stat 函数的作用是获取文件状态信息，我们通过检查它返回的错误即可知晓文件是否存在。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 11 func main() { _, err := os.Stat(&amp;#34;/path/to/file&amp;#34;) if err != nil { if os.IsNotExist(err) { // 文件不存在 } else { // 其他错误 } } // 文件存在 } 第一个返回值表示文件信息，不是我们关心的重点，直接省略掉。
+第二个返回值表示错误 error。如果文件不存在，可通过检查 os.IsNotExist 检查 error 是否是 os.</description></item><item><title>Go语言中 enum 实现方式有哪些？一定要绝对类型安全吗？</title><link>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</link><pubDate>Fri, 02 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十二篇，系列文章查看：Go 语言技巧。
 枚举，即 enum，可用于表示一组范围固定的值，它能助我们写出清晰、安全的代码。
 以编写游戏程序为一个简单案例：游戏中的角色有如战士、法师或者弓箭手，这种范围固定的值，就可以用枚举来表示。
 但 Go 中，枚举的表现方式不像在某些其他语言中那样直接。我们要想在 Go 中用好枚举，就要了解 Go 中枚举的不同表示形式和使用注意点。
