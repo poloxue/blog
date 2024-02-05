@@ -6,15 +6,15 @@ comment: true
 tags: ["Golang"]
 ---
 
-本文是通过组织曾经梳理过的一篇文章和一个问答而成。主要介绍的是关于 Go 如何解析 json 内部结构不确定的情况。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-10/2019-10-17-parse-dynamic-json-into-a-structure-01.png)
 
-# 问题描述
+本文主要介绍的是关于 Go 如何解析 json 内部结构不确定的情况。
 
-这或许是新手常会遇到的一个问题，无论是在各种微信群、知乎、思否、stackoverflow 上，我常会遇到这样的提问。
+首先，我们直接看一个来提问吧。
 
-什么问题呢？直接看一个来自思否上的提问吧。内容如下：
+问题如下：
 
-上游传递不确定 的json ,如何透传给下游业务？比如，我解析参数
+上游传递不确定的json，如何透传给下游业务？比如，我解析参数
 
 ```json
 {
@@ -28,11 +28,13 @@ tags: ["Golang"]
 
 但是key 结构体下面是未知的。可能是K1 K2 K3 ... KN。如何解析传递那？
 
-# 如何处理
+对于 json 格式数据的解析，如果其中的某个成员结构不确定。
 
-对于 json 格式数据的解析，如果其中的某个成员结构不确定，我总结一般有几种方式处理。
+我总结一般有几种方式处理。
 
-第一种，最容易想到的就是，将那个不确定的成员用 map[string]interface{} 替代。
+## 常见的几种方案
+
+第一个方案，也是最容易想到的，将那个不确定的成员用 map[string]interface{} 替代。
 
 ```go
 type Data struct {
@@ -43,21 +45,27 @@ type Data struct {
 
 但问题是，这种方式太坑，每次从 key 中拿数据，都要做类型检查，判断是否 ok。
 
-第二种，既然 map[string]interface{} 的方式太坑，那如果要是能用结构体就好了，虽然其中某个成员的结构不确定，但如果共性字段比较多，比如都是与人相关，那肯定都有名字，年龄之类的字段，但如果是教师和学生，就会有一些不同的字段，把所有的不同字段都包含进来即可。但如果不同字段太多，那也不是很方便。
+第二种，既然 map[string]interface{} 的方式太坑，那如果要是能用结构体就好了。
+
+虽然其中某个成员的结构不确定，但如果共性字段比较多，如都是与人相关，那肯定都有名字，年龄之类的字段，但如果是教师和学生，就会有一些不同的字段，把所有的不同字段都包含进来即可。但如果不同字段太多，那也不是很方便。
 
 第三种，终极解决方案，如果能先解析第一层的结构，再根据第一层的结果，确定第二层的结构，那就方便多了。不确定的成员依然用 map[string]interface{} 表示，确定结构后，再将 map[string]interface{} 解析为具体的某个结构。结构体使用起来就方便很多了。
 
 问题最终就变成了如何将 map[string]interface{} 转化为 struct，这个过程必然会用到反射，可以自己实现。但其他人早造就想到了，一个第三方库，地址：https://github.com/mitchellh/mapstructure 。
 
-# 一个实际的案例
+## 一个实际的案例
 
-看一个实际的案例。
+看一个我工作遇到的一个实际案例。
 
-近期工作中，因为要把数据库数据实时更新到 elasticsearch，在实践过程中遇到了一些 JSON 数据处理的问题。
+我在工作中，数据库数据实时更新到 elasticsearch，在实践过程中遇到了一些 JSON 数据处理的问题。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-10/2019-10-17-parse-dynamic-json-into-a-structure-02.png)
 
 什么样的数据呢？
 
-实时数据获取是通过阿里开源的 canal 组件实现的，并通过消息队列 kafka 传输给处理程序。我们将接收到的 JSON 数据类似如下的形式。
+实时数据获取是通过 binlog 解析推送而来的的数据，并通过消息队列 kafka 传输给处理程序。
+
+收到的 JSON，类似如下形式。
 
 ```json
 {
@@ -80,7 +88,7 @@ type Data struct {
 
 怎么处理这串 JSON 呢？
 
-# json 转化为 map
+## json 转化为 map
 
 最先想到的方式就是通过 json.Unmarshal 将 JSON 转化 map[string]interface{}。
 
@@ -123,7 +131,7 @@ map[data:[map[title:title content:this is a blog uid:1000012 state:1 blogId:1000
 
 针对这个情况，可以怎么处理呢？如果能把 JSON 转化为struct 就好了。
 
-# json 转化为 struct
+## json 转化为 struct
 
 在 GO 中，json 转化为 struct 也非常方便，只需提前定义好转化的 struct 即可。我们先来定义一下转化的 struct。
 
@@ -162,7 +170,7 @@ fmt.Println(e)
 
 能不能把 map 转化为 struct ?
 
-# map 转化为 struct
+## map 转化为 struct
 
 据我所知，map 转为转化为 struct，GO 是没有内置的。如果要实现，需要依赖于 GO 的反射机制。
 
@@ -217,7 +225,7 @@ event 的解析和前面的一样，通过 e.Table 判断是是否来自 blog �
 
 到此，似乎已经完成了所有工作。非也！
 
-# 弱类型解析
+## 弱类型解析
 
 不知道大家有没有发现一个问题，那就是 Blog 结构体中的所有成员都是 string，这应该是 canal 做的事情，所有的值类型都是 string。但实际上 blog 表中的 uid 和 state 字段其实都是 int。
 
@@ -266,8 +274,12 @@ fmt.Println(blogs)
 
 到此，才算完成！接下来的数据处理就简单很多了。如果想学习 mapstructure 的使用，敲敲源码中例子应该差不多了。
 
-# 总结
+## 总结
 
-本文由一个问题引出主题，如何处理不确定结构的 json 数据，开头提出了三种可行的解决方案，三种方案是逐层递进的。最终的方式需要依赖反射实现，当然同样的问题别人早就想到了，并开发了一个第三方包，mapstructure。最后，本文通过一个实际的案例演示了 mapstructure 的使用。
+本文由一个问题引出主题，如何处理不确定结构的 json 数据，开头提出了三种可行的解决方案，三种方案是逐层递进的。最终的方式需要依赖反射实现，当然同样的问题别人早就想到了，并开发了一个第三方包，mapstructure。
+
+最后，本文通过一个实际的案例演示了 mapstructure 的使用。
+
+感谢阅读，希望本文对你有所帮助。
 
 我的博文：[Go 中如何解析 json 内部结构不确定的情况](https://www.poloxue.com/posts/2a019-10-17-parse-dynamic-json-into-a-structure)
