@@ -1,4 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 05 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中如何检查文件是否存在？可能产生竞态条件？</title><link>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</link><pubDate>Mon, 05 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十三篇，系列文章查看：Go 语言技巧。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 06 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中如何实现三元运算符？Rust 和 Python 是怎么做的？</title><link>https://www.poloxue.com/posts/2024-02-06-ternary-operator-in-golang/</link><pubDate>Tue, 06 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-06-ternary-operator-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十四篇，系列文章查看：Go 语言技巧。
+今天来聊聊在 Go 语言中如何实现类似三元运算符的功能。
+首先，什么是三元运算符？
+在其他一些编程语言中，如 C 语言，三元运算符是一种可以用一行代码实现条件选择的简便方法。
+1 x = condition ? a : b; // condition = true 则 x = a，否则 x = b 大道至简的 Go 中肯定是没有这个运算符。
+今天这篇文章将会就此展开，介绍 Go 中三元运算符的一些实践。
+让我们正式开始吧。
+使用 if-else 语句 三元运算符，本质上其实就是 if-else 的简化版本。通过 if-else 实现自然就是最常用的做法。
+1 2 3 4 5 6 var x int if condition { x = a } else { x = b } 非常简单且易理解，无心智负担。毕竟，这就应该是它本来的样子。
+虽然这比三元运算符要长一些，但它更容易理解，也是 Go 所推荐的方式。</description></item><item><title>Go 中如何检查文件是否存在？可能产生竞态条件？</title><link>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</link><pubDate>Mon, 05 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十三篇，系列文章查看：Go 语言技巧。
 Go 中如何检查文件是否存在呢？
 如果你用的是 Python，可通过标准库中 os.path.exists 函数实现。遗憾的是，Go 标准库没有提供这样直接的函数，好在，没有直接的，却有不那么直接的。
 本文将基于这个话题展开，介绍 Go 中如何检查文件是否存在。
