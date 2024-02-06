@@ -6,6 +6,11 @@ comment: true
 description: "在 Go 语言中，将 byte 转换为 int 时是否涉及字节序（endianness）？我可以直接使用 `int(byte_var)` 进行转换吗？"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-07-big-little-endian-in-golang-01.png)
+
+> 嗨，大家好！我是波罗学。
+>
+> 本文是系列文章 Go 技巧第十五篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
 
 我们先看这样一个问题：“Go 语言中，将 byte 转换为 int 时是否涉及字节序（endianness）？我可以直接使用 `int(byte_var)` 进行转换吗？”
 
