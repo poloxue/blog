@@ -1,6 +1,6 @@
 ---
 title: "Go 语言中如何大小端字节序？int 转 byte 是如何进行的？"
-date: 2024-02-06T15:59:46+08:00
+date: 2024-02-07T08:00:00+08:00
 draft: false
 comment: true
 description: "在 Go 语言中，将 byte 转换为 int 时是否涉及字节序（endianness）？我可以直接使用 `int(byte_var)` 进行转换吗？"
