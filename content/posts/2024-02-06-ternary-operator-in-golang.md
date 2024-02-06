@@ -1,7 +1,7 @@
 ---
 title: "Go 中如何实现三元运算符？Rust 和 Python 是怎么做的？"
-date: 2024-02-02T12:48:33+08:00
-draft: true
+date: 2024-02-06T08:00:00+08:00
+draft: false
 comment: true
 description: "什么是三元运算符？在其他一些编程语言中，如 C 语言，三元运算符是一种可以用一行代码实现条件选择的简便方法。"
 ---
