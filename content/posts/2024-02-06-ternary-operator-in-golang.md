@@ -1,5 +1,5 @@
 ---
-title: "Go 中如何实现三元运算符？Rust 和 Python 是怎么做的？"
+title: "Go 是否有三元运算符？Rust 和 Python 是怎么做的？"
 date: 2024-02-06T08:00:00+08:00
 draft: false
 comment: true
@@ -10,7 +10,7 @@ description: "什么是三元运算符？在其他一些编程语言中，如 C 
 
 > 嗨，大家好！本文是系列文章 Go 技巧第十四篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 
-今天来聊聊在 Go 语言中如何实现类似三元运算符的功能。
+今天来聊聊在 Go 语言中是否支持三元运算符。这个问题很简单，没有。
 
 首先，什么是三元运算符？
 
@@ -210,8 +210,6 @@ int main() {
 
 ## 总结
 
-本文介绍 Go 中三元运算符的最佳实践。我们通过 `if-else` 语句或立即执行的匿名函数等方式来实现类似的功能。
-
-除此以外，可以根据你的需要和你觉得哪种方法更容易理解来选择使用。
+本文主要就 Go 中三元运算符展开讨论，从简单 `if-else` 语句、到基于匿名函数的单行表达式、及泛型抽象 If 函数等方式来实现类似的功能。当然，我没有建议使用这些方式，在没有内置支持的情况下，`if-else` 的写法就挺好的。
 
 博文地址：[Go 中如何实现三元运算符？Rust 和 Python 是怎么做的？](https://www.poloxue.com/posts/2024-02-06-ternary-operator-in-golan/)
