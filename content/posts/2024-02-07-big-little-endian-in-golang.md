@@ -111,6 +111,8 @@ func main() {
 }
 ```
 
+我们使用 `binary.LittleEndian` 和 `binary.BigEndian` 完成小端和大端字节向 `uint32` 的转换。
+
 输出:
 
 ```bash
