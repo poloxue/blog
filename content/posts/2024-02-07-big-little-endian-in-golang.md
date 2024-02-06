@@ -46,7 +46,7 @@ description: "在 Go 语言中，将 byte 转换为 int 时是否涉及字节序
 var byteVar byte = 0x78
 intVar := int(byteVar)
 ```
-我们将一个 byte 变量转换为 int 类型，byte 只占用一个字节，所以没有字节序的问题。当然，一定要说有字节许，也可以。毕竟，将 byte 转为 int 时，其实是将 byte 数值存在 int 低位，而不是高位。
+我们将一个 byte 变量转换为 int 类型，byte 只占用一个字节，所以没有字节序的问题。当然，一定要说有字节序，也可以。毕竟，将 byte 转为 int 时，其实是将 byte 数值存在 int 低位，而不是高位。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-07-big-little-endian-in-golang-05-v1.png)
 
