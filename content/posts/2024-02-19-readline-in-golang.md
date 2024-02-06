@@ -31,7 +31,6 @@ with open('filename.txt', 'r') as file:
         line = file.readline()
 ```
 
-
 那么，Go 语言中，如何按行读取文件呢？
 
 本文将基于这个主题展开，介绍 Go 如何按行读取文件。重点在于 `bufio.Reader` 和 `bufio.Scanner`  的使用。后面考虑再重点写一篇如何处理大文件的文章。
