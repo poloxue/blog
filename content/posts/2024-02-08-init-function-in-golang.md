@@ -1,7 +1,7 @@
 ---
 title: "Go 中的 init 如何用？它的常见应用场景有哪些呢？"
-date: 2024-02-03T17:26:50+08:00
-draft: true
+date: 2024-02-18T08:00:00+08:00
+draft: false
 comment: true
 description: "Go 中有一个特别函数 `init()` 函数，它在 Go 中扮演着一个特殊的角色，可用于包的一些初始化操作。"
 ---
