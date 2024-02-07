@@ -6,6 +6,12 @@ comment: true
 description: "Go 中有一个特别函数 `init()` 函数，它在 Go 中扮演着一个特殊的角色，可用于包的一些初始化操作。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-01.png)
+
+> 嗨，大家好！我是波罗学。
+>
+> 本文是系列文章 Go 技巧第十六篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
+
 Go 中有一个特别的 `init()` 函数，它主要用于包的初始化。`init()` 函数在包被引入后会被自动执行。如果在 `main` 包中，它也会在 `main()` 函数之前执行。
 
 本文将以此为主题，介绍 Go 中 `init()` 函数的使用和常见使用场景。还有，我在工作中更多看到的是 `init()` 函数的滥用。
@@ -13,6 +19,8 @@ Go 中有一个特别的 `init()` 函数，它主要用于包的初始化。`ini
 ## `init()` 函数的执行时机
 
 首先，`init()` 的执行时机处于包级别变量声明和 main() 函数执行之间。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-02.png)
 
 这意味着在包中声明的全局变量，如果附带初始化表达式，这些表达式将在任何 `init()` 函数执行之前进行初始化。
 
@@ -46,9 +54,11 @@ You're 3 years old
 
 这个顺序是符合我们预期的。
 
-## `init()` 函数与被引入包的 `init()` 函数
+## 与被引入包的 `init()` 函数
 
-如果一个包导入了其他包，被导入包的初始化 `init()` 则会先于导入它的包 `init` 函数前执行。
+如果一个包导入了其他包，被导入包的初始化 `init()` 则会先于导入它的包的变量初始化和 `init` 函数前执行。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-03.png)
 
 举例来说明吧！
 
@@ -63,6 +73,13 @@ import (
     "fmt"
     _ "demo/sub"
 )
+
+var age = GetAge()
+
+func GetAge() int {
+  fmt.Println("main initialize variables.")
+  return 18
+}
 
 func init() {
     fmt.Println("main package init")
@@ -81,6 +98,13 @@ package sub
 
 import "fmt"
 
+var age = GetAge()
+
+func GetAge() int {
+  fmt.Println("sub initialize variables.")
+  return 18
+}
+
 func init() {
     fmt.Println("sub package init")
 }
@@ -92,7 +116,9 @@ func init() {
 当你运行 `main.go` 时，输出将会按照以下顺序出现：
 
 ```
+sub initialize variables.
 sub package init
+main initialize variables.
 main package init
 main function
 ```
@@ -108,6 +134,8 @@ main function
 
 一个包其实可有多个 `init()`，无论是在分部在包中的同一个文件中还是多个文件中。如果分布在多个文件中，执行顺序通常是按照文件名的字典顺序。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-04.png)
+
 为说明这个问题，我们首先修改 `sub.go` 文件，内容如下：
 
 ```go
@@ -117,12 +145,19 @@ package sub
 
 import "fmt"
 
-func init() {
-    fmt.Println("sub.go init 1")
+var age = GetAge()
+
+func GetAge() int {
+  fmt.Println("sub initialize variables.")
+  return 18
 }
 
 func init() {
-    fmt.Println("sub.go init 2")
+    fmt.Println("sub init 1")
+}
+
+func init() {
+    fmt.Println("sub init 2")
 }
 ```
 
@@ -135,17 +170,27 @@ package sub
 
 import "fmt"
 
+var age = GetAge1()
+
+func GetAge1() int {
+  fmt.Println("sub1 initialize variables.")
+  return 18
+}
+
 func init() {
-    fmt.Println("sub1.go init")
+    fmt.Println("sub1 init")
 }
 ```
 
 输出：
 
 ```bash
-sub.go init 1
-sub.go init 2
-sub1.go init
+sub initialize variables.
+sub init 1
+sub init 2
+sub1 initialize variables.
+sub1 init
+main initialize variables.
 main package init
 main function
 ```
@@ -155,6 +200,8 @@ main function
 ## `init()` 的使用场景
 
 `init()` 函数通常用于进行一些必要的设置或初始化操作，例如初始化包级别的变量与命令行参数、配置加载、环境检查、甚至注册插件等。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-05.png)
 
 项目开发中，组件依赖管理通常比较令人头疼。但一些简单的依赖关系，即使没有如 `wire` 这样依赖注入工具的加持，通过 `init` 也可管理。
 
@@ -296,6 +343,8 @@ func main() {
 
 我这里不得不提一些注意点。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-06.png)
+
 ### 启动耗时
 
 首先，由于 `init()` 函数在程序启动时自动执行，这就导致它会增加程序启动时间，特别是一些组件初始化耗时较长。
@@ -323,3 +372,5 @@ func main() {
 最后，希望这篇文章能帮助你在更好地理解和使用 Go 的 `init()` 函数上起到一定的助力。
 
 感谢阅读。
+
+博客地址：[Go 中的 init 如何用？它的常见应用场景有哪些呢？](https://www.poloxue.com/posts/2024-02-08-init-function-in-golang)
