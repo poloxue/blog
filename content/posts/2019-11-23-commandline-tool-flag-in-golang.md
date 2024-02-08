@@ -24,7 +24,7 @@ tags: ["Golang"]
 
 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
 
-举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management by go）。
+举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management using go）。
 
 命令行的帮助信息如下：
 
