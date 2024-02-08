@@ -469,7 +469,7 @@ flag 内置支持能满足大部分的需求，但某些场景，需要自定义
 更多与命令行处理相关的库，可以打开 awesome-go#command-line 命令行一节查看，star 最多的是 spf13/cobra 和 urfave/cli ，与 flag / pflag 相比，它们更加复杂，是一个完全的全功能的框架。
 有兴趣都可以了解下。
 目标案例 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
-举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management by go）。
+举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management using go）。
 命令行的帮助信息如下：
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments.</description></item><item><title>详细介绍 Go 中如何实现 bitset</title><link>https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/</link><pubDate>Thu, 07 Nov 2019 19:37:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/</guid><description>最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
 在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
