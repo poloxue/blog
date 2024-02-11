@@ -6,7 +6,7 @@ comment: true
 description: ""
 ---
 
-我们知道，基于 HTTP 轮询的通信模式不仅仅是浪费服务器资源，而且还降低了用户体验。直到 2008 年，WebSocket 的出现，才使这一切发生改变。因为，WebSocket 提供实时、双向通信，极大地提高了交互性和效率。
+我们知道，基于 HTTP 轮询的通信模式不仅仅是浪费服务器资源，而且还降低了用户体验。这种情况，直到 2008 年 WebSocket 的出现，才有所改变。WebSocket 提供实时、双向通信，极大地提高了交互性和效率。
 
 同时，在 2009 年，Go 语言被开发出来，它有着优秀的并发特性，和 WebSocket 配合，天然为构建实时通信应用提供了更多可能。
 
@@ -18,6 +18,7 @@ description: ""
 - WebSocket 与传统 HTTP 轮询和长轮询的比较。
 
 ## 3. Go 语言与 WebSocket
+
 - 介绍 Go 语言的并发模型，特别是 goroutine 和 channel，以及它们如何适用于处理 WebSocket 连接。
 - 推荐 Go 语言中处理 WebSocket 的库（如 gorilla/websocket）。
 
