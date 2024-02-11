@@ -8,13 +8,15 @@ tags: ["Golang"]
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-26-commandline-flag-extend-new-type-01.png)
 
-[上篇文章](https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/) 说到，除布尔类型 `Flag`，flag 支持的还有整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
+[上篇文章](https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/) 说到，flag 支持的类型有布尔类型、整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
 
-flag 内置支持能满足大部分的需求，但某些场景，需要自定义解析规则。一个优秀的库肯定要支持扩展的。本文将介绍如何为 flag 扩展一个新的类型支持？
+一般情况下，flag 内置类型能满足绝大部分的需求，但某些场景，我们要自定义解析规则。一个优秀的库肯定要支持扩展的。
+
+本文将介绍如何为 flag 扩展一个新的类型支持？
 
 # 扩展目标
 
-在 `gvg` 这个小工具中，`list` 子命令支持获取 Go 的版本列表。但版本的信息来源有多处，比如 `installed`（已安装）、`local`（本地仓库）和 `remote`（远程仓库）。
+上文中，假设我们在开发一个 `gvg` 命令行工具。它其中的 `list` 子命令支持获取 Go 的版本列表。但 Go 版本来源信息有多处，比如 `installed`（已安装）、`local`（本地仓库）和 `remote`（远程仓库）。
 
 查看下 `list` 的帮助信息，如下：
 
@@ -29,7 +31,7 @@ OPTIONS:
    --origin value  the origin of version information , such as installed, local, remote (default: "installed")
 ```
 
-可以看出，`list` 子命令支持一个 `Flag` 选项，`--origin`。它用于指定版本信息的来源，允许值的范围是 `installed`、`local` 和 `remote`。
+从帮助信息中可知，`list` 支持一个 `Flag` 选项，`--origin`。它用于指定版本信息的来源，允许值的范围是 `installed`、`local` 和 `remote`。
 
 如果要求不严格，用 `StringVar` 也可以实现。但问题是，使用 `String`，即使输入不在指定范围也能成功解析，不够严谨。虽说在获取后也可以检查，但还是不够灵活、可配置型也差。
 
@@ -39,9 +41,9 @@ OPTIONS:
 
 如何展一个新类型呢？
 
-可以参考 flag 包内置类型的实现思路，比如 `flag.DurationVar`。`Duration` 不是基础类型，解析结果是存放到了 `time.Duration` 类型中，可能更有参考价值。
+参考 flag 包内置类型的实现思路，如 `flag.DurationVar`。`Duration` 不是基础类型，解析结果是存放到了 `time.Duration` 类型中，可能有参考价值。
 
-进入到 `flag.DurationVar` 查看源码，如下：
+我们进入 `flag.DurationVar` 查看源码，如下：
 
 ```go
 func DurationVar(p *time.Duration, name string, value time.Duration, usage string) {
@@ -123,7 +125,8 @@ type stringEnumValue struct {
 	p   *string
 }
 ```
-名为 `StringEnumValue`，即字符串枚举。它有 `options` 和 `p` 两个成员，`options` 指定一定范围的值，`p` 是 `string` 指针，保存解析结果的变量的地址。
+
+我们创建了新类型 - `stringEnumValue`，即字符串枚举。它有 `options` 和 `p` 两个成员，`options` 指定一定范围的值，`p` 是 `string` 指针，保存解析结果的变量的地址。
 
 下面定义创建 `StringEnumValue` 变量的函数 `newStringEnumValue`，代码如下：
 
