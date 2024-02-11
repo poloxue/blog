@@ -8,6 +8,8 @@ description: "今天介绍一个 TUI 库 - Bubble Tea，一个小巧但强大的
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-19-tui-library-bubble-tea-in-golang-01.png)
 
+嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
+
 今天介绍一个 TUI 库 - [Bubble Tea](https://github.com/charmbracelet/bubbletea)，一个小巧但强大的文本用户界面（TUI）框架，基于 Go 语言开发。
 
 ## 什么是 TUI？
