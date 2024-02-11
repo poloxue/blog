@@ -116,9 +116,19 @@ func main() {
 
 现在，理解起来是不是非常简单了。
 
+## 一个小游戏：贪吃蛇
+
+基于 Bubble Tea 框架，开发了一个非常简单粗糙的贪吃蛇游戏，不会增加蛇的长度，效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-19-tui-library-bubble-tea-in-golang-12.gif)
+
+S 表示 `snake`，F 表示 Food，通过 w -> up, s -> donw, a -> left, d -> right 控制方向。
+
+代码地址：[贪吃蛇游戏](https://gist.github.com/poloxue/f5478b535f9bf507bc3cc408332c2090)。有兴趣可自行扩展。
+
 ## 更多示例
 
-我们通过一个简单的计数案例解释了 Bubble Tea 的使用。如果想了解它的更多能力，可参考 Bubble Tea 源码中的 examples 了解它更多的能力。
+我们通过一个简单的计数案例解释了 Bubble Tea 的使用。如果想了解它的更多能力，可参考 Bubble Tea 源码中的 [examples](https://github.com/charmbracelet/bubbletea/tree/master/examples/) 了解它更多的能力。
 
 来自仓库中的一些案例效果图：
 
@@ -130,16 +140,6 @@ func main() {
 更多查看：[bubble tea's examples](https://github.com/charmbracelet/bubbletea/tree/master/examples)。
 
 此外，仓库中还提供了[教程](https://github.com/charmbracelet/bubbletea/tree/master/tutorials/)，帮助我们理解如何使用这个框架构建终端应用程序。
-
-## 一个小游戏：贪吃蛇
-
-基于 Bubble Tea 框架，开发了一个非常简单粗糙的贪吃蛇游戏，不会增加蛇的长度，效果如下：
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-19-tui-library-bubble-tea-in-golang-12.gif)
-
-S 表示 `snake`，F 表示 Food，通过 w -> up, s -> donw, a -> left, d -> right 控制方向。
-
-代码地址：[贪吃蛇游戏](https://gist.github.com/poloxue/f5478b535f9bf507bc3cc408332c2090)。有兴趣可自行扩展。
 
 ## 其他 TUI 框架
 
