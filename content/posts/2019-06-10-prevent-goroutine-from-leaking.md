@@ -402,13 +402,3 @@ the number of goroutines: 2
 
 博文地址：[如何防止你的 Goroutine 泄露](https://www.poloxue.com/posts/2019-06-10-prevent-goroutine-from-leaking/)
 
-# 参考资料
-
-[Concurrency In Go](https://www.oreilly.com/library/view/concurrency-in-go/9781491941294/)  
-[Goroutine leak](https://medium.com/golangspec/goroutine-leak-400063aef468)  
-[Leaking-Goroutines](https://www.openmymind.net/Leaking-Goroutines/)  
-[Go Concurrency Patterns: Context](https://blog.golang.org/context)  
-[Go Concurrency Patterns: Pipelines and cancellation](https://blog.golang.org/pipelines)  
-[make goroutine stay running after returning from function](https://stackoverflow.com/questions/37142494/make-goroutines-stay-running-after-returning-from-function)  
-[Never start a goroutine without knowing how it will stop](https://dave.cheney.net/2016/12/22/never-start-a-goroutine-without-knowing-how-it-will-stop)  
-
