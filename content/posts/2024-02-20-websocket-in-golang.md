@@ -28,6 +28,8 @@ WebSocket 协议是一种在单个TCP连接上进行全双工通信的网络协�
 
 ## WebSocket 的数据帧
 
+待补充！
+
 ## Go 与 WebSocket
 
 Go 的并发主要是围绕 goroutine 和 channel 构建的，非常适合开发如 websocket 这类需要高并发处理能力的应用。
@@ -38,7 +40,74 @@ Go 的并发主要是围绕 goroutine 和 channel 构建的，非常适合开发
 
 ## Go 中的 WebSocket 库
 
-在 Go 的生态系统里，WebSocket 相关的库有几个，最著名和使用广泛使用的是 gorilla/websocket。它被广泛认为是 Go 中最稳定和功能丰富的WebSocket库。
+在 Go 的生态系统里，WebSocket 相关的库有几个。而最著名和使用广泛使用的是 gorilla/websocket，它被广泛认为是 Go 中最稳定和功能丰富的WebSocket库，支持 WebSocket 协议中的各种帧类型，如控制帧（ping/pong/close）和数据帧（text/binary）。而且，它还允许对 WebSocket 连接的细粒度配置，以满足不同场景需求。
+
+Go 中其他比较出名的 Websocket 库还有如 noghr.io/websocket
+
+### 控制帧（Ping/Pong/Close）的处理
+
+*Ping/Pong消息**：`gorilla/websocket`自动处理Ping和Pong控制消息。当库接收到Ping消息时，会自动回复Pong消息。此行为确保了连接的活性，无需开发者手动干预。如果需要在接收到Ping或Pong消息时执行特定的操作，可以设置对应的处理器：
+```go
+conn.SetPingHandler(func(appData string) error {
+    // 处理接收到的Ping消息
+    return nil
+})
+  
+conn.SetPongHandler(func(appData string) error {
+    // 处理接收到的Pong消息
+    return nil
+})
+```
+
+**Close消息**：当对端发送Close消息时，`gorilla/websocket`会自动回复Close消息以完成关闭握手。开发者可以通过`CloseHandler`自定义关闭过程中的逻辑：
+```go
+conn.SetCloseHandler(func(code int, text string) error {
+    // 自定义处理关闭逻辑
+    return nil
+})
+```
+
+### 数据帧（Text/Binary）的处理
+
+**发送和接收文本消息**：使用`WriteMessage`方法发送文本消息，使用`ReadMessage`或`NextReader`方法接收消息。
+```go
+err := conn.WriteMessage(websocket.TextMessage, []byte("Hello"))
+
+_, message, err := conn.ReadMessage()
+```
+
+**发送和接收二进制消息**：类似于文本消息，但在调用`WriteMessage`方法时指定消息类型为`websocket.BinaryMessage`。
+
+```go
+err := conn.WriteMessage(websocket.BinaryMessage, binaryData)
+```
+
+### 连接的细粒度配置
+
+`gorilla/websocket`提供了多种方式来配置WebSocket连接，包括调整缓冲区大小、设置读写超时、自定义HTTP头等。
+
+**读写缓冲区大小**：在创建连接时，可以通过`Upgrader`结构体调整默认的I/O缓冲区大小：
+```go
+var upgrader = websocket.Upgrader{
+    ReadBufferSize:  1024,
+    WriteBufferSize: 1024,
+}
+```
+**调整握手过程中的参数**：`Upgrader`还允许开发者在握手过程中设置诸如检查来源、自定义响应头等参数，以支持更复杂的场景：
+```go
+upgrader.CheckOrigin = func(r *http.Request) bool {
+    // 检查来源逻辑
+    return true
+}
+```
+
+**设置读写超时**：为防止慢连接或死连接，可以为读操作和写操作设置超时：
+```go
+conn.SetReadDeadline(time.Now().Add(readTimeout))
+conn.SetWriteDeadline(time.Now().Add(writeTimeout))
+```
+
+这些配置项为我们提供了强大灵活的提升 websocket 通信质量的能力。
 
 ## 实现 WebSocket 服务器
 
@@ -48,6 +117,7 @@ Go 的并发主要是围绕 goroutine 和 channel 构建的，非常适合开发
   - 解释如何处理并发连接，包括使用 goroutine 管理每个 WebSocket 连接。
 
 ## 实现 WebSocket 客户端
+
 - 展示如何创建一个简单的 WebSocket 客户端（可以是 Web 前端使用 JavaScript，也可以是 Go 客户端）。
   - 对于 Web 客户端，展示如何使用原生 WebSocket API。
   - 对于 Go 客户端，展示如何使用相同或不同的库连接到 WebSocket 服务器。
