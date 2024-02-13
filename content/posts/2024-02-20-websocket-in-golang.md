@@ -12,11 +12,11 @@ description: "我们知道，基于 HTTP 轮询的通信模式不仅仅是浪费
 
 WebSocket 提供实时、双向通信，极大地提高了交互性和效率。而且，2009 年，Go 语言被开发出来，它有着优秀的并发特性，和 WebSocket 配合，天然为构建实时通信应用提供了更多可能。
 
-那让我们今天就来聊聊这个话题，从 WebSocket 以及如何在 Go 中使用它。
+那让我们今天就来聊聊这个主题，从 WebSocket 以及如何在 Go 中使用它。
 
 ## WebSocket 是什么？
 
-WebSocket协议是一种在单个TCP连接上进行全双工通信的网络协议，它允许服务器和客户端之间进行双向实时通信。WebSocket协议在 2011 年成为国际标准，基本所有浏览都对它提供了支持。它是实现网页或应用中实时通信功能的关键技术之一。
+WebSocket 协议是一种在单个TCP连接上进行全双工通信的网络协议，它允许服务器和客户端之间进行双向实时通信。WebSocket协议在 2011 年成为国际标准，基本所有浏览都对它提供了支持。它是实现网页或应用中实时通信功能的关键技术之一。
 
 全双工通信：WebSocket允许数据同时在两个方向上流动，即服务器可以随时向客户端发送消息，客户端也可以随时向服务器发送消息。
 
@@ -32,15 +32,20 @@ Go 的并发主要是围绕 goroutine 和 channel 构建的，非常适合开发
 
 我们可将每个 WebSocket 连接放到一个goroutine 中处理，这样即使某个连接的数据传输被阻塞，也不会影响到其他连接。
 
-而对于不同 WebSocket 连接间的数据，则非常适合通过 channel 进行传递。
+而对于不同 WebSocket 连接间的数据共享，则非常适合通过 channel 进行传递。
 
-## 4. 实现 WebSocket 服务器
+## Go 中的 WebSocket 库
+
+在 Go 的生态系统里，WebSocket 相关的库有几个，最著名和使用广泛使用的是 gorilla/websocket。它被广泛认为是 Go 中最稳定和功能丰富的WebSocket库。
+
+## 实现 WebSocket 服务器
+
 - 详细介绍如何使用 Go 语言和选定的库创建一个基本的 WebSocket 服务器。
   - 设置项目和安装依赖。
   - 编写 WebSocket 服务器代码，包括升级 HTTP 连接到 WebSocket、接收和发送消息等。
   - 解释如何处理并发连接，包括使用 goroutine 管理每个 WebSocket 连接。
 
-## 5. 实现 WebSocket 客户端
+## 实现 WebSocket 客户端
 - 展示如何创建一个简单的 WebSocket 客户端（可以是 Web 前端使用 JavaScript，也可以是 Go 客户端）。
   - 对于 Web 客户端，展示如何使用原生 WebSocket API。
   - 对于 Go 客户端，展示如何使用相同或不同的库连接到 WebSocket 服务器。
