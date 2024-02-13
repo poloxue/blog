@@ -282,7 +282,7 @@ func Test_Query(t *testing.T) {
 
 测试执行输出如下：
 
-```
+```bash
 === RUN   Test_Query
 --- FAIL: Test_Query (5.01s)
     leaktest.go:162: leaktest: context canceled
