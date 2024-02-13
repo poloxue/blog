@@ -1,16 +1,20 @@
 ---
 title: "基于 bufio 包的 Reader 和 Scanner 按行（块）读取文件"
-date: 2024-02-08T12:09:49+08:00
-draft: true
+date: 2024-02-21T08:00:00+08:00
+draft: false
 comment: true
 description: "在编程时，按行读取文件是一个很常规的需求，它相较于一次性读出整个文件，有着诸如内存效率高、处理速度快、实时性高、可扩展性强等优势。"
 ---
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-01.png)
 
 本文将介绍 Go 如何按行读取文件，基于此再逐步展开到如何按块读取文件。
 
 ## 引言
 
 按行读取文件相较于一次性载入，有着很多优势，如内存效率高、处理速度快、实时性高、可扩展性强和灵活度高等，特别是当遇到处理大文件时，这些优势会更加明显。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-02.png)
 
 稍微展开说下各个优势吧。
 
@@ -93,13 +97,19 @@ So, what’s Duck Typing?
 
 要提醒的是，`ReadLine` 读取的内容不包括行尾符（如 "\r\n" 或 "\n"）。也就是说，当读取到一行数据时，要自行处理可能的行尾符差异，尤其是在处理来自不同操作系统的文本数据时。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-03.png)
+
 还有，`ReadLine` 省略的第二个参数，名为 `isPrefix`，它表示是否是前缀的意思，如果 `isPrefix` 为 true 表示返回的 `line` 被截断了，而截断原因很可能是行的内容大小大于缓冲区。我们可以在初始化时通过 `bufio.NewReaderSize(rd io.Reader, size int)` 调整默认缓冲区大小。
 
 不过，这并非最优的解法。
 
 ### 使用 `Reader.ReadString`
 
-解决大行读取被截断的问题，还可用 `bufio.Reader` 的另外一个方法 `ReadString` 解决。它与 `ReadLine` 类似，不过在单个 buffer 不足以容纳单行内容时，它会多次读取，直到找到目标分割符，合并多次读取的内容。
+解决大行读取被截断的问题，还可用 `bufio.Reader` 的另外一个方法 `ReadString` 解决。如下是
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-07-v1.gif)
+
+它与 `ReadLine` 类似，不过在单个 buffer 不足以容纳单行内容时，它会多次读取，直到找到目标分割符，合并多次读取的内容。
 
 示例代码：
 
@@ -117,7 +127,10 @@ for {
 }
 ```
 
-重点就是那句 `reader.ReadString('\n')`，它的入参是分割符，即 '\n'，而返回值分别读取内容（line）和错误（err)。
+重点就是那句 `reader.ReadString('\n')`，它的入参是分割符（delim），即 '\n'，而返回值分别读取内容（line）和错误（err)。
+
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-04.png)
 
 相较于 `ReadLine`，`ReadString` 显然是更加灵活，无大行读取被截断的问题，而且分割符也可自定义。但只支持单一字节的分割符自定义，还不够完美，如我们想按多个字符（如 `.|,` 等等）分割文本，或者按照大小分块读取，就没有那么方便了。
 
@@ -183,6 +196,8 @@ scanner.Buffer(buf, maxCapacity)
 
 为了更好理解上面的缓冲区配置，我简单介绍下 `bufio.Scanner` 是的 `Scan` 文件读取逻辑以及缓冲区是如何用的。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-06.gif)
+
 `bufio.Scanner` 内部有一个 `s.buf` 缓冲区，当我们调用 `scannder.Scan` 方法时，它会尝试用 `io.Reader`（即示例中的 `file` 文件描述符）中读取一个缓存大小的内容。它的具体实现是在 `bufio.Scanner` 的 `Scan` 方法中。如果当缓冲区大小不足以容纳一个完整的 token，Scanner 会自动增加缓冲区的大小。
 
 
@@ -196,11 +211,15 @@ scanner.Buffer(buf, maxCapacity)
 
 我们可以尝试解放一些思路，是否还有其他方式定义一次读取内容呢？我们只要保证读取的内容有实际含义即可，如按一句话，一个单词或者固定的块大小的切割，而非是纠结于是不是一整行。
 
-### 切割方式定义
+### 分割规则定义
 
-在正式介绍切割方式前，先说明下什么是完整 token。前面一直在提 token，如 `MaxScanTokenSize` 定义的就是 token 最大 size。
+在正式介绍切割规则前，先说明下什么是完整 token。前面一直在说 token，如 `MaxScanTokenSize` 定义的就是 token 最大 size。
 
-token 其实就是我们对一次读取内容的定义，如一行文本，一个单词，或者一个固定大小的块。简言之，修改完整 token 的定义和修改文本切割方式是一个意思。而 `bufio.Scanner` 是一个非常灵活的工具，它提供了自定义切割方式的方式 - `Scanner.Split` 函数。
+token 定义其实就是对一次读取内容的定义，如一行文本，一个单词，或者一个固定大小的块。相对于特定分隔符，分割规则更加灵活，可以定义任意的分割方式。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-05.png)
+
+而 `bufio.Scanner` 是一个非常灵活的工具，它提供了自定义切割文本规则的函数 - `Scanner.Split`。
 
 ```go
 // 参数
