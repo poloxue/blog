@@ -107,7 +107,7 @@ So, what’s Duck Typing?
 
 ### 使用 `Reader.ReadString`
 
-解决大行读取被截断的问题，还可用 `bufio.Reader` 的另外一个方法 `ReadString` 解决。如下是
+解决大行读取被截断的问题，还可用 `bufio.Reader` 的另外一个方法 `ReadString` 解决。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-07-v1.gif)
 
