@@ -100,7 +100,7 @@ dirEntry := fs.FileInfoToDirEntry(info)
 
 继续往下看吧，我将介绍一个更底层的方法。
 
-## `os.File` 的 `Readdir` 方法
+## `os.File` 的 `ReadDir` 方法
 
 我们知道 `os.Open` 是用于打开文件的，但其实它也可用于打开目录。如果 `os.Open` 打开的是目录，我们在它返回的 `os.File` 上调用 `ReadDir` 以查看目录内容。
 
