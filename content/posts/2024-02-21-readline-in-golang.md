@@ -8,6 +8,10 @@ description: "在编程时，按行读取文件是一个很常规的需求，它
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-01.png)
 
+> 嗨，大家好！我是波罗学。
+>
+> 本文是系列文章 Go 技巧第十七篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
+
 本文将介绍 Go 如何按行读取文件，基于此会逐步延伸到如何按块读取文件。
 
 ## 引言
