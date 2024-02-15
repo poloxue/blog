@@ -190,11 +190,50 @@ func (f *File) ReadDir(n int) ([]DirEntry, error)
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@emoji/facepalm-v1.png)
 
+还差最后一个内容没有介绍，那就是递归目录遍历。
+
+## 目录的递归遍历 
+
+针对目录的递归遍历，Go 中提供了一个专门的函数，`filepath.Walk`。它可以遍历指定目录下的所有子目录。
+
+示例代码： 
+
+```go
+func main() {
+    err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+        if err != nil {
+            return err
+        }
+        fmt.Println(path)
+        return nil
+    })
+    if err != nil {
+        fmt.Printf("error walking the path %v: %v\n", ".", err)
+    }
+}
+```
+
+我们通过回调函数在遍历过程中处理每个文件。
+
+尽管，它简化了目录的递归遍历，但对于大型或深层次的目录结构，同样存在着提前加载 FileInfo 的问题。故在 Go1.16 版本也引入针对 `DirEntry` 版的 `filepath.WalkDir`。
+
+`filepath.WalkDir` 的函数签名如下：
+
+```go
+func WalkDir(root string, fn fs.WalkDirFunc) error
+```
+
+其中的 `fs.WalkDirFunc` 的定义如下：
+
+```go
+type WalkDirFunc func(path string, d DirEntry, err error) error
+```
+
+可以看到，遍历的回调函数参数是 `DirEntry`，而非 `FileInfo`。我们现在就有了延迟加载文件信息的能力。
+
 ## 总结
 
-在本文中，我们系统介绍了 Go中多种遍历目录文件的方法。从传统的 `ioutil.ReadDir`，到 Go 1.16 引入的 `os.ReadDir`，以及 `os.File` 的 `ReadDir` 方法。每种方法适用于不同的场景，如何选择要取决于你的需求、Go 版本、性能，以及是否需要递归遍历等。
+在本文中，我们系统介绍了 Go中多种遍历目录文件的方法。从传统的 `ioutil.ReadDir`，到 Go 1.16 引入的 `os.ReadDir`，`os.File` 的 `ReadDir` 方法。每种方法适用于不同的场景，如何选择要取决于你的需求、Go 版本、性能。如果你需要递归遍历，也可以使用基于 `DirEntry` 的 `filepath.WalkDir` 实现，提高遍历的性能。
 
-最后，对于目录遍历，还有一个很常见的需求暂未提及，那就是递归目录，这个会放到下期介绍。
-
-感谢阅读，请持续关注我的更多文章。
+最后，感谢阅读，请持续关注我的更多文章。
 
