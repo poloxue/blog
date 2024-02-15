@@ -1,5 +1,5 @@
 ---
-title: "Go 中如何遍历目录？探索几种方法"
+title: "Go 中如何高效遍历目录？探索几种方法"
 date: 2024-02-12T19:39:22+08:00
 draft: true
 comment: true
@@ -8,13 +8,13 @@ description: "遍历目录文件是一个常见的操作，它的使用场景有
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-22-list-directory-in-golang-01.png)
 
-> 嗨，大家好！我是波罗学。
->
-> 本文是系列文章 Go 技巧第十八篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
+> 嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
 
 目录遍历是一个很常见的操作，它的使用场景有如文件目录查看（最典型的应用如 ls 命令）、文件系统清理、日志分析、项目构建等。
 
 本文将尝试逐步介绍在 Go 中几种遍历目录文件的方法，从传统的 `ioutil.ReadDir` 函数开始，逐渐深入。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-22-list-directory-in-golang-02.png)
 
 文中也会提供示例代码、提供一些性能剖析，以便于大家更好地理解。
 
@@ -204,7 +204,7 @@ func main() {
 
 ## 补充一点
 
-在写这篇文章时，我发现 `os.File` 有两个查看目录的方法，分别是 `Readdir` 和 `ReadDir`。功能的区别的新的 `ReadDir` 返回的是 `[]DirEntry`。
+在写这篇文章时，我发现 `os.File` 有两个查看目录的方法，分别是 `Readdir` 和 `ReadDir`。功能的区别的新的 `ReadDir` 返回的是 `[]DirEntry`，而 `Readdir` 其实就是 Go1.16 以前的 `os.File.ReadDir`，它会返回的是 `[]FileInfo`。
 
 它们的函数签名，如下所示：
 
@@ -257,6 +257,10 @@ type WalkDirFunc func(path string, d DirEntry, err error) error
 ```
 
 新函数的遍历回调参数是 `DirEntry`，而非 `FileInfo`。现在，`filepath.WalkDir ` 也有了延迟加载 `FileInfo` 的能力了。
+
+现在，我们再来看下这张图。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-22-list-directory-in-golang-02.png)
 
 ## 总结
 
