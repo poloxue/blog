@@ -91,6 +91,25 @@ func main() {
 
 因为 `DirEntry` 允许按需获取文件详情，即懒加载，而非是遍历目录时立即加载所有文件属性。很多场景下，我们并不需要
 
+我在 MacOS 系统下测试的 `DirEntry` 接口的实际变量类型为 `os.unixDirent`。
+
+它的源码如下：
+
+```go
+func (d *unixDirent) Name() string   { return d.name }
+func (d *unixDirent) IsDir() bool    { return d.typ.IsDir() }
+func (d *unixDirent) Type() FileMode { return d.typ }
+
+func (d *unixDirent) Info() (FileInfo, error) {
+	if d.info != nil {
+		return d.info, nil
+	}
+	return lstat(d.parent + "/" + d.name)
+}
+```
+
+我们只有在调用 `Info` 方法时，才会真正通过 `lstat` 发起系统调用。
+
 > 如果你有将旧代码迁移到 `DirEntry` 的需求， Go 1.17 还引入了 `fs.FileInfoToDirEntry` 函数，允许我们将 `FileInfo` 对象转换为 `DirEntry` 对象。
 >
 > ```go
@@ -217,9 +236,9 @@ func main() {
 }
 ```
 
-我们通过回调函数在遍历过程中处理每个文件。
+我们通过遍历的回调函数中在处理每个文件。它简化了目录的递归遍历，但对于大型或深层次的目录结构，同样存在着提前加载 FileInfo 的问题。
 
-尽管，它简化了目录的递归遍历，但对于大型或深层次的目录结构，同样存在着提前加载 FileInfo 的问题。故在 Go1.16 版本也引入针对 `DirEntry` 版的 `filepath.WalkDir`。
+针对这个问题，在 Go1.16 版本也引入了基于 `DirEntry` 版的 `filepath.WalkDir` 函数。
 
 `filepath.WalkDir` 的函数签名如下：
 
@@ -227,13 +246,13 @@ func main() {
 func WalkDir(root string, fn fs.WalkDirFunc) error
 ```
 
-其中的 `fs.WalkDirFunc` 的定义如下：
+`fs.WalkDirFunc` 的定义如下：
 
 ```go
 type WalkDirFunc func(path string, d DirEntry, err error) error
 ```
 
-可以看到，遍历的回调函数参数是 `DirEntry`，而非 `FileInfo`。我们现在就有了延迟加载文件信息的能力。
+新函数的遍历回调函数参数是 `DirEntry`，而非 `FileInfo`。现在，`filepath.WalkDir ` 也有了延迟加载 `FileInfo` 的能力了。
 
 ## 总结
 
