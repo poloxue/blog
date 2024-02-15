@@ -252,7 +252,7 @@ func WalkDir(root string, fn fs.WalkDirFunc) error
 type WalkDirFunc func(path string, d DirEntry, err error) error
 ```
 
-新函数的遍历回调函数参数是 `DirEntry`，而非 `FileInfo`。现在，`filepath.WalkDir ` 也有了延迟加载 `FileInfo` 的能力了。
+新函数的遍历回调参数是 `DirEntry`，而非 `FileInfo`。现在，`filepath.WalkDir ` 也有了延迟加载 `FileInfo` 的能力了。
 
 ## 总结
 
