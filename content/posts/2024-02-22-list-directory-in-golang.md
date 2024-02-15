@@ -6,6 +6,8 @@ comment: true
 description: "遍历目录文件是一个常见的操作，它的使用场景有如文件目录产看（ls 命令）、文件系统清理、日志分析、项目构建等多种任务。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-22-list-directory-in-golang-01.png)
+
 遍历目录文件是一个常见的操作，它的使用场景有如文件目录查看（最典型的应用如 ls 命令）、文件系统清理、日志分析、项目构建等。
 
 本文将尝试逐步介绍在 Go 中几种遍历目录文件的方法，从传统的 `ioutil.ReadDir` 函数开始，逐渐深入。
@@ -63,7 +65,7 @@ func main() {
 func ReadDir(name string) ([]DirEntry, error)
 ```
 
-`os.ReadDir` 函数返回一个按文件名排序的 `DirEntry` 类型切片。还有，如果在读取目录项时遇到错误，它也会尽量返回已读取的目录项。这种设计同时兼顾了效率和错误处理的需要。
+`os.ReadDir` 函数返回一个按文件名排序的 `DirEntry` 类型切片。如果在读取目录项时遇到错误，它也会尽量返回已读取内容。这种设计同时兼顾了效率和错误处理的需要。
 
 示例代码：
 
@@ -83,20 +85,20 @@ func main() {
 
 `os.ReadDir` 相比于旧方法 `ioutil.ReadDir` 的有什么优势？为什么丢弃 `ioutil.ReadDir` 而引入这个新的 `os.ReadDir`。
 
-如果对比两者源码，会发现差异主要在返回的类型上。`os.ReadDir` 返回的 `DirEntry` 接口类型的 Slice 而非 `FileInfo` 类型 Slice。它不仅仅简洁，还具有性能优势。
+如果对比两者源码，会发现差异主要在返回的类型上。`os.ReadDir` 返回的 `[]DirEntry` 而非 `[]FileInfo`。它还具有性能优势。
 
-为什么这么说？
+为什么？
 
-因为 `DirEntry` 接口允许按需获取文件详情，即懒加载，而非是遍历目录时立即加载所有文件属性。
+因为 `DirEntry` 允许按需获取文件详情，即懒加载，而非是遍历目录时立即加载所有文件属性。很多场景下，我们并不需要
 
-如果你有将旧代码迁移到使用 `DirEntry` 的需求， Go 1.17 还引入了 `fs.FileInfoToDirEntry` 函数，允许我们将 `FileInfo` 对象转换为 `DirEntry` 对象。
+> 如果你有将旧代码迁移到 `DirEntry` 的需求， Go 1.17 还引入了 `fs.FileInfoToDirEntry` 函数，允许我们将 `FileInfo` 对象转换为 `DirEntry` 对象。
+>
+> ```go
+> info, _ := os.Stat("somefile")
+> dirEntry := fs.FileInfoToDirEntry(info)
+> ```
 
-```go
-info, _ := os.Stat("somefile")
-dirEntry := fs.FileInfoToDirEntry(info)
-```
-
-看到这，对于认真思考的朋友，可能已经发现我们还有一个问题没解决，即 `os.ReadDir` 不是也不支持分批处理的能力吗？
+看到这，对于认真思考的朋友，或许已经发现我们还有一个问题没解决，即 `os.ReadDir` 不是也不支持分批处理的能力吗？
 
 继续往下看吧，我将介绍一个更底层的方法。
 
@@ -143,11 +145,13 @@ func ReadDir(name string) ([]DirEntry, error) {
 }
 ```
 
-这种方法更底层，提供了更多的灵活性。如我们可以用它实现分批读取文件内容的目标。如何实现呢？
+这种方法更底层，提供了更多的灵活性。我们就可以用它分批读取目标。
 
-核心就是那句的 `dir.Readdir(-1)`，它的入参指定了每次读取文件的数量，而 `-1` 表示读取目录中的所有内容。我们只要将 -1 改为分批读取的数量即可。
+如何实现呢？
 
-分批读取处理的示例代码：
+核心就是那句的 `dir.Readdir(-1)`，它的入参指定了每次读取文件的数量，而 `-1` 表示读取目录的所有内容。我们只要将 -1 改为分批读取的数量即可，多次循环即可。
+
+示例代码：
 
 ```go
 func main() {
