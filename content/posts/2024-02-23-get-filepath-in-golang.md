@@ -1,16 +1,29 @@
 ---
-title: "2024 02 26 Get Filepath in Golang"
+title: "解决 Go 中文件路径的相关问题"
 date: 2024-01-29T19:18:56+08:00
 draft: true
 comment: true
 description: ""
 ---
 
-在Go语言中，获取当前运行文件的目录是一个常见的需求。根据StackOverflow上的讨论，有几种方法可以实现这一目的，每种方法都有其优缺点。
+- 配置和资源文件的路径；
+- 执行命令路径；
+  - exec.LookPath
+    - 不需要 exec.LookPath，直接 filepath.Abs(os.Argv[0])
+  - os.Executable
+    - SymbolLink
+  - 性能
+- 所在目录路径；
+  - os.GetCwd()
+- 源码文件路径；
+  - runtime.Caller(0)
+- filepath.Dir()
+
+获取文件路径是一个常见的需求。
 
 ### 方法一：使用`os.Executable`
 
-从Go 1.8开始，推荐的方法是使用`os.Executable`函数。
+从Go 1.8 开始，推荐的方法是使用 `os.Executable` 函数。
 
 ```go
 ex, err := os.Executable()
