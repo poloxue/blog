@@ -204,7 +204,9 @@ func main() {
 
 ## 补充一点
 
-在写这篇文章时，我发现 `os.File` 有两个查看目录的方法，分别是 `Readdir` 和 `ReadDir`。功能的区别的新的 `ReadDir` 返回的是 `[]DirEntry`，而 `Readdir` 其实就是 Go1.16 以前的 `os.File.ReadDir`，它会返回的是 `[]FileInfo`。
+在写这篇文章时，我发现 `os.File` 有两个查看目录的方法，分别是 `Readdir` 和 `ReadDir`。功能的区别的新的 `ReadDir` 返回的是 `[]DirEntry`，而 `Readdir` 返回的是 `[]FileInfo`。
+
+换句话说，ReadDir 本质上是 Readdir 的升级版。
 
 它们的函数签名，如下所示：
 
@@ -213,13 +215,13 @@ func (f *File) Readdir(n int) ([]FileInfo, error)
 func (f *File) ReadDir(n int) ([]DirEntry, error)
 ```
 
-这算是不支持可选参数但要解决兼容问题采取的措施吗？真的是蚌埠住了。
+这是因为不支持可选参数和重载但要解决兼容问题采取的措施吗？真的是蚌埠住了。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@emoji/facepalm-v1.png)
 
-还差最后一个内容没有介绍，那就是递归目录遍历。
-
 ## 目录的递归遍历 
+
+现在，还差最后一个内容没有介绍，那就是递归目录遍历。
 
 针对目录的递归遍历，Go 中提供了一个专门的函数，`filepath.Walk`。它可以遍历指定目录下的所有子目录。
 
