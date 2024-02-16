@@ -25,6 +25,24 @@ description: ""
     - 确定根目录 - 即设置工作区根目录 pwd 当前目录；
   - 环境变量指定路径；
   - 使用嵌入资源；
+```go
+import (
+    "embed"
+    "io/fs"
+    "log"
+)
+
+//go:embed config/config.json
+var configFS embed.FS
+
+func readConfig() {
+    data, err := fs.ReadFile(configFS, "config/config.json")
+    if err != nil {
+        log.Fatal(err)
+    }
+    // 使用data...
+}
+```
 
 获取文件路径是一个常见的需求。
 
