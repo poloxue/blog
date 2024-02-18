@@ -18,9 +18,13 @@ description: "在使用 Go 开发项目时，估计有不少人遇到过无法�
 
 首先，为什么要获取文件路径？
 
-一般来说，程序在运行时必须准确地读取相关的配置和资源以顺利启动。因此，确定这些信息的存储位置，即获取文件路径，成为了正确访问这些信息的首要步骤，对于构建稳定可靠的应用程序而言至关重要。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-23-get-filepath-in-golang-02.png)
+
+一般来说，程序在运行时必须准确地读取相关的配置和资源以顺利启动。确定这些信息的存储位置，即获取文件路径，成为了正确访问这些信息的首要步骤，对于构建稳定可靠的应用程序而言至关重要。
 
 其次，为什么从动态语言转到 Go，容易被这个问题困扰？
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-23-get-filepath-in-golang-03.png)
 
 与 Go（一种静态语言）相比，动态语言通过直接解释脚本文件而执行的。这一机制使得动态语言在路径获取方面更为直观和易懂。然而，Go语言将源代码编译成独立的二进制可执行文件，这导致可执行文件与源代码间缺乏直接的联系。
 
@@ -52,6 +56,8 @@ WORK=/var/folders/0b/v4r1lzyj0n566qgd8dt_km4c0000gn/T/go-build1458488796
 之前提到了那么多在 Go 中获取可执行文件路径时可能导致的问题，我们就先从如何获取当前执行文件的路径开始吧。
 
 我将介绍实现这个目标的两种方式。
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-23-get-filepath-in-golang-04.png)
 
 ### 命令行参数 `os.Args[0]`
 
@@ -116,6 +122,9 @@ fmt.Println("Real path of executable:", realPath)
 
 大概意思是，通过判断执行文件的运行目录或手动添加环境变量标识当前位于 `go run` 运行模式。如果处理 `go run` 模式下，我们再通过相对于源码文件位置定位其他文件。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-23-get-filepath-in-golang-05.png)
+
+尝试实现下吧。
 
 ```go
 // isGoRun 检查当前是否处于 go run 模式
