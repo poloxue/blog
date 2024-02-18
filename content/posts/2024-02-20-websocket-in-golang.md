@@ -93,7 +93,9 @@ var upgrader = websocket.Upgrader{
     WriteBufferSize: 1024,
 }
 ```
+
 **调整握手过程中的参数**：`Upgrader`还允许开发者在握手过程中设置诸如检查来源、自定义响应头等参数，以支持更复杂的场景：
+
 ```go
 upgrader.CheckOrigin = func(r *http.Request) bool {
     // 检查来源逻辑
