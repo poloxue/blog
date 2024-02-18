@@ -1,5 +1,5 @@
 ---
-title: "如何正确处理 Go 项目中文件路径的相关问题"
+title: "如何正确处理 Go 项目中关于文件路径的问题"
 date: 2024-02-23T08:00:00+08:00
 draft: false
 comment: true
