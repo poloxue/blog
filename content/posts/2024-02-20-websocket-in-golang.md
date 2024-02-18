@@ -47,6 +47,7 @@ Go 中其他比较出名的 Websocket 库还有如 noghr.io/websocket
 ### 控制帧（Ping/Pong/Close）的处理
 
 *Ping/Pong消息**：`gorilla/websocket`自动处理Ping和Pong控制消息。当库接收到Ping消息时，会自动回复Pong消息。此行为确保了连接的活性，无需开发者手动干预。如果需要在接收到Ping或Pong消息时执行特定的操作，可以设置对应的处理器：
+
 ```go
 conn.SetPingHandler(func(appData string) error {
     // 处理接收到的Ping消息
