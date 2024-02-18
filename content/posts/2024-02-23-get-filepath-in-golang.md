@@ -188,7 +188,7 @@ func Caller(skip int) (pc uintptr, file string, line int, ok bool)
 
 这种方式看起来挺不错的，但我不推荐。我的建议是，为项目定义清晰明确的规则来管理配置和资源文件的路径。
 
-## 定义配置和资源的规则
+## 定义明确的路径规则
 
 常见的是用绝对路径规则指定配置和资源文件路径，如 Linux 或其他类 Unix 系统有一套 XDG 基准规则（XDG Base Directory Specification），有兴趣可了解下。
 
