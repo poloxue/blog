@@ -43,14 +43,17 @@ go install github.com/pressly/goose/v3/cmd/goose@latest
 
 ## 演示案例
 
-接下来，我将通过案例逐步演示 Goose 的使用，基于 Goose cli 命令管理这些脚本。我将演示的是通用的 SQL 方式。
+接下来，我将通过案例逐步演绎 Goose 的使用，基于 Goose cli 命令管理这些 SQL 脚本。
 
 ### 创建迁移
 
 假设，现在要为一个项目添加一个用户表。第一步就是创建一个 SQL 迁移脚本。
 
-```bash
+创建命令：
 
+```bash
+$ goose create create_users_table
+2024/02/20 17:31:17 Created new file: 20240220093117_create_users_table.go
 ```
 
 将新表的结构编辑到文件中：

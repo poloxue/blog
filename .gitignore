@@ -4,3 +4,4 @@ resources/_gen/*
 drafts/*
 .DS_Store
 public/*
+nohup.out
