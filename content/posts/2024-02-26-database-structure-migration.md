@@ -1,5 +1,5 @@
 ---
-title: "数据库结构变更方式：增量 VS 差异同步"
+title: "数据库结构变更同步：增量 VS 差异"
 date: 2024-02-20T22:17:31+08:00
 draft: true
 comment: true
