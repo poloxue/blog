@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 19 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>推荐一个可用于快速创建 TUI 应用的框架 - Bubble Tea</title><link>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</link><pubDate>Mon, 19 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：Golang 三方库。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 21 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 如何按行读取（大）文件？尝试 bufio 包提供的几种方式</title><link>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</link><pubDate>Wed, 21 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</guid><description>嗨，大家好！我是波罗学。
+本文是系列文章 Go 技巧第十七篇，系列文章查看：Go 语言技巧。
+本文将介绍 Go 如何按行读取文件，基于此会逐步延伸到如何按块读取文件。
+引言 我们将要介绍的按行读取文件的方式其实是非常适合处理超大文件。
+按行读取文件相较于一次性载入，有着很多优势，如内存效率高、处理速度快、实时性高、可扩展性强和灵活度高等，特别是当遇到处理大文件时，这些优势会更加明显。
+稍微展开说下各个优势吧。
+内存效率高，因为是按行读取，处理完一行就会丢弃，内存占用将大大减少。
+处理速度快，主要体现在逐行处理时，因为无需等待全量数据，能更快开始，而且如果无顺序要求，还可并行计算以最大化利用计算资源，进一步提升处理速度。
+实时性高，因为按行读取，无需一次加载全量数据，自然有 实时性高 的特点，这对于处理实时流数据，如日志数据，非常有用。
+可扩展性强，按行读取这种方式，不仅仅适用于小文件，大文件同样使用，有了统一的处理方式，即使未来数据量膨胀，也易于扩展。
+灵活度高，因为是一行行的处理，如果想停止，随时可以。如果继续之前的流程，我们只要重新启动，从之前的位置继续处理即可。
+按行读取其实只是按块读取的一种特殊形式（分隔符是 \n），自然地，上述的优势也同样适用于按块读取文件。
+本文的重点在于如何使用 GO 实现按行读取，基于的是标准库的 bufio.Reader 和 bufio.Scanner 。
+正式进入主题吧。
+准备一个文本文件 我们先准备一个文本文件 example.txt，内容如下：
+1 2 3 4 5 6 7 This post covers the Golang Interface. Let’s dive into it. Duck Typing To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept. So, what’s Duck Typing? 基于 bufio.Reader Go 中的按行读取文件，首先可通过 bufio 提供的 Reader 类型实现。</description></item><item><title>推荐一个可用于快速创建 TUI 应用的框架 - Bubble Tea</title><link>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</link><pubDate>Mon, 19 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：Golang 三方库。
 今天介绍一个 TUI 库 - Bubble Tea，一个小巧但强大的文本用户界面（TUI）框架，基于 Go 语言开发。
 什么是 TUI？ 什么是 TUI？为了防止可能有人不知道，简单解释一下。
 TUI，全称为文本用户界面（Text-based User Interface），是一种用户界面类型。对之对比的就是 GUI（Graphical User Interface）。我开始还以为 TUI 中的 T 的全称是 terminal。
@@ -6,8 +21,7 @@ TUI 是通过纯文本和基本字符在终端或控制台窗口中展示信息�
 如同我们开发 GUI 应用需要 GUI 框架的帮助，开发 TUI 应用也需要 TUI 框架的帮助，而 Bubble Tea 就是这样一款 TUI 框架。
 使用 Bubble Tea Bubble Tea 受到 The Elm Architecture 的启发，基于这种有趣、功能性强且保持状态的架构来构建终端应用程序。无论是简单的行内应用程序、全窗口应用程序，还是两者的混合，Bubble Tea 都可使用。
 要学会基于 Bubble Tea 开发终端应用，核心要理解它的三个基本部分组成：模型（Model）、更新函数（Update）和视图函数（View）。而 Update 和 View 都是属于 Model 的方法。
-简单解释下它们的作用，如下:</description></item><item><title>Go 中的 init 如何用？它的常见应用场景有哪些呢？</title><link>https://www.poloxue.com/posts/2024-02-18-init-function-in-golang/</link><pubDate>Sun, 18 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-18-init-function-in-golang/</guid><description>嗨，大家好！我是波罗学。
-本文是系列文章 Go 技巧第十六篇，系列文章查看：Go 语言技巧。
+简单解释下它们的作用，如下:</description></item><item><title>Go 中的 init 如何用？它的常见应用场景有哪些呢？</title><link>https://www.poloxue.com/posts/2024-02-18-init-function-in-golang/</link><pubDate>Sun, 18 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-18-init-function-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十六篇，系列文章查看：Go 语言技巧。
 Go 中有一个特别的 init() 函数，它主要用于包的初始化。init() 函数在包被引入后会被自动执行。如果在 main 包中，它也会在 main() 函数之前执行。
 本文将以此为主题，介绍 Go 中 init() 函数的使用和常见使用场景。还有，我在工作中更多看到的是 init() 函数的滥用。
 init() 函数的执行时机 首先，init() 的执行时机处于包级别变量声明和 main() 函数执行之间。
