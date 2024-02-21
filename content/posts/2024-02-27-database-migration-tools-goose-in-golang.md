@@ -6,6 +6,11 @@ comment: true
 description: "我将以这个数据库结构迁移为基础，推荐两个 Go 实现的数据结构同步工具，它们基于的是两种完全不同的实现方式：增量和差异。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-27-database-migration-tools-goose-in-golang-01.png)
+
+
+嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第四篇，系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
+
 上篇文章，我讨论了数据库 schema 同步的两种方式：增量和差异。今天，推荐一个基于 Go 实现的增量同步数据库 schema 的工具库 - goose。我不知道其他人的情况，我工作的很长一段时间内，接触到的这类工具都是采用增量方式实现的。
 
 让我们开始正文吧！
@@ -28,17 +33,25 @@ description: "我将以这个数据库结构迁移为基础，推荐两个 Go �
 
 **版本控制**：Goose 的每次迁移都会记录版本号，使数据库的版本控制变得清晰。版本号是基于时间生成的。
 
-**环境配置**：Goose 本身是不支持的，我简单改造了下，让它支持根据不同的环境（如开发、测试、生产）配置和应用不同配置，实现不同迁移策略。
+**环境配置**：Goose 本身是不支持的，我简单改造了下，，基于它写了 shell 脚本，让它支持根据不同的环境（如开发、测试、生产）配置和应用不同配置，实现不同迁移策略。
 
-## 安装配置
+## 安装
 
 安装 Goose 相当简单。首先，确保你已经安装了 Go。然后，通过下面命令安装 Goose：
 
-```sh
-go install github.com/pressly/goose/v3/cmd/goose@latest
+```bash
+$ go install github.com/pressly/goose/v3/cmd/goose@latest
 ```
 
-这条命令会将 goose 命令安装到 GOBIN  目录下。到此，就顺利安装成功了。
+这条命令会将 goose 命令安装到 GOBIN  目录下。
+
+或者 MacOS：
+
+```bash
+$ brew install goose
+```
+
+到此，就顺利安装成功了。
 
 ## 演示案例
 
@@ -292,7 +305,7 @@ if os.Getenv("GOOSE_ENV") == "prod" {
 
 ## 最后
 
-本文介绍了一个 GO 开发的基于增量实现数据结构迁移的工具 goose，还基于它，用 shell 开发一个多环境管理版，有趣的，哈哈。
+本文介绍了一个 GO 开发的基于增量实现数据结构迁移的工具 goose，还基于 shell 让它能进行多环境管理，有趣的，哈哈。本文主要是通过 SQL 脚本演示，Goose 本身也是支持 Go 脚本管理 Schema 的，灵活度更高。
 
 下篇文章，我将介绍另一个基于差异管理数据库 schema 的工具，依然是用 Go 实现的。
 
