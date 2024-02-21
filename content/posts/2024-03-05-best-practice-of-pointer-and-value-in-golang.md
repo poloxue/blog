@@ -1,6 +1,6 @@
 ---
 title: "2024 02 20 Best Practice of Pointer and Value in Golang"
-date: 2024-01-29T18:36:18+08:00
+date: 2024-02-29T18:36:18+08:00
 draft: true
 comment: true
 description: ""

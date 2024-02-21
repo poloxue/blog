@@ -1,6 +1,6 @@
 ---
 title: "2024 03 07 Error Code Specification in Golang"
-date: 2024-02-19T15:46:11+08:00
+date: 2024-03-19T15:46:11+08:00
 draft: true
 comment: true
 description: ""

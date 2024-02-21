@@ -1,6 +1,6 @@
 ---
 title: "2023 11 21 Tmux Part2 Usage"
-date: 2024-02-20T17:26:15+08:00
+date: 2024-03-20T17:26:15+08:00
 draft: true
 comment: true
 description: "本文介绍 Tmux 的一些核心概念和基础使用。"

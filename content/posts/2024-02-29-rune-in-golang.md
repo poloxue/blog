@@ -1,6 +1,6 @@
 ---
 title: "2024 02 28 Rune in Golang"
-date: 2024-01-29T19:29:16+08:00
+date: 2024-02-29T19:29:16+08:00
 draft: true
 comment: true
 description: ""
