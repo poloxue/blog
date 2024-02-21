@@ -8,6 +8,8 @@ description: "平时在开发项目时，常会需要改动数据库结构，比
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-26-database-structure-migration-01.png)
 
+嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第三篇，主要是闲扯，为后面两个工具做铺垫。系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
+
 平时在开发项目时，常会需要改动数据库结构，比如说，有时候需要加个表，改个字段名，这是个挺常见的事。为了搞定这些改动，一般有两种做法：增量同步和差异同步。
 
 今天，简单聊聊这两种同步方式，看看它们各自有啥优点和缺点。我曾经在工作中即用过增量同步，也用过差异同步。

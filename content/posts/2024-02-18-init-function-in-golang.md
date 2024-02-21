@@ -8,9 +8,7 @@ description: "Go 中有一个特别函数 `init()` 函数，它在 Go 中扮演�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-08-init-function-in-golang-01.png)
 
-> 嗨，大家好！我是波罗学。
->
-> 本文是系列文章 Go 技巧第十六篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
+> 嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十六篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
 
 Go 中有一个特别的 `init()` 函数，它主要用于包的初始化。`init()` 函数在包被引入后会被自动执行。如果在 `main` 包中，它也会在 `main()` 函数之前执行。
 
