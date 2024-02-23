@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 21 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 如何按行读取（大）文件？尝试 bufio 包提供的几种方式</title><link>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</link><pubDate>Wed, 21 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</guid><description>嗨，大家好！我是波罗学。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 23 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>如何正确处理 Go 项目中关于文件路径的问题</title><link>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</link><pubDate>Fri, 23 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：Go 语言技巧。
+在使用 Go 开发项目时，估计有不少人遇到过无法正确处理文件路径的问题，特别是刚从如 PHP、python 这类动态语言转向 Go 的朋友，已经习惯了通过相对源码文件找到其他文件。这个问题能否合理解决，不仅关系到程序的可移植性，还直接影响到程序的稳定性和安全性。
+本文将尝试从简单到复杂，详细介绍 Go 中获取路径的不同方法及应用场景。
+引言 首先，为什么要获取文件路径？
+一般来说，程序在运行时必须准确地读取相关的配置和资源以顺利启动。确定这些信息的存储位置，即获取文件路径，成为了正确访问这些信息的首要步骤，对于构建稳定可靠的应用程序而言至关重要。
+其次，为什么从动态语言转到 Go，容易被这个问题困扰？
+与 Go（一种静态语言）相比，动态语言通过直接解释脚本文件而执行的。这一机制使得动态语言在路径获取方面更为直观和易懂。然而，Go语言将源代码编译成独立的二进制可执行文件，这导致可执行文件与源代码间缺乏直接的联系。
+为了简化调试过程，Go 通过 go run 命令提供了一种类似动态语言直接执行源代码的便捷方式，实质上是将构建和运行步骤合二为一。这个过程中，会生成一个临时可执行文件，但这个文件不是存在当前工作目录中，这又为理解上带来额外的挑战。
+如果想找到这个文件，可通过 go run -work 保留文件，通过 os.Args[0] 确认文件路径。
+1 2 3 func main() { fmt.Println(os.Args[0]) } 输出：
+1 2 3 $ go run -work main.go WORK=/var/folders/0b/v4r1lzyj0n566qgd8dt_km4c0000gn/T/go-build1458488796 /var/folders/0b/v4r1lzyj0n566qgd8dt_km4c0000gn/T/go-build1458488796/b001/exe/main 可执行文件就是位于 $WORK/b001/exe/ 的 main 文件。
+若你习惯于动态语言中获取路径的做法，在 Go 中通过相对于可执行文件的路径来定位其他文件，使用 go run 调试的时候，就可能会引起一定的困惑。
+下面开始进入正题，详细 Go 中的文件路径的不同获取方式吧。
+相对于执行文件获取路径 之前提到了那么多在 Go 中获取可执行文件路径时可能导致的问题，我们就先从如何获取当前执行文件的路径开始吧。</description></item><item><title>Go 如何按行读取（大）文件？尝试 bufio 包提供的几种方式</title><link>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</link><pubDate>Wed, 21 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</guid><description>嗨，大家好！我是波罗学。
 本文是系列文章 Go 技巧第十七篇，系列文章查看：Go 语言技巧。
 本文将介绍 Go 如何按行读取文件，基于此会逐步延伸到如何按块读取文件。
 引言 我们将要介绍的按行读取文件的方式其实是非常适合处理超大文件。
