@@ -111,7 +111,7 @@ CREATE TABLE `comments` (
   `comment` text NOT NULL,
   `update_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
@@ -151,43 +151,167 @@ ALTER TABLE `comments` ADD COLUMN `author_id` int NOT NULL AFTER `post_id`;
 
 ### Linter
 
-接下来，介绍如何基于 skeema 实现 linter 能力。
+Skeema 内置了一个linter 工具，检查表结构定义语句，防止一些常规的问题。
 
-Skeema 还内置了一个linter 工具，帮助确保表结构定义遵循最佳实践和常见规范。
-
-运行以下命令即可：
+运行命令：
 
 ```bash
 skeema lint
 ```
 
-这将检查架构文件中的潜在问题，并给出建议。
+Skeema 提供有大量规则选项，有兴趣去看下它的官方文档：[Option Reference](https://www.skeema.io/docs/options/)。
+
+如下是我列举一些常见的大家感兴趣的规则：
+
+```toml
+# 设置默认的字符集，推荐使用 utf8mb4 以支持全字符集
+default-character-set=utf8mb4
+
+# 确保所有表和列使用推荐的字符集
+lint-charset=error
+allow-charset=utf8mb4
+
+# 确保所有表使用推荐的存储引擎，如 InnoDB
+lint-engine=error
+allow-engine=innodb
+
+# 推荐使用合适的数据类型作为主键，通常是整数类型
+lint-pk-type=error
+allow-pk-type=int,bigint
+
+# 根据团队策略对外键使用进行限制，如果避免使用外键以提升性能
+lint-has-fk=warning
+
+# 确保自增列使用合适的数据类型，避免未来可能的整数溢出
+lint-auto-inc=error
+
+# 避免重复或冗余的索引
+lint-dupe-index=error
+
+# 如果应用策略限制了存储过程和函数的使用
+lint-has-routine=warning
+
+# 确保表使用一致的命名规则，如全部小写
+lint-name-case=error
+```
+
+现在尝试对 `comments` 做一些变更，测试能检查出主键类型错误和索引问题。
+
+```sql
+CREATE TABLE `comments` (
+  `id` CHAR(32) NOT NULL,
+  `post_id` int NOT NULL,
+  `author_name` int NOT NULL,
+  `comment` text NOT NULL,
+  `update_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_post_id` (`post_id`),
+  KEY `idx_post_id_duplicate` (`post_id`), -- 重复的索引，与 idx_post_id 完全相同
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+执行如下命令：
+
+```bash
+$ skeema lint
+2024-02-23 15:55:55 [INFO]  Linting /xxxx/skeema-demo
+2024-02-23 15:55:55 [INFO]  Linting /xxxx/skeema-demo/article
+2024-02-23 15:55:55 [INFO]  Wrote
+                            /xxxx/skeema-demo/article/comments.sql
+                            (500 bytes)
+2024-02-23 15:55:55 [ERROR] /xxxx/skeema-demo/article/comments.sql:2:
+                            Column id of table `comments` is using data type char(32), which
+                            is not configured to be permitted in a primary key. The following
+                            data types are listed in option allow-pk-type: int.
+2024-02-23 15:55:55 [ERROR] /xxxx/skeema-demo/article/comments.sql:10:
+                            Indexes idx_post_id_duplicate and idx_post_id of table `comments`
+                            are functionally identical.
+                            One of them should be dropped. Redundant indexes waste disk space,
+                            and harm write performance.
+2024-02-23 15:55:55 [ERROR] Found 2 errors
+```
+
+提示索引类型错误：
+
+```bash
+Column id of table `comments` is using data type char(32), which
+is not configured to be permitted in a primary key. The following
+data types are listed in option allow-pk-type: int.
+```
+
+提示重复索引错误：
+
+```bash
+Indexes idx_post_id_duplicate and idx_post_id of table `comments`
+are functionally identical.
+One of them should be dropped. Redundant indexes waste disk space,
+and harm write performance.
+```
+
+skeema 有社区版和商业版，有一些能力检查规则要商业版支持。
 
 ### 应用变更
 
-确定要应用这些变更后，可以使用`push`命令来更新数据库架构：
+skeema 使用的最后一步是应用这些变更，使用 `skeema push` 命令即可将更新应用到数据库。这个没啥可介绍的了。
 
-```bash
-skeema push
+## 多环境配置
+
+skeema 支持多环境的不同配置，上面的配置实例中其实已经能看出了。
+
+```toml
+default-character-set=utf8mb4
+default-collation=utf8mb4_0900_ai_ci
+generator=skeema:1.11.1-community
+schema=blog
+
+[production]
+flavor=mysql:8.3
+host=127.0.0.1
+port=3306
+user=root
 ```
 
-这会将本地架构变更应用到数据库中，同步所有差异。
+如我增加一个 dev 环境，命令如下：
 
-## 自动化
+```bash
+$ skeema add-environment dev --host 127.0.0.1 -uroot -ppassword
+```
 
-如果公司提倡自动化，CICD 流程等，审核流程较为轻量，是否可将其直接集成到流水线中，基于生成的 SQL 自动化推送到生产环境。
+配置如下：
 
-我之前看到过一个实际的生产事故案例。
+```bash
+[dev]
+flavor=mysql:8.3
+host=127.0.0.1
+port=3306
+user=root
+password=password
+```
 
-项目早期的数据量不大，提倡效率，数据库的变更就是采用直接发布 CICD 流程变更的，CICD 的控制权也都在开发手里。后来，随着表中数据的量级变大，某一次自动更新中包含新增表字段时，导致了长时间的锁表，用法访问页面出现大量错误。
+使用时，只要在命令后加上环境名称即可，如：
 
-这件事后，公司的 DBA 团队就直接把这个工具弃用了，每次都是开发提交类似 `CREATE`、`ALTER` SQL 给 DBA 审核执行。一旦发布，开发、测试、运维、DBA 全员到齐，少一个人都没有办法发布。
+```bash
+$ skeema push dev
+```
 
-我不想讨论是这流程形成的原因，它不仅仅是技术问题，还有公司文化，甚至是政治问题，这是小兵力所不及的。
+还有，在不同环境下使用不同 lint 规则，这也是可以的。
+
+## 安全操作
+
+还有一定要说明，记住 skeema 默认是不允许一些非安全的操作，如删表、列其它如修改导致数据截断啥的等等操作。这也是很符合实际场景的。不然，因为某操作，导致删掉一些数据就完犊子了。
+
+如果有非安全操作的需求，如在开发环境，不喜欢保留一些开发期间临时创建的表，配置 `allow-unsafe=true` 即可。
+
+```toml
+[dev]
+...
+allow-unsafe=true
+```
 
 ## 总结
 
 Skeema 作为一个基于差异同步数据库 schema 的工具，简单强大。它简化了数据库 schema 的管理。使得我们无论是开发新功能时管理架构变更，还是在多环境中同步数据库架构，Skeema都能提供有效的支持。
 
-如果你和我曾经一样，为不同环境间的数据库表结构管理同步感到头痛，试试 Skeema，或许你会喜欢这种方式。
+最后，如果你和我曾经一样，为不同环境间的数据库表结构管理同步感到头痛，试试 Skeema，或许你会喜欢这种方式。
 
