@@ -6,7 +6,9 @@ comment: true
 description: "本文将继续介绍数据库 schema 数据库同步工具。今天，推荐是的一个基于差异方式实现数据库 schema 迁移的工具库 - skeema，同样也是基于 Go 实现。"
 ---
 
-本文继续介绍数据库 schema 同步工具，我前面已经写了两篇这个主题的文章。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-28-database-migration-tools-skeema-in-golang-01.png)
+
+本文是 GO 三方库推荐的第 5 篇，继续介绍数据库 schema 同步工具，我前面已经写了两篇这个主题的文章。系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
 
 今天，推荐是的一个基于差异实现数据库 schema 迁移的工具库 - skeema，同样由 Go 实现。
 
@@ -16,9 +18,9 @@ description: "本文将继续介绍数据库 schema 数据库同步工具。今�
 
 ## 概述
 
-Skeema 基于差异同步数据库 schema，我们关心表结构的终态即可。用 skeema 可使不同环境间同步数据库 schema 变得很简单。
+Skeema 是基于差异同步数据库 schema，这让我们只要表结构的终态就行。 还有，skeema 支持在不同环境间同步数据库 schema。
 
-Skeema 支持 linter 识别 SQL 语句，方便我们将其集成到 CICD 中提升 Schema 质量。还有，它默认是禁用了一些不安全的数据库操作，如删表删字段等信息。
+Skeema 支持 linter 识别 SQL 语句，方便我们将其集成到 CICD 中提升 Schema 质量。还有，它默认是禁用了一些不安全的数据库操作，如删表删字段等操作。
 
 如果要说缺点，它现在只支持 MySQL 和 MariaDB。
 
@@ -257,7 +259,7 @@ skeema 使用的最后一步是应用这些变更，使用 `skeema push` 命令�
 
 ## 多环境配置
 
-skeema 支持多环境的不同配置，上面的配置实例中其实已经能看出了。
+skeema 支持多环境的不同配置，上面的配置实例中其实已经能看出了。其中有一个 production 段。
 
 ```toml
 default-character-set=utf8mb4
@@ -311,7 +313,7 @@ allow-unsafe=true
 
 ## 总结
 
-Skeema 作为一个基于差异同步数据库 schema 的工具，简单强大。它简化了数据库 schema 的管理。使得我们无论是开发新功能时管理架构变更，还是在多环境中同步数据库架构，Skeema都能提供有效的支持。
+Skeema 作为一个基于差异同步数据库 schema 的工具，简单强大。它简化了数据库 schema 的管理。使得我们无论是开发新功能时管理架构变更，还是在多环境中同步数据库架构，Skeema都能提供有效的支持，都不再复杂。
 
 最后，如果你和我曾经一样，为不同环境间的数据库表结构管理同步感到头痛，试试 Skeema，或许你会喜欢这种方式。
 

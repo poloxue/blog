@@ -1,35 +1,25 @@
 ---
-title: "我的终端环境：6 个强大的 zsh 插件"
+title: "终端环境：6 个强大的 zsh 提效插件"
 date: "2023-10-18T18:36:55+08:00"
 draft: false
 comment: true
 tags: ["zsh"]
-description: "今天，将会在上篇教程的基础上，再介绍 6 个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。"
+description: "今天，将会在上文的基础上，再介绍 6 个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。"
 ---
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-08.png)
+
+本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：[我的终端环境](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3299748150420979713#wechat_redirect)
+
+视频教程：
 
 {{< video bb_id=322450976 yt_id=RSaiddMI6Ns >}}
 
-今天，将会在 [上篇教程](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/) 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
-
-> 系列阅读：
->
-> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
-> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
-> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
-> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
-> - [我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
-> - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/)
-> - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
-> - [我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
-> - [我的终端环境：终端启动消息 - ASCII art](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
-> - [我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch](https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/)
->
-> 更多待续...
-
+今天，将会在 [上文](https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/) 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
 
 ## 快速一览
 
-本教程将会涉及的插件，如下所示：
+本文将会涉及的插件，如下所示：
 
 - copypath，拷贝路径；
 - copyfile，拷贝文件内容；
@@ -42,7 +32,7 @@ description: "今天，将会在上篇教程的基础上，再介绍 6 个插件
 
 ## 推荐一个网站
 
-首先，在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
+在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 [awesome-zsh-plugins](https://github.com/unixorn/awesome-zsh-plugins)，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
 
 框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
 
