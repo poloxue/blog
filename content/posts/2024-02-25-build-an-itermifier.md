@@ -1,6 +1,6 @@
 ---
 title: "为 iTerm2 开发一个类似 tmuxifier 的工具"
-date: 2024-02-24T17:29:47+08:00
+date: 2024-02-25T08:00:00+08:00
 draft: true
 comment: true
 description: "我在思考如何提高终端工作效率时，想到了在 iTerm2 中实现一个类似于 tmuxifier 布局管理工具。如果你不了解 tmuxifier，简单来说，它是 tmux 的布局管理工具。"
@@ -18,9 +18,15 @@ description: "我在思考如何提高终端工作效率时，想到了在 iTerm
 
 这篇文章记录了我从零开始，一步步构建这个工具的过程。
 
-### 介绍 iTerm2 的 Python API
+## 设计阶段
+
+正式开发这个工具前，先调研下可行性还是很重要的。
+
+### iTerm2 支持 Python API
 
 首先，我了解到 iTerm2 支持通过 Python 脚本控制终端，这为我开发这样一个工具提供了可能性。
+
+它提供大量的 API，如更换背景、创建窗格，切换 Tab 等都是支持的。具体可查看文档：[Python-API](https://iterm2.com/python-api/)。
 
 ### 设置开发环境
 
@@ -32,7 +38,7 @@ description: "我在思考如何提高终端工作效率时，想到了在 iTerm
 $ pip install iterm2
 ```
 
-## 配置文件的设计
+### 配置文件的设计
 
 我选择用 YAML 作为配置文件的格式，因为它的可读性好，格式简洁，有现成的解析库。我要做的就是通过 YAML 文件要定义布局，包括窗口、窗格和命令。
 
