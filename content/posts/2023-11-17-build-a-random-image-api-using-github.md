@@ -6,6 +6,8 @@ comment: true
 description: "本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-17-build-a-random-image-api-using-github-01.png)
+
 本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 
 ## 前言
@@ -21,24 +23,35 @@ description: "本文介绍如何基于 GitHub 为图片存储，通过 API 随�
 
 我的博客图片一直在用 GitHub 存储，通过 jsdelivr CDN 加速。于是就思考，如果能获取到 GitHub 存储的文件列表，就可以实现一个图片服务。
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-17-build-a-random-image-api-using-github-02.png)
+
 简单说下 jsdelivr CDN，它支持对 GitHub 中文件的加速访问。如位于我的仓库下的图片，通过对地址转为为 jsdelivr CDN 地址。
 
-如下所示：
+如下的地址：
 
 ```bash
-https://github.com/poloxue/public_images/default/0001.webp -> https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/default/0001.webp
+https://github.com/poloxue/public_images/default/0001.webp 
+```
+
+通过如下地址访问：
+
+```bash
+https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/default/0001.webp
 ```
 
 现在如果能顺利获取到仓库的图片文件列表，即可将 github 作为我们的图片图片存储，而无需花钱购买云存储实现。
 
-如何获得 GitHub 文件列表呢？
 
 ## 查询 GitHub 图片列表
 
-GitHub 支持接口获取仓库文件列表，如下所示，查询 user/repo 下某分支的情况。
+如何获得 GitHub 文件列表呢？既然要讲 GitHub 作为存储使用，肯定要支持查询的，否则就没法玩了。
+
+GitHub 支持接口获取仓库文件列表，基本流程是先通过某个接口查询仓库的信息，其中某个字段包含了最新的 hash，我们通过调用这个 hash，就能拿到这个 hash 下的文件列表。
+
+仓库信息查看，即第一个接口，如下所示，如查询 user/repo 下某分支的情况。
 
 ```bash
-https ://api.github.com/repos/{user}/{repo}/branches/{branch}。
+curl https://api.github.com/repos/{user}/{repo}/branches/{branch}。
 ```
 
 JSON 返回体中，通过访问路径 `.commit.commit.tree.url` 拿到获取仓库文件列表的接口地址。其实主要是获取该分支最近的 commit hash。
@@ -48,7 +61,7 @@ JSON 返回体中，通过访问路径 `.commit.commit.tree.url` 拿到获取仓
 通过 `httpie` 执行请求，如下所示：
 
 ```bash
-https ://api.github.com/repos/poloxue/public_images/branches/main
+$ curl https://api.github.com/repos/poloxue/public_images/branches/main
 {
     // ...
     "commit": {
@@ -65,7 +78,7 @@ https ://api.github.com/repos/poloxue/public_images/branches/main
 通过 jq 解析请求结果，再次通过 httpie 请求，命令如下：
 
 ```bash
-https $(https ://api.github.com/repos/poloxue/public_images/branches/main | jq -r '.commit.commit.tree.url+"?recursive=1"') | jq '.tree[].path'
+curl $(curl https://api.github.com/repos/poloxue/public_images/branches/main | jq -r '.commit.commit.tree.url+"?recursive=1"') | jq '.tree[].path'
 ```
 
 如上的命令中通过 `?recursive=1` 实现遍历子目录，通过 '.tree[].path' 返回所有文件和目录。
@@ -100,7 +113,7 @@ scenes/0002.webp
 - 返回结果：
   - image：str，图片地址，指定 category 类型下的一个图片地址；
 
-核心的代码如下所示：
+核心代码是我用 Python 实现的，如下所示：
 
 ```python
 import time
@@ -159,7 +172,7 @@ class ImageService:
 请求示例，如下所示：
 
 ```bash
-https ://api.poloxue.com/image/random/scenes
+curl https://api.poloxue.com/image/random/scenes
 ```
 
 输出结果：
