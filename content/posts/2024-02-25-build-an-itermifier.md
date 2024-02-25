@@ -1,5 +1,5 @@
 ---
-title: "为 iTerm2 开发一个类似 tmuxifier 的工具"
+title: "我用 Python 为 iTerm2 开发一个类似 tmuxifier 的工具"
 date: 2024-02-25T08:00:00+08:00
 draft: false
 comment: true
