@@ -78,22 +78,13 @@ README.md
 beauties
 beauties/0001.jpeg
 beauties/0002.jpeg
-beauties/0003.jpeg
-beauties/0004.webp
-beauties/0005.jpg
-beauties/0006.webp
 default
 default/0001.webp
 default/0002.webp
-default/0003.webp
 scenes
 scenes/0001.webp
 scenes/0002.webp
-scenes/0003.webp
-scenes/0004.webp
-scenes/0005.webp
 ```
-
 
 特别说明：接口的返回其实有数量限制，但这个限制并不是很大，个人使用无需担心。
 
