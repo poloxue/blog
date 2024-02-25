@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 23 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>如何正确处理 Go 项目中关于文件路径的问题</title><link>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</link><pubDate>Fri, 23 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：Go 语言技巧。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 25 Feb 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>为 iTerm2 开发一个类似 tmuxifier 的工具</title><link>https://www.poloxue.com/posts/2024-02-25-build-an-itermifier/</link><pubDate>Sun, 25 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-25-build-an-itermifier/</guid><description>我在思考如何提高终端工作效率时，想到了是否能给予 iTerm2 实现一个类似于 tmuxifier 布局管理工具。如果你不了解 tmuxifier，简单来说，它是 tmux 的布局管理工具。
+它的作用如下所示：
+想到不如做到！
+这篇文章记录了我从零开始，一步步构建这个工具的过程。
+设计阶段 正式开发这个工具前，先调研下可行性还是很重要的。
+iTerm2 支持 Python API 首先，我了解到 iTerm2 支持通过 Python 脚本控制终端，这为我开发这样一个工具提供了可能性。
+它提供大量的 API，如更换背景、创建窗格，切换 Tab 等都是支持的。具体可查看文档：Python-API。
+设置开发环境 为了顺利开始，首先确保我的 iTerm2 （3.4.23）支持 Python API，还有我的机器上配置了 Python 环境。
+接着，我安装了 iTerm2 的 Python API 所需的库。
+1 $ pip install iterm2 配置文件的设计 我选择用 YAML 作为配置文件的格式，因为它的可读性好，格式简洁，有现成的解析库。我要做的就是通过 YAML 文件要定义布局，包括窗口、窗格和命令。
+这是 tmuxifier 的配置文件。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 # 设置窗口名称和根目录 session_root &amp;#34;~/Projects/my-project&amp;#34; window_name &amp;#34;my-project&amp;#34; # 创建一个新窗口，并分割成两个窗格 new_window &amp;#34;my-project&amp;#34; split_h 50 # 第一个窗格运行 vim run_cmd &amp;#34;vim&amp;#34; 0 # 第二个窗格运行 go run main.</description></item><item><title>如何正确处理 Go 项目中关于文件路径的问题</title><link>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</link><pubDate>Fri, 23 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：Go 语言技巧。
 在使用 Go 开发项目时，估计有不少人遇到过无法正确处理文件路径的问题，特别是刚从如 PHP、python 这类动态语言转向 Go 的朋友，已经习惯了通过相对源码文件找到其他文件。这个问题能否合理解决，不仅关系到程序的可移植性，还直接影响到程序的稳定性和安全性。
 本文将尝试从简单到复杂，详细介绍 Go 中获取路径的不同方法及应用场景。
 引言 首先，为什么要获取文件路径？
