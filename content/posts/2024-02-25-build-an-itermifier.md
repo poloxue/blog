@@ -1,7 +1,7 @@
 ---
 title: "为 iTerm2 开发一个类似 tmuxifier 的工具"
 date: 2024-02-25T08:00:00+08:00
-draft: true
+draft: false
 comment: true
 description: "我在思考如何提高终端工作效率时，想到了在 iTerm2 中实现一个类似于 tmuxifier 布局管理工具。如果你不了解 tmuxifier，简单来说，它是 tmux 的布局管理工具。"
 ---
