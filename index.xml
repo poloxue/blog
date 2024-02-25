@@ -320,7 +320,7 @@ main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
 效果如下所示：
 我们会发现 top 命令还在运行中。
 会话窗口的管理 Tmux 支持同时开启多个会话和窗口，实现一个终端多会话多窗口的效果。
-利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我开发了一个随机图片 API，以 GitHub 存储图片文件</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
+利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我用 GitHub 作为存储开发了一个随机图片 API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 前言 常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，就想如何免费管理图片，同时又能轻松共享他人。
 在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
 作为一名老年程序员，自然就想能通过编程实现，实现图片自由。虽然也可以通过类似爬虫的思路实现，但还是希望都在自己的控制中，万一出现不好的图片就不好了。
