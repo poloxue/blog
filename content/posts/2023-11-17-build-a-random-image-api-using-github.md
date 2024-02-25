@@ -191,8 +191,6 @@ curl https://api.poloxue.com/image/random/scenes
 
 ## 总结
 
-本文介绍了如何基于 GitHub 实现一个简单的 random image API 服务，主要是了管理我的图片资源，同时实现了编程自由控制图片资源的的目标。
-
-我计划将会利用这个的图片接口能力，自由更新我的桌面、iTerm 甚至是博客的背景图片，自己动手，丰衣足食。
+本文介绍了如何基于 GitHub 实现一个简单的 random image API 服务，主要是了管理我的图片资源，同时实现了编程自由控制图片资源的的目标。如果不是为了公开分享的话，是完全可独立开发一个命令，本地直接从  GitHub 获取，不必单独开发 API。满足自身需求，够用就行。
 
 我的博客地址：[以 GitHub 作为图片存储创建随机图片 Service API](https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/)
