@@ -146,7 +146,7 @@ func main() {
 
 `gin` 创建和路由的部分没啥可介绍的。重点是，我创建了一个 `ImageContainer` 用于连接 GitHub 随机拿到随机的图片地址。
 
-为什么我把 `imageContainer` 声明为全局变量，主要想着这样设计个本地缓存更容易些，不然一直请求 GitHub API 可不是个好事情。
+为什么我把 `imageContainer` 声明为全局变量，主要想着这样设计个本地缓存更容易些，不然一直请求 GitHub API 可不是个好事情，容易触发 GitHub 请求p频率限制。
 
 ## ImageContainer
 
