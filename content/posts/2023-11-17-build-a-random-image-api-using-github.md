@@ -8,11 +8,11 @@ description: "本文介绍如何基于 GitHub 为图片存储，通过 API 随�
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-17-build-a-random-image-api-using-github-01.png)
 
-本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
+本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。我之所以研究它，主要是为了省钱。
 
 ## 前言
 
-常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，就想如何免费管理图片，同时又能轻松共享他人。
+平时常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，如何就想如何免费管理这些图片。
 
 在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
 
@@ -43,7 +43,7 @@ https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/default/0001.webp
 
 ## 查询 GitHub 图片列表
 
-如何获得 GitHub 文件列表呢？既然要讲 GitHub 作为存储使用，肯定要支持查询的，否则就没法玩了。
+如何获得 GitHub 文件列表呢？这篇文章是讲如何将 GitHub 作为存储使用的，肯定要支持查询的，否则就没法玩了。
 
 GitHub 支持接口获取仓库文件列表，基本流程是先通过某个接口查询仓库的信息，其中某个字段包含了最新的 hash，我们通过调用这个 hash，就能拿到这个 hash 下的文件列表。
 
@@ -98,34 +98,30 @@ scenes/0001.webp
 scenes/0002.webp
 ```
 
-特别说明：接口的返回其实有数量限制，但这个限制并不是很大，个人使用无需担心。
+特别说明：接口的返回其实有数量限制，但这个限制并不是很大，个人使用无需担心。如果想扩展扩展容量，可考虑创建多个分支，或者多个仓库啥的。
+
+我的基本原则，把白嫖贯彻到底。
 
 ## 图片 API 服务
 
-在了解如何使用GitHub 的接口后，我通过 aws 的 serverless 的能力，创建了一个简单的 Image Random API，将图片文件在仓库中的路径与 jsdelivr CDN 地址结合，随机返回一个图片地址。
+在了解如何使用GitHub 的接口后，我通过 gin 开发一个随机 API，创建了一个简单的 Random Image API。实现方案也不复杂，通过 GitHub 接口获取图片列表，随机选择其中一张图片，把它在仓库中的路径与 jsdelivr CDN 地址拼接，随机返回一个图片地址。
+
 
 接口定义：
 
-- /image/random/{category}
-- 输入参数：
-  - category：str, 图片类型，即 github 仓库的子目名称；
-- 返回结果：
+- Path: /image/random/{category}
+- Parameters：
+  - category：str, 图片类型，即上面 github 仓库的子目名称；
+- Return：
   - image：str，图片地址，指定 category 类型下的一个图片地址；
 
+接下来，我就来尝试实现这个服务。
 
-## 入口定义
+### main 函数
 
-我直接使用 gin 框架开发这个 demo API。入口代码如下所示：
+我直接使用 gin 框架开发这个 demo API。`main` 入口代码如下所示：
 
 ```go
-package main
-
-import (
-  "fmt"
-  "github.com/gin-gonic/gin"
-  "net/http"
-)
-
 var imageContainer imageContainer
 
 func init() {
@@ -135,84 +131,76 @@ func init() {
 func GetRandomImage(ctx *gin.Context) {
   category := c.Param("category")
   imageURL, err := imageContainer.RandomImage(category)
-  if err != nil {
-    c.JSON(
-      http.StatusInternalServerError, 
-      gin.H{"error": "Error fetching image URL"},
-    )
-    return 
-  }
-
+  // ...
   c.JSON(http.StatusOK, gin.H{"image": imageURL})
 }
 
 func main() {
   router := gin.Default()
-  
   router.GET("/image/random/:category", GetRandomImage)
+  router.Run(":8080")
 }
 ```
 
-核心代码是我用 Python 实现的，如下所示：
+`gin` 创建和路由的部分没啥可介绍的。重点是，我创建了一个 `ImageContainer` 用于连接 GitHub 随机拿到随机的图片地址。
 
-```python
-import time
-import random
-import requests
-from collections import defaultdict
+为什么我把 `imageContainer` 声明为全局变量，主要想着这样设计个本地缓存更容易些，不然一直请求 GitHub API 可不是个好事情。
 
+## ImageContainer
 
-class ImageService:
-    def __init__(self):
-        self._sha = None
-        self._images = defaultdict(list)
+首先，定义下 `ImageContainer` 类型和它的创建函数，代码。
 
-        self._timeout = 60
-        self._timestamp = 0
+如下所示：
 
-    def last_sha(self):
-        last_timestamp = time.time()
-        if last_timestamp - self._timestamp < self._timeout:
-            return self._sha
+```go
+type ImageContainer struct {
+  repo   string
+  branch string
+	images map[string][]string
+}
 
-        self._timestamp = last_timestamp
-        data = requests.get(
-            "https://api.github.com/repos/poloxue/public_images/branches/main"
-        ).json()
-        return data["commit"]["commit"]["tree"]["sha"]
-
-    def get_images(self, category):
-        last_sha = self.last_sha()
-        if self._sha == last_sha:
-            return self._images[category]
-
-        self._images[category] = []
-        self._sha = last_sha
-        data = requests.get(
-            f"https://api.github.com/repos/poloxue/public_images/git/trees/{last_sha}?recursive=1"
-        ).json()
-
-        for file in data["tree"]:
-            fpath = file["path"]
-            subdir = fpath.split("/")[0]
-            if fpath.lower().endswith((".png", "jpg", "jpeg", "webp")):
-                self._images[subdir].append(
-                    f"https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/{file['path']}"
-                )
-        return self._images[category]
-
-    def random_image(self, category):
-        images = self.get_images(category)
-        if images:
-            return random.choice(images)
+func NewImageContainer(repo, branch string) *ImageContainer {
+  return &ImageContainer{
+    repo:   repo,
+    branch: branch,
+  }
+}
 ```
 
-如上方法，`random_image` 可提供给接口调用，从 GitHub 仓库返回一个随机图片。
+`ImageContainer` 中的 `images` 字段用于按分类保存图片列表。对于 API 场景，使用 `sync.Map` 是个更好的选择，因为会存在并发竞争的问题。
+
+随机图片的获取流程可描述为三个步骤，分别是查询最新 commit hash、基于 commit hash 获取 trees 图片列表和从图片列表中随机拿到一张图片返回。
+
+随机图片 API 的核心部分代码，如下所示：
+
+```go
+func (s *ImageContainer) RandomImage() {
+	lastHash, err := s.LastHash()
+	if err != nil {
+		return "", err
+	}
+
+	images, err := s.QueryImages(category, lastHash)
+	if err != nil {
+		return "", err
+	}
+
+	if len(images) == 0 {
+		return "", errors.New("No image found")
+	}
+	return images[rand.Intn(len(images))], nil
+}
+```
+
+其他部分如 `LastHash`、`QueryImages` 函数代码比较啰嗦，就不介绍了。有兴趣可查看我的完整源码查看仓库 [poloxue/random_image_from_github](https://github.com/poloxue/random_image_from_github)。
+
+
+## 测试效果
 
 请求示例，如下所示：
 
 ```bash
-curl https://api.poloxue.com/image/random/scenes
+curl http://localhost:8080/image/random/scenes
 ```
 
 输出结果：
@@ -223,14 +211,12 @@ curl https://api.poloxue.com/image/random/scenes
 }
 ```
 
-这只是服务的最小版本，还可以继续扩展，提供更多接口能力，如基于 Python 实现简单的裁剪缩放，皆是可行。
-
-另外，这个 service 中还实现了简单的基于时间的缓存方案，另外当请求到分支最后的 hash 变化时才会更新 `self._images`。
-
-唯一的遗憾就是，因为要提升共享能力，开发了一个简单的后端服务，没有免费云服务可用。还有就是，没有自动更新图片机制，有机会看看补齐吧
+这只是服务的最小版本，还可以继续扩展，提供更多接口能力，甚至可以上传下载图片，设计成图片，还有生成缩略图等等。还有，本案例只是测试代码，很多场景是没有实现的。
 
 ## 总结
 
-本文介绍了如何基于 GitHub 实现一个简单的 random image API 服务，主要是了管理我的图片资源，同时实现了编程自由控制图片资源的的目标。如果不是为了公开分享的话，是完全可独立开发一个命令，本地直接从  GitHub 获取，不必单独开发 API。满足自身需求，够用就行。
+本文介绍了如何基于 GitHub 实现一个简单的 random image API 服务，主要还是展示将 GitHub 作为替代 S3 存储服务使用。对于个人而言，肯定是能白嫖，就不要花钱，哈哈。
+
+另外，我写完后发现没必要支撑啥 HTTP API，搞个本地 SDK 就行了。基于它，我可以开发一个图床 app。还有，进一步，还可以基于它开发如 neovim、vscode 的博客图片插件，提升 markdown 写作效率。
 
 我的博客地址：[以 GitHub 作为图片存储创建随机图片 Service API](https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/)
