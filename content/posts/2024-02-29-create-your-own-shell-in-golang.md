@@ -3,8 +3,10 @@ title: "我用 Go 开发了一个简易版 shell"
 date: 2024-02-25T17:51:45+08:00
 draft: true
 comment: true
-description: ""
+description: "之前看到 Github 有个 build-your-own-x 的仓库，觉得挺有意思的，有不少有趣的实现。我就想着多尝试实现些这样的小项目，看看不同的领域。一方面提升我的编程能力，另外，也希望能发现一些不错的项目。"
 ---
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-29-create-your-own-shell-in-golang-01.png)
 
 之前看到 Github 有个 build-your-own-x 的仓库，觉得挺有意思的，有不少有趣的实现。我就想着多尝试实现些这样的小项目，看看不同的领域。一方面提升我的编程能力，另外，也希望能发现一些不错的项目。
 
@@ -12,15 +14,15 @@ description: ""
 
 ## 核心流程
 
-我这是个简陋的 shell 但可以帮助大家更好的理解 Shell。它支持如提示符打印、读取用户输入、解析输入内容、执行命令，另外还支持开发内建命令。
+首先，我声明这是个简陋的 shell，但能帮助我们更好理解 Shell。它支持如提示符打印、读取用户输入、解析输入内容、执行命令，另外还支持开发内建命令。
 
-流程描述项目的核心流程如下：
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-29-create-your-own-shell-in-golang-02.gif)
 
 接下来，我将从零开始一步步复现我的整个开发过程。
 
 ## 框架搭建
 
-我从创建一个 Shell 结构体开始，这是整个shell程序的核心，它其中包含一个 `bufio.Reader` 来读取标准输入。
+我从创建一个 Shell 结构体开始，这是整个shell程序的核心，它其中包含一个 `bufio.Reader` 从标准输入读取用户输入。
 
 ```go
 type Shell struct {
@@ -52,7 +54,7 @@ func (s *Shell) ParseInput(input string) (string, []string)
 func (s *Shell) ExecuteCmd(cmdName string, cmdArgs []string) error
 ```
 
-它们也就是核心流程中的最重要的四个方法，都是在 `RunAndListen` 方法中被调用，如下所示：
+它们就是核心流程中最重要的四个方法，都是在 `RunAndListen` 方法中被调用，如下所示：
 
 ```go
 func (s *Shell) RunAndListen() error {
@@ -84,7 +86,7 @@ func main() {
 }
 ```
 
-通过 `NewShell` 创建 `Shell` 示例，调用 `RunAndListen` 即可。
+通过 `NewShell` 创建 `Shell` 示例，调用 `RunAndListen` 监听用户输入即可。
 
 接下来，我开始介绍其中每一步的实现过程。
 
@@ -134,6 +136,10 @@ func (s *Shell) PrintPrompt() {
   fmt.Printf("[%s]$ ", cwd)
 }
 ```
+
+这是非常粗糙的拿到目录并打印出来。
+
+通常 Shell 的提示符是可以自定义，有兴趣可以在这里扩展个接口类型，用于不同提示符的格式化实现。
 
 ## 读取用户输入
 
@@ -198,9 +204,9 @@ func (s *Shell) ReadInput() (string, error) {
 
 如上的代码中，逐一读取输入内容。程序中，通过判断当前是处于引号中，保证正确识别用户输入。
 
-如果你读过我之前一篇文章，熟练使用 `bufio.Scanner` 类型，也可以用它提供的自定义分割规则的方式，在这个场景下也可以使用。我的完整源码中就是基于 `Scanner` 实现的。
+如果你读过我之前一篇文章，熟练使用 `bufio.Scanner` 类型，也可以用它提供的自定义分割规则的方式，在这个场景下也可以使用。我的完整源码 [goshell](https://github.com/poloxue/goshell) 就是基于 `Scanner` 实现的。
 
-另外，这个输入不支持删除，如果我输出错了，只能退出来重来，也是挺头疼的。如果要实现，要依赖于其他库实现。
+另外，这个输入不支持删除，如果我输出错了，只能退出重来，也是挺头疼的。如果要实现，要依赖于其他库实现。
 
 ## 解析输入
 
@@ -386,5 +392,9 @@ func main() {
 
 ## 总结
 
-通过开发这个简单的 shell，了解 Go 如何读取如用户输入、。未来，如果有想法，或许会继续扩展这个 shell，添加更多内建命令。这个过程中，我期待学习到更多关于系统编程和Go语言的高级特性。
+通过开发这个简单的 shell，了解 Go 如何读取如用户输入，解析与执行用户命令。对 shell 的流程也有了一个大概了解。
+
+未来，如果有想法，或许会继续扩展这个 shell，添加更多内建命令，可以将不同部分模块化，如 Prompt, Reader, Parser 和 Command 都是可以继续抽象以支持更多能力。
+
+如果继续它的开发，期待学习到更多关于系统编程和 Go 语言的高级特性。而且shell 可不止这点能力，如果你了解 shell，使用过 bash 或是 zsh 等 shell 就知道它们是如何提高我们工作效率的了。
 

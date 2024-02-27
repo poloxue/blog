@@ -112,6 +112,47 @@ scenes/0002.webp
 - 返回结果：
   - image：str，图片地址，指定 category 类型下的一个图片地址；
 
+
+## 入口定义
+
+我直接使用 gin 框架开发这个 demo API。入口代码如下所示：
+
+```go
+package main
+
+import (
+  "fmt"
+  "github.com/gin-gonic/gin"
+  "net/http"
+)
+
+var imageContainer imageContainer
+
+func init() {
+  imageContainer = NewImageContainer()
+}
+
+func GetRandomImage(ctx *gin.Context) {
+  category := c.Param("category")
+  imageURL, err := imageContainer.RandomImage(category)
+  if err != nil {
+    c.JSON(
+      http.StatusInternalServerError, 
+      gin.H{"error": "Error fetching image URL"},
+    )
+    return 
+  }
+
+  c.JSON(http.StatusOK, gin.H{"image": imageURL})
+}
+
+func main() {
+  router := gin.Default()
+  
+  router.GET("/image/random/:category", GetRandomImage)
+}
+```
+
 核心代码是我用 Python 实现的，如下所示：
 
 ```python
