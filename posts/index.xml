@@ -320,8 +320,8 @@ main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
 效果如下所示：
 我们会发现 top 命令还在运行中。
 会话窗口的管理 Tmux 支持同时开启多个会话和窗口，实现一个终端多会话多窗口的效果。
-利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我用 GitHub 作为存储开发了一个随机图片 API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
-前言 常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，就想如何免费管理图片，同时又能轻松共享他人。
+利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我用 GitHub 作为存储开发了一个随机图片 API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。我之所以研究它，主要是为了省钱。
+前言 平时常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，如何就想如何免费管理这些图片。
 在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
 作为一名老年程序员，自然就想能通过编程实现，实现图片自由。虽然也可以通过类似爬虫的思路实现，但还是希望都在自己的控制中，万一出现不好的图片就不好了。
 免费 CDN 加速 我的博客图片一直在用 GitHub 存储，通过 jsdelivr CDN 加速。于是就思考，如果能获取到 GitHub 存储的文件列表，就可以实现一个图片服务。
@@ -329,7 +329,7 @@ main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
 如下的地址：
 1 https://github.com/poloxue/public_images/default/0001.webp 通过如下地址访问：
 1 https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/default/0001.webp 现在如果能顺利获取到仓库的图片文件列表，即可将 github 作为我们的图片图片存储，而无需花钱购买云存储实现。
-查询 GitHub 图片列表 如何获得 GitHub 文件列表呢？既然要讲 GitHub 作为存储使用，肯定要支持查询的，否则就没法玩了。
+查询 GitHub 图片列表 如何获得 GitHub 文件列表呢？这篇文章是讲如何将 GitHub 作为存储使用的，肯定要支持查询的，否则就没法玩了。
 GitHub 支持接口获取仓库文件列表，基本流程是先通过某个接口查询仓库的信息，其中某个字段包含了最新的 hash，我们通过调用这个 hash，就能拿到这个 hash 下的文件列表。
 仓库信息查看，即第一个接口，如下所示，如查询 user/repo 下某分支的情况。
 1 curl https://api.github.com/repos/{user}/{repo}/branches/{branch}。 JSON 返回体中，通过访问路径 .commit.commit.tree.url 拿到获取仓库文件列表的接口地址。其实主要是获取该分支最近的 commit hash。
