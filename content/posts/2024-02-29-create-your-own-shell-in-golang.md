@@ -16,6 +16,8 @@ description: "之前看到 Github 有个 build-your-own-x 的仓库，觉得挺�
 
 首先，我声明这是个简陋的 shell，但能帮助我们更好理解 Shell。它支持如提示符打印、读取用户输入、解析输入内容、执行命令，另外还支持开发内建命令。
 
+如下是演示效果：
+
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-29-create-your-own-shell-in-golang-02.gif)
 
 接下来，我将从零开始一步步复现我的整个开发过程。
