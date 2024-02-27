@@ -217,6 +217,6 @@ curl http://localhost:8080/image/random/scenes
 
 本文介绍了如何基于 GitHub 实现一个简单的 random image API 服务，主要还是展示将 GitHub 作为替代 S3 存储服务使用。对于个人而言，肯定是能白嫖，就不要花钱，哈哈。
 
-另外，我写完后发现没必要支撑啥 HTTP API，搞个本地 SDK 就行了。基于它，我可以开发一个图床 app。还有，进一步，还可以基于它开发如 neovim、vscode 的博客图片插件，提升 markdown 写作效率。
+另外，我写完后发现没必要支撑啥 HTTP API，搞个本地 SDK 就行了。因为 GitHub 其实是提供了完整一套的增删改查接口的，基于它，我可以开发一个图床 app。还有，进一步，还可以基于它开发如 neovim、vscode 的博客图片插件，提升 markdown 写作效率。
 
 我的博客地址：[以 GitHub 作为图片存储创建随机图片 Service API](https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/)
