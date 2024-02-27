@@ -10,7 +10,7 @@ description: "本文介绍如何基于 GitHub 为图片存储，通过 API 随�
 
 本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 
-之所以研究它，主要是为了省钱，毕竟用啥 S3、七牛云、阿里云都是要花钱的。这套思路，gitee 应该也可以的，不过我看网上说，gitee 禁止图床开源啥的。
+之所以研究它，主要是为了省钱，毕竟用啥 S3、七牛云、阿里云都是要花钱的。这套思路，gitee 应该也可以的，不过我看网上说，gitee 禁止图床开源啥的。而开发随机图片 API 只是为了验证是否能通过 GitHub 的 API 获取仓库中的文件，支持进一步开发其他管理工具。
 
 ## 前言
 
@@ -158,7 +158,7 @@ func main() {
 type ImageContainer struct {
   repo   string
   branch string
-	images map[string][]string
+  images map[string][]string
 }
 
 func NewImageContainer(repo, branch string) *ImageContainer {
@@ -169,7 +169,7 @@ func NewImageContainer(repo, branch string) *ImageContainer {
 }
 ```
 
-`ImageContainer` 中的 `images` 字段用于按分类保存图片列表。对于 API 场景，使用 `sync.Map` 是个更好的选择，因为会存在并发竞争的问题。
+构造函数 `NewImageContainer` 创建时，要指定仓库 `repo` 和分支 `branch`。`ImageContainer` 中的 `images` 字段用于按分类保存图片列表。对于 API 场景，使用 `sync.Map` 是个更好的选择，因为会存在并发竞争的问题。
 
 随机图片的获取流程可描述为三个步骤，分别是查询最新 commit hash、基于 commit hash 获取 trees 图片列表和从图片列表中随机拿到一张图片返回。
 
@@ -213,12 +213,12 @@ curl http://localhost:8080/image/random/scenes
 }
 ```
 
-这只是服务的最小版本，还可以继续扩展，提供更多接口能力，甚至可以上传下载图片，设计成图片，还有生成缩略图等等。还有，本案例只是测试代码，很多场景是没有实现的。
+这只是服务的最小版本，还可以继续扩展，提供更多接口能力，甚至可以上传下载图片，还有生成缩略图等等。本案例只是测试代码，很多场景是没有实现的。
 
 ## 总结
 
 本文介绍了如何基于 GitHub 实现一个简单的 random image API 服务，主要还是展示将 GitHub 作为替代 S3 存储服务使用。对于个人而言，肯定是能白嫖，就不要花钱，哈哈。
 
-另外，我写完后发现没必要支撑啥 HTTP API，搞个本地 SDK 就行了。因为 GitHub 其实是提供了完整一套的增删改查接口的，基于它，我可以开发一个图床 app。还有，进一步，还可以基于它开发如 neovim、vscode 的博客图片插件，提升 markdown 写作效率。
+因为 GitHub 其实是提供了完整一套的增删改查接口的，基于它，我可以开发一个图床 app。还有，进一步，还可以基于它开发如 neovim、vscode 的博客图片插件，提升 markdown 写作效率。
 
 我的博客地址：[以 GitHub 作为图片存储创建随机图片 Service API](https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/)
