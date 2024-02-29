@@ -10,7 +10,7 @@ description: ""
 
 ## 快速开始
 
-fyne 是一个跨平台的 GUI 框架，它可以运行在 Windows、macOS X、 Linux、BSD、Android 和 IOS 平台上，即用这个框架，是可以开发 APP 的。
+fyne 是一个跨平台的 GUI 框架，它可以运行在 Windows、macOS X、 Linux、BSD、Android 和 IOS 平台上，简言之，这个框架是可以开发 APP 的。
 
 ### 安装
 
