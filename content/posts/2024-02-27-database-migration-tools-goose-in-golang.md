@@ -8,7 +8,6 @@ description: "我将以这个数据库结构迁移为基础，推荐两个 Go �
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-27-database-migration-tools-goose-in-golang-01.png)
 
-
 嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第四篇，系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
 
 上篇文章，我讨论了数据库 schema 同步的两种方式：增量和差异。今天，推荐一个基于 Go 实现的增量同步数据库 schema 的工具库 - goose。我不知道其他人的情况，我工作的很长一段时间内，接触到的这类工具都是采用增量方式实现的。
