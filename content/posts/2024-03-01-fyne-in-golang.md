@@ -6,17 +6,17 @@ comment: true
 description: ""
 ---
 
-一直好奇 Go 有没有什么好用的 GUI 框架？经过一番搜索，发现了 fyne 这个框架，也不知道好不用。为快速了解和使用它，我基于它的文档和 example 以尽量简化的方式写成了这篇文章。
+今天，推荐一个 Go 实现的 GUI 库 - fyne。
 
-## 快速开始
+Go 一直以来都没有一个标准 GUI 库，Go 官方也没有提供。在 Go 语言的几个 GUI 库中，Fyne 算是最出色的，它有着简洁的API、支持跨平台能力，且高度可扩展。
 
-fyne 是一个跨平台的 GUI 框架，它可以运行在 Windows、macOS X、 Linux、BSD、Android 和 IOS 平台上，简言之，这个框架是可以开发 APP 的。
+本文将从浅到深逐步对 Fyne 展开介绍，希望对大家快速上手这个 GUI 框架有所帮助。
 
-### 安装
+## 安装 fyne
 
-在 MacOS X 上，它的安装依赖 XCode 和 Go 语言环境。在确认基本依赖没有问题后，通过如下命令安装和初始化一个项目：
+开始前，确保你已安装Go。如果是 MacOS X 系统，请确认安装了 xcode。使用 `go get` 命令安装 Fyne。
 
-```go
+```bash
 $ mkdir hellofyne
 $ cd helloyfyne
 $ go mod init hellofyne
@@ -24,9 +24,7 @@ $ go get fyne.io/fyne/v2@latest
 $ go install fyne.io/fyne/v2/cmd/fyne@latest
 ```
 
-安装完成后，从地址 [setup](https://geoffrey-artefacts.fynelabs.com/github/andydotxyz/fyne-io/setup/latest/) 下载 fyne 的安装检测程序检查安装结果。
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-03.png)
+安装完成后，可从 [setup](https://geoffrey-artefacts.fynelabs.com/github/andydotxyz/fyne-io/setup/latest/) 下载 fyne 的安装检测程序检查下。
 
 检测结果：
 
@@ -40,127 +38,207 @@ $ go run fyne.io/fyne/v2/cmd/fyne_demo@latest
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-04-v1.png)
 
-看起来，这其中的案例还是挺简陋的。
+看起来，这里面的案例还是不够丰富的。
 
-准备工作结束！
+到此，准备工作结束！
 
-### Hello World
+## 创建第一个应用
 
-接下来就是开发第一个 hellofyne 程序，从 `app.New` 开始。
+由于 Go 简洁的语法和 fyne 的设计，使用 fyne 创建一个 GUI 应用异常简单。
 
-示例代码：
+以下是一个创建基础窗口的例子：
 
-````go
+```go
 package main
 
 import (
-	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/widget"
+    "fyne.io/fyne/v2/app"
+    "fyne.io/fyne/v2/container"
+    "fyne.io/fyne/v2/widget"
 )
 
 func main() {
-	a := app.New()
-	w := a.NewWindow("Hello World")
-
-	w.SetContent(widget.NewLabel("Hello Fyne!"))
-	w.ShowAndRun()
-}
-``````
-
-通过 `app` 创建应用，它是核心，基于 `app` 创建窗口 - `app.NewWindow`，而窗口上布局的内容 widget，由 `widget` 包提供，如 `widget.NewLabel` 创建一个标签 Label。 
-
-运行程序：
-
-```bash
-$ go mod tidy
-$ go run .
-```
-
-效果图：
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-06.png)
-
-其它语言的支持，如中文，要单独设置字体，如将 "Hello Fyne" 修改为 "你好，Fyne"。通过环境变量 `FYNE_FONT` 指定字体文件，如下命令运行：
-
-```
-FYNE_FONT=~/SourceHanSerifSC-VF.ttf go run .
-```
-
-效果图：
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-05-v1.png)
-
-如果找不到测试字体，可从 [SourceHanSerifSC](https://github.com/adobe-fonts/source-han-serif/tree/release/?tab=readme-ov-file) 下载一个 ttf 文件。
-
-最后的 `w.ShowAndRun` 显示和开启事件循环，一个 app 只能调用一次 `Run`，`w.ShowAndRun` 是由两部分组成的，分别是 `w.Show` 和 `app.Run`。
-
-### 更新 widget 内容
-
-前面演示了一个 fyne 的 "Hello World" 程序。现在，参考官网案例，让这个 `Hello World` 文字变动起来，显示当前时间。
-
-首先，定义一个类型为 Label 的变量 `clock`，用于显示时间。
-
-```go
-clock := wiget.NewLabel("")
-w.SetContent(clock)
-```
-
-为了不能干扰程序的渲染内容，我们可直接开启一个 goroutine 定时更新 Label 中的文字。
-
-```go
-go func() {
-  for range time.Tick(time.Second) {
-    formatted := time.Now().Format("Time: 03:04:05")
-    clock.SetText(formatted)
-	}
+    a := app.New()
+    w := a.NewWindow("Hello Fyne")
+    w.SetContent(widget.NewLabel("Welcome to Fyne!"))
+    w.ShowAndRun()
 }
 ```
 
-效果图：
+这段代码创建了一个包含标签的窗口。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-07.gif)
+通过 `app.New()` 初始化一个 Fyne 应用实例。然后，创建一个标题为 "Hello Fyne" 的窗口，并设置内容为包含 "Welcome to Fyne!" 文本标签。最后，通过`w.ShowAndRun()`显示窗口并启动应用的事件循环。
 
-完整代码查看官方文档：[Updating Content in your GUI](https://docs.fyne.io/started/updating)
+fyne 中窗口的默认大小是其包含的内容决定，也可预置大小。
 
-### Window
-
-fyne 的 Window 默认大小是由显示的内容决定的，如前面 Window 中只有一个 Label，显示内容是 "Hello Fyne" 或时间，它的框架只有内容那么大。
-
-如果希望预置 Window 大小，如将 Window 的宽高皆设为 100，实现代码如下：
+如在创建窗口后，提供 `Resize` 重新调整大小。
 
 ```go
 w.Resize(fyne.NewSize(100, 100))
 ```
 
-还有，虽说一个程序中只有一个 `app`，但可以有多个 `window`。
+还有，一个 app 下可以有多个窗口的，示例代码：
 
 ```go
-a := app.New()
-w := a.NewWindow("Hello World")
+btn := widget.NewButton("Create a widnow", func() {
+	w2 := a.NewWindow("Window 02")
+	w2.Resize(fyne.NewSize(200, 200))
+	w2.Show()
+})
 
-w.SetContent(widget.NewLabel("Hello World!"))
-w.Show()
-
-w2 := a.NewWindow("Larger")
-w2.SetContent(widget.NewLabel("More content"))
-w2.Resize(fyne.NewSize(100, 100))
-w2.Show()
-
-a.Run()
+w.SetContent(btn)
 ```
 
-这种情况下，就不建议使用 `Window` 调用 `ShowAndRun`了。
+我们创建一个按钮，它的点击事件是创建一个新的窗口并显示。
 
-`Window` 的创建可以发生在任何时间，如某个应用要在某个按键点击事件时单独开启一个 `window` 显示数据，可通过类似如下代码直接新建一个 `Window`：
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-08.gif)
+
+## 布局和控件
+
+布局和控件是 GUI 框架中必不可少的组件。Fyne 提供了多种布局管理器和标准的 UI 控件，支持创建更复杂的界面。
+
+### 布局管理
+
+Fyne 中的布局的实现位于 `container` 包中。
+
+它提供了多种不同布局方式安排窗口中的元素。例如，例如最基本的 `HBox` 水平布局和 `VBox` 垂直布局。
+
+通过 `HBox` 创建水平布局：
 
 ```go
-w2.SetContent(widget.NewButton("Open new", func() {
-	w3 := a.NewWindow("Third")
-	w3.SetContent(widget.NewLabel("Third"))
-	w3.Show()
-}))
+w.SetContent(container.NewHBox(widget.NewButton("Left", func() {
+	fmt.Println("Left button clicked")
+}), widget.NewButton("Right", func() {
+	fmt.Println("Right button clicked")
+})))
 ```
 
-到这里，fyne 快速开始部分介绍结束。
+显示效果：
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-09.png)
+
+同理，`VBox` 创建垂直布局：
+
+```go
+w.SetContent(container.NewVBox(widget.NewButton("Top", func() {
+	fmt.Println("Top button clicked")
+}), widget.NewButton("Bottom", func() {
+	fmt.Println("Bottom button clicked")
+})))
+```
+
+显示效果：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-10.png)
+
+
+Fyne 除了基础的水平（`HBoxLayout`）和垂直（`VBoxLayout`）布局，还提供了`GridLayout`、`FormLayout`等高级布局方式。`GridLayout`可以将元素均匀地分布在网格中，而`FormLayout`适用于创建表单，自动排列标签和字段。这些灵活的布局选项支持创建更复杂和功能丰富的GUI界面。
+
+在 Fyne 示例中可以找到更多布局的内容：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-11.png)
+
+或者查看官方文档：[Layout List](https://docs.fyne.io/explore/layouts)。
+
+### 更多控件
+
+前面的演示案例中，用到了两个控件：Label 和 Button，Fyne 还支持其他多种控件，它们都为于 `widget` 包中。
+
+常见控件一览：
+
+```go
+label := widget.NewLabel("Label")
+button := widget.NewButton("Button", func() {})
+entry := widget.NewEntry()
+entry.SetPlaceHolder("Entry")
+check := widget.NewCheck("Check", func(bool) {})
+radio := widget.NewRadioGroup([]string{"Option 1", "Option 2"}, func(string) {})
+selectEntry := widget.NewSelectEntry([]string{"Option A", "Option B"})
+progressBar := widget.NewProgressBar()
+slider := widget.NewSlider(0, 100)
+combo := widget.NewSelect([]string{"Option A", "Option B", "Option C"}, func(string) {})
+formItem := widget.NewFormItem("FormItem", widget.NewEntry())
+form := widget.NewForm(formItem)
+accordion := widget.NewAccordion(widget.NewAccordionItem("Accordion", widget.NewLabel("Content")))
+tabs := container.NewAppTabs(
+	container.NewTabItem("Tab 1", widget.NewLabel("Content 1")),
+	container.NewTabItem("Tab 2", widget.NewLabel("Content 2")),
+)
+
+// 弹出对话框示例按钮
+dialogButton := widget.NewButton("Show Dialog", func() {
+	dialog.ShowInformation("Dialog", "Dialog Content", w)
+})
+
+content := container.NewVScroll(container.NewVBox(
+	label, button, entry, check, radio, selectEntry, progressBar, slider,
+	combo, form, accordion, tabs, dialogButton,
+))
+w.SetContent(content)
+```
+
+演示效果：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-12.gif)
+
+## 自定义控件和数据绑定
+
+要在实际项目中使用 Fyne，基本上是要自定义控件或者使用数据绑定功能的。自定义控件用于创建符合需求的控件，而数据绑定用于帮助我们轻松地创建动态 UI。
+
+### 自定义控件
+
+如果要在 fyne 上实现自定义控件，涉及定义控件的绘制方法和布局逻辑。
+
+首先，自定义控件要实现两个接口：`fyne.Widget` 和 `fyne.WidgetRenderer`。
+
+首先，`fyne.Widget` 的定义如下所示：
+
+```go
+type Widget interface {
+	CanvasObject
+	CreateRenderer() WidgetRenderer
+}
+```
+
+而其中返回的就是 `WiddgetRenderer`，用于定义控件布局渲染的逻辑。
+
+```go
+type WidgetRenderer interface {
+	Destroy()
+	Layout(Size)
+	MinSize() Size
+	Objects() []CanvasObject
+	Refresh()
+}
+```
+
+假设，现在我要实现一个简单的控件，一个类似 Label 的控件。
+
+如下是这个控件类型的定义：
+
+```go
+type CustomLabel struct {
+    widget.BaseWidget
+    Text              string
+}
+```
+
+它继承了 `wiget.BaseWidget` 的基本控件实现，我们只要实现 `CreateRenderer` 方法即可。
+
+定义 `customWidgetRenderer` 类型：
+
+```go
+type customWidgetRenderer struct {
+    text  *canvas.Text // 使用canvas.Text来绘制文本
+    owner *CustomWidget
+}
+```
+
+### 数据绑定
+
+Fyne 的数据绑定功能允许控件直接与数据源连接，数据的任何更改都会自动反映在UI上，反之亦然。
+
+## 结语
+
+Fyne 以其简单、强大和跨平台的特性，为Go语言开发现代GUI应用提供了一个优秀的选择。无论你是初学者还是有经验的开发者，Fyne都值得一试。随着对 Fyne 的深入，你将能够更加灵活地构建出符合需求的应用，享受Go语言开发GUI带来的乐趣。
 
