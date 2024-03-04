@@ -1,1 +1,0 @@
-navigator.serviceWorker&&navigator.serviceWorker.register("/gofyne/sw.js",{scope:"/gofyne/"})
