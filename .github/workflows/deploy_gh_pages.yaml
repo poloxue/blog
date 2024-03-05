@@ -31,6 +31,7 @@ jobs:
       - name: Build gofyne
         run: |
           cd gofyne
+          hugo mod get -u
           hugo --minify
           cd ..
 
