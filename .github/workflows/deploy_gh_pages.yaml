@@ -28,6 +28,15 @@ jobs:
       - name: Build
         run: hugo --minify
 
+      - name: Build gofyne
+        run: |
+          cd gofyne
+          hugo --minify
+          cd ..
+
+      - name: Merge Sites
+        run: rm -rf public/gofyne && mv gofyne/public public/gofyne
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
