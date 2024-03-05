@@ -1,2 +1,4 @@
 github.com/chollinger93/ink-free v1.4.1 h1:eptSWig8mnoY7ajNwxBlUMk14MG97f2GUJBFf6PFMvM=
 github.com/chollinger93/ink-free v1.4.1/go.mod h1:diBe+tAKd0iKdV9QCk8+GRlS7VqfGU9mxgvCk8JFB7A=
+github.com/poloxue/cnposts v0.0.0-20240305120044-21204241e856 h1:+D87MVKTMorCOfOGE4hWOrgQuuXqIBPld2ASUoeiSBw=
+github.com/poloxue/cnposts v0.0.0-20240305120044-21204241e856/go.mod h1:i7IWrUHE65yM0pbPI+qQChn/MRzudvUAmIW6y9UxIUA=
