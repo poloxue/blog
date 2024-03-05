@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main # Set a branch to deploy
+  repository_dispatch:
+    types: [content-update]
   pull_request:
 
 permissions:
