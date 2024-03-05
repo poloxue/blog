@@ -1,8 +1,12 @@
 baseURL = "https://www.poloxue.com/"
 languageCode = "zh-cn"
 title = "POLOXUE's BLOG"
-theme = "ink-free"
+theme = "github.com/chollinger93/ink-free"
 copyright = "Polo Xue All rights reserved"
+
+[modules]
+[module.imports]
+  path = "github.com/chollinger93/ink-free"
 
 [taxonomies]
   tag = "tags"
