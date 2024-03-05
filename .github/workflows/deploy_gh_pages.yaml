@@ -28,8 +28,9 @@ jobs:
           extended: true
 
       - name: Build
-        hugo mod get -u
-        run: hugo --minify
+        run: | 
+          hugo mod get -u
+          hugo --minify
 
       - name: Build gofyne
         run: |
