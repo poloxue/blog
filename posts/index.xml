@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 01 Mar 2024 17:51:45 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>我用 Go 开发了一个简易版 shell</title><link>https://www.poloxue.com/posts/2024-02-29-create-your-own-shell-in-golang/</link><pubDate>Fri, 01 Mar 2024 17:51:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-29-create-your-own-shell-in-golang/</guid><description>之前看到 Github 有个非常受欢迎的 build-your-own-x 仓库，觉得挺有意思的，有不少有趣的实现。我就想着多尝试实现些这样的小项目，看看不同的领域。一方面提升我的编程能力，另外，也希望能发现一些不错的项目。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 07 Mar 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>一个 Go 实现的跨平台 GUI 框架 Fyne</title><link>https://www.poloxue.com/posts/2024-03-01-fyne-in-golang/</link><pubDate>Thu, 07 Mar 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-03-01-fyne-in-golang/</guid><description>今天，推荐一个 Go 实现的 GUI 库 - fyne。
+Go 官方也没有提供标准的 GUI 框架，在 Go 实现的几个 GUI 库中，Fyne 算是最出色的，它有着简洁的API、支持跨平台能力，且高度可扩展。这也就是说，Fyne 是用来开发 App。
+本文将尝试介绍下 Fyne，希望对大家快速上手这个 GUI 框架有所帮助。我最近产生了不少想法，其中有些是对 GUI 有要求的，就想着折腾用 Go 实现，而不是用那些已经很流行和成熟的 GUI 框架。
+在写这篇文章时，顺手搞了下它的中文版文档，文档查看 www.poloxue.com/gofyne，希望能帮助那些想继续深入这个框架的朋友。
+安装 fyne 开始前，确保已成功安装 Go，如果是 MacOS X 系统，要确认安装了 xcode。
+如下使用 go get 命令安装 Fyne。
+1 2 3 4 5 $ mkdir hellofyne $ cd helloyfyne $ go mod init hellofyne $ go get fyne.io/fyne/v2@latest $ go install fyne.io/fyne/v2/cmd/fyne@latest 如果想立刻查看 fyne 提供的演示案例，通过命令检查：</description></item><item><title>我用 Go 开发了一个简易版 shell</title><link>https://www.poloxue.com/posts/2024-02-29-create-your-own-shell-in-golang/</link><pubDate>Fri, 01 Mar 2024 17:51:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-29-create-your-own-shell-in-golang/</guid><description>之前看到 Github 有个非常受欢迎的 build-your-own-x 仓库，觉得挺有意思的，有不少有趣的实现。我就想着多尝试实现些这样的小项目，看看不同的领域。一方面提升我的编程能力，另外，也希望能发现一些不错的项目。
 今天的项目在 build-your-own-x 中也能找到，即 build your own shell。这个项目能帮助学习 Go 如何进行如 IO 输入输出、如何发起进程调用等操作。
 核心流程 首先，我声明这是个简陋的 shell，但能帮助我们更好理解 Shell。它支持如提示符打印、读取用户输入、解析输入内容、执行命令，另外还支持开发内建命令。
 如下是演示效果：
@@ -69,7 +75,17 @@ iTerm2 支持 Python API 首先，我了解到 iTerm2 支持通过 Python 脚本
 本文的重点在于如何使用 GO 实现按行读取，基于的是标准库的 bufio.Reader 和 bufio.Scanner 。
 正式进入主题吧。
 准备一个文本文件 我们先准备一个文本文件 example.txt，内容如下：
-1 2 3 4 5 6 7 This post covers the Golang Interface. Let’s dive into it. Duck Typing To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept. So, what’s Duck Typing? 基于 bufio.Reader Go 中的按行读取文件，首先可通过 bufio 提供的 Reader 类型实现。</description></item><item><title>推荐一个可用于快速创建 TUI 应用的框架 - Bubble Tea</title><link>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</link><pubDate>Mon, 19 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：Golang 三方库。
+1 2 3 4 5 6 7 This post covers the Golang Interface. Let’s dive into it. Duck Typing To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept. So, what’s Duck Typing? 基于 bufio.Reader Go 中的按行读取文件，首先可通过 bufio 提供的 Reader 类型实现。</description></item><item><title>Go 中如何高效遍历目录？探索几种方法</title><link>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</link><pubDate>Tue, 20 Feb 2024 19:39:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：Go 语言技巧。
+目录遍历是一个很常见的操作，它的使用场景有如文件目录查看（最典型的应用如 ls 命令）、文件系统清理、日志分析、项目构建等。
+本文将尝试逐步介绍在 Go 中几种遍历目录文件的方法，从传统的 ioutil.ReadDir 函数开始，逐渐深入。
+文中也会提供示例代码、提供一些性能剖析，以便于大家更好地理解。
+ioutil.ReadDir 首先，Go 中目录文件遍历的第一种方式是 ioutil.ReadDir 函数。
+在 Go 1.16 版本前，ioutil.ReadDir 就是遍历目录的标准方法，它的返回结构是目录中文件的 FileInfo 列表，简单直接。
+示例代码：
+1 2 3 4 5 6 7 8 9 10 func main() { files, err := ioutil.ReadDir(&amp;#34;.&amp;#34;) if err != nil { log.Fatal(err) } for _, f := range files { fmt.Println(f.Name()) } } 但它的缺点也非常明显，性能不高。导致它的主要原因有如下几点：
+完全加载
+这就导致了 ioutil.ReadDir 在返回结果前，会将目录下所有文件的信息完全加载到内存中。对于包含大量文件的目录，它就需要在内存中存储大量的 FileInfo 对象，毫无疑问，这会增加内存使用。
+FileInfo 开销</description></item><item><title>推荐一个可用于快速创建 TUI 应用的框架 - Bubble Tea</title><link>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</link><pubDate>Mon, 19 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：Golang 三方库。
 今天介绍一个 TUI 库 - Bubble Tea，一个小巧但强大的文本用户界面（TUI）框架，基于 Go 语言开发。
 什么是 TUI？ 什么是 TUI？为了防止可能有人不知道，简单解释一下。
 TUI，全称为文本用户界面（Text-based User Interface），是一种用户界面类型。对之对比的就是 GUI（Graphical User Interface）。我开始还以为 TUI 中的 T 的全称是 terminal。
@@ -83,17 +99,7 @@ Go 中有一个特别的 init() 函数，它主要用于包的初始化。init()
 init() 函数的执行时机 首先，init() 的执行时机处于包级别变量声明和 main() 函数执行之间。
 这意味着在包中声明的全局变量，如果附带初始化表达式，这些表达式将在任何 init() 函数执行之前进行初始化。
 我们通过一个示例演示，代码如下：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 var Age = GetAge() func GetAge() int { return 18 } func init() { fmt.Printf(&amp;#34;You&amp;#39;re %d years old.\n&amp;#34;, Age) Age = 3 } func main() { fmt.</description></item><item><title>Go 中如何高效遍历目录？探索几种方法</title><link>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</link><pubDate>Mon, 12 Feb 2024 19:39:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：Go 语言技巧。
-目录遍历是一个很常见的操作，它的使用场景有如文件目录查看（最典型的应用如 ls 命令）、文件系统清理、日志分析、项目构建等。
-本文将尝试逐步介绍在 Go 中几种遍历目录文件的方法，从传统的 ioutil.ReadDir 函数开始，逐渐深入。
-文中也会提供示例代码、提供一些性能剖析，以便于大家更好地理解。
-ioutil.ReadDir 首先，Go 中目录文件遍历的第一种方式是 ioutil.ReadDir 函数。
-在 Go 1.16 版本前，ioutil.ReadDir 就是遍历目录的标准方法，它的返回结构是目录中文件的 FileInfo 列表，简单直接。
-示例代码：
-1 2 3 4 5 6 7 8 9 10 func main() { files, err := ioutil.ReadDir(&amp;#34;.&amp;#34;) if err != nil { log.Fatal(err) } for _, f := range files { fmt.Println(f.Name()) } } 但它的缺点也非常明显，性能不高。导致它的主要原因有如下几点：
-完全加载
-这就导致了 ioutil.ReadDir 在返回结果前，会将目录下所有文件的信息完全加载到内存中。对于包含大量文件的目录，它就需要在内存中存储大量的 FileInfo 对象，毫无疑问，这会增加内存使用。
-FileInfo 开销</description></item><item><title>Go 语言中如何大小端字节序？int 转 byte 是如何进行的？</title><link>https://www.poloxue.com/posts/2024-02-07-big-little-endian-in-golang/</link><pubDate>Wed, 07 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-07-big-little-endian-in-golang/</guid><description>嗨，大家好！我是波罗学。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 var Age = GetAge() func GetAge() int { return 18 } func init() { fmt.Printf(&amp;#34;You&amp;#39;re %d years old.\n&amp;#34;, Age) Age = 3 } func main() { fmt.</description></item><item><title>Go 语言中如何大小端字节序？int 转 byte 是如何进行的？</title><link>https://www.poloxue.com/posts/2024-02-07-big-little-endian-in-golang/</link><pubDate>Wed, 07 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-07-big-little-endian-in-golang/</guid><description>嗨，大家好！我是波罗学。
 本文是系列文章 Go 技巧第十五篇，系列文章查看：Go 语言技巧。
 我们先看这样一个问题：“Go 语言中，将 byte 转换为 int 时是否涉及字节序（endianness）？我可以直接使用 int(byte_var) 进行转换吗？”
 这个问题非常简单，直接回答不涉及字节序，可以直接转换。但为什么呢？如果要彻底搞明白这个问题，还是要了解下字节序这个概念。
