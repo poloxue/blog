@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 07 Mar 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>一个 Go 实现的跨平台 GUI 框架 Fyne</title><link>https://www.poloxue.com/posts/2024-03-01-fyne-in-golang/</link><pubDate>Thu, 07 Mar 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-03-01-fyne-in-golang/</guid><description>今天，推荐一个 Go 实现的 GUI 库 - fyne。
-Go 官方也没有提供标准的 GUI 框架，在 Go 实现的几个 GUI 库中，Fyne 算是最出色的，它有着简洁的API、支持跨平台能力，且高度可扩展。这也就是说，Fyne 是用来开发 App。
+Go 官方也没有提供标准的 GUI 框架，在 Go 实现的几个 GUI 库中，Fyne 算是最出色的，它有着简洁的API、支持跨平台能力，且高度可扩展。这也就是说，Fyne 是可以开发 App。
 本文将尝试介绍下 Fyne，希望对大家快速上手这个 GUI 框架有所帮助。我最近产生了不少想法，其中有些是对 GUI 有要求的，就想着折腾用 Go 实现，而不是用那些已经很流行和成熟的 GUI 框架。
 在写这篇文章时，顺手搞了下它的中文版文档，文档查看 www.poloxue.com/gofyne，希望能帮助那些想继续深入这个框架的朋友。
 安装 fyne 开始前，确保已成功安装 Go，如果是 MacOS X 系统，要确认安装了 xcode。
