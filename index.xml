@@ -1089,4 +1089,11 @@ Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而
 Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。
 虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item><item><title/><link>https://www.poloxue.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/about/</guid><description>About POLOXUE - 十三年编程经验的程序员一枚。
 我的社交媒体：掘金，知乎，CSDN
-我的微信公众号：</description></item><item><title/><link>https://www.poloxue.com/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/readme/</guid><description>cnposts 中文博客内容</description></item></channel></rss>
+我的微信公众号：</description></item><item><title/><link>https://www.poloxue.com/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/readme/</guid><description>cnposts 中文博客内容</description></item><item><title>Go 中的监视器模式与配置热加载</title><link>https://www.poloxue.com/posts/2024-03-07-listener-design-pattern-in-golang/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/posts/2024-03-07-listener-design-pattern-in-golang/</guid><description>上篇介绍 GO 的 GUI 库 Fyne 时，提到 Fyne 的数据绑定用到了监听器模式。本文就展开说下我对 Go 中监听器模式的理解和应用吧。
+监听器模式简介 监听器模式，或称观察者模式，它主要涉及两个组件：主题（Subject）和监听器（Listener）。
+Subject 负责维护一系列的监听器，在所观测主题状态变化，将这个事件通知给所有注册的监听器。我统一将其定义为注册中心 Registry。而监听器 Listener 则是实现了特定接口的对象，用于响应事件消息，执行处理逻辑。
+这个模式在组件之间建立一种松散耦合的关系。将特定事件通知到关心它的其他组件，无需它们直接相互引用。看起来这个不也是发布-订阅模式吗？差不多一个意思。
+监听器模式是事件驱动编程中常用的设计模式，帮助我们构建灵活和解耦的系统。之前的工作中，用到它最多的就是配置的热更新，这篇文章也会介绍基于它的 ETCD 配置热更新。
+Go 实现监听器模式 如何用 Go 实现监听模式？我将定义两个新类型分别是注册中心（Registry）和监听器接口（Listener）。
+1 2 3 type Listener interface { OnTrigger() } 首先是 Listener，它是一个接口，用于实现事件的响应逻辑。它的实现类型要求支持 OnTrigger 方法，会在事件发生时被执行。
+1 2 3 4 5 6 7 8 9 10 11 12 13 type Registry struct { listeners []Listener } func (r *Registry) Register(l Listener) { r.listeners = append(r.listeners, l) } func (r *Registry) NotifyAll() { for _, listener := range r.</description></item></channel></rss>
