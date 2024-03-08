@@ -30,7 +30,7 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
 推荐插件 先说 oh-my-zsh 的内置插件。
 打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
-1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本文是高效终端环境第二篇，系列查看：[我的终端环境][https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&amp;amp;action=getalbum&amp;amp;album_id=3299748150420979713#wechat_redirect]
+1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本文是高效终端环境第二篇，系列查看：我的终端环境
 视频版本，没有文章详细：
 前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
