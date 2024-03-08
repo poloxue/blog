@@ -16,7 +16,8 @@ fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找
 本系列将要介绍的命令，我大概可将其分为三个大类，分别是：文件目录查看相关的命令 - exa、zoxide、bat，文件目录搜索相关的命令 - fd、ripgrep、fzf ，HTTP Web 开发的相关命令 - entr、httpie、jq。
 希望通过这些命令的学习，进一步提升我们的工作效率。
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>本文介绍 zsh 主题 powerlevel10k 的安装与配置。
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
+在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。
 什么是 powerlevel10k? Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。
 效果展示：
 安装依赖字体 在安装 powerlevel10k 前，要先安装它依赖的字体：NerdFont。不同系统下的安装方法，查看它的文档。
@@ -27,8 +28,7 @@ MacOS 的话，可直接通过 Homebrew 快速安装：
 现在，我们终端就支持 NerdFont 字体了。
 如何测试？
 接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。
-安装 powerlevel10k 先通过如下的命令下载插件源码放到指定的位置。
-1 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.</description></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：我的终端环境
+安装 powerlevel10k 先通过如下的命令下载插件源码放到指定的位置。</description></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：我的终端环境
 视频教程：
 今天，将会在 上文 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
 快速一览 本文将会涉及的插件，如下所示：
