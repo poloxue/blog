@@ -366,19 +366,7 @@ main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
 效果如下所示：
 我们会发现 top 命令还在运行中。
 会话窗口的管理 Tmux 支持同时开启多个会话和窗口，实现一个终端多会话多窗口的效果。
-利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我用 GitHub 实现随机图片</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文将介绍如何用 GitHub 作为图片存储，实现随机更换我的终端和桌面的背景。为了完成目标，我会推荐一个快速访问 GitHub API 的 Go 三库 go-github，简要介绍它的使用。
-前言 我研究这个方案主要是为了省钱，毕竟 S3、七牛云、阿里云都不是免费的。作为一名10年+的老程序员而言，就想着自己动手，肯定是最好的。
-想法不错，如何实现呢？
-首先，要搞明白的是，这些存储服务的价值除了能存储内容，主要还是它们提供了访问加速，图床。
-加速访问 我的博客图片一直是存储 GitHub 上，通过 jsdelivr CDN 加速访问。于是想到，我只要编程上传 GitHub 图片和访问仓库中的文件列表，就可以实现目标。
-稍微展开说下 jsdelivr CDN，它是一款为开源项目而生的免费 CDN，支持对如 npm、GitHub、ESM、wordpress 下文件加速访问。
-举例说明，我有一个图片保存在 poloxue/public_images 仓库，路径为 default/0001.webp。它的加速访问路径如下：
-1 https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/default/0001.webp 我只要能顺利拿到图片地址，将其在 github 中的存储路径转化为 jsdelivr CDN 加速的路径，就实现免费存储与加速访问。
-GitHub RestAPI 查询 GitHub 图片列表
-如何获得 GitHub 文件列表呢？这篇文章是讲如何将 GitHub 作为存储使用的，肯定要支持查询的，否则就没法玩了。
-GitHub 支持接口获取仓库文件列表，基本流程是先通过某个接口查询仓库的信息，其中某个字段包含了最新的 hash，我们通过调用这个 hash，就能拿到这个 hash 下的文件列表。
-仓库信息查看，即第一个接口，如下所示，如查询 user/repo 下某分支的情况。
-1 curl https://api.github.com/repos/{user}/{repo}/branches/{branch}。 JSON 返回体中，通过访问路径 .commit.commit.tree.url 拿到获取仓库文件列表的接口地址。其实主要是获取该分支最近的 commit hash。</description></item><item><title>我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 教程</title><link>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</link><pubDate>Tue, 14 Nov 2023 17:56:34 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</guid><description>本文接着上文，将介绍如何使用 fetch 配置更加丰富地终端启动消息。
+利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 教程</title><link>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</link><pubDate>Tue, 14 Nov 2023 17:56:34 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</guid><description>本文接着上文，将介绍如何使用 fetch 配置更加丰富地终端启动消息。
 前言 你是否在终端上看到过类似如下的信息？
 我在刚开始讲终端环境这个系列，就有小伙伴在我的视频下 show 了他的终端。
 要实现这个终端效果，要依赖一种名为 fetch 的程序。
