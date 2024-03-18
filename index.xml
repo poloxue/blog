@@ -1104,6 +1104,6 @@ Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定�
 分布式Distribution Kafka 的集群分布式主要涉及两个内容：Partition 分区与 Replication 备份。
 Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而分布在不同的 Kafka 节点之上，使 Topic 的数据大小不限于一台 Server。
 Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。
-虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item><item><title/><link>https://www.poloxue.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/about/</guid><description>About hiPOLOXUE - 十三年编程经验的程序员一枚。
+虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item><item><title/><link>https://www.poloxue.com/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/about/</guid><description>About POLOXUE - 十三年编程经验的程序员一枚。
 我的社交媒体：掘金，知乎，CSDN
 我的微信公众号：</description></item><item><title/><link>https://www.poloxue.com/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/readme/</guid><description>cnposts 中文博客内容</description></item></channel></rss>
