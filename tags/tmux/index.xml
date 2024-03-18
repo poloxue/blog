@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tmux on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/tmux/</link><description>Recent content in tmux on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 15 Sep 2023 15:06:02 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/tmux/index.xml" rel="self" type="application/rss+xml"/><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
-我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
-非常简单！
-核心脚本介绍
-首先，一段 bash 脚本:
-1 tmux ls &amp;amp;&amp;amp; read -p &amp;#34;Select a session&amp;lt;default&amp;gt;:&amp;#34; tmux_session &amp;amp;&amp;amp; tmux attach -t ${tmux_session:-default} || tmux new -s ${tmux_session:-default} 这段脚本的说明如下：
-tmux ls, 先输出当前可用的 session 列表，供用户输入使用； read xxx, 读取用户输入，将希望打开的会话名称存入 tmux_session 中； tmux attach，尝试打开会话，如果 tmux_session 为空，打开 default 会话； tmux new，如果开启失败，尝试创建一个新的会话； 说明：由于 read 命令使用了-p，必须要使用 bash 运行这段脚本。
-配置 iTerm2 启动加载</description></item></channel></rss>
