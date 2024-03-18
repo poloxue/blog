@@ -4,6 +4,7 @@ date: 2016-03-30T18:16:57+08:00
 draft: false
 comment: true
 tags: ["mq", "kafka"]
+description: "今天来聊下大数据场景下比较流行的消息队列组件 kafka。本篇文章将主要从理论角度来介绍。"
 ---
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-06.png)
