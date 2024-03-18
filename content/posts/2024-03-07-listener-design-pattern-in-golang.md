@@ -3,6 +3,7 @@ title: "Go 中的监视器模式与配置热更新"
 date: 2024-03-09T08:00:00+08:00
 draft: false
 comment: true
+description: "上篇介绍 GO 的 GUI 库 Fyne 时，提到 Fyne 的数据绑定用到了监听器模式。本文就展开说下我对 Go 中监听器模式的理解和应用吧。"
 ---
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-07-listener-design-pattern-in-golang-01.png)
