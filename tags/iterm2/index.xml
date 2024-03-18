@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iTerm2 on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/iterm2/</link><description>Recent content in iTerm2 on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Thu, 28 Sep 2023 19:23:22 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/iterm2/index.xml" rel="self" type="application/rss+xml"/><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
+本文是高效终端环境第一篇，系列查看：我的终端环境
+我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
+本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
+本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
+前言介绍 我将主要介绍如何安装与配置 iTerm2，安装成功后，会带着一起体验的一些能力。
+首先，iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。
+iTerm2 vs 默认 Terminal 为什么要用 iTerm2 替换默认的系统终端呢？这总要一些原因吧。
+首先，iTerm2 相较于 Terminal 的优势就是，它更加美观，相对于默认终端，iTerm2 支持真彩，而且，你可以在终端显示图片，甚至是 gif 动图。
+其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。
+iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
+还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
+废话不多说，接下来，让我们进入安装使用流程。
+下载安装 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
+我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
+非常简单！
+核心脚本介绍
+首先，一段 bash 脚本:
+1 tmux ls &amp;amp;&amp;amp; read -p &amp;#34;Select a session&amp;lt;default&amp;gt;:&amp;#34; tmux_session &amp;amp;&amp;amp; tmux attach -t ${tmux_session:-default} || tmux new -s ${tmux_session:-default} 这段脚本的说明如下：
+tmux ls, 先输出当前可用的 session 列表，供用户输入使用； read xxx, 读取用户输入，将希望打开的会话名称存入 tmux_session 中； tmux attach，尝试打开会话，如果 tmux_session 为空，打开 default 会话； tmux new，如果开启失败，尝试创建一个新的会话； 说明：由于 read 命令使用了-p，必须要使用 bash 运行这段脚本。
+配置 iTerm2 启动加载</description></item></channel></rss>

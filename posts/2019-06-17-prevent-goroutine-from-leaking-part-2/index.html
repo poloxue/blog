@@ -1,0 +1,336 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>如何防止你的 Goroutine 泄露(二) - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="如何防止你的 Goroutine 泄露(二)"><meta itemprop=description content="上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
+注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
+NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
+一个示例，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main import ( &#34;net/http&#34; &#34;runtime&#34; &#34;strconv&#34; ) func write(w http.ResponseWriter, data []byte) { _, _ = w.Write(data) } func count(w http.ResponseWriter, r *http.Request) { write([]byte(strconv.Itoa(runtime.NumGoroutine()))) } func main() { http."><meta itemprop=datePublished content="2019-06-17T13:41:42+08:00"><meta itemprop=dateModified content="2019-06-17T13:41:42+08:00"><meta itemprop=wordCount content="939"><meta itemprop=keywords content="Golang,"><meta property="og:title" content="如何防止你的 Goroutine 泄露(二)"><meta property="og:description" content="上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
+注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
+NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
+一个示例，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main import ( &#34;net/http&#34; &#34;runtime&#34; &#34;strconv&#34; ) func write(w http.ResponseWriter, data []byte) { _, _ = w.Write(data) } func count(w http.ResponseWriter, r *http.Request) { write([]byte(strconv.Itoa(runtime.NumGoroutine()))) } func main() { http."><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-06-17T13:41:42+08:00"><meta property="article:modified_time" content="2019-06-17T13:41:42+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="如何防止你的 Goroutine 泄露(二)"><meta name=twitter:description content="上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
+注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
+NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
+一个示例，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main import ( &#34;net/http&#34; &#34;runtime&#34; &#34;strconv&#34; ) func write(w http.ResponseWriter, data []byte) { _, _ = w.Write(data) } func count(w http.ResponseWriter, r *http.Request) { write([]byte(strconv.Itoa(runtime.NumGoroutine()))) } func main() { http."><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>首页</a></li><li><a href=/posts>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/>关于我</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>17</span>
+<span class=rest>Jun 2019</span></div></div><div class=matter><h1 class=title>如何防止你的 Goroutine 泄露(二)</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#runtimepprof>runtime/pprof</a></li><li><a href=#httpnetpprof>http/net/pprof</a></li></ol></nav></aside><p>上篇<a href=https://zhuanlan.zhihu.com/p/74090074>文章</a>说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。</p><h1 id=简述>简述</h1><p>前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。</p><p>注：为了更好的演示效果，下面将会用常驻的 http 作为示例。</p><h1 id=numgoroutine>NumGoroutine</h1><p>runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。</p><p>一个示例，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;net/http&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;runtime&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;strconv&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>write</span>(<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ResponseWriter</span>, <span style=color:#a6e22e>data</span> []<span style=color:#66d9ef>byte</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Write</span>(<span style=color:#a6e22e>data</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>count</span>(<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ResponseWriter</span>, <span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>write</span>([]byte(<span style=color:#a6e22e>strconv</span>.<span style=color:#a6e22e>Itoa</span>(<span style=color:#a6e22e>runtime</span>.<span style=color:#a6e22e>NumGoroutine</span>())))
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>HandleFunc</span>(<span style=color:#e6db74>&#34;/_count&#34;</span>, <span style=color:#a6e22e>count</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ListenAndServe</span>(<span style=color:#e6db74>&#34;:6080&#34;</span>, <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>功能很简单，设置 <code>_count</code> 路由请求处理函数 count，它负责输出服务当前 goroutine 数量。启动服务后访问 localhost:6080/_count 即可。</p><p>但只是一个数值，我们就能确认是否泄露了吗？</p><p>首先，如果这个数值很大，是不是就能说明出现了泄露。我的答案是否。理由很简单，高并发情况下的 goroutine 数量肯定很高的，但并非出现了泄露，可能只是当前的服务的承载能力还不够。我们可以在数量基础上引入时间，即如果 goroutine 随着时间增加，数量在不断上升，而基本没有下降，基本可以确定存在泄露。我们可以定时采集不同时刻的数据来分析。</p><h1 id=演示案例>演示案例</h1><p>为了更好的演示效果，我们为服务再增加一个处理函数 query， 并绑定路由 /query 上。假设它负责从多个数据表中查出数据返回给用户。这个例子在后面的演示会一直使用。</p><p>代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ResponseWriter</span>, <span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>byte</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>c</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>0x31</span>
+</span></span><span style=display:flex><span>	}()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>c</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>0x32</span>
+</span></span><span style=display:flex><span>	}()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>c</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>0x33</span>
+</span></span><span style=display:flex><span>	}()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rs</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>byte</span>, <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>2</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>rs</span> = append(<span style=color:#a6e22e>rs</span>, <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>c</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>write</span>(<span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>rs</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>在 query 中，我们启动了 3 个 goroutine 执行数据库查询，通过 channel 传递返回数据。这里的问题是，query 函数中只从 channel 中接收两次数据就退出了循环，这会导致其中一个 goroutine 因缺少接收者而无法释放。</p><p>我们可以多次请求 <code>localhost:6080/query</code>，然后通过 <code>_count</code> 查看服务当前的 goroutine 数量。手动麻烦，可以用 ab 命令进行做个简单压测。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ab -n <span style=color:#ae81ff>1000</span> -c <span style=color:#ae81ff>100</span> localhost:6080/query
+</span></span></code></pre></td></tr></table></div></div><p>命令的意思是，总共访问 1000 次，并发访问 100 次。</p><h1 id=pprof>pprof</h1><p>前面的例子比较简单，发现泄露后，我们可以立刻确定存在的问题。但如果比较复杂的项目，我们就很难发现问题代码的出现位置了。</p><p>如何解决呢？</p><p>我们可以引入一个辅助工具，pprof。它是由 Go 官方提供的可用于收集程序运行时报告的工具，其中包含 CPU、内存等信息。当然，也可以获取运行时 goroutine 堆栈信息，如此一来，我们就可以很容易看出哪里导致了 goroutine 泄露。</p><h2 id=runtimepprof>runtime/pprof</h2><p>我们可以再加入一个名为 goroutineStack 的 handler，用于查看程序中 goroutine 的堆栈信息，，地址为 <code>_goroutine</code>。</p><p>实现代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;runtime/pprof&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>goroutineStack</span>(<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>ResponseWriter</span>, <span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>pprof</span>.<span style=color:#a6e22e>Lookup</span>(<span style=color:#e6db74>&#34;goroutine&#34;</span>).<span style=color:#a6e22e>WriteTo</span>(<span style=color:#a6e22e>w</span>, <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>访问 <code>_goroutine</code>，将会得到类似如下的信息：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">60
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>goroutine profile: total 1004
+</span></span><span style=display:flex><span>948 @ 0x102e70b 0x102e7b3 0x10068ed 0x10066c5 0x1233b37 0x10595d1
+</span></span><span style=display:flex><span>#	0x1233b36	main.query.func2+0x36	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:20
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>45 @ 0x102e70b 0x102e7b3 0x10068ed 0x10066c5 0x1233ae7 0x10595d1
+</span></span><span style=display:flex><span>#	0x1233ae6	main.query.func1+0x36	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:16
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>7 @ 0x102e70b 0x102e7b3 0x10068ed 0x10066c5 0x1233b87 0x10595d1
+</span></span><span style=display:flex><span>#	0x1233b86	main.query.func3+0x36	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:24
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>1 @ 0x102e70b 0x1029ba9 0x1029256 0x108b7da 0x108b8ed 0x108c216 0x112f80f 0x113b348 0x11f5f6a 0x10595d1
+</span></span><span style=display:flex><span>#	0x1029255	internal/poll.runtime_pollWait+0x65		/usr/local/go/src/runtime/netpoll.go:173
+</span></span><span style=display:flex><span>#	0x108b7d9	internal/poll.(*pollDesc).wait+0x99		/usr/local/go/src/internal/poll/fd_poll_runtime.go:85
+</span></span><span style=display:flex><span>#	0x108b8ec	internal/poll.(*pollDesc).waitRead+0x3c		/usr/local/go/src/internal/poll/fd_poll_runtime.go:90
+</span></span><span style=display:flex><span>#	0x108c215	internal/poll.(*FD).Read+0x1d5			/usr/local/go/src/internal/poll/fd_unix.go:169
+</span></span><span style=display:flex><span>#	0x112f80e	net.(*netFD).Read+0x4e				/usr/local/go/src/net/fd_unix.go:202
+</span></span><span style=display:flex><span>#	0x113b347	net.(*conn).Read+0x67				/usr/local/go/src/net/net.go:177
+</span></span><span style=display:flex><span>#	0x11f5f69	net/http.(*connReader).backgroundRead+0x59	/usr/local/go/src/net/http/server.go:676
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>1 @ 0x102e70b 0x1029ba9 0x1029256 0x108b7da 0x108b8ed 0x108c216 0x112f80f 0x113b348 0x11f63ec 0x10fb596 0x10fbf76 0x10fc174 0x119ebbf 0x119eaeb 0x11f315c 0x11f7672 0x11fb23e 0x10595d1
+</span></span><span style=display:flex><span>#	0x1029255	internal/poll.runtime_pollWait+0x65		/usr/local/go/src/runtime/netpoll.go:173
+</span></span><span style=display:flex><span>#	0x108b7d9	internal/poll.(*pollDesc).wait+0x99		/usr/local/go/src/internal/poll/fd_poll_runtime.go:85
+</span></span><span style=display:flex><span>#	0x108b8ec	internal/poll.(*pollDesc).waitRead+0x3c		/usr/local/go/src/internal/poll/fd_poll_runtime.go:90
+</span></span><span style=display:flex><span>#	0x108c215	internal/poll.(*FD).Read+0x1d5			/usr/local/go/src/internal/poll/fd_unix.go:169
+</span></span><span style=display:flex><span>#	0x112f80e	net.(*netFD).Read+0x4e				/usr/local/go/src/net/fd_unix.go:202
+</span></span><span style=display:flex><span>#	0x113b347	net.(*conn).Read+0x67				/usr/local/go/src/net/net.go:177
+</span></span><span style=display:flex><span>#	0x11f63eb	net/http.(*connReader).Read+0xfb		/usr/local/go/src/net/http/server.go:786
+</span></span><span style=display:flex><span>#	0x10fb595	bufio.(*Reader).fill+0x105			/usr/local/go/src/bufio/bufio.go:100
+</span></span><span style=display:flex><span>#	0x10fbf75	bufio.(*Reader).ReadSlice+0x35			/usr/local/go/src/bufio/bufio.go:341
+</span></span><span style=display:flex><span>#	0x10fc173	bufio.(*Reader).ReadLine+0x33			/usr/local/go/src/bufio/bufio.go:370
+</span></span><span style=display:flex><span>#	0x119ebbe	net/textproto.(*Reader).readLineSlice+0x6e	/usr/local/go/src/net/textproto/reader.go:55
+</span></span><span style=display:flex><span>#	0x119eaea	net/textproto.(*Reader).ReadLine+0x2a		/usr/local/go/src/net/textproto/reader.go:36
+</span></span><span style=display:flex><span>#	0x11f315b	net/http.readRequest+0x8b			/usr/local/go/src/net/http/request.go:958
+</span></span><span style=display:flex><span>#	0x11f7671	net/http.(*conn).readRequest+0x161		/usr/local/go/src/net/http/server.go:966
+</span></span><span style=display:flex><span>#	0x11fb23d	net/http.(*conn).serve+0x49d			/usr/local/go/src/net/http/server.go:1788
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>1 @ 0x102e70b 0x1029ba9 0x1029256 0x108b7da 0x108b8ed 0x108ce80 0x112fd92 0x1142c5e 0x1141967 0x11ff7df 0x121da4c 0x11fed5f 0x11fea16 0x11ff534 0x1233a91 0x102e317 0x10595d1
+</span></span><span style=display:flex><span>#	0x1029255	internal/poll.runtime_pollWait+0x65		/usr/local/go/src/runtime/netpoll.go:173
+</span></span><span style=display:flex><span>#	0x108b7d9	internal/poll.(*pollDesc).wait+0x99		/usr/local/go/src/internal/poll/fd_poll_runtime.go:85
+</span></span><span style=display:flex><span>#	0x108b8ec	internal/poll.(*pollDesc).waitRead+0x3c		/usr/local/go/src/internal/poll/fd_poll_runtime.go:90
+</span></span><span style=display:flex><span>#	0x108ce7f	internal/poll.(*FD).Accept+0x19f		/usr/local/go/src/internal/poll/fd_unix.go:384
+</span></span><span style=display:flex><span>#	0x112fd91	net.(*netFD).accept+0x41			/usr/local/go/src/net/fd_unix.go:238
+</span></span><span style=display:flex><span>#	0x1142c5d	net.(*TCPListener).accept+0x2d			/usr/local/go/src/net/tcpsock_posix.go:139
+</span></span><span style=display:flex><span>#	0x1141966	net.(*TCPListener).AcceptTCP+0x46		/usr/local/go/src/net/tcpsock.go:247
+</span></span><span style=display:flex><span>#	0x11ff7de	net/http.tcpKeepAliveListener.Accept+0x2e	/usr/local/go/src/net/http/server.go:3232
+</span></span><span style=display:flex><span>#	0x11fed5e	net/http.(*Server).Serve+0x22e			/usr/local/go/src/net/http/server.go:2826
+</span></span><span style=display:flex><span>#	0x11fea15	net/http.(*Server).ListenAndServe+0xb5		/usr/local/go/src/net/http/server.go:2764
+</span></span><span style=display:flex><span>#	0x11ff533	net/http.ListenAndServe+0x73			/usr/local/go/src/net/http/server.go:3004
+</span></span><span style=display:flex><span>#	0x1233a90	main.main+0xb0					/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:40
+</span></span><span style=display:flex><span>#	0x102e316	runtime.main+0x206				/usr/local/go/src/runtime/proc.go:201
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>1 @ 0x122ce28 0x122cc30 0x1229694 0x1233723 0x11fc194 0x11fde37 0x11fe8eb 0x11fb3e6 0x10595d1
+</span></span><span style=display:flex><span>#	0x122ce27	runtime/pprof.writeRuntimeProfile+0x97			/usr/local/go/src/runtime/pprof/pprof.go:707
+</span></span><span style=display:flex><span>#	0x122cc2f	runtime/pprof.writeGoroutine+0x9f			/usr/local/go/src/runtime/pprof/pprof.go:669
+</span></span><span style=display:flex><span>#	0x1229693	runtime/pprof.(*Profile).WriteTo+0x3e3			/usr/local/go/src/runtime/pprof/pprof.go:328
+</span></span><span style=display:flex><span>#	0x1233722	study/goroutine/leak/06/leak.GoroutineStack+0x92	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/leak/handlers.go:19
+</span></span><span style=display:flex><span>#	0x11fc193	net/http.HandlerFunc.ServeHTTP+0x43			/usr/local/go/src/net/http/server.go:1964
+</span></span><span style=display:flex><span>#	0x11fde36	net/http.(*ServeMux).ServeHTTP+0x126			/usr/local/go/src/net/http/server.go:2361
+</span></span><span style=display:flex><span>#	0x11fe8ea	net/http.serverHandler.ServeHTTP+0xaa			/usr/local/go/src/net/http/server.go:2741
+</span></span><span style=display:flex><span>#	0x11fb3e5	net/http.(*conn).serve+0x645				/usr/local/go/src/net/http/server.go:1847
+</span></span></code></pre></td></tr></table></div></div><p>首先是第一行，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>goroutine profile: total 1004
+</span></span></code></pre></td></tr></table></div></div><p>统计信息，和 NumGoroutine 的返回结果相同。当前共有 1004 个 goroutine 在运行。</p><p>接下来的部分，主要是具体介绍每个 goroutine 的情况，相同函数的 goroutine 会被合并统计，并按数量从大到小排序。输出前三段就是我们在 query 函数中开启的三个 goroutine。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style=display:flex><span>948 @ 0x102e70b 0x102e7b3 0x10068ed 0x10066c5 0x1233b37 0x10595d1
+</span></span><span style=display:flex><span>#	0x1233b36	main.query.func2+0x36	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:20
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>45 @ 0x102e70b 0x102e7b3 0x10068ed 0x10066c5 0x1233ae7 0x10595d1
+</span></span><span style=display:flex><span>#	0x1233ae6	main.query.func1+0x36	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:16
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>7 @ 0x102e70b 0x102e7b3 0x10068ed 0x10066c5 0x1233b87 0x10595d1
+</span></span><span style=display:flex><span>#	0x1233b86	main.query.func3+0x36	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:24
+</span></span></code></pre></td></tr></table></div></div><p>分别是 main.query.func1、main.query.func2 以及 main.query.func3，对应于它们，当前仍在运行中的 goroutine 数量分别是 45、948、7。看样子泄露的 goroutine 函数分布并非均匀。</p><p>几个函数都是匿名的，如果我们需要确定具体位置，可以通过堆栈实现。比如 func1，明确指出了位于的所在文件和代码行数。</p><h2 id=httpnetpprof>http/net/pprof</h2><p>前面部分是通过自己编写代码把 goroutine 的分析统计指标加入到了 HTTP 服务中。其实，官方已经实现了这个功能，并且涉及的不仅仅是 goroutine，还有 CPU、内存等。</p><p>它的操作很简单，我们只需要在服务启动时导入 net/http/pprof 即可。接着访问地址 /debug/pprof/goroutine?debug=1，将会可以看到与上一节输出的相同内容。</p><h1 id=gops>gops</h1><p>熟悉 Java 的朋友都知道 jps 这个命令。通过它，我们可以查看当前机器上有哪些 Java 程序在运行。Go 也有类似的命令，<a href>gops</a>，它支持列出当前环境下的 Go 进程，并支持对 Go 程序的诊断。默认情况下，gops 可列出并不支持对进程进行成诊断。</p><p>今天，我们将只看它和 goroutine 相关的部分。</p><p>一个示例，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ gops
+</span></span><span style=display:flex><span><span style=color:#ae81ff>97778</span> <span style=color:#ae81ff>96800</span> gops    go1.11.1 /usr/local/go/bin/gops
+</span></span><span style=display:flex><span><span style=color:#ae81ff>97605</span> <span style=color:#ae81ff>73594</span> leaker* go1.11.1 /Users/polo/Public/Work/go/src/study/goroutine/leak/06/leaker
+</span></span></code></pre></td></tr></table></div></div><p>我的环境下当前只有两个 go 进程在运行。</p><p>仔细观察后，我们会发现 leaker 进程相比 gops 后面多个 * 的标号，而 * 表示这个程序支持通过 gops 诊断。这是因为我们在 leaker 加入了诊断支持的代码，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>agent</span>.<span style=color:#a6e22e>Listen</span>(<span style=color:#a6e22e>agent</span>.<span style=color:#a6e22e>Options</span>{<span style=color:#a6e22e>ShutdownCleanup</span>: <span style=color:#66d9ef>true</span>}); <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Fatalln</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#f92672>...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>执行如下命令，查看当前的 goroutine 数量。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ gops stats <span style=color:#ae81ff>97605</span>
+</span></span><span style=display:flex><span>goroutines: <span style=color:#ae81ff>1004</span>
+</span></span><span style=display:flex><span>OS threads: <span style=color:#ae81ff>14</span>
+</span></span><span style=display:flex><span>GOMAXPROCS: <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>num CPU: <span style=color:#ae81ff>8</span>
+</span></span></code></pre></td></tr></table></div></div><p>其中，97605 是进程 PID。</p><p>结果显示，当前在运行的 goroutine 有 1004 个。而且，我们还注意到 OS 级别的线程才 14 个，可见 goroutine 的轻量。</p><p>gops 也可以查看堆栈，我们只需执行 gops stack PID 即可，这个就不具体演示了。要说明的是，这种方式并不会对运行相同函数的 goroutine 做聚合统计，不知道是我没找到还是本身不支持。如果的确不支持，也可以自己聚合，但毕竟没那么方便。</p><h1 id=leak-test>Leak Test</h1><p>除了出现问题后的检测调试，但如果我们能把泄露检测过程加入到自动化测试中，在正式上线前就避免，岂不是更完美。我们可以通过一个开源包实现，包的名称是 <a href=https://github.com/fortytw2/leaktest>leaktest</a>，即泄露测试的意思。</p><p>利用 leaktest，我们测试下前面写的 http 处理函数 query。因为要检测 handler 是否泄露，如果经过网络就会丢失服务端的相关信息，这时，我们可以借助 Go 中的 net/http/test 包完成测试。</p><p>代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Test_Query</span>(<span style=color:#a6e22e>t</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>testing</span>.<span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>leaktest</span>.<span style=color:#a6e22e>Check</span>(<span style=color:#a6e22e>t</span>)()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//创建一个请求
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;GET&#34;</span>, <span style=color:#e6db74>&#34;/query&#34;</span>, <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>t</span>.<span style=color:#a6e22e>Fatal</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rr</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>httptest</span>.<span style=color:#a6e22e>NewRecorder</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//直接使用 query(rr,req)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>rr</span>, <span style=color:#a6e22e>req</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 其他测试
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// ...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></td></tr></table></div></div><p>测试执行输出如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">9
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#f92672>===</span> RUN   Test_Query
+</span></span><span style=display:flex><span>--- FAIL: Test_Query <span style=color:#f92672>(</span>5.01s<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>    leaktest.go:162: leaktest: context canceled
+</span></span><span style=display:flex><span>    leaktest.go:168: leaktest: leaked goroutine: goroutine <span style=color:#ae81ff>20</span> <span style=color:#f92672>[</span>chan send<span style=color:#f92672>]</span>:
+</span></span><span style=display:flex><span>        study/goroutine/leak/06.query.func2<span style=color:#f92672>(</span>0xc0001481e0<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>        	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:24 +0x37
+</span></span><span style=display:flex><span>        created by study/goroutine/leak/06.query
+</span></span><span style=display:flex><span>        	/Users/polo/Public/Work/go/src/study/goroutine/leak/06/main.go:23 +0x7e
+</span></span><span style=display:flex><span>FAIL
+</span></span></code></pre></td></tr></table></div></div><p>从输出信息中，我们可以明确地知道出现了泄露，并且通过输出堆栈很快就能定位出现问题的代码。测试代码非常简单，在测试函数开始通过 defer 执行 leaktest 的 Check。</p><p>它提供的三个检测函数，分别是 Check、CheckTimeout 和 CheckContext，从前到后的实现一个比一个底层。Check 默认会等待五秒再执行检测，如果需要改变这个时间，可以使用 CheckTimeout 函数。</p><p>leaktest 的实现原理也和堆栈有关，源码不多，如果有兴趣可以读读，<a href=https://github.com/fortytw2/leaktest/blob/master/leaktest.go>源码文件地址</a>。</p><h1 id=总结>总结</h1><p>本系列文章分别从代码实现和监控检测两个角度介绍了如何避免 goroutine 的泄露。Go 的并发降低了并发程序的开发难度，但并发一直都是个比较复杂的话题，为了用好它，必要学习还是不可缺少的。</p><p>博文地址：<a href=https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/>如何防止你的 Goroutine 泄露</a></p><h1 id=参考资料>参考资料</h1><p><a href=https://medium.com/golangspec/goroutine-leak-400063aef468>Goroutine leak</a><br><a href=https://blog.wolfogre.com/posts/mechanism-of-gops/>gops 工作原理</a><br><a href=https://www.cnblogs.com/snowInPluto/p/7785651.html>gops - Go 语言程序查看和诊断工具</a><br><a href=https://shockerli.net/post/golang-tool-gops/>gops — Go 程序诊断分析工具</a><br><a href=https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/13.10.md>性能调式：分析并优化 Go 程序</a><br><a href=https://blog.minio.io/debugging-go-routine-leaks-a1220142d32c>Debugging Go Routine leaks</a><br><a href="https://www.youtube.com/watch?v=hWo0FEVr92A&amp;feature=youtu.be">视频-Debugging Go routine leaks</a><br><a href=https://books.studygolang.com/The-Golang-Standard-Library-by-Example/chapter09/09.6.html>HTTP 测试辅助工具</a></p></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#runtimepprof>runtime/pprof</a></li><li><a href=#httpnetpprof>http/net/pprof</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags><ul class=flat><li class=tag-li><a href=/tags/golang>Golang</a></li></ul></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post><img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2019 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>

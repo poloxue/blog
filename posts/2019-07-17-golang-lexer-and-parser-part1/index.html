@@ -1,0 +1,148 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>Go 实现词法分析与解析 Part One - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="Go 实现词法分析与解析 Part One"><meta itemprop=description content="一直对词法分析与解析的话题比较感兴趣，最近发现了好几篇相关的优秀文章，准备好好翻译和研究下。我的理解，词法分析与解析的应用还是比较广泛的，无论简单的配置文件、各种模板语言、还是我们每天在写编程语言都离不开它。
+本篇文章一个系列文章的第一篇，主要介绍的是词法分析与解析的一些基础概念，包括什么是词法分析，什么是解析，Token 如何表示等等。
+正文如下：
+从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 Lexical Scanning In Go 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。
+三篇文章涉及内容分别是：
+Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 1，如什么是词法分析、解析，以及案例的一部分介绍； Go 实现词法分析与解析)，译：Writing a Lexer and Parser in Go - Part 2； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 3； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
+为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。"><meta itemprop=datePublished content="2019-07-17T17:03:59+08:00"><meta itemprop=dateModified content="2019-07-17T17:03:59+08:00"><meta itemprop=wordCount content="392"><meta itemprop=keywords content="Golang,"><meta property="og:title" content="Go 实现词法分析与解析 Part One"><meta property="og:description" content="一直对词法分析与解析的话题比较感兴趣，最近发现了好几篇相关的优秀文章，准备好好翻译和研究下。我的理解，词法分析与解析的应用还是比较广泛的，无论简单的配置文件、各种模板语言、还是我们每天在写编程语言都离不开它。
+本篇文章一个系列文章的第一篇，主要介绍的是词法分析与解析的一些基础概念，包括什么是词法分析，什么是解析，Token 如何表示等等。
+正文如下：
+从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 Lexical Scanning In Go 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。
+三篇文章涉及内容分别是：
+Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 1，如什么是词法分析、解析，以及案例的一部分介绍； Go 实现词法分析与解析)，译：Writing a Lexer and Parser in Go - Part 2； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 3； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
+为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-07-17T17:03:59+08:00"><meta property="article:modified_time" content="2019-07-17T17:03:59+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 实现词法分析与解析 Part One"><meta name=twitter:description content="一直对词法分析与解析的话题比较感兴趣，最近发现了好几篇相关的优秀文章，准备好好翻译和研究下。我的理解，词法分析与解析的应用还是比较广泛的，无论简单的配置文件、各种模板语言、还是我们每天在写编程语言都离不开它。
+本篇文章一个系列文章的第一篇，主要介绍的是词法分析与解析的一些基础概念，包括什么是词法分析，什么是解析，Token 如何表示等等。
+正文如下：
+从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 Lexical Scanning In Go 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。
+三篇文章涉及内容分别是：
+Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 1，如什么是词法分析、解析，以及案例的一部分介绍； Go 实现词法分析与解析)，译：Writing a Lexer and Parser in Go - Part 2； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 3； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
+为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>首页</a></li><li><a href=/posts>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/>关于我</a></li></ul></nav></div><div class=post><div class=post-header><div class=meta><div class=date><span class=day>17</span>
+<span class=rest>Jul 2019</span></div></div><div class=matter><h1 class=title>Go 实现词法分析与解析 Part One</h1></div></div><p>一直对词法分析与解析的话题比较感兴趣，最近发现了好几篇相关的优秀文章，准备好好翻译和研究下。我的理解，词法分析与解析的应用还是比较广泛的，无论简单的配置文件、各种模板语言、还是我们每天在写编程语言都离不开它。</p><p>本篇文章一个系列文章的第一篇，主要介绍的是词法分析与解析的一些基础概念，包括什么是词法分析，什么是解析，Token 如何表示等等。</p><p>正文如下：</p><p>从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 <a href=http://cuddle.googlecode.com/hg/talk/lex.html#landing-slide>Lexical Scanning In Go</a> 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。</p><p>三篇文章涉及内容分别是：</p><blockquote><ul><li><a href=https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1>Go 实现词法分析与解析</a>，<a href=https://adampresley.github.io/2015/04/12/writing-a-lexer-and-parser-in-go-part-1.html>译：Writing a Lexer and Parser in Go - Part 1</a>，如什么是词法分析、解析，以及案例的一部分介绍；</li><li><a href=https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part2>Go 实现词法分析与解析</a>)，<a href=https://adampresley.github.io/2015/05/12/writing-a-lexer-and-parser-in-go-part-2.html>译：Writing a Lexer and Parser in Go - Part 2</a>；</li><li><a href=https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part3>Go 实现词法分析与解析</a>，<a href=https://adampresley.github.io/2015/06/01/writing-a-lexer-and-parser-in-go-part-3.html>译：Writing a Lexer and Parser in Go - Part 3</a>；</li></ul></blockquote><h2 id=概要>概要</h2><p>词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。</p><p>为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=display:flex><span><span style=color:#66d9ef>[SetionName]</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>key1</span><span style=color:#f92672>=</span><span style=color:#e6db74>value 1</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>key2</span><span style=color:#f92672>=</span><span style=color:#e6db74>value 2</span>
+</span></span></code></pre></td></tr></table></div></div><p>样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。</p><ul><li>段: Sections</li><li>键: Keys</li><li>值: Values</li></ul><p>Key/Value 属于 Section，每个 Section 可能不止一个 Key/Value，每个 INI 文件可以包含多个 Section。这是一种非常简单但非常高效的结构，特别适用于保存配置信息。</p><p>上面的内容将会被解析为结构化数据，我们可以提前看下处理后的数据的 JSON 格式，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;FileName&#34;</span>: <span style=color:#e6db74>&#34;sample.ini&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;Sections&#34;</span>: [
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;Name&#34;</span>: <span style=color:#e6db74>&#34;SectionName&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;KeyValuePairs&#34;</span>: [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;Key&#34;</span>: <span style=color:#e6db74>&#34;key1&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;Value&#34;</span>: <span style=color:#e6db74>&#34;value 1&#34;</span>
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;Key&#34;</span>: <span style=color:#e6db74>&#34;key2&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;Value&#34;</span>: <span style=color:#e6db74>&#34;value 2&#34;</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>      ]
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><h2 id=什么是词法分析>什么是词法分析</h2><p>词法分析在 WIKI 中的定义是 &ldquo;将字符串转化为一系列 Token 的过程，即，一系列有意义的字符串&rdquo;。词法分析通常是在编译或运行之前执行。例如，PHP 是一种解释型语言，当你访问一个由 PHP 开发的站点，PHP 解释器将负责 PHP 代码的执行，并把生成的 HTML 返回给浏览器。PHP 代码先会经过词法分析得到一系列有意义的 Token。之后，PHP 解释器会按照这些 Token 执行接下来的操作，比如将 Token 结果缓存，以及执行具体工作等。</p><h2 id=什么是-token>什么是 Token</h2><p>Token 是用于描述与归类从文本中分解出来的元素的一种结构。例如，之前的例子中，section 可归类为 TOKEN_SECTION，key 可以归类为 TOKEN_KEY。这种结构通常被用于追踪元素类类别和值。比如，前面的例子中，名为 <code>SectionName</code> 的 section，在 Token 中的结构是如下表示：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Type&#34;</span>: <span style=color:#960050;background-color:#1e0010>TOKEN_SECTION</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;Value&#34;</span>: <span style=color:#e6db74>&#34;SectionName&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>解析器、解释器或编译器将会根据得到 Token 决定如何执行、编译或生成代码/数据。</p><h2 id=什么是解析>什么是解析</h2><p>词法分析器将输入文本拆分，并返回一系列结构化的 token。但 token 本身并没有什么价值，如此便引出了解析的概念。解析是指对 Tokens 进行语法分析的过程，它可以确保输入的文本的可用性和有意义的。</p><p>例如，下面的样例就是非可用 INI 段 section。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-INI data-lang=INI><span style=display:flex><span><span style=color:#a6e22e>[SectionName]</span><span style=color:#f92672>=</span><span style=color:#e6db74>Hi there</span>
+</span></span></code></pre></td></tr></table></div></div><p>这段文本在经过词法分析后，将会得到一系列的 Token，它们将被用于 section、等于号和字符串的表示。这是词法分析的职责所在。而解析器则是决定它们是否有意义，即是否符合语法。对于 INI 格式而言，这些 Token 并不可用。我们实现的解析器将会从 channel 中接收 Token，创建相应的数据结构，包含 section 和 key/value。</p><h2 id=逐步拆解>逐步拆解</h2><p>本文最后一个任务，定义下面在词法分析器中将会使用 Token 类型结构，Token 的名称和相关的类型。首先是 Token 的结构，这个结构将会贯穿我们的整个代码，它将会通过 channel 传递给解析器。</p><p>我们先来看下项目目录结构，可以查看 <a href=https://github.com/adampresley/sample-ini-parser>github 仓库</a>, 在我的 Mac 上，目录结构是 <code>~/code/go/src/github.com/adampresley/sample-ini-parser</code>，lexer 词法分析组件在 service/lexer 目录下。Token 结构的定义位于 <code>~/code/go/src/github.com/adampresley/sample-ini-parser/services/lexer/lexertoken</code> 目录下。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>lexertoken</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Token</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>Type</span>  <span style=color:#a6e22e>TokenType</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>Value</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>该结构清晰的表示一个 Token 由类型和值组成的结构。你可以已经注意到这里引用了一个还未定义的类型 TokenType。现在，我们来定义一下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>lexertoken</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>TokenType</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> (
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_ERROR</span> <span style=color:#a6e22e>TokenType</span> = <span style=color:#a6e22e>itoa</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_LEFT_BRACKET</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_RIGHT_BRACKET</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_EQUAL_SIGN</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_NEWLINE</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_SECTION</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_KEY</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>TOKEN_VALUE</span>
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></td></tr></table></div></div><p>我们新定义了一个名为 TokenType 的类型（源自整型），并创建了所有可能的 Token 类型常量，它们都是从 INI 文件基础上拆解而来。</p><ul><li><p>我们需要一种方式实现错误追踪，定义 TOKEN_ERROR 表示错误类型；</p></li><li><p>当到达文本结尾，我们用 TOKEN_EOF 表示；</p></li><li><p>段由左括号、文本、右括号三部分组成；</p><ul><li>TOKEN_LEFT_BRACKET</li><li>TOKEN_SECTION</li><li>TOKEN_RIGHT_BRACKET</li></ul></li><li><p>Key/Value，以等于号进行分隔；</p><ul><li>TOKEN_KEY</li><li>TOKEN_EQUAL_SIGN</li><li>TOKEN_VALUE</li></ul></li><li><p>Section 和 Key/Value 必须以换行符结尾，常量 TOKEN_NEWLINE；</p></li></ul><p>最后，我们还需要了解上面部分的 Token 类型的文本表示。比如，词法器在分析 Key/Value 是，会在它们之间寻找等于号，此时，我们需要知道它的文本表示，以确认当前位置是否存在等于号。用常量表示这类 Token 文本是个不错主意。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>lexertoken</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>EOF</span> <span style=color:#66d9ef>rune</span> = <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>LEFT_BRACKET</span> <span style=color:#66d9ef>string</span> = <span style=color:#e6db74>&#34;[&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>RIGHT_BRACKET</span> <span style=color:#66d9ef>string</span> = <span style=color:#e6db74>&#34;]&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>EQUAL_SIGN</span> <span style=color:#66d9ef>string</span> = <span style=color:#e6db74>&#34;=&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>NEWLINE</span> <span style=color:#66d9ef>string</span> = <span style=color:#e6db74>&#34;\n&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=接下来>接下来</h2><p>在 <a href=https://adampresley.github.io/2015/05/12/writing-a-lexer-and-parser-in-go-part-2.html>Part 2</a>，我们将会对词法分析部分进行更加深入的介绍，我们在前面定义的 Token 结构也将会被用到。</p><p>我的博文：<a href=https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1>Go 实现词法分析与解析 Part One</a>，译：<a href=https://adampresley.github.io/2015/04/12/writing-a-lexer-and-parser-in-go-part-1.html>Writing a Lexer and Parser in Go - Part 1</a></p><hr class=footer-separator><div class=tags><ul class=flat><li class=tag-li><a href=/tags/golang>Golang</a></li></ul></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post><img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2019 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script></body></html>

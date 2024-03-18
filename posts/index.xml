@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 09 Mar 2024 08:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中的监视器模式与配置热更新</title><link>https://www.poloxue.com/posts/2024-03-07-listener-design-pattern-in-golang/</link><pubDate>Sat, 09 Mar 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-03-07-listener-design-pattern-in-golang/</guid><description>上篇介绍 GO 的 GUI 库 Fyne 时，提到 Fyne 的数据绑定用到了监听器模式。本文就展开说下我对 Go 中监听器模式的理解和应用吧。
+监听器模式简介 监听器模式，或称观察者模式，它主要涉及两个组件：主题（Subject）和监听器（Listener）。
+Subject 负责维护一系列的监听器，在所观测主题状态变化，将这个事件通知给所有注册的监听器。我统一将其定义为注册中心 Registry。而监听器 Listener 则是实现了特定接口的对象，用于响应事件消息，执行处理逻辑。
+对具体应用而言，通常还会分出一个 Watcher 或者 Monitor 用于检测变化并推送给 Registry。从而实现将检测目标从系统解耦，无视监控组件类别。
+这个模式在组件之间建立一种松散耦合的关系。将特定事件通知到关心它的其他组件，无需它们直接相互引用。看起来这个不也是发布-订阅模式吗？差不多一个意思。
+之前工作中，用它最多的是配置的热更新场景，这篇文章也会简单介绍基于它的 ETCD 配置热更新。
+Go 实现监听器模式 如何用 Go 实现监听模式？我将定义两个新类型分别是注册中心（Registry）和监听器接口（Listener）。
+1 2 3 type Listener interface { OnTrigger() } 首先是 Listener，它是一个接口，用于实现事件的响应逻辑。它的实现类型要求支持 OnTrigger 方法，会在事件发生时被执行。
+1 2 3 4 5 6 7 8 9 10 11 12 13 type Registry struct { listeners []Listener } func (r *Registry) Register(l Listener) { r.</description></item><item><title>一个 Go 实现的跨平台 GUI 框架 Fyne</title><link>https://www.poloxue.com/posts/2024-03-01-fyne-in-golang/</link><pubDate>Thu, 07 Mar 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-03-01-fyne-in-golang/</guid><description>今天，推荐一个 Go 实现的 GUI 库 - fyne。
+Go 官方也没有提供标准的 GUI 框架，在 Go 实现的几个 GUI 库中，Fyne 算是最出色的，它有着简洁的API、支持跨平台能力，且高度可扩展。这也就是说，Fyne 是可以开发 App。
+本文将尝试介绍下 Fyne，希望对大家快速上手这个 GUI 框架有所帮助。我最近产生了不少想法，其中有些是对 GUI 有要求的，就想着折腾用 Go 实现，而不是用那些已经很流行和成熟的 GUI 框架。
+在写这篇文章时，顺手搞了下它的中文版文档，文档查看 www.poloxue.com/gofyne，希望能帮助那些想继续深入这个框架的朋友。
+安装 fyne 开始前，确保已成功安装 Go，如果是 MacOS X 系统，要确认安装了 xcode。
+如下使用 go get 命令安装 Fyne。
+1 2 3 4 5 $ mkdir hellofyne $ cd helloyfyne $ go mod init hellofyne $ go get fyne.io/fyne/v2@latest $ go install fyne.io/fyne/v2/cmd/fyne@latest 如果想立刻查看 fyne 提供的演示案例，通过命令检查：</description></item><item><title>我用 Go 开发了一个简易版 shell</title><link>https://www.poloxue.com/posts/2024-02-29-create-your-own-shell-in-golang/</link><pubDate>Fri, 01 Mar 2024 17:51:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-29-create-your-own-shell-in-golang/</guid><description>之前看到 Github 有个非常受欢迎的 build-your-own-x 仓库，觉得挺有意思的，有不少有趣的实现。我就想着多尝试实现些这样的小项目，看看不同的领域。一方面提升我的编程能力，另外，也希望能发现一些不错的项目。
+今天的项目在 build-your-own-x 中也能找到，即 build your own shell。这个项目能帮助学习 Go 如何进行如 IO 输入输出、如何发起进程调用等操作。
+核心流程 首先，我声明这是个简陋的 shell，但能帮助我们更好理解 Shell。它支持如提示符打印、读取用户输入、解析输入内容、执行命令，另外还支持开发内建命令。
+如下是演示效果：
+接下来，我将从零开始一步步复现我的整个开发过程。
+框架搭建 我从创建一个 Shell 结构体开始，这是整个shell程序的核心，它其中包含一个 bufio.Reader 从标准输入读取用户输入。
+1 2 3 4 5 6 7 8 9 type Shell struct { reader *bufio.Reader } func NewShell() *Shell { return &amp;amp;Shell{ reader: bufio.NewReader(os.Stdin), } } 如上，通过 NewShell 构造函数创建 Shell 实例。这个函数返回一个新的 Shell 实例，其中包含了初始化的 bufio.Reader。
+为了方便扩展，接下来添加了几个方法，分别是：
+PrintPrompt用于打印提示符； ReadInput用于读取用户输入； ParseInput用于解析输入并分割成命令名和参数； ExecuteCmd用于执行命令。 定义如下：
+1 2 3 4 func (s *Shell) PrintPrompt() func (s *Shell) ReadInput() (string, error) func (s *Shell) ParseInput(input string) (string, []string) func (s *Shell) ExecuteCmd(cmdName string, cmdArgs []string) error 它们就是核心流程中最重要的四个方法，都是在 RunAndListen 方法中被调用，如下所示：</description></item><item><title>一个基于差异同步数据库结构的工具 - Skeema</title><link>https://www.poloxue.com/posts/2024-02-28-database-migration-tools-skeema-in-golang/</link><pubDate>Mon, 26 Feb 2024 08:29:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-28-database-migration-tools-skeema-in-golang/</guid><description>本文是 GO 三方库推荐的第 5 篇，继续介绍数据库 schema 同步工具，我前面已经写了两篇这个主题的文章。系列查看：Golang 三方库。
+今天，推荐是的一个基于差异实现数据库 schema 迁移的工具库 - skeema，同样由 Go 实现。
+背景 我的上家公司时，有名架构师开发了一个类似于 skeema 的工具，也是基于差异同步表结构的，区别在于那个工具使用的 yaml 声明表结构定义的。我当时就想在市面上找一个类似的工具，但没找到。好在通过 ChatGPT，搜索效率提升很多，不过也是一步步的引导才让我找到这个工具。
+概述 Skeema 是基于差异同步数据库 schema，这让我们只要表结构的终态就行。 还有，skeema 支持在不同环境间同步数据库 schema。
+Skeema 支持 linter 识别 SQL 语句，方便我们将其集成到 CICD 中提升 Schema 质量。还有，它默认是禁用了一些不安全的数据库操作，如删表删字段等操作。
+如果要说缺点，它现在只支持 MySQL 和 MariaDB。
+安装 Skeema 的安装过程直接了当。如果你使用的是 MacOS，可以通过Homebrew来安装：
+1 brew install skeema/tap/skeema 或是也可通过 go get 安装，但 Go 的版本要求在 v1.21+。
+1 $ go install github.com/skeema/skeema@v1.11.1 对于其他平台，可以从Skeema的GitHub页面下载二进制文件，并按照文档指引进行安装。
+使用 Skeema 的使用可概括为 5 个核心步骤：</description></item><item><title>一个基于增量同步数据库结构的工具 - Goose</title><link>https://www.poloxue.com/posts/2024-02-27-database-migration-tools-goose-in-golang/</link><pubDate>Sun, 25 Feb 2024 16:15:01 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-27-database-migration-tools-goose-in-golang/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第四篇，系列查看：Golang 三方库。
+上篇文章，我讨论了数据库 schema 同步的两种方式：增量和差异。今天，推荐一个基于 Go 实现的增量同步数据库 schema 的工具库 - goose。我不知道其他人的情况，我工作的很长一段时间内，接触到的这类工具都是采用增量方式实现的。
+让我们开始正文吧！
+为什么选择 Goose？ 首先，市场上已经存在了那么多数据库迁移工具，如 Flyway、Liquibase 和 Alembic。它们一般也都是采用增量方式管理数据库迁移。
+在这众多选项中，为什么要用 Goose 呢？我觉得最主要原因就是，它简单易上手，我们能迅速掌握并开始迁移任务。
+快速一览 Goose 功能特性 多数据库支持：Goose 可与多种数据库系统一起使用，包括但不限于 MySQL, PostgreSQL, SQLite, 和SQL Server。
+向前和向后迁移：支持向前（up）和向后（down）迁移，不仅可以通过迁移来更新数据库结构，还可以回滚到之前的状态。
+编程语言灵活性：Goose 最初是用 Go 编写的，但它支持在迁移文件中使用纯 SQL，这就拓宽了它的目标用户群体。
+命令行接口：Goose 提供了一个简单的命令行接口（CLI），使执行迁移操作更简单直观。这篇文章中的演示都是基于命令接口。
+版本控制：Goose 的每次迁移都会记录版本号，使数据库的版本控制变得清晰。版本号是基于时间生成的。
+环境配置：Goose 本身是不支持的，我简单改造了下，，基于它写了 shell 脚本，让它支持根据不同的环境（如开发、测试、生产）配置和应用不同配置，实现不同迁移策略。
+安装 安装 Goose 相当简单。首先，确保你已经安装了 Go。然后，通过下面命令安装 Goose：
+1 $ go install github.com/pressly/goose/v3/cmd/goose@latest 这条命令会将 goose 命令安装到 GOBIN 目录下。
+或者 MacOS：
+1 $ brew install goose 到此，就顺利安装成功了。</description></item><item><title>我用 Python 为 iTerm2 开发一个类似 tmuxifier 的工具</title><link>https://www.poloxue.com/posts/2024-02-25-build-an-itermifier/</link><pubDate>Sun, 25 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-25-build-an-itermifier/</guid><description>我在思考如何提高终端工作效率时，想到了是否能给予 iTerm2 实现一个类似于 tmuxifier 布局管理工具。如果你不了解 tmuxifier，简单来说，它是 tmux 的布局管理工具。
+它的作用如下所示：
+想到不如做到！
+这篇文章记录了我从零开始，一步步构建这个工具的过程。
+设计阶段 正式开发这个工具前，先调研下可行性还是很重要的。
+iTerm2 支持 Python API 首先，我了解到 iTerm2 支持通过 Python 脚本控制终端，这为我开发这样一个工具提供了可能性。
+它提供大量的 API，如更换背景、创建窗格，切换 Tab 等都是支持的。具体可查看文档：Python-API。
+设置开发环境 为了顺利开始，首先确保我的 iTerm2 （3.4.23）支持 Python API，还有我的机器上配置了 Python 环境。
+接着，我安装了 iTerm2 的 Python API 所需的库。
+1 $ pip install iterm2 配置文件的设计 我选择用 YAML 作为配置文件的格式，因为它的可读性好，格式简洁，有现成的解析库。我要做的就是通过 YAML 文件要定义布局，包括窗口、窗格和命令。
+这是 tmuxifier 的配置文件。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 # 设置窗口名称和根目录 session_root &amp;#34;~/Projects/my-project&amp;#34; window_name &amp;#34;my-project&amp;#34; # 创建一个新窗口，并分割成两个窗格 new_window &amp;#34;my-project&amp;#34; split_h 50 # 第一个窗格运行 vim run_cmd &amp;#34;vim&amp;#34; 0 # 第二个窗格运行 go run main.</description></item><item><title>如何正确处理 Go 项目中关于文件路径的问题</title><link>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</link><pubDate>Fri, 23 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：Go 语言技巧。
+在使用 Go 开发项目时，估计有不少人遇到过无法正确处理文件路径的问题，特别是刚从如 PHP、python 这类动态语言转向 Go 的朋友，已经习惯了通过相对源码文件找到其他文件。这个问题能否合理解决，不仅关系到程序的可移植性，还直接影响到程序的稳定性和安全性。
+本文将尝试从简单到复杂，详细介绍 Go 中获取路径的不同方法及应用场景。
+引言 首先，为什么要获取文件路径？
+一般来说，程序在运行时必须准确地读取相关的配置和资源以顺利启动。确定这些信息的存储位置，即获取文件路径，成为了正确访问这些信息的首要步骤，对于构建稳定可靠的应用程序而言至关重要。
+其次，为什么从动态语言转到 Go，容易被这个问题困扰？
+与 Go（一种静态语言）相比，动态语言通过直接解释脚本文件而执行的。这一机制使得动态语言在路径获取方面更为直观和易懂。然而，Go语言将源代码编译成独立的二进制可执行文件，这导致可执行文件与源代码间缺乏直接的联系。
+为了简化调试过程，Go 通过 go run 命令提供了一种类似动态语言直接执行源代码的便捷方式，实质上是将构建和运行步骤合二为一。这个过程中，会生成一个临时可执行文件，但这个文件不是存在当前工作目录中，这又为理解上带来额外的挑战。
+如果想找到这个文件，可通过 go run -work 保留文件，通过 os.Args[0] 确认文件路径。
+1 2 3 func main() { fmt.Println(os.Args[0]) } 输出：
+1 2 3 $ go run -work main.go WORK=/var/folders/0b/v4r1lzyj0n566qgd8dt_km4c0000gn/T/go-build1458488796 /var/folders/0b/v4r1lzyj0n566qgd8dt_km4c0000gn/T/go-build1458488796/b001/exe/main 可执行文件就是位于 $WORK/b001/exe/ 的 main 文件。
+若你习惯于动态语言中获取路径的做法，在 Go 中通过相对于可执行文件的路径来定位其他文件，使用 go run 调试的时候，就可能会引起一定的困惑。
+下面开始进入正题，详细 Go 中的文件路径的不同获取方式吧。
+相对于执行文件获取路径 之前提到了那么多在 Go 中获取可执行文件路径时可能导致的问题，我们就先从如何获取当前执行文件的路径开始吧。</description></item><item><title>Go 如何按行读取（大）文件？尝试 bufio 包提供的几种方式</title><link>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</link><pubDate>Wed, 21 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-21-readline-in-golang/</guid><description>嗨，大家好！我是波罗学。
+本文是系列文章 Go 技巧第十七篇，系列文章查看：Go 语言技巧。
+本文将介绍 Go 如何按行读取文件，基于此会逐步延伸到如何按块读取文件。
+引言 我们将要介绍的按行读取文件的方式其实是非常适合处理超大文件。
+按行读取文件相较于一次性载入，有着很多优势，如内存效率高、处理速度快、实时性高、可扩展性强和灵活度高等，特别是当遇到处理大文件时，这些优势会更加明显。
+稍微展开说下各个优势吧。
+内存效率高，因为是按行读取，处理完一行就会丢弃，内存占用将大大减少。
+处理速度快，主要体现在逐行处理时，因为无需等待全量数据，能更快开始，而且如果无顺序要求，还可并行计算以最大化利用计算资源，进一步提升处理速度。
+实时性高，因为按行读取，无需一次加载全量数据，自然有 实时性高 的特点，这对于处理实时流数据，如日志数据，非常有用。
+可扩展性强，按行读取这种方式，不仅仅适用于小文件，大文件同样使用，有了统一的处理方式，即使未来数据量膨胀，也易于扩展。
+灵活度高，因为是一行行的处理，如果想停止，随时可以。如果继续之前的流程，我们只要重新启动，从之前的位置继续处理即可。
+按行读取其实只是按块读取的一种特殊形式（分隔符是 \n），自然地，上述的优势也同样适用于按块读取文件。
+本文的重点在于如何使用 GO 实现按行读取，基于的是标准库的 bufio.Reader 和 bufio.Scanner 。
+正式进入主题吧。
+准备一个文本文件 我们先准备一个文本文件 example.txt，内容如下：
+1 2 3 4 5 6 7 This post covers the Golang Interface. Let’s dive into it. Duck Typing To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept. So, what’s Duck Typing? 基于 bufio.Reader Go 中的按行读取文件，首先可通过 bufio 提供的 Reader 类型实现。</description></item><item><title>Go 中如何高效遍历目录？探索几种方法</title><link>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</link><pubDate>Tue, 20 Feb 2024 19:39:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：Go 语言技巧。
+目录遍历是一个很常见的操作，它的使用场景有如文件目录查看（最典型的应用如 ls 命令）、文件系统清理、日志分析、项目构建等。
+本文将尝试逐步介绍在 Go 中几种遍历目录文件的方法，从传统的 ioutil.ReadDir 函数开始，逐渐深入。
+文中也会提供示例代码、提供一些性能剖析，以便于大家更好地理解。
+ioutil.ReadDir 首先，Go 中目录文件遍历的第一种方式是 ioutil.ReadDir 函数。
+在 Go 1.16 版本前，ioutil.ReadDir 就是遍历目录的标准方法，它的返回结构是目录中文件的 FileInfo 列表，简单直接。
+示例代码：
+1 2 3 4 5 6 7 8 9 10 func main() { files, err := ioutil.ReadDir(&amp;#34;.&amp;#34;) if err != nil { log.Fatal(err) } for _, f := range files { fmt.Println(f.Name()) } } 但它的缺点也非常明显，性能不高。导致它的主要原因有如下几点：
+完全加载
+这就导致了 ioutil.ReadDir 在返回结果前，会将目录下所有文件的信息完全加载到内存中。对于包含大量文件的目录，它就需要在内存中存储大量的 FileInfo 对象，毫无疑问，这会增加内存使用。
+FileInfo 开销</description></item><item><title>推荐一个可用于快速创建 TUI 应用的框架 - Bubble Tea</title><link>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</link><pubDate>Mon, 19 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-19-tui-library-bubble-tea-in-golang/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：Golang 三方库。
+今天介绍一个 TUI 库 - Bubble Tea，一个小巧但强大的文本用户界面（TUI）框架，基于 Go 语言开发。
+什么是 TUI？ 什么是 TUI？为了防止可能有人不知道，简单解释一下。
+TUI，全称为文本用户界面（Text-based User Interface），是一种用户界面类型。对之对比的就是 GUI（Graphical User Interface）。我开始还以为 TUI 中的 T 的全称是 terminal。
+TUI 是通过纯文本和基本字符在终端或控制台窗口中展示信息和交互选项。与 GUI 不同，TUI 不依赖图形元素如窗口、图标或鼠标指针，而是使用文本字符来构建用户界面的布局和元素。
+如同我们开发 GUI 应用需要 GUI 框架的帮助，开发 TUI 应用也需要 TUI 框架的帮助，而 Bubble Tea 就是这样一款 TUI 框架。
+使用 Bubble Tea Bubble Tea 受到 The Elm Architecture 的启发，基于这种有趣、功能性强且保持状态的架构来构建终端应用程序。无论是简单的行内应用程序、全窗口应用程序，还是两者的混合，Bubble Tea 都可使用。
+要学会基于 Bubble Tea 开发终端应用，核心要理解它的三个基本部分组成：模型（Model）、更新函数（Update）和视图函数（View）。而 Update 和 View 都是属于 Model 的方法。
+简单解释下它们的作用，如下:</description></item><item><title>Go 中的 init 如何用？它的常见应用场景有哪些呢？</title><link>https://www.poloxue.com/posts/2024-02-18-init-function-in-golang/</link><pubDate>Sun, 18 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-18-init-function-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十六篇，系列文章查看：Go 语言技巧。
+Go 中有一个特别的 init() 函数，它主要用于包的初始化。init() 函数在包被引入后会被自动执行。如果在 main 包中，它也会在 main() 函数之前执行。
+本文将以此为主题，介绍 Go 中 init() 函数的使用和常见使用场景。还有，我在工作中更多看到的是 init() 函数的滥用。
+init() 函数的执行时机 首先，init() 的执行时机处于包级别变量声明和 main() 函数执行之间。
+这意味着在包中声明的全局变量，如果附带初始化表达式，这些表达式将在任何 init() 函数执行之前进行初始化。
+我们通过一个示例演示，代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 var Age = GetAge() func GetAge() int { return 18 } func init() { fmt.Printf(&amp;#34;You&amp;#39;re %d years old.\n&amp;#34;, Age) Age = 3 } func main() { fmt.</description></item><item><title>Go 语言中如何大小端字节序？int 转 byte 是如何进行的？</title><link>https://www.poloxue.com/posts/2024-02-07-big-little-endian-in-golang/</link><pubDate>Wed, 07 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-07-big-little-endian-in-golang/</guid><description>嗨，大家好！我是波罗学。
+本文是系列文章 Go 技巧第十五篇，系列文章查看：Go 语言技巧。
+我们先看这样一个问题：“Go 语言中，将 byte 转换为 int 时是否涉及字节序（endianness）？我可以直接使用 int(byte_var) 进行转换吗？”
+这个问题非常简单，直接回答不涉及字节序，可以直接转换。但为什么呢？如果要彻底搞明白这个问题，还是要了解下字节序这个概念。
+接下来，让我带你深入地了解这个问题，以及如何在 Go 中如何处理字节序。
+字节序 我们先解释一下什么是字节序？
+字节序，或称为字节顺序，即数据在内存中存储的字节顺序。字节序主要有两种：大端和小端。
+什么是大端模式？
+大端模式指的是高位字节（0x12）存储在低地址位（0）。
+什么是小端模式？
+小端模式指的是低位字节（0x78）存储在低地址位（0）。
+将 byte 和 int 相互转换 首先，int 如何转为 byte？
+在 Go 中，byte 是 int8 的别名，占用一个字节。由于它只有一个字节，自然不存在字节序的说法。
+1 2 var byteVar byte = 0x78 intVar := int(byteVar) 我们将一个 byte 变量转换为 int 类型，byte 只占用一个字节，所以没有字节序的问题。当然，一定要说有字节序，也可以。毕竟，将 byte 转为 int 时，其实是将 byte 数值存在 int 低位，而不是高位。
+那么，将 int 转换为 byte 呢？当从 int 类型转换为 byte 时，字节序变得重要了。</description></item><item><title>Go 是否有三元运算符？Rust 和 Python 是怎么做的？</title><link>https://www.poloxue.com/posts/2024-02-06-ternary-operator-in-golang/</link><pubDate>Tue, 06 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-06-ternary-operator-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十四篇，系列文章查看：Go 语言技巧。
+今天来聊聊在 Go 语言中是否支持三元运算符。这个问题很简单，没有。
+首先，什么是三元运算符？
+在其他一些编程语言中，如 C 语言，三元运算符是一种可以用一行代码实现条件选择的简便方法。
+1 x = condition ? a : b; // condition = true 则 x = a，否则 x = b 大道至简的 Go 中肯定是没有这个运算符。
+今天这篇文章将会就此展开，介绍 Go 中三元运算符的一些实践。
+让我们正式开始吧。
+使用 if-else 语句 三元运算符，本质上其实就是 if-else 的简化版本。通过 if-else 实现自然就是最常用的做法。
+1 2 3 4 5 6 var x int if condition { x = a } else { x = b } 非常简单且易理解，无心智负担。毕竟，这就应该是它本来的样子。
+虽然这比三元运算符要长一些，但它更容易理解，也是 Go 所推荐的方式。</description></item><item><title>Go 中如何检查文件是否存在？可能产生竞态条件？</title><link>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</link><pubDate>Mon, 05 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-05-check-if-file-exists-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十三篇，系列文章查看：Go 语言技巧。
+Go 中如何检查文件是否存在呢？
+如果你用的是 Python，可通过标准库中 os.path.exists 函数实现。遗憾的是，Go 标准库没有提供这样直接的函数，好在，没有直接的，却有不那么直接的。
+本文将基于这个话题展开，介绍 Go 中如何检查文件是否存在。
+另外，本文最后还会介绍一个小注意点，即在判断文件是否存在时，如何避免中潜在的竞态条件。
+os.Stat 检查文件状态 Go 标准库虽然没有提供类似于 os.Exist 这样直接的函数检查文件是否存在，但它提供另外一个函数 os.Stat。
+os.Stat 函数的作用是获取文件状态信息，我们通过检查它返回的错误即可知晓文件是否存在。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 11 func main() { _, err := os.Stat(&amp;#34;/path/to/file&amp;#34;) if err != nil { if os.IsNotExist(err) { // 文件不存在 } else { // 其他错误 } } // 文件存在 } 第一个返回值表示文件信息，不是我们关心的重点，直接省略掉。
+第二个返回值表示错误 error。如果文件不存在，可通过检查 os.IsNotExist 检查 error 是否是 os.</description></item><item><title>Go语言中 enum 实现方式有哪些？一定要绝对类型安全吗？</title><link>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</link><pubDate>Fri, 02 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-02-how-to-use-enum-type-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十二篇，系列文章查看：Go 语言技巧。
+枚举，即 enum，可用于表示一组范围固定的值，它能助我们写出清晰、安全的代码。
+以编写游戏程序为一个简单案例：游戏中的角色有如战士、法师或者弓箭手，这种范围固定的值，就可以用枚举来表示。
+但 Go 中，枚举的表现方式不像在某些其他语言中那样直接。我们要想在 Go 中用好枚举，就要了解 Go 中枚举的不同表示形式和使用注意点。
+本文将以 Go 语言中如何使用枚举为主题，从最简单到复杂逐一介绍常见的方案。
+使用 iota 和常量 在 Go 中，使用 iota 和常量是最常见的表示枚举的方式。
+什么是 iota？
+iota 是 Go 中是一个非常特别的 Keyword，它可以帮助我们按一定规则创建一系列相关的常量，而无需手动为每个变量单独赋值。这一点与枚举的用途天然契合。
+不了解上面文字的含义？
+让我们来看一个例子，基于 iota 快速创建特定规则的常量。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 11 type Weekday int const ( Sunday Weekday = iota // 0 Monday // 1 Tuesday // 2 Wednesday // 3 Thursday // 4 Friday // 5 Saturday // 6 ) 例子中，Weekday 类型有 7 个值，分别代表一周的七天。内部值从 0 开始，iota 自动增加赋值给每个常量，从 Sunday 到 Saturday 分别赋值 0-7。</description></item><item><title>Go 中如何打印结构体？代码调试效率提升</title><link>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</link><pubDate>Thu, 01 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-01-print-struct-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 技巧第十一篇，系列文章查看：Go 语言技巧。
+不知道大家是否遇到打印结构体的需求？
+结构体的特点是，它有点像是一个盒子，但不用于 slice 与 map，它里面可以放很多不同类型的东西，如数字、字符串、slice、map 或者其他结构体。
+但，如果我们想看看盒子中内容，该怎么办呢？这时我们就要能打印结构体了。
+打印结构体的能力其实挺重要的，它能帮我们检查理解代码，提高调试效率，确保代码运行正确。
+本文让我们以此为话题，聊聊 GO 语言中如何打印结构体。本文中描述的方法基本也适用于如指针、切片、映射等深层次结构的打印。
+让我们直接开始吧！
+定义结构体 首先，我们来定义一个结构体，它会被接下来所有的方法用到。
+代码如下所示：
+1 2 3 4 5 6 7 8 9 10 11 12 type Author struct { Name string Age int8 Sex string } type Article struct { ID int64 Title string Author *Author Content string } 我们定义了一个 Article 结构体用于表示一篇文章，内部包含内部实现了 ID、Title 和 Content 基础属性，还有一个字段是 Author 结构体指针，用于保存作者信息。
+我将先介绍四种基本的方式。
+使用 fmt.Printf 最简单的方法是使用 fmt.Printf 函数，如果希望显示一些详情，可和 %+v 格式化符号配合。这样可以直接打印出结构体的字段名和值。</description></item><item><title>Go 中 struct tag 如何用？基于它实现字段级别的访问控制</title><link>https://www.poloxue.com/posts/2024-01-29-struct-tag-uses-in-golang/</link><pubDate>Sun, 28 Jan 2024 18:56:59 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-29-struct-tag-uses-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第十篇，系列文章查看：Go 语言小技巧。
+在 Go 中，结构体主要是用于定义复杂数据类型。而 struct tag 则是附加在 struct 字段后的字符串，提供了一种方式来存储关于字段的元信息。然后，tag 在程序运行时不会直接影响程序逻辑。
+本文将会基于这个主题展开，讨论 Go 中的结构体 tag 究竟是什么？我们该如何利用它？另外，文末还提供了一个实际案例，帮助我们进一步提升对 struct tag 的理解。
+struct tag 是什么？ 如下是一个定义了 tag 的结构体 Person 类型。
+1 2 3 4 type Person struct { Name string `json:&amp;#34;name&amp;#34;` Age int `json:&amp;#34;age&amp;#34;` } 例子中，json:&amp;quot;name&amp;quot;和json:&amp;quot;age&amp;quot; 就是结构体 tag。结构体 tag 的使用非常直观。你只需要在定义结构体字段后，通过反引号 `` 包裹起来的键值对形式就可定义它们。
+具体有什么用呢？ 这个 tag 究竟有什么用呢？为何要定义它们。
+单从这个例子中来看，假设你是在 &amp;ldquo;encoding/json&amp;rdquo; 库中使用 Person 结构体，它是告诉 Go 在处理 JSON 序列化和反序列化时，字段名称的转化规则。
+让我们通过它在 &amp;ldquo;encoding/json&amp;rdquo; 的使用说明它的效果吧。
+1 2 3 4 5 6 p := Person{Name: &amp;#34;John&amp;#34;, Age: 30} jsonData, err := json.</description></item><item><title>Go 语言实现可选参数：重载？变长参数？</title><link>https://www.poloxue.com/posts/2024-01-25-optional-parameters-in-golang/</link><pubDate>Sat, 27 Jan 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-25-optional-parameters-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第八篇，系列文章查看：Go 语言小技巧。
+我们编程时，常会遇到：一个函数在大多数情况下只需要几个参数，但偶尔也需要一些不固定的选项参数。在一些语言中，通过重载或者可选参数来解决这个问题。但 Go 中，情况有所不同，因为 Go 不支持函数重载，也没有内置可选参数功能。如果就想要这样的能力，如何在 Go 中实现？
+本文将基于这个主题展开，一步步介绍 GO 中实现可选参数的几种方法。
+方法1：可变长参数（Variadic Args） GO 不支持可选参数，但它好在还是支持可变长参数，即允许函数接受任意数量的参数。这是通过在参数类型前加上 ... 来实现的。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 func printNumbers(numbers ...int) { for _, number := range numbers { fmt.Println(number) } } func main() { printNumbers(1, 2) printNumbers(1, 2, 3, 4) } 在上面的例子中，我们定义了一个 printNumbers 函数，它可以接受任意数量的整数作为参数。
+这种方法主要还是适合于所有参数都是同一类型的情况。
+但如果参数类型不同怎么办呢？
+当然，一种方式是，通过使用 ...interface{} 继续基于可变长参数实现，但这毫无疑问会增加反射或者类型选择或推导的开销，同时每个位置的参数按索引确定，代码复杂度必然提高，可读性会大大降低，
+那么，是否还有更好的方式呢？
+方法2：使用Map 当你需要传递不确定数量且类型不同的参数时，可以使用 map 实现。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 func setConfig(configs map[string]interface{}) { if val, ok := configs[&amp;#34;timeout&amp;#34;]; ok { fmt.</description></item><item><title>Go 定时器：如何避免潜在的内存泄漏陷阱</title><link>https://www.poloxue.com/posts/2024-01-24-timer-potential-leaking-in-golang/</link><pubDate>Wed, 24 Jan 2024 13:28:13 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-24-timer-potential-leaking-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第七篇，系列文章查看：Go 语言小技巧。
+这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。
+引出问题 先看一个例子，我们在 Go 中的 select 使用定时器，实现为消息监听加上超时能力。
+核心代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 func main() { ch := make(chan int) // 启动一个goroutine go func() { for { select { case num := &amp;lt;-ch: fmt.Println(&amp;#34;获取到的数字是&amp;#34;, num) case &amp;lt;-time.After(2 * time.Second): fmt.Println(&amp;#34;时间到了!!!&amp;#34;) } } }() for i := 0; i &amp;lt; 5; i++ { ch &amp;lt;- i time.</description></item><item><title>为什么 Golang Fasthttp 选择使用 slice 而非 map 存储请求数据</title><link>https://www.poloxue.com/posts/2024-01-18-why-fasthttp-opts-for-slice-over-map/</link><pubDate>Mon, 22 Jan 2024 20:36:04 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-18-why-fasthttp-opts-for-slice-over-map/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第六篇，系列文章查看：Go 语言小技巧。
+Fasthttp 是一个高性能的 Golang HTTP 框架，它在设计上做了许多优化以提高性能。其中一个显著的设计选择是使用 slice 而非 map 来存储数据，尤其是在处理 HTTP headers 时。
+为什么呢？
+本文将从简单到复杂，逐步剖析为什么 Fasthttp 选择使用 slice 而非 map，并通过代码示例解释这一选择背后高性能的原因
+Slice vs Map：基本概念 首先，这个设计选择背后有着深思熟虑的考量，主要围绕性能优化展开。在深入探讨之前，我们需要理解 slice 和 map 在 Go 语言中的基本概念和性能特点。
+Slice：Slice 是对数组的封装，它提供了一个动态大小的、灵活的视图。Slices 的底层实际上是数组，这意味着它们的元素在内存中是连续存储的。 Map：Map 是一种无序的键值对的集合，它通过哈希表实现。Map 提供了快速的查找、添加和删除操作，但这些操作的性能并不总是稳定。 内存分配和性能 在高性能的应用场景中，内存分配和回收是性能的关键因素之一。Fasthttp 在这方面做了考量。
+Slice 的内存效率
+由于 slice 的元素在内存中是连续存储的，它们访问速度快，且能有效利用 CPU 缓存。此外，slice 可以通过重新切片来复用已有的数组，减少内存分配和垃圾回收的压力。
+Map 的内存开销
+相比之下，map 的内存开销较大。
+在 map 中，键和值通常是散布在内存中的，这导致 CPU 缓存利用率不高。而且，map 的增长通常涉及重新哈希和重新分配内存，这些操作在性能敏感的应用中可能成为瓶颈。
+Fasthttp 中的 SliceMap Fasthttp 选择使用自定义的 sliceMap 结构来存储键值对，而非标准的 map。
+下面是 sliceMap 的一个简化实现和它的 Add 方法：</description></item><item><title>如何有效获取 Go 变量类型？探索多种方法</title><link>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</link><pubDate>Mon, 22 Jan 2024 15:22:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-22-get-the-type-of-object-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第九篇，系列文章查看：Go 语言小技巧。
+在 Python 中，可以使用 type(x) 获取变量 x 的类型。在 JavaScript 中，typeof x 会返回变量 x 的类型。这些操作都很直观。
+那么，在 Go 语言中，如何快速获取一个变量的类型？
+我相信很多 Go 语言初学者都会遇到这样的问题。本文将介绍 Go 中几种常用方法，用于获取 GO 变量类型。
+Go 的类型系统 在 Go 中，每个变量都由两部分组成：类型（type）和值（value）。
+类型是编译时的属性，它定义了变量可以存储的数据种类和对这些数据可以进行的操作。值是变量在运行时的数据。
+类型获取 我将介绍几种不同的获取变量类型的方式。
+使用 fmt.Printf 最简单直接的方式，通过 fmt.Printf 的 %T 打印变量的类型。
+1 2 3 4 func main() { var x float64 = 3.4 fmt.Printf(&amp;#34;Type of x: %T\n&amp;#34;, x) } 输出:
+1 Type of x: float64 这种方式简单直接，非常适合在代码调试阶段使用。
+类型选择 Go 中提供了类型断言检测变量类型，是 Go 语言中提供的类型检查和转换的一种方式。</description></item><item><title>从 fatal 错误到 sync.Map：Go中 Map 的并发策略</title><link>https://www.poloxue.com/posts/2024-01-21-fatal-error-in-concurrent-accessing-map/</link><pubDate>Sun, 21 Jan 2024 15:34:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-21-fatal-error-in-concurrent-accessing-map/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第二篇，系列文章查看：Go 语言小技巧。
+为什么 Go 语言在多个 goroutine 同时访问和修改同一个 map 时，会报出 fatal 错误而不是 panic？我们该如何应对 map 的数据竞争问题呢？
+这篇文章将带你一步步了解背后的原理，并引出解决 map 并发问题的方案。
+Map 数据竞争 首先，什么是 Map 数据竞争。
+当两个或多个 goroutine 在没有适当同步机制的情况下，同时访问同一块数据，且至少有一个 goroutine 在修改这块数据，就会发生数据竞争。这种情况可能导致程序的行为异常，甚至崩溃。
+而 map 是 Go 中的一种常用的数据结构，提供了快速的 Key/Value 存储能力。但 Go 默认的 map 并不提供并发安全。这意味着，如果我们没有采取措施来控制 map 同步访问，如果多个 goroutine 同时对一个map进行读写操作，就可能会引发数据竞争。
+Map 数据竞争产生 fatal error 在 Go 语言中，处理错误的方式通常是通过返回 Error 或者 panic。然而一旦程序检测到 map 的数据竞争，就会抛出 fatal 错误。而 fatal error 即意味会立刻崩溃。毫无疑问，Go 选择了更严格的处理方式。
+通过一个简单的例子演示 fatal 错误是如何被触发的：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main import ( &amp;#34;sync&amp;#34; ) func main() { m := make(map[int]int) wg := sync.</description></item><item><title>GO 中高效 int 转换 string 的方法与源码剖析</title><link>https://www.poloxue.com/posts/2024-01-20-int-to-string-in-golang/</link><pubDate>Sat, 20 Jan 2024 16:11:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-20-int-to-string-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第一篇，系列文章查看：Go 语言小技巧。
+Go 语言 中，将整数（int）转换为字符串（string）是一项常见的操作。
+本文将从逐步介绍几种在 Go 中将 int 转换为 string 的常见方法，并重点剖析这几种方法在性能上的特点。另外，还会重点介绍 FormatInt 高效的算法实现。
+使用 strconv.Itoa 最直接且常用的方法是使用 strconv 包中的 Itoa 函数。Itoa 是 “Integer to ASCII” 的简写，它提供了一种快速且简洁的方式实现整数到字符串之间的转换。
+示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 package main import ( &amp;#34;strconv&amp;#34; &amp;#34;fmt&amp;#34; ) func main() { i := 123 s := strconv.Itoa(i) fmt.Println(s) } strconv.Itoa 是通过直接将整数转换为其 ASCII 字符串表示形式。这个过程中尽量减少了额外的内存分配，没有复杂逻辑。
+使用 fmt.Sprintf 另一种方法是，使用 fmt 包的 Sprintf 函数。这个方法在功能上更为强大和灵活，因为它能处理各种类型并按照指定的格式输出。</description></item><item><title>Go 语言中高效切片拼接和 GO 1.22 提供的新方法</title><link>https://www.poloxue.com/posts/2024-01-17-slice-concatenation-in-golang/</link><pubDate>Wed, 17 Jan 2024 18:29:38 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-17-slice-concatenation-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第三篇，系列文章查看：Go 语言小技巧。
+在 Go 语言中，切片拼接是一项常见的操作，但如果处理不当，可能会导致性能问题或意外的副作用。
+本文将详细介绍几种高效的切片拼接方法，包括它们的优缺点以及适用场景。
+切片拼接的必要性 在 Go 中，切片是一种动态数组，常用于存储和处理一系列相同类型的数据。
+在实际应用中，我们经常需要将两个或多个切片合并为一个新的切片，例如在处理字符串、整数列表或自定义结构体数组时。
+这种需求促使我们探索更高效的切片拼接方法。
+基本拼接方法及其局限性 使用 append 函数 最直接的方法是使用 append 函数，它可以将一个切片的元素追加到另一个切片的末尾。
+1 2 3 slice1 := []int{1, 2} slice2 := []int{3, 4} result := append(slice1, slice2...) 虽然这种方法简单快捷，但它有一个局限性：当 slice1 的容量不足以容纳所有元素时，Go 会分配一个新的底层数组。这可能导致性能问题，特别是在处理大型切片时。
+高效拼接的策略 为了克服基本方法的局限性，我们可以采取以下策略：
+控制容量和避免副作用 为了避免不必要的内存分配和潜在的副作用，我们可以先检查第一个切片的容量是否足够。如果不够，可以先创建一个新的切片，确保足够的容量。
+1 2 3 4 5 a := []int{1, 2} b := []int{3, 4, 5, 6} c := make([]int, len(a), len(a)+len(b)) copy(c, a) c = append(c, b.</description></item><item><title>从 Context 看 Go 设计模式：接口、封装和并发控制</title><link>https://www.poloxue.com/posts/2024-01-16-context-design-pattern-in-golang/</link><pubDate>Tue, 16 Jan 2024 20:10:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-16-context-design-pattern-in-golang/</guid><description>嗨，大家好！本文是系列文章 Go 小技巧第五篇，系列文章查看：Go 语言小技巧。
+在 Go 语言中，context 包是并发编程的核心，用于传递取消信号和请求范围的值。但其传值机制，特别是为什么不通过指针传递，而是通过接口。虽然是简单问题，但值得引发我的一些思考。
+考虑以下典型的代码片段：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 package main import &amp;#34;context&amp;#34; func main() { ctx, cancel := context.WithCancel(context.Background()) // ... call cancel() when specified signals are triggered handle(ctx) } func handle(ctx context.Context) error { return nil } 这段代码展示了在 Go 中创建和传递 context 的简单用法。但背后的设计理念和实现细节却值得研究。
+为什么 context 是以接口的形式传递，而非指针？这不仅涉及 Go 的并发哲学，还关系到封装性、并发安全性和接口的灵活性。
+本文将简要探讨 context 包的设计和实现，着重解析其非指针传值的原因，从而揭示 Go 并发模型背后的设计智慧。
+Context 的基本结构 首先，如上的代码中，通过 context.</description></item><item><title>利用 ChatGPT 高效搜索：举一反三的思考方式，高效查找解决方案</title><link>https://www.poloxue.com/posts/2024-01-15-search-using-chatgpt/</link><pubDate>Mon, 15 Jan 2024 19:07:52 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-15-search-using-chatgpt/</guid><description>本文只是我的一些尝试，基于 ChatGPT 实现系统化快速搜索某编程语言的特定领域相关包或者基于其他语言类推荐落地方案的尝试。
+这篇文章中描述的方式不一定是好方式，但应该会有一定的启示作用吧。让 ChatGPT 为我们的开发效率添砖加瓦。
+基础思路 在学习和使用一门新的编程语言的过程中，找到合适的包对于解决特定问题至关重要。
+传统上，还是主要依赖搜索引擎和社区资源来寻找这些包，但这个过程往往既耗时又充满挑战。现在，有了 ChatGPT，这一切都有了新的解决方案。
+传统的搜索方法通常基于关键词搜索，但这种方法往往返回只是简单列举，我们要从大量不相关的结果找出我们想要的内容，需要花费大量时间去筛选。
+ChatGPT 提供了一种更高效的方式：通过与 AI 对话来精确描述我们的需求，从而获得更加精准回答。不过我想说，不要像利用传统的搜索引擎一样利用 ChatGPT，ChatGPT 会思考。但毫无疑问，再聪明的好苗子，也是需要引导的。
+举一反三全面了解 GO 的 Web 框架 为了最大化 ChatGPT 的效用，我采用固定句式来描述我的需求，这么做的目标主要是为了引导它思考。
+例如，当寻找 Golang 的 web 开发框架时，我不是简单地问 “给我推荐一些 web 开发框架”，而是通过类比的方式地询问，想全访问了解不同情况下使用什么 HTTP 框架。
+我知道在使用 Golang 的数据库时，可以直接使用 sql/database + 驱动连接数据库，也可以使用 ORM 方案，如 sqlx 或 GORM。HTTP 一般也是如此，有底层核心层，上层的用户体验较好的框架。
+我按这个思考简单组织了一些语言。如下所示：
+按我这个句式说下关于 Go 的 xxx 相关内容: Go 语言中，处理数据库的包通常分为三个主要层次：底层实现、数据库驱动以及上层的 ORM（对象关系映射）框架。首先，底层核心包是 sql/database，它为数据库操作提供了基础的接口和功能。接着，针对不同数据库类型的驱动包各不相同，例如，用于 MySQL 的驱动包是 go-sql-driver/mysql。最后，在更高的层面上，有基于如 sqlbuilder 或 activerecord 模式的实现，Go 语言中的相应包包括 ent 和 gorm，这些包提供了更高级别的数据库操作和抽象。
+这个写的稍微有点长，应该可以组织的更加精简一点。我主要想表达：</description></item><item><title>使用 Whisper 和 MoviePy 实现视频自动加字幕</title><link>https://www.poloxue.com/posts/2024-01-06-add-subtitles-using-moviepy-and-whipser/</link><pubDate>Fri, 05 Jan 2024 21:39:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-06-add-subtitles-using-moviepy-and-whipser/</guid><description>对于视频编辑而言，给视频添加字幕是一个常见的需求。而利用 python 的三方库 moviepy 和 openai-whisper，就可以轻松实现为视频添加字幕。
+本博文将就此主题展开，介绍如何通过 Python 快速添加视频字幕。
+前言概述 编辑视频时，为视频添加字幕不仅仅可以让内容易于理解性，而且可以增加视频的吸引力。
+Python 提供了 MoviePy 库，同时近期开源的 openai-whisper 模块使得为视频添加字幕变得十分简单。
+whisper 的安装直接通过如下命令即可完成。
+1 pip install openai-whisper 而 moviepy 的安装可参考我之前的文章：Python 视频剪辑库 - MoviePy 基础使用。
+步骤介绍 添加字幕的核心步骤主要三步，如下所示：
+利用 openai-whisper 从视频中将语音识别为文本； 基于识别结果生成 moviepy 字幕片段 SubtitlesClip； 将字幕片段 SubtitlesClip 和视频片段 VideoFileClip 合成最终文件； 让我们进入开始具体的操作。
+语音识别 我们现在在当前目录有一个视频，名为 input_video2.mp4。可直接利用 whisper 的 transcribe 识别视频文件中的语音文本。
+实现代码如下：
+1 2 3 4 5 import whisper model = whisper.load(&amp;#34;medium&amp;#34;) result = model.transcribe(&amp;#34;input_video2.mp4&amp;#34;) print(json.dumps(result)) 输出 result，如下所示
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 { &amp;#34;text&amp;#34;: &amp;#34; In an era dominated by short-form videos, numerous user-friendly editing software options exist.</description></item><item><title>Python 视频剪辑库 - MoviePy 中 TextClip</title><link>https://www.poloxue.com/posts/2024-01-04-moviepy-text-clip/</link><pubDate>Wed, 03 Jan 2024 20:55:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-04-moviepy-text-clip/</guid><description>前面的两篇教程，已经介绍了 MoviePy 的 VideoFileClip 和 AudioFileClip 的使用。本文将介绍 MoviePy 第三种基础 Clip - TextClip。
+前言 什么是 TextClip？TextClip，即是用于生成基于文本视频片段的类。
+TextClip 创建的包含文本的视频片段，一方面，我们可以将其作为单独的片段保存。另一方面，我们可以将其合成到其他视频中，这对于制作视频标题、说明，甚至字幕等内容非常有用。
+关于字幕制作，会有单独一篇博文，如介绍何基于 MoviePy 和 Whisper 实现自动给视频添加字幕。
+我们开始进入正题吧。
+快速上手 让我们直接创建一个 TextClip。
+示例代码，如下所示：
+1 2 3 4 5 6 7 8 9 10 # 创建一个包含文本的视频片段 text = &amp;#34;Hello MoviePy!&amp;#34; txt_clip = TextClip(text, color=&amp;#39;orange&amp;#39;, size=(100, 100)) # 为视频片段设置持续时间 video_duration = 10 # 设置视频持续时间为 10 秒 txt_clip = txt_clip.set_duration(video_duration).set_fps(1) # 保存生成的文本视频片段 txt_clip.write_videofile(&amp;#34;text_clip.mp4&amp;#34;) 这个例子展示了如何使用 TextClip 类创建一个文本视频片段。
+代码具体作用是，创建了一个持续时间为 10 秒的视频片段，其中包含 &amp;ldquo;Hello MoviePy!</description></item><item><title>Python 视频剪辑库 - MoviePy 的音频操作</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-audio-file-clip/</link><pubDate>Wed, 03 Jan 2024 18:09:20 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-audio-file-clip/</guid><description>上文介绍了如何安装 MoviePy 和利用 VideoFileClip 类读取视频文件，并进行一些简单的剪辑，如大小调整、旋转和片段剪辑等。
+本文将重点介绍 MoviePy 音频的一些操作。
+创建音频片段 AudioClip MoviePy 中创建音频 Clip 的方法有两种，分别是从视频文件中提取音频，和基于音频文件创建。
+基于视频文件提取音频片段 我们现在有一个视频文件，名为 input_vidoe.mp4。
+直接通过如下代码提取音频文件，如下所示：
+1 2 3 4 5 from moviepy.editor import * video = VideoFileClip(&amp;#34;input_video.mp4&amp;#34;) audio = video.audio audio.write_audiofile(&amp;#34;ouput_audio.mp3&amp;#34;) 基于音频文件创建音频片段 通过 AudioFileClip 读取刚刚从视频中提取的音频文件即可。
+代码如下所示：
+1 audio = AudioFileClip(&amp;#34;output_audio.mp3&amp;#34;) 我们可以将这个视频短片加载到另外一个视频片段中。
+直接使用 TextClip 创建一个视频，我们通过 audio.duration 设置视频片段的播放时长。
+1 2 video = TextClip(&amp;#34;Hello MoviePy&amp;#34;, color=&amp;#34;orange&amp;#34;, size=(100, 100)) video = video.set_duration(audio.duration).set_fps(1) 让我们将音频加载到这个视频上。
+代码如下：
+1 2 video.audio = audio video.write_audio(&amp;#34;text_video.mp4&amp;#34;) 如果使用 mac 的 quicktimeplayer 打开，记得在写入的时候，加上参数 audio_codec=&amp;ldquo;aac&amp;rdquo;，即如下所示：</description></item><item><title>Python 视频剪辑库 - MoviePy 的基础使用</title><link>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</link><pubDate>Tue, 02 Jan 2024 17:41:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-01-03-moviepy-basic-usage/</guid><description>短视频时代，有许多用户友好的剪辑软件可用。不过，对于某些模式比较固定的视频，如果能自动化简化视频制作对于提高效率实际很重要的。
+这是本文将要讨论的内容。我们将利用一个名为 MoviePy 的 Python 库自动化您的视频制作过程。
+本博文将探索 MoviePy，展示它如何通过一些简单的 Python 代码简化视频剪辑过程。
+让我们开始吧。
+安装 要使用 MoviePy，首先需要进行安装。
+首先是安装 moviepy 本身，我们可以使用 Python 的包管理器 - pip 完成这一步。
+打开终端并执行如下命令：
+1 pip install moviepy 必要的依赖项，如 ffmpeg，将会自动安装。
+如果想创建文本片段，还需要 imagemagick。可以使用 HomeBrew 进行安装。执行命令：
+1 brew install imagemagick 另一个重要的依赖是 pygame，特别适用于预览正在创建的视频。这很重要，因为生成新视频可能需要一些时间。如果您希望在制作过程中预览您的工作，您将需要安装 pygame。
+当然！要安装 pygame，你可以在终端中执行:
+1 pip install pygame 现在，MoviePy 的安装已经完成。让我们继续下一步 - 了解如何使用 MoviePy 编写代码。
+导入文件 在 MoviePy 中，要访问所有必要的函数和类，只需输入：
+1 from moviepy.editor import * 要使用 MoviePy 操作视频，要通过 VideoFileClip 导入视频文件，代码如下：
+1 video = VideoFileClip(&amp;#34;input_video.</description></item><item><title>基于 Python 视频搬运 Part5 - 初始化与资源下载</title><link>https://www.poloxue.com/posts/2023-12-10-mvideo-init-function/</link><pubDate>Sat, 09 Dec 2023 15:37:15 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-10-mvideo-init-function/</guid><description>本文是基于 Python 视频搬运系列教程的第 5 篇，介绍 mvideo 项目的初始化与资源下载的实现。
+前言 我们在上文介绍了如何基于 pytube 实现 YouTube 资源的下载，包括视频音频，甚至是字幕的下载。当然，字幕在本项目中暂时不在本项目的计划之中。
+本教程将会利用 pytube 这个 python 第三方包，我们将利用完成 YouTube 资源的下载。
+主流程 在编写代码之前，初始化这部分的基本流程，如下所示：
+我将按照这个流程，初始化项目，将资源下载到特定位置。
+如下是主流程的实现代码：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 def init(): env = Environment() try: # 1. Set translator and urls to config env.set_translator(translator, translator_from_lang, translator_to_lang) # 2. extract YouTubes from playlist or urls videos = extract_videos(urls, playlist, playlist_start, playlist_end) if not videos: raise RuntimeError(&amp;#34;No videos found!</description></item><item><title>基于 Python 视频搬运 Part4 - pytube 下载 YouTube 资源</title><link>https://www.poloxue.com/posts/2023-12-09-pytube-tutorial/</link><pubDate>Sat, 09 Dec 2023 14:06:15 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-09-pytube-tutorial/</guid><description>本文是基于 Python 视频搬运的第三篇，也是一篇完整的 pytube 教程，介绍如何通过 pytube 下载 YouTube 的音视频等资源。
+概述 pytube 是一款由 Python 实现，用于下载油管的第三方库，它的特点是无第三方的依赖，轻量，而且还有一个非常重要的点，它的接口灵活度高。
+而且，对于命令行，pytube 也提供了 pytube 命令也实现了通过命令行实现资源下载。当然，命令行下载视频的工具，更著名的 youtube-dl 和 you-get，它们比 pytube 出名，如果不是通过 Python 实现资源下载，它们或许是更好的选择。
+安装 如下命令安装 pytube：
+1 pip install pytube 快速开始 我们通过一个案例演示如何使用 pytube 下载视频，视频地址：www.youtube.com/watch?v=ceRYL271cao。
+YoutTube 是 pytube 的核心类，它可用于获取某个 YouTube 视频的信息，包括基本属性内容等，如标题、音视频流，字幕等。
+视频属性 1 2 3 4 from pytube import YouTube yt = YouTube(&amp;#34;https://www.youtube.com/watch?v=ceRYL271cao&amp;#34;) print(f&amp;#34;title: {yt.title}\nthumbnail_url: {yt.thumbnail_url}\nchannel_url: {yt.channel_url}&amp;#34;) 如上的代码获取了视频的标题、封面图和频道地址。
+输出结果：
+1 2 3 title: Be a tmux KING with Tmuxifier | My FAVORITE tmux tool thumbnail_url: https://i.</description></item><item><title>基于 Python 视频搬运 Part3 - 配置和数据的统一管理</title><link>https://www.poloxue.com/posts/2023-12-08-mvideo-environment-to-manage-config-and-data/</link><pubDate>Fri, 08 Dec 2023 18:07:49 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-08-mvideo-environment-to-manage-config-and-data/</guid><description>本文介绍 mvideo 项目如何管理配置和视频搬运过程中的数据。
+前言 在这个视频的处理过程中，我们会保存一些过程中的配置或者数据，如这是否是一个翻译类的项目，要处理 url 地址等等。
+此外，处理过程中的数据，如视频的标题、描述等等，要需要保存下来，便于后续使用，而不是每次都要重复下载。
+还有，为增强核心代码的可读性，提高代码的封装性和后续的扩展性，将如资源的下载目录，每个资源的路径统一管理，封装成一些特定的方法，将更易于使用。
+资源目录 每个资源会下载当前目录下的以视频标题作为名称的子目录，其中的结构如下所示：
+1 2 3 4 5 6 7 8 ./cover.png ./how-to-learn-neovim-1/ # 视频标题小写同时空格替换为 - - video.webm # 下载的视频文件 - audio.mp4 # 下载的音频文件 - audio.wav # 从下载视频中抽取的 wav 文件，用于字幕识别 - audio.srt # 识别的字幕文件 - audio_translate.srt # 字幕的翻译文件 - final.mp4 # 最终成品视频 如果每个功能函数都管理这些文件名，将着实很恼人，而且说不定还有写错。
+管理类 Environment 我将定义一个类，名为 Environment，单独处理这类信息。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 class Environment: def __init__(self): self.</description></item><item><title>介绍一个搭建免费博客的实现方案</title><link>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</link><pubDate>Wed, 06 Dec 2023 15:01:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-06-create-your-own-free-blog/</guid><description>本文如何搭建一套免费的博客，实现可基于 markdown 撰写博客，使用免费环境部署，以及添加评论、图床和统计等附加能力。
+这是一整套的搭建免费博客的可用方案。
+前言概述 从几年前开始写博客，当时把博客建在一台云主机上。另外，还单独买了一个域名 - poloxue.com。大概猜测，最初的大家都是有这种方式搭建自己博客。
+这种方式有两点不令我满意：
+首先是费用问题，虽说不是很贵，但一年也要 200-300，如果只是偶尔写写，不如发到一些内容平台。国内的博客平台还是挺多的，如 csnd、博客园、掘金等，都可利用。
+再者是维护问题，单独购买一台云服务器，即使是偶尔可能的宕机，也是要维护查原因。我的博客在 2018 年搭建，后来不知道什么原因，突然宕机后，当时我工作太忙，停了好几年也没重开；
+新的方案 互联网发展到今天，对博客这类常规需求，我们有免费的云服务使用，而且基本不会宕机，如果有大流量，也不用担心流量扩容的问题。
+我的新方案就是，利用 Hugo + GitHub Page 免费搭建我的博客，实现一套免费的解决方案。其他组件如评论、图床和统计也都有免费的服务可用。
+Hugo 第一个要解决的问题是，如何如何编写博客？
+我们可通过 markdown 编写文章，然后利用静态网页生成器将 markdown 文档转化为 html 文档。如此即可部署到静态网页托管的服务。
+将 markdown 转化 html，我推荐使用 Hugo。
+什么是 Hugo？Hugo 是 Go 编写的静态网页生成器，阅读它的 官方文档。
+Hugo 利用的是 markdown 语法编写的文章渲染成 HTML 网页，它除了提供了大量的模版样式，还支持语法函数，实现站点的定制化。
+Hugo 对于 blog 个人站点类的需求是特别适合，快速上手，简单易用。
+GitHub Page 有了网页内容，下面就是要找可提供免费部署的服务了。我推荐使用 GitHub Page。
+什么是 GitHub Page？
+GitHub Page，是GitHub 提供的免费云服务，它是以代码仓库形式托管 HTML 静态页面的服务。
+GitHub Page 的优势在于，第一点是免费，无需购买机器。再者，使用云服务，能减少日常维护的时间，省心省力，还有一点，无需担心扩容问题。
+其他组件 一个 blog，即使是个人博客，也不是只要展示内容即可的，其他如评论、图床、统计等也是必不可少的。好在，这些组件同样也皆有使用免费的方案。</description></item><item><title>基于 Python 视频搬运 Part2 - 代码布局</title><link>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</link><pubDate>Sat, 02 Dec 2023 01:18:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-12-08-move-video-project-layout/</guid><description>本文介绍基于 Python 视频搬运项目的代码布局。
+前言概述 项目的代码布局要从需求出发，一方面是既要满足当前的项目功能，也能保证一定的结构性便于后续扩展代码。
+这个工具本质是一个命令行工具，我在 先导篇 中介绍了该项目的目标。
+我们用了大量的子命令，我将用 click 这个 python 包解耦分离这个命令的功能。关于 click 的介绍，可查看其 官方文档。
+命令布局 本项目核心子命令一共 4 个，分别是 init、trascribe、make 和 publish，统一使用 click 包的 click.group 包裹为子命令。
+与之相应的一些核心文件的分布情况，如下所示：
+1 2 3 4 5 6 7 - mvideo/__init__.py - mvideo/main.py - mvideo/cmds/__init__.py - mvideo/cmds/init.py - mvideo/cmds/transcribe.py - mvideo/cmds/make.py - mvideo/cmds/publish.py cmds 目录下是所有我们要实现的子命令。
+main 文件 main.py 中是命令的入口文件，用于定义 main 命令。
+代码如下所示：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import click import mvideo.</description></item><item><title>基于 Python 视频搬运 Part 1 - 先导篇</title><link>https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/</link><pubDate>Mon, 27 Nov 2023 14:15:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-27-automatic-transfer-from-youtube-using-python/</guid><description>本文介绍如何基于 Python 实现的从 YouTube 自动化搬运视频到国内平台的命令行工具，计划命名为 mvideo，即 move video 的意思。
+这个工具我已经有了一个版本，但我想把它作为一个案例，把它做成一个系统化的工具，便于后续扩展，故而，就借着视频平台以视频的形式一步一步实现这第一个版本。
+前言 话说，我为什么会想开发这样一款视频搬运工具呢？
+出国的几年，在 Youtube 发现不少免费的教程视频。或许是因为 Youtube 广告机制收入不菲，与程序员有关的免费教程和频道非常之多。我就想着搬运一些视频分享到国内的小伙伴。
+搬运的话，手动或自动化搬运皆可。但为搬运更多视频，能自动化肯定是最好的，而且技术视频搬运这事情也不挣啥钱，纯纯的慈善事业，还是要更多地专注于其他事情。
+我对这个工具的期望是能支持从下载、字幕识别、翻译、字幕制作、封面制作，甚至是多视频合成，或者大视频拆分，最终自动上传。
+另外，由于我希望搬运的视频是我看过的，所以我没有做自动监听频道直接搬运的能力。后期可以考虑，对于一些优质频道，无脑搬运也不是不行。
+我从网上搜罗了不少资料，花了一星期的时间，最终写出了这个小工具。除了大视频的拆分，其他基本都已经支持了。还有，自动发布当前只支持 bilibili。
+我在 B 站顺便还开通了一个频道 - Youtube技术视频，用于我的日常视频搬运。
+方案 资源下载，Youtube 资源的下载使用的 pytube 实现，一款轻量的用于下载 Youtube 资源的 Python 包。
+字幕制作，这其中主要涉及两点内容，分别是语音的文字识别和翻译。
+字幕识别，使用 openai 开发开源的语音识别系统 whisper，它支持多种模型，断句不错，而且精度比视频平台默认的文字转语音准确率看起来更好。
+字幕翻译，使用的是 python 的翻译库 translators ，它实现市面上大部分翻译渠道的对接，如 baidu, qqFanyi, google, bing 等都是支持的。如果想要高品质的翻译，则是需要花钱的，我当前只集成了 deepl 和 qqFanyi 两个付费的翻译器。
+视频合成，包括封面和其他一些图片制作，字幕、音视频的合成，使用的是 python 的 moviepy 库实现，它基于如 ffmpeg 和其他一些图片、视频处理库的一个易用使用 Python 音视频剪辑库。
+自动发布，通过 selenium 实现，当前支持持 B 站，不过，很多视频平台都有提供开放平台 OpenAPI，可以通过接口管理视频，暂时还没去暂时，到最后也可以考虑下。</description></item><item><title>我的终端环境：Tmux Part1 - 快速一览</title><link>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</link><pubDate>Fri, 17 Nov 2023 19:24:31 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-18-tmux-part1-basic/</guid><description>本文开始，我将用一个系列介绍如何高效使用 Tmux。
+关于 Tmux 教程有不少，有一些写的非常不错，我也来尝试下这个主题吧。
+本篇博文是系列第一篇，目标是介绍我使用 Tmux 的快速一览。我将只演示效果，不介绍细节。后续文章再逐步介绍，打造一套高效的 Tmux 工作环境。
+何为 Tmux？ Tmux 是一款终端复用器，即 terminal multiplexer，它能实现将会话与终端的解绑，同时支持管理多个会话和窗口。
+从如上的介绍中，能了解到 tmux 的两个核心能力，即会话与终端的解绑、会话窗口的管理。
+快速安装 1 ❯ brew install tmux 验证安装是否成功：
+1 2 ❯ tmux -V tmux 3.3a 会话与终端解绑 简言之，即使终端窗口关闭，如果 tmux 没有停止则会话不停。
+是不是想到了另外一个类似能力的 Shell 命令 - screen？但 Tmux 比它更加强大。
+基于 Tmux 的这个能力，我们可以将一些后台任务放在 tmux 中进行，如此一来，即使如 ssh 断连，任务也还在继续运行。
+演示案例，使用 tmux 命令开启一个 tmux 会话，执行 top 命令，detach 会话后，重新使用 tmux attach 进入会话。
+效果如下所示：
+我们会发现 top 命令还在运行中。
+会话窗口的管理 Tmux 支持同时开启多个会话和窗口，实现一个终端多会话多窗口的效果。
+利用 Tmux 的这个特点，我们可以创建一些会话面板，长期运行多个任务，如创建一些监控面板。</description></item><item><title>我用 GitHub 作为存储开发了一个随机图片 API</title><link>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</link><pubDate>Fri, 17 Nov 2023 15:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-17-build-a-random-image-api-using-github/</guid><description>本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
+之所以研究它，主要是为了省钱，毕竟用啥 S3、七牛云、阿里云都是要花钱的。这套思路，gitee 应该也可以的，不过我看网上说，gitee 禁止图床开源啥的。而开发随机图片 API 只是为了验证是否能通过 GitHub 的 API 获取仓库中的文件，支持进一步开发其他管理工具。
+前言 平时常用的桌面壁纸、终端背景图片，亦或是博客背景或文章封面，这些都离不开图片。于是，如何就想如何免费管理这些图片。
+在网上找了一些免费的随机图片 API，大部分处于不可用的状态，或者是需要注册登录，创建 API Token。
+作为一名老年程序员，自然就想能通过编程实现，实现图片自由。虽然也可以通过类似爬虫的思路实现，但还是希望都在自己的控制中，万一出现不好的图片就不好了。
+免费 CDN 加速 我的博客图片一直在用 GitHub 存储，通过 jsdelivr CDN 加速。于是就思考，如果能获取到 GitHub 存储的文件列表，就可以实现一个图片服务。
+简单说下 jsdelivr CDN，它支持对 GitHub 中文件的加速访问。如位于我的仓库下的图片，通过对地址转为为 jsdelivr CDN 地址。
+如下的地址：
+1 https://github.com/poloxue/public_images/default/0001.webp 通过如下地址访问：
+1 https://cdn.jsdelivr.net/gh/poloxue/public_images@latest/default/0001.webp 现在如果能顺利获取到仓库的图片文件列表，即可将 github 作为我们的图片图片存储，而无需花钱购买云存储实现。
+查询 GitHub 图片列表 如何获得 GitHub 文件列表呢？这篇文章是讲如何将 GitHub 作为存储使用的，肯定要支持查询的，否则就没法玩了。
+GitHub 支持接口获取仓库文件列表，基本流程是先通过某个接口查询仓库的信息，其中某个字段包含了最新的 hash，我们通过调用这个 hash，就能拿到这个 hash 下的文件列表。
+仓库信息查看，即第一个接口，如下所示，如查询 user/repo 下某分支的情况。
+1 curl https://api.</description></item><item><title>我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 教程</title><link>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</link><pubDate>Tue, 14 Nov 2023 17:56:34 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/</guid><description>本文接着上文，将介绍如何使用 fetch 配置更加丰富地终端启动消息。
+前言 你是否在终端上看到过类似如下的信息？
+我在刚开始讲终端环境这个系列，就有小伙伴在我的视频下 show 了他的终端。
+要实现这个终端效果，要依赖一种名为 fetch 的程序。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
+什么是 fetch？ 所谓 fetch，是指一类系统信息收集的脚本，显示系统摘要信息（软硬件信息），例如发行版、内核、版本、桌面环境、窗口管理器等。fetch 主要是在系统的终端上使用，显示我们的工作环境。</description></item><item><title>我的终端环境：终端启动消息 - ASCII art</title><link>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</link><pubDate>Mon, 13 Nov 2023 18:38:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message/</guid><description>本文介绍如何设置 MacOS 系统的终端启动消息，或者说欢迎消息。
+本文介绍的内容同样适用于其他类 Unix 系统。
+某种意义上，这是一个无用的小知识，但它确实很有趣。毕竟，不是任何事情都要追求所谓价值，有趣也挺重要的。
+登录消息 每天打开 terminal 终端，系统默认会打印一串的消息，如 &amp;ldquo;Last Login xxx&amp;rdquo; 之类的消息。是否想过让这个默认消息更加丰富一些？
+如 MacOS 这样的类 Unix 系统默认有两种方式，一种是基于系统的 motd，另一种是通过启动脚本打印消息。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
+命令集合 第一篇文章中推荐一个 github 仓库：modern-unix，其中收录了大量的更具现代风格的命令。例如，最常用的命令，如 ls、cd、grep、find 等等命令，这个仓库都提供了合适的替代命令。</description></item><item><title>我的终端环境：高效 shell 命令（三）之提效日常开发 - entr httpie jq</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
+前言 对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。
+大概说明，如下所示：
+entr，它的主要作用是在当监听文件变化后，执行相应的命令； httpie，相对于 curl，一款体验更加友好的 http client 命令； jq，一款强大的 JSON 数据的解析命令，甚至可简单的编程； 这三个命令在日常的 web 开发过程中扮演着不同的角色。</description></item><item><title>我的终端环境：高效 shell 命令（二）之查找搜索 - fd ripgrep fzf</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>本文将介绍一些用于高效查找和搜索的命令，它们分别是 fd、ripgrep 与 fzf。相对于常用的 grep 和 find，这些命令在性能有大部分提升，而且，它们的使用方式上更符合人性。
+如下是这几个命令的简单说明：
+fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快； ripgrep，用于高效的内搜索容； fzf，是一款命令行交互式的模糊搜索工具，可与其他命令进行结合，提高使用体验； 其中的 fd 与 ripgrep 是用 rust 编写，性能上完虐传统的 find 与 grep。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（一）之目录文件 exa、zoxide 与 bat</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>类 Unix 系统发展多年，不少老古董命令还在占据终端的绝大部分时间，而使用体验上却依然差强人意。
+从本文开始，我将用一系列文章介绍提升终端效率的一系列命令，这些命令更具现代风格，希望能让你眼前一亮。
+前言 正式开始前，先推荐一个 github 仓库 - modern-unix，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。
+本系列将要介绍的命令，我大概可将其分为三个大类，分别是：文件目录查看相关的命令 - exa、zoxide、bat，文件目录搜索相关的命令 - fd、ripgrep、fzf ，HTTP Web 开发的相关命令 - entr、httpie、jq。
+希望通过这些命令的学习，进一步提升我们的工作效率。
+系列阅读：
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
+在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。
+什么是 powerlevel10k? Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。
+效果展示：
+安装依赖字体 在安装 powerlevel10k 前，要先安装它依赖的字体：NerdFont。不同系统下的安装方法，查看它的文档。
+简单说下 Nerd Fonts 字体。它是一系列开源字体的集合，被特别增强，它包含大量的图标和符号，如开发工具、编程语言和版本控制系统的图标。这些字体对于提高我们终端和编辑器的视觉体验和功能性有着极大帮助。
+有了它，我们的终端才能显示一些复杂字体甚至是图标。
+MacOS 的话，可直接通过 Homebrew 快速安装：
+1 2 brew tap homebrew/cask-fonts brew install font-hack-nerd-font 安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。
+现在，我们终端就支持 NerdFont 字体了。
+如何测试？
+接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。
+安装 powerlevel10k 先通过如下的命令下载插件源码放到指定的位置。</description></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：我的终端环境
+视频教程：
+今天，将会在 上文 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
+快速一览 本文将会涉及的插件，如下所示：
+copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝命令行内容； sudo，快捷 sudo，命令行快捷添加 sudo 插件； zsh-history-substring-search，命令历史记录子字符串匹配； zsh-you-should-use，用于命令行 alias 别名提醒； 让我们正式开始。
+推荐一个网站 在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 awesome-zsh-plugins，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
+框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
+插件，上个视频介绍过的两个插件，zsh-syntax-highlighting - 命令行语法高亮插件, zsh-autosugggestions - 命令行自动建议提示插件，在这个文档里面都能找到。
+主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
+推荐插件 先说 oh-my-zsh 的内置插件。
+打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
+1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本文是高效终端环境第二篇，系列查看：我的终端环境
+视频版本，没有文章详细：
+前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
+本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
+为什么使用 zsh？ 开始前，先问为什么，知其然，要知其所以然，是个好习惯。
+所以，为什么要用 zsh 呢？
+大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？
+改进的自动补全能力 zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。
+对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
+更好的脚本和插件支持 zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。
+这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
+高级的主题和提示符定制 zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
+我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
+更智能的命令行交互 zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
+如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;</description></item><item><title>Golang 中如何实现多行字符串</title><link>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</link><pubDate>Tue, 10 Oct 2023 22:00:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</guid><description>Python 中，如果想要表示多行字符串，只要通过三单/双引号(&amp;quot;&amp;quot;&amp;quot;）包裹字符串即可。
+类似代码，如下所示。
+1 2 3 4 a = &amp;#34;&amp;#34;&amp;#34;line1 line2 line3&amp;#34;&amp;#34;&amp;#34; print(a) 执行代码，查看输出效果，如下所示：
+1 2 3 line1 line2 line3 Golang 中如何实现呢？不复杂，简单展示两种方式：
+方式 1. 通过 ` 符号 具体代码如下：
+1 2 str := `hello world` 这种方式的性能最优。
+方式 2. 通过 + 号进行拼接。 Golang 支持通过 + 拼接字符串，如下所示：
+1 2 3 s := &amp;#34;hello&amp;#34; + &amp;#34;world&amp;#34; fmt.Print(s) 输出如下所示：
+1 helloworld 从输出结果已经看出来，没有换行效果。对于使用 + 拼接，需要使用 \n 转义符，进行换行。
+代码如下所示：
+1 2 3 s := &amp;#34;hello\n&amp;#34; + &amp;#34;world&amp;#34; fmt.</description></item><item><title>从头构建 Go Web 框架（四）：第三方路由集成</title><link>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/</link><pubDate>Mon, 09 Oct 2023 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-4/</guid><description>本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。希望通过翻译这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
+本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第四篇，将介绍如何在 Go 中使用三方路由。
+第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 基于 Go 标准库 net/http，已经足够写出一个 Web 应用。但不足的是，它提供的路由能力 http.</description></item><item><title>从头构建 Go Web 框架（三）：中间件的数据共享</title><link>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3/</link><pubDate>Fri, 29 Sep 2023 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3/</guid><description>本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。系统通过这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
+本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第二篇，将介绍中间件的最佳实践。
+第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 附加福利：上传文件到 s3，Bonus: File Upload REST API with Go and Amazon S3 我们在 上文 中介绍了 middleware 的实现，通过创建 func (http.</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
+本文是高效终端环境第一篇，系列查看：我的终端环境
+我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
+本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
+本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
+前言介绍 我将主要介绍如何安装与配置 iTerm2，安装成功后，会带着一起体验的一些能力。
+首先，iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。
+iTerm2 vs 默认 Terminal 为什么要用 iTerm2 替换默认的系统终端呢？这总要一些原因吧。
+首先，iTerm2 相较于 Terminal 的优势就是，它更加美观，相对于默认终端，iTerm2 支持真彩，而且，你可以在终端显示图片，甚至是 gif 动图。
+其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。
+iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
+还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
+废话不多说，接下来，让我们进入安装使用流程。
+下载安装 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。</description></item><item><title>基于 LunarVim 搭建不同编程语言 IDE</title><link>https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/</link><pubDate>Wed, 27 Sep 2023 15:22:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-27-start-an-ide-using-lunarvim/</guid><description>本文介绍，如何基于 LunarVim 搭建不同编程语言的 Neovim IDE 开发环境。
+前言 本文将用几行命令快速安装 Neovim IDE，完成不同编程语言的环境搭建。尽量不涉及到自定义配置，将完全基于 LunarVim 作者维护的配置实现。
+两个 Github 核心仓库，分别是：
+lunarvim/lunarvim，是 LunarVim 的核心仓库，集成配置 IDE 所需的核心能力； lunarvim/starter.lvim，这个仓库是 Lunarvim 针对不同编程语言的配置实现； starter.lvim 以分支形式保不同语言的配置，具体自行查看仓库。
+为了测试方便，介绍 LunarVim 提供的一个能力，通过 Lunarvim 通过 LUNARVIM_CONFIG_DIR 变量决定配置文件目录。
+接下来的测试，我会将不同语言的配置，放到不同的目录中。
+如果希望一个配置支持大部分语言，则要将这些配置合并，进行配置自定义，对 Lunarvim 的 configlua 代码进行大的改动，不易维护。
+安装 LunarVim 提供了安装脚本，使用如下命令安装即可。
+1 LV_BRANCH=&amp;#39;release-1.3/neovim-0.9&amp;#39; bash &amp;lt;(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh) 安装过程中要下载一些依赖，如 pynvim，cargo 之类的，如果已经安装可选择 no。
+注：部分语言环境和命令要提前安装。如 python，make, git 等
+如果要 dev icon 支持，安装 Nerd 字体，macOS 安装命令如下：
+1 2 brew tab homebrew/cask-fonts brew install --cask font-hack-nerd-font 安装成功，将终端字体更新为 Hack Nerd Font 相关字体。</description></item><item><title>Neovim 配置隔离-实现多语言环境支持</title><link>https://www.poloxue.com/posts/2023-09-25-running-multiple-nvims-in-your-computer/</link><pubDate>Mon, 25 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-running-multiple-nvims-in-your-computer/</guid><description>本文将介绍如何实现 Neovim 的配置隔离，实现不同编程语言使用不同的编辑器配置。
+背景说明 近段时间，一直在学习如何高效使用 Neovim。不断配置的过程中想到，Neovim 是否支持配置隔离，不同用途不同配置。最直接的体现，我希望把 Python 和 Golang 的编辑开发环境的配置隔离。
+类似如下效果：
+1 2 3 nvim-golang main.go nvim-python main.py nvim-cpp main.cpp 提到这，不由地想到了 Jetbrain 全家桶，针对不同编程语言开发了各自的 IDE，如 goland，pycharm，webstorm、clion 等。猜测原因，或许是为了多赚钱，另一方面，不同语言一定有个性化配置，隔离能减少耦合。
+如果是因为想搭建某种语言的编程环境，推荐阅读：基于 LunarVim 搭建不同编程语言 IDE
+如何实现呢？进入正题吧。
+几年前，写过一篇关于 &amp;ldquo;Golang 多环境管理 GVM&amp;rdquo; 的文章。本质上，要实现这种多环境隔离，一般都是通过环境变量实现。查了些资料，Neovim 其实也不例外。
+方案 1：基于 XDG 配置 Neovim 的目录遵循 XDG 目录规范。具体是什么意思呢？
+XDG 本质是一套规范，定义了一组环境变量，用于说明应用程序储存信息目录的一套标准。熟悉 Linux 的朋友应该了解，我们以往一直习惯于把应用的配置以 .xxx 的形式放在用户的 $HOME 目录，导致 $HOME 下的点隐藏文件泛滥，而这套规范的出现，使我们轻易实现目标。
+就以 Neovim 为例：
+Neovim 的配置文件存放默认存放在 $XDG_CONFIG_HOME/nvim，数据目录默认在 $XDG_DATA_HOME/nvim，状态数据目录默认在 $XDG_STATE_HOME/nvim，缓存数据目录默认在 $XDG_CACHE_HOME/nvim。
+通过修改 XDG 环境变量，即可实现环境隔离。
+如下 nvim-golang 的启动脚本：</description></item><item><title>Vim 小技巧：高效利用 vim 的行号</title><link>https://www.poloxue.com/posts/2023-09-25-vim-tips-how-to-use-number/</link><pubDate>Mon, 25 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-vim-tips-how-to-use-number/</guid><description>我们知道，Vim 支持配置是否显示行号，对这个行号认知，我们一般指的是绝对行号。其实 Vim 支持配置两种行号模式：number（绝对行号） 和 relativenumber（相对行号）。
+今天，基于 vim 行号介绍一个提升其使用效率的小技巧，混合使用 number 和 relativenumber。
+绝对行号 number 绝对行号 number，我们基本都熟悉怎么使用。效果图如下所示：
+通过 set number 显示行号。默认开启的话，配置到 Vim 配置文件中即可。
+其他命令：
+1 2 3 4 5 &amp;#34; 显示行号 set nu &amp;#34; set number 的缩写形式 &amp;#34; 隐藏行号 set nonumber &amp;#34; 无缩写 set nonu &amp;#34; 缩写形式 基于行号 number，实现的一些快捷操作，如：
+基于行的快速跳转 10G 或 :10，快速跳转到第 10 行； 粘贴指定范围文本 :10,20y 或删除 :10,20d； 替换指定范围文本 :10,20s/hello/world/g； 注：set numberwidth=4 可配置行号所在的列的默认宽度为 4，如果行号数值达到 5 位数，将会自动扩展到 5 位。另外说明，不同于 Vim 的默认值是 2，Neovim 的默认宽度也是 4。</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
+zsh 为什么如此受欢迎？我们是否应该使用它呢？
+什么是 zsh？ “Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。
+Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。
+如今，Zsh 俨然已经是一个庞大的开源项目（非 Paul Falstad 维护），拥有一个有大量用户和贡献者的社区。而且，自 2019 年以来，它成为了 Apple macOS 的默认 Shell。
+bash vs zsh 这两个项目都还在积极开发中。这使它们在功能上越发接近，但差异不可能完全消除。默认，zsh 更强大且更容易自定义，而某些功能， Bash 需要一些额外的脚本（插件）才能实现。
+zsh 优于 Bash 的主要功能是：
+zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；</description></item><item><title>从 0 开始：教你如何配置 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description>本文将介绍如何使用 zsh 来提升命令行的操作效率。
+你是否每天都在与命令行打交道？
+如果答案是 &amp;ldquo;Yes&amp;rdquo;，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。
+zsh 是什么？ zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。
+它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。
+再者，相较于 bash，zsh 现在社区更加活跃，是一个还在成长中的项目。
+zsh 的优势 zsh 和 bash 都是非常流行的 Unix-like shell，它们有着很多相似的功能特性。但相对于 bash，zsh 有这些差异化优势：
+更优秀的命令行补全能力； 配置化能力更强； 更现代的语法； 改进的错误报告； 模拟 bash； 用户社区不断壮大，更新频繁； 体验更好的按键 支持vi模式等 安装 zsh Linux 系统下的安装非常简单。
+Debian:
+1 sudo apt install zsh Arch Linux:
+1 sudo pacman -S zsh Fedora</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。
+我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？
+非常简单！
+核心脚本介绍
+首先，一段 bash 脚本:
+1 tmux ls &amp;amp;&amp;amp; read -p &amp;#34;Select a session&amp;lt;default&amp;gt;:&amp;#34; tmux_session &amp;amp;&amp;amp; tmux attach -t ${tmux_session:-default} || tmux new -s ${tmux_session:-default} 这段脚本的说明如下：
+tmux ls, 先输出当前可用的 session 列表，供用户输入使用； read xxx, 读取用户输入，将希望打开的会话名称存入 tmux_session 中； tmux attach，尝试打开会话，如果 tmux_session 为空，打开 default 会话； tmux new，如果开启失败，尝试创建一个新的会话； 说明：由于 read 命令使用了-p，必须要使用 bash 运行这段脚本。
+配置 iTerm2 启动加载</description></item><item><title>从头构建 Go Web 框架（二）：中间件</title><link>https://www.poloxue.com/posts/2021-10-28-build-your-own-webframework-in-golang-part-2/</link><pubDate>Thu, 28 Oct 2021 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2021-10-28-build-your-own-webframework-in-golang-part-2/</guid><description>本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。系统通过这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
+本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第二篇，将介绍中间件的最佳实践。
+第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 附加福利：上传文件到 s3，Bonus: File Upload REST API with Go and Amazon S3 在编写 Go Web 应用时，代码重复是大多数开发者将会遇到的第一个问题。</description></item><item><title>从头构建 Go Web 框架（一）：介绍</title><link>https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/</link><pubDate>Sat, 23 Oct 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/2021-10-23-build-your-own-webframework-in-golang/</guid><description>本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。系统通过这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
+本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第二篇，将介绍中间件的最佳实践。
+第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 附加福利：上传文件到 s3，Bonus: File Upload REST API with Go and Amazon S3 Martini 发布之后，迅速成为了最受大家欢迎的 Go 语言 Web 框架，且现在依旧是如此。但必须指出的是，它不符合常规习惯，非常慢，概念也有不足。它教了我们一堆错误的做法。但因为它上手容易，许多开发人员仍在使用。</description></item><item><title>powermock: 一个支持 gRPC 的 Mock Server</title><link>https://www.poloxue.com/posts/2021-07-17-powermock-autotest-your-code/</link><pubDate>Sat, 17 Jul 2021 20:33:14 +0800</pubDate><guid>https://www.poloxue.com/posts/2021-07-17-powermock-autotest-your-code/</guid><description>写于 2021 年 7 月份，当时公司在推自动化测试方案，集成流水线的时候，研究了这个方案。
+本文介绍的是如何基于 bilibili 的开源方案 powermock 搭建一套通用的适用于自己公司的 MockServer。
+背景 我所在公司正处在一个高速发展的阶段，各产品线齐头并进。而我所在的部门主要负责核心能力建设与增长类业务，属于所有产品线的最下游。
+业务部门希望在新产品部署产线后，我们能快速的配合。这就导致了一个非常尴尬的局面，产品确定上线时间，处在产品上线的最后阶段的我们，如果有任何异常，都可能导致上线时间被压缩。
+如何防止这类情况？简单来说，就是如何防止因依赖导致项目开发的不可预期。
+一个常见拉新活动的业务图为例，如下：
+用户场景是，假设一名用户通过我的邀请码完成平台注册，并且完成首次购物，他才能算作我的成功邀请用户，我才能得到我想要的奖励。
+一个简单的拉新活动，因为服务拆分，需要同时依赖于两个服务才可以能完成这一个活动的开发。我们的核心诉求是测试我们自己开发的邀请活动。而用户和订单服务，一方面不在测试范围之内，另一方面，这些服务是其他团队开发，在测试环境的稳定性没人保证，会成为开发排期的瓶颈，而且如果是并行开发，这些服务可能还没有完成。
+如果有一个服务，能够实现依赖服务协议，方便我们尽可能的穷举依赖服务的各种场景，让我们不需要时时刻刻的依赖上游服务，是不是就能解决这个问题？
+选型 基于这些困惑和一段时间的摸索，团队成员提出了一套新的解决思路，基于 Mock 方式解决问题。确定了这个思想，接下来就是如何实施了。
+通常服务间的依赖可分两类，一类是由被依赖方主动触发的消息，二类是由依赖方主动发起的调用。消息类依赖主要容易 mock，而服务间的调用 mock 相对复杂。
+当前的微服务架构下，gRPC 是主流的服务间调用的协议，Mock Server 必然需要支持，经过一番寻找，在市面上发现了最近 bilibili 的开源实现方案 powermock。
+这个工具的开源看时间在 2021 年 5 份刚刚开源，powermock 同时支持 HTTP 与 gRPC 协议接口的 Mock，提供灵活的插件功能。面向对象包括前后端（HTTP、gRPC）、测试等对 Mock 有需求的所有人员。
+当前这个项目的 star 为 5，顺手 star 加到了 6。虽然 star 有点少，但鉴于其特性的确是我想要的功能，肯定是要尝试一下的。powermock 最吸引我的地方在于，代码简单，易于阅读，二次开发方便。而且，对于 gRPC 的支持是一个亮点。市面上的 Mock Server 主要都是面向 HTTP 的接口，面向前端。
+架构 为便于针对 powermock 二次开发，通过阅读源码，我整理出 powermock 的主体架构，如下所示：</description></item><item><title>Go 如何实现 HTTP 文件上传</title><link>https://www.poloxue.com/posts/2019-12-10-golang-http-upload-file/</link><pubDate>Tue, 10 Dec 2019 15:25:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-12-10-golang-http-upload-file/</guid><description>早前写过一篇文章，Go HTTP 请求 QuickStart。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
+最近，尝试录成它的视频，访问地址。发现当时写得挺详细的，发现当时虽然写得比较详细，但也只是介绍用法，可能不知其所以然。比如文件上传那部分，如果不了解 http 文件上传协议 RFC 1867，就很难搞懂为什么代码这么写。
+今天，就以这个话题为基础，介绍下 Go 如何实现文件上传。
+相关代码请访问 httpdemo/post。本文视频地址：Go 上传文件
+简介 简单来说，HTTP 上传文件可以分三个步骤，分别是组织请求体，设置 Content-Type 和发送 Post 请求。POST 请求就不用介绍了，主要关注请求体和请求体内容类型。
+请求体，即 request body，常用于 POST 请求上。请求体并非 POST 特有，GET 也支持，只不过约定俗成的规定，服务端一般会忽略 GET 的请求体。
+Content-Type 是什么？
+因为，请求体的格式并不固定，可能性很多，为了明确请求体内容类型，HTTP 定义了一个请求头 Content-Type。
+常见的 Content-Type 选项有 application/x-www-form-urlencoded（默认的表单提交）、application/json（json）、text/xml（xml 格式）、text/plain（纯文本）、application/octet-stream（二进制流）等。
+提交表单 文件上传可以理解为是提交表单的特例，先通过表单提交这个简单的例子介绍下整个流程。
+如下是表单提交的 HTTP 请求文本。
+1 2 3 4 POST http://httpbin.org/post HTTP/1.1 Content-Type: application/x-www-form-urlencoded username=poloxue&amp;amp;password=123456 Content-Type 是 application/x-www-form-urlencoded，数据通过 urlencoded 方式组织。</description></item><item><title>说说 Go 中的变量（附粗制滥造面试题）</title><link>https://www.poloxue.com/posts/2019-12-05-golang-variables/</link><pubDate>Thu, 05 Dec 2019 16:28:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-12-05-golang-variables/</guid><description>和其他语言没有区别，Go 中的数据也是两种表示方式，常量和变量，本文先说说变量吧。
+为了增加文章的趣味性（多掉些头发），搜集了一些常见的面试题。部分是自己瞎编的，顺便为自己明年可能到来的面试做些准备。
+先答题，题目中附有提示，但无解答。带着问题看文章效果或许更好。
+面试题 1.1 如下的代码，哪些能正常编译？如果不能正常编译，如何修改？
+A.
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 package main import ( &amp;#34;fmt&amp;#34; ) func get() { return 1, 2 } func main() { x, y := get() fmt.Println(x) } 考点：定义未使用的局部变量和使用匿名变量。
+B.
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 package main import ( &amp;#34;fmt&amp;#34; ) var ( x = 1 y := 10 ) func main() { fmt.</description></item><item><title>如何评价 Golang 开源库 Cobra</title><link>https://www.poloxue.com/posts/2019-12-03-what-is-cobra/</link><pubDate>Tue, 03 Dec 2019 05:30:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-12-03-what-is-cobra/</guid><description>开源库 Cobra 是 Golang 下用于创建命令行应用的框架。 它也是 k8s、hugo 等开源项目都在用框架。GitHub 项目地址
+命令行应用 对于 Golang 而言，一般写命令行应用，如果要求不是太多，直接用 flag 标准库就够了，毕竟像 Go 命令也是通过 flag 包实现的，完全能够驾驭。前段时间写了篇文章：Go 命令行解析 flag 包之通过子命令实现看 go 命令源码
+命令行应用可以和 web 应用做类比，就像 web 只有路由，就可以支持实现一个复杂的 web 应用，同样 flag 提供的基本功能，也足够写出足够复杂的命令行应用了。
+但不是任何人都想去了解 flag，或者裸写一个命令行应用。
+为什么呢？
+因为命令行的有些内容还要处理，如，默认没有子命令的一套实现规范，不支持参数校验、不支持帮助信息模板配置。没有对一些标准提供默认支持，如 POSIX 标准，没有 -v，&amp;ndash;version 和 -h、&amp;ndash;help 的默认支持等。
+一套完整的命令行框架应用就要这些能力，能提供一套最佳实践。Cobra 就是这样一套框架。
+Cobra Cobra 支持的功能非常多，一些非常出名的开源项目，比如 k8s、hugo 等都在使用它。GitHub 的说明已经介绍了它丰富的能力。
+概述而言，它支持子命令，posix 规范的 Flag，嵌套的子命令，支持全局、局部和级联的选项，支持 bash 自动补全，便捷的参数校验。具体可查看 GitHub README，或
+它还提供了一套脚手架，能便捷地创建一个命令行应用，就像写 web 应用一样，快速创建一个 handler、Controller。
+当然，如果只是写个简单小工具，连子命令都没有，Flag 选项又少的可怜。flag 就足够了，没有必要依赖它。
+使用演示 使用 Cobra 创建一个简单的命令行应用，官方文档案例。
+安装 博文地址：Golang 开源库 Cobra 介绍与使用，知乎问题：如何评价 Cobra （Golang 库）？</description></item><item><title>Go 命令行解析 flag 包之通过子命令实现看 go 命令源码</title><link>https://www.poloxue.com/posts/2019-11-30-golang-flag-sub-commandline/</link><pubDate>Sat, 30 Nov 2019 15:33:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-30-golang-flag-sub-commandline/</guid><description>上篇文章 介绍了 flag 中如何扩展一个新的类型支持。本篇介绍如何使用 flag 实现子命令，总的来说，这篇才是这个系列的核心，前两篇只是铺垫。
+前两篇文章链接如下：
+Go 命令行解析 flag 包之快速上手
+Go 命令行解析 flag 包之扩展新类型
+希望看完本篇文章，如果再阅读 go 命令的实现源码，至少在整体结构上不会迷失方向了。
+FlagSet 正式介绍子命令的实现之前，先了解下 flag 包中的一个类型，FlagSet，它表示了一个命令。
+从命令的组成要素上看，一个命令由命令名、选项 Flag 与参数三部分组成。类似如下：
+1 $ cmd --flag1 --flag2 -f=flag3 arg1 arg2 arg3 FlagSet 的定义也正符合了这一点，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 type FlagSet struct { // 打印命令的帮助信息 Usage func() // 命令名称 name string parsed bool // 实际传入的 Flag actual map[string]*Flag // 会被使用的 Flag，通过 Flag.</description></item><item><title>Go 命令行解析 flag 包之扩展新类型</title><link>https://www.poloxue.com/posts/2019-11-26-commandline-flag-extend-new-type/</link><pubDate>Tue, 26 Nov 2019 16:08:21 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-26-commandline-flag-extend-new-type/</guid><description>上篇文章 说到，flag 支持的类型有布尔类型、整型（int、int64、uint、uint64）、浮点型（float64）、字符串（string）和时长（duration）。
+一般情况下，flag 内置类型能满足绝大部分的需求，但某些场景，我们要自定义解析规则。一个优秀的库肯定要支持扩展的。
+本文将介绍如何为 flag 扩展一个新的类型支持？
+扩展目标 上文中，假设我们在开发一个 gvg 命令行工具。它其中的 list 子命令支持获取 Go 的版本列表。但 Go 版本来源信息有多处，比如 installed（已安装）、local（本地仓库）和 remote（远程仓库）。
+查看下 list 的帮助信息，如下：
+1 2 3 4 5 6 7 8 NAME: gvg list - list go versions USAGE: gvg list [command options] [arguments...] OPTIONS: --origin value the origin of version information , such as installed, local, remote (default: &amp;#34;installed&amp;#34;) 从帮助信息中可知，list 支持一个 Flag 选项，--origin。它用于指定版本信息的来源，允许值的范围是 installed、local 和 remote。
+如果要求不严格，用 StringVar 也可以实现。但问题是，使用 String，即使输入不在指定范围也能成功解析，不够严谨。虽说在获取后也可以检查，但还是不够灵活、可配置型也差。</description></item><item><title>Go 命令行解析 flag 包之快速上手</title><link>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</link><pubDate>Sat, 23 Nov 2019 16:21:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-23-commandline-tool-flag-in-golang/</guid><description>本篇文章是 Go 标准库 flag 包的快速上手篇。
+概述 开发一个命令行工具，视复杂程度，一般要选择一个合适的命令行解析库，简单的需求用 Go 标准库 flag 就够了，flag 的使用非常简单。
+当然，除了标准库 flag 外，也有不少的第三方库。比如，为了替代 flag 而生的 pflag，它支持 POSIX 风格的命令行解析。关于 POSIX 风格，本文末尾有个简单的介绍。
+更多与命令行处理相关的库，可以打开 awesome-go#command-line 命令行一节查看，star 最多的是 spf13/cobra 和 urfave/cli ，与 flag / pflag 相比，它们更加复杂，是一个完全的全功能的框架。
+有兴趣都可以了解下。
+目标案例 回归主题，继续介绍 flag 吧。通过案例介绍包的使用会比较直观。
+举一个例子说明吧。假设，现在要开发一个 Go 语言环境的版本管理工具，gvg（go version management using go）。
+命令行的帮助信息如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 NAME: gvg - go version management by go USAGE: gvg [global options] command [command options] [arguments.</description></item><item><title>详细介绍 Go 中如何实现 bitset</title><link>https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/</link><pubDate>Thu, 07 Nov 2019 19:37:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/</guid><description>最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
+在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
+相关代码已经放在了 github，地址如下：go-set-example
+如果发现有什么不妥的地方，欢迎大佬们指正，感谢。
+bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章，其中介绍了 bitset 一种最简单的应用场景，状态标志位，顺便还提了下 bitset 的实现思路。
+状态标志和一般的集合有什么区别呢？
+我的总结是主要一点，那就是状态标志中元素个数通常是固定的。而一般的集合中，元素个数通常是动态变化的。这会导致什么问题？
+一般，我们使用一个整数就足以表示状态标志中的所有状态，最大的 int64 类型，足足有 64 个二进制位，最多可以包含 64 个元素，完全足够使用。但如果是集合，元素数量和值通常都不固定。
+比如一个 bitset 集合最初可能只包含 1、2、4 几个元素，只要一个 int64 就能表示。如下：
+但如果再增加了一个元素，比如 64（一个 int64 的表示范围是 0-63），这已经超出了一个 int64 能表示的范围。该怎么办？
+一个 int64 无法表示，那就用多个呗。此时的结构如下：
+一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 BitSet，如下：
+1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。
+还有，因为 bitset 中元素个数无法通过 len 函数获取，而具体的方法相对复杂一点，可增加一个 size 字段记录集合元素的个数。然后就可以增加一个 Size 方法。</description></item><item><title>你真的不用再设置 GOROOT 了</title><link>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</link><pubDate>Wed, 06 Nov 2019 12:42:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-06-dont-set-goroot/</guid><description>为什么不再需要设置 GOROOT 呢？推荐读两篇英文文章，我意译了下，将它们放在了一篇里。
+第一篇是关于 Go 1.10 之前，怎么设置 GOROOT，发表与 2013 年。第二篇 是从 Go 1.10 开始，如何处理 GOROOT，时间是 2018 年，Go 源码提交日志。这篇非常短小。
+读完后，你会发现，大多数情况下，你都不用手动设置 GOROOT 了。
+第一篇 作者：Dave Cheney | 地址：you-dont-need-to-set-goroot-really
+一篇小短文，解释了为什么在编译和使用 Go 时，不需要设置 GOROOT。
+概要性介绍 一般来说，在 Go 1.0 之后，编译和使用 GO 不再需要设置 GOROOT。事实上，如果你的电脑上存在多个版本的 Go 语言环境，设置 GOROOT 可能产生一些问题。
+GOPATH 仍然需要设置。
+从 Go 1.0 开始，GOPATH 就被强烈推荐。随着 Go 1.1 的发布，GOPATH 已经是强制性的了。
+为什么不再要设置 GOROOT？ 谈些 Go 环境变量的历史吧！
+Go 的资深老前辈们可能还记得，曾经的 Go 不仅要设置 GOROOT，还需要设置 GOOS 和 GOARCH。之所以要设置 GOROOT，是因为 Make 在编译构建的时候，引入了 GOROOT 中的内容，要提前设置 GOROOT 作为了它们的基本路径。</description></item><item><title>从词法分析角度看 Go 代码的组成</title><link>https://www.poloxue.com/posts/2019-11-03-golang-lexical-analysis/</link><pubDate>Sun, 03 Nov 2019 18:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-11-03-golang-lexical-analysis/</guid><description>之前的 Go 笔记系列，已经完成到了开发环境搭建，原本接下来的计划就是到语法部分了，但后来一直没有前进。主要是因为当时的工作比较忙，分散了精力，于是就暂时放下了。
+最近，准备重新把之前计划捡起来。
+第一步，肯定是了解 Go 基础语法部分。原本计划是写 Go 编码的一些基础知识，但纯粹聊什么是关键字、标识符、字面量、操作符实在有点无聊。
+突然想到，词法分析这块知识还没仔细研究过，那就从这个角度出发吧。通过逐步地拆解，将各个 token 进行归类。
+概述 我们知道，编译型语言（比如 Go）的源码要经过编译和链接才能转化为计算机可以执行的程序，这个过程的第一步就是词法分析。
+什么是词法分析呢？
+它就是将源代码转化为一个个预先定义的 token 的过程。为了便于理解，我们将其分为两个阶段进行介绍。
+第一阶段，对源码串进行扫描，按预先定义的 token 规则进行匹配并切分为一个个有语法含义、最小单元的字符串，即词素（lexme），并在此基础上将其划归为某一类 token。这个阶段，一些字符可能会被过滤掉，比如，空白符、注释等。
+第二阶段，通过评估器 Evaluator 评估扫描出来的词素，并确定它字面值，生成最终的 Token。
+是不是有点不好理解呢？
+如果之前从未接触过这块内容，可能没有直观感受。其实，看着很复杂，但的确非常简单。
+一个简单的示例 先看一段代码，经典的 hello world，如下：
+1 2 3 4 5 6 7 package main import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;Hello World&amp;#34;) } 我们可以通过这个例子的源码逐步拆解词法分析的整个流程。
+什么是词素 理论性的概念就不说了，直接看效果吧。
+首先，将这段示例代码通过词法分析的第一阶段，我们将会得到如下内容：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main \n import &amp;#34;fmt&amp;#34; \n func main ( ) { \n fmt .</description></item><item><title>Go Module 依赖关系的可视化</title><link>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</link><pubDate>Wed, 23 Oct 2019 08:21:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-10-23-golang-module-visualization/</guid><description>最近，我开发了一个非常简单的小工具，总的代码量 200 行不到。今天，简单介绍下它。这是个什么工具呢？它是一个用于可视化展示 Go Module 依赖关系的工具。
+为何开发 为什么会想到开发这个工具？主要有两点原因：
+一是最近经常看到大家在社区讨论 Go Module。于是，我也花了一些时间研究了下。期间，遇到了一个需求，如何清晰地识别模块中依赖项之间的关系。一番了解后，发现了 go mod graph。
+效果如下：
+1 2 3 4 5 6 7 8 $ go mod graph github.com/poloxue/testmod golang.org/x/text@v0.3.2 github.com/poloxue/testmod rsc.io/quote/v3@v3.1.0 github.com/poloxue/testmod rsc.io/sampler@v1.3.1 golang.org/x/text@v0.3.2 golang.org/x/tools@v0.0.0-20180917221912-90fa682c2a6e rsc.io/quote/v3@v3.1.0 rsc.io/sampler@v1.3.0 rsc.io/sampler@v1.3.1 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c rsc.io/sampler@v1.3.0 golang.org/x/text@v0.0.0-20170915032832-14c0d48ead0c 每一行的格式是 模块 依赖模块，基本能满足要求，但总觉得还是不那么直观。
+二是我之前手里有一个项目，包管理一直用的是 dep。于是，我也了解了下它，把官方文档仔细读了一遍。其中的某个章节介绍了依赖项可视化展示的方法。
+文档中给出的包关系图：
+看到这张图的时候，眼睛瞬间就亮了，图形化就是优秀，不同依赖之间的关系一目了然。这不就是我想要的效果吗？666，点个赞。
+但 &amp;hellip;，随之而来的问题是，go mod 没这个能力啊。怎么办？
+如何实现 先看看是不是已经有人做了这件事了。网上搜了下，没找到。那是不是能自己实现？应该可以借鉴下 dep 的思路吧？
+如下是 dep 依赖实现可视化的方式：
+1 2 3 4 5 6 7 8 9 10 11 # linux $ sudo apt-get install graphviz $ dep status -dot | dot -T png | display # macOS $ brew install graphviz $ dep status -dot | dot -T png | open -f -a /Applications/Preview.</description></item><item><title>Go 中如何解析 json 内部结构不确定的情况</title><link>https://www.poloxue.com/posts/2019-10-17-parse-dynamic-json-into-a-structure/</link><pubDate>Thu, 17 Oct 2019 10:08:37 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-10-17-parse-dynamic-json-into-a-structure/</guid><description>本文主要介绍的是关于 Go 如何解析 json 内部结构不确定的情况。
+首先，我们直接看一个来提问吧。
+问题如下：
+上游传递不确定的json，如何透传给下游业务？比如，我解析参数
+1 2 3 4 5 6 7 { &amp;#34;test&amp;#34;: 1, &amp;#34;key&amp;#34;: { &amp;#34;k1&amp;#34;: &amp;#34;1&amp;#34;, &amp;#34;k2&amp;#34;: 2 } } 但是key 结构体下面是未知的。可能是K1 K2 K3 &amp;hellip; KN。如何解析传递那？
+对于 json 格式数据的解析，如果其中的某个成员结构不确定。
+我总结一般有几种方式处理。
+常见的几种方案 第一个方案，也是最容易想到的，将那个不确定的成员用 map[string]interface{} 替代。
+1 2 3 4 type Data struct { Test int `json:&amp;#34;test&amp;#34;` Key map[string]interface{} `json:&amp;#34;test&amp;#34;` } 但问题是，这种方式太坑，每次从 key 中拿数据，都要做类型检查，判断是否 ok。
+第二种，既然 map[string]interface{} 的方式太坑，那如果要是能用结构体就好了。
+虽然其中某个成员的结构不确定，但如果共性字段比较多，如都是与人相关，那肯定都有名字，年龄之类的字段，但如果是教师和学生，就会有一些不同的字段，把所有的不同字段都包含进来即可。但如果不同字段太多，那也不是很方便。
+第三种，终极解决方案，如果能先解析第一层的结构，再根据第一层的结果，确定第二层的结构，那就方便多了。不确定的成员依然用 map[string]interface{} 表示，确定结构后，再将 map[string]interface{} 解析为具体的某个结构。结构体使用起来就方便很多了。
+问题最终就变成了如何将 map[string]interface{} 转化为 struct，这个过程必然会用到反射，可以自己实现。但其他人早造就想到了，一个第三方库，地址：https://github.</description></item><item><title>Go Module 存在的意义与解决的问题</title><link>https://www.poloxue.com/posts/2019-10-14-gomod-what-andy-why/</link><pubDate>Mon, 14 Oct 2019 14:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-10-14-gomod-what-andy-why/</guid><description>最近，我在尝试整理一篇关于 Go 包管理发展历史的文章，希望能加深自己对这一块知识的认识。在搜集资料的时候，发现了这篇文章，顺手翻译了一下。
+本文是该系列的第一篇，主要介绍包依赖管理中一些基础知识。文中提出了 Go 开发中的三个痛点，如何解决只能在 GOPATH 指定路径开发，如何实现有效的版本管理，以及如何支持 Go 原生工具集依赖管理。针对它们，Go Module 都提供了相应的解决方案。
+从第一篇的内容上看，作者后面的文章应该会对 Go 的模块机制进行详细的剖析，很期待。话说，总感觉这篇文章翻译的有点别扭，检查的时候发现有好几处语义理解错误，尴尬。
+翻译正文如下：
+介绍 Go Module 是 Go 为包依赖管理提供的一个综合性解决方案。从 Go 初版发布以来，Go 开发者针对包管理这一块提出过三个痛点问题。
+如何实现在 GOPATH 工作区之外进行代码开发；
+如何实现依赖版本化管理和有效识别出使用依赖的兼容性问题；
+如何实现通过 Go 原生工具进行依赖管理；
+随着 Go 1.13 的发布，这三个问题都得到了解决。在过去的两年里，Go 团队成员为此付出了巨大的努力。本文中将重点介绍从 GOPATH 到模块机制的变化，还有模块究竟解决了什么问题。我将通过足够易懂的语言向大家说明模块的工作机制。
+我觉得，重点要理解为什么模块这样工作。
+GOPATH GOPATH 是用于指定 Go 工作区的物理位置，一直以来都很好地服务着 Go 的开发者们。但它对非 Go 开发者并不友好，想在没有任何配置的情况下，随时随地进行 Go 开发，这是不可能的一件事。
+Go 团队要解决的第一个问题就是允许 Go 的源码仓库能被 clone 在磁盘中的任意位置，而不仅仅是 GOPATH 指定的工作区。并且 Go 工具集仍然要能成功定位、编译构建与测试它们。
+上图展示了一个 github 仓库，ardanlabs/conf，这个仓库仅有一个包，它用于提供对应用配置处理的支持。
+以前，如果想使用这个包，我们需要通过 go get 并指定仓库的规范化名称实现下载一份到你的 GOPATH 下。仓库规范化的名称是由远程仓库的基础 url 和仓库名称两部分组成。</description></item><item><title>一文理清 Go 引用的常见疑惑</title><link>https://www.poloxue.com/posts/2019-09-28-understand-golang-reference/</link><pubDate>Sat, 28 Sep 2019 14:40:56 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-28-understand-golang-reference/</guid><description>今天，尝试谈下 Go 中的引用。
+之所以要谈它，一方面是之前的我也有些概念混乱，想梳理下，另一方面是因为很多人对引用都有疑问。我经常会看到与引用有关的问题。
+比如，什么是引用？引用和指针有什么区别？Go 中有引用类型吗？什么是值传递？址传递？引用传递？
+在开始谈论之前，我已经感觉到这必定是一个非常头疼的话题。这或许就是学了那么多语言，但没有深入总结，从而导致的思维混乱。
+前言 我的理解是，要彻底搞懂引用，得从类型和传递两个角度分别进行思考。
+从类型角度，类型可分为值类型和引用类型，一般而言，我们说到引用，强调的都是类型。
+从传递角度，有值传递、址传递和引用传递，传递是在函数调用时才会提到的概念，用于表明实参与形参的关系。
+引用类型和引用传递的关系，我尝试用一句话概括，引用类型不一定是引用传递，但引用传递的一定是引用类型。
+这几句话，是我在使用各种语言的之后总结出来的，希望无误吧，毕竟不能误导他人。
+是什么 谈到引用，就不得不提指针，而指针与引用是编程学习中老生常谈的话题了。有些编程语言为了降低程序员的使用门槛，只有引用。而有些语言则是指针引用皆存在，如 C++ 和 Go。
+指针，即地址的意思。
+在程序运行的时候，操作系统会为每个变量分配一块内存放变量内容，而这块内存有一个编号，即内存地址，也就是变量的地址。现在 CPU 一般都是 64 位，因而，这个地址的长度一般也就是 8 个字节。
+引用，某块内存的别名。
+一般情况，都会这么解释引用。换句话说，引用代指某个内存地址，这句话真的是非常简洁，同时也非常好理解。但在 Go 中，这句话看起来并不全面，具体后面解释。
+除了指针和引用，还有另外一个更广泛的概念，值。谈变量传递时，常会提到值传递、址传递和引用传递。从广义上看，对大部分的语言而言，指针和引用都属于值。而从狭义角度来说，则可分为值、址和引用。
+相当绕人是不是？
+我已经感觉到自己头发在掉了。其实，要想彻底搞清楚这些概念，还是得从本质出发。
+值和指针 先来搞明白值与指针区别。
+上一节在介绍指针的时候，提到了要注意变量的地址和内容的不同。为什么要说这句话呢？
+假设，我们定义一个 int 类型的变量 a，如下：
+1 var a int = 1 变量 a 的内容为 1，而变量内容是存在某个地址之中的。如何获取变量地址呢？Go 中获取变量地址的方法与 C/C++ 相同。代码如下：
+1 var p = &amp;amp;a 通过 &amp;amp; 获取 a 的地址。同时，这里还定义了一个新的变量 p 用于保存变量 a 的地址。p 的类型为 int 指针，也就是变量 p 中的内容是变量 a 的地址。</description></item><item><title>Go 中 Slice 的 In 实现探索</title><link>https://www.poloxue.com/posts/2019-09-15-how-to-use-contain-function-in-golang/</link><pubDate>Sun, 15 Sep 2019 14:10:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-15-how-to-use-contain-function-in-golang/</guid><description>之前在知乎看到一个问题：为什么 Golang 没有像 Python 中 in 一样的功能？于是，搜了下这个问题，发现还是有不少人有这样的疑问。
+今天来谈谈这个话题。
+in 是一个很常用的功能，有些语言中可能也称为 contains，虽然不同语言的表示不同，但基本都是有的。不过可惜的是，Go 却没有，它即没有提供类似 Python 操作符 in，也没有像其他语言那样提供这样的标准库函数，如 PHP 中 in_array。
+Go 的哲学是追求少即是多。我想或许 Go 团队觉得这是一个实现起来不足为道的功能吧。
+为何说微不足道？如果要自己实现，又该如何做呢？
+我所想到的有三种实现方式，一是遍历，二是 sort 的二分查找，三是 map 的 key 索引。
+本文相关源码已经上传在我的 github 上，poloxue/gotin。
+遍历 遍历应该是我们最容易想到的最简单的实现方式。
+示例如下：
+1 2 3 4 5 6 7 8 9 func InIntSlice(haystack []int, needle int) bool { for _, e := range haystack { if e == needle { return true } } return false } 上面演示了如何在一个 []int 类型变量中查找指定 int 是否存在的例子，是不是非常简单，由此我们也可以感受到我为什么说它实现起来微不足道。</description></item><item><title>Go 的 Http 请求系统指南</title><link>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</link><pubDate>Tue, 10 Sep 2019 16:37:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/</guid><description>前几天在 &amp;ldquo;知乎想法&amp;rdquo; 谈到了一个话题，如何模仿学习，举了通过 net/http client 模仿 Pyhton 的requests的例子。但并未实践，难道想法真的只能是想法吗？当然不是，于是我决定先暂停一周 GO 笔记，来实践下自己的想法。
+有些新的知识，我们可以通过模仿学习
+本文将通过 GO 实现 requests 的 quick start 文档中的所有例子，系统学习http client的使用。虽然标题是 quick start，但其实内容挺多的。
+快速体验 首先，我们来发起一个 GET 请求，代码非常简单。如下：
+1 2 3 4 5 6 7 8 9 10 func get() { r, err := http.Get(&amp;#34;https://api.github.com/events&amp;#34;) if err != nil { panic(err) } defer func() { _ = r.Body.Close() }() body, _ := ioutil.ReadAll(r.Body) fmt.Printf(&amp;#34;%s&amp;#34;, body) } 通过 http.Get 方法，获取到了一个 Response 和一个 error ，即 r 和 err。通过 r 我们能获取响应的信息，err 可以实现错误检查。</description></item><item><title>Go 问答汇总 Part Three</title><link>https://www.poloxue.com/posts/2019-09-10-zhihu-golang-part3/</link><pubDate>Tue, 10 Sep 2019 15:47:12 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-10-zhihu-golang-part3/</guid><description>第三篇 Go 问答总结，2019 年 8 月份总结，大约有 12 篇问答。前两遍地址如下：
+Go 问答汇总 Part One Go 问答汇总 Part Two
+问题大部分是来自于知乎和 segmentfault。本月有一个问题来自 stackoverflow，我的英文水平一般，读与翻译还行，但写起来还需要锻炼。虽然这一个回答没得到一个赞同，但能被题主采纳，我还是很荣幸的。
+最近发现，我的回答经常会被 Go 语言中文网的周刊收录。对 Go 感兴趣的朋友可以关注下 Go 语言中文网的公众号，内容还是非常丰富的，每天都会推送关于 Go 的优秀文章。
+开始正文！
+dynamodbattribute.UnmarshalMap canges the type of my variable to map[string]interface{}
+将 stackoverflow 的这篇回答放在首位吧，问题不是很难，重在第一次尝试，stackoverflow 上面有价值的问题还是很多的。
+题主的目标是希望 map 类型转化成 struct 类型。将问题稍微简化下，题主希望通过类似如下这种写法将 map[string]interface{} 转化为 user 类型。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 package main import &amp;#34;fmt&amp;#34; type User struct { Name string } func Item() interface{} { return User{} } func ItemMap(s map[string]interface{}, item *interface{}) { *item = s } func main() { m := Item() fmt.</description></item><item><title>Go 的静态检测功能</title><link>https://www.poloxue.com/posts/2019-09-01-golang-race/</link><pubDate>Sun, 01 Sep 2019 17:32:09 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-09-01-golang-race/</guid><description>译者前言 第三篇 Go 官方博客译文，主要是关于 Go 内置的竞态条件检测工具。它可以有效地帮助我们检测并发程序的正确性。使用非常简单，只需在 go 命令加上 -race 选项即可。
+本文最后介绍了两个真实场景下的竞态案例，第一个案例相对比较简单。重点在于第二个案例，这个案例比较难以理解，在原文的基础上，我也简单做了些补充，不知道是否把问题讲的足够清楚。同时，这个案例也告诉我们，任何时候我们都需要重视检测器给我们的提示，因为一不小心，你就可能为自己留下一个大坑。
+概要 在程序世界中，竞态条件是一种潜伏深且很难发现的错误，如果将这样的代码部署线上，常会产生各种谜一般的结果。Go 对并发的支持让我们能非常简单就写出支持并发的代码，但它并不能阻止竞态条件的发生。
+本文将会介绍一个工具帮助我们实现它。
+Go 1.1 加入了一个新的工具，竞态检测器，它可用于检测 Go 程序中的竞态条件。当前，运行在 x86_64 处理器的 Linux、Mac 或 Windows 下可用。
+竞态检测器的实现基于 C/C++ 的 ThreadSanitizer 运行时库，ThreadSanitier 在 Googgle 已经被用在一些内部基础库以及 Chromium上，并且帮助发现了很多有问题的代码。
+ThreadSanitier 这项技术在 2012 年 9 月被集成到了 Go 上，它帮助检测出了标准库中的 42 个竞态问题。它现在已经是 Go 构建流程中的一部分，当竞态条件出现，将会被它捕获。
+如何工作 竞态检测器集成在 Go 工具链，当命令行设置了 -race 标志，编译器将会通过代码记录所有的内存访问，何时以及如何被访问，运行时库也会负责监视共享变量的非同步访问。当检测到竞态行为，警告信息会把打印出来。（具体详情阅读 文章）
+这样的设计导致竞态检测只能在运行时触发，这也意味着，真实环境下运行 race-enabled 的程序就变得非常重要，但 race-enabled 程序耗费的 CPU 和内存通常是正常程序的十倍，在真实环境下一直启用竞态检测是非常不切合实际的。
+是否感受到了一阵凉凉的气息？
+这里有几个解决方案可以尝试。比如，我们可以在 race-enabled 的情况下执行测试，负载测试和集成测试是个不错的选择，它偏向于检测代码中可能存在的并发问题。另一种方式，可以利用生产环境的负载均衡，选择一台服务部署启动竞态检测的程序。
+开始使用 竞态检测器已经集成到 Go 工具链中了，只要设置 -race 标志即可启用。命令行示例如下：</description></item><item><title>如何测试你的 Go 代码</title><link>https://www.poloxue.com/posts/2019-08-22-how-to-test-your-code-in-golang/</link><pubDate>Thu, 22 Aug 2019 13:01:20 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-22-how-to-test-your-code-in-golang/</guid><description>不论是开源项目，还是日常程序的开发，测试都是必不可少的一个环节。今天我们开始进入 Go 测试模块 testing 的介绍。
+简单概述 我们选择开源项目，通常会比较关注这个项目的测试用例编写的是否完善，一个优秀项目的测试一般写的不会差。为了日后自己能写出一个好的项目，测试这块还是要好好学习下。
+常接触的测试主要是单元测试和性能测试。毫无意外，go 的 testing 也支持这两种测试。单元测试用于模块测试，而性能则是由基准测试完成，即 benchmark。
+Go 测试模块除了上面提到的功能，还有一项能力，支持编写案例，通过与 godoc 的结合，可以非常快捷地生成库文档。
+最易想到的方法 谈到如何测试一个函数的功能，对开发来说，最容易想到的方法就是在 main 中直接调用函数判断结果。
+举个例子，测试 math 方法下的绝对值函数 Abs，示例代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;math&amp;#34; ) func main() { v := math.Abs(-10) if v != 10 { fmt.Println(&amp;#34;测试失败&amp;#34;) return } fmt.Println(&amp;#34;测试成功&amp;#34;) } 更常见的可能是，if 判断都没有，直接 Print 输出结果，我们观察结果确认问题。特别对于习惯使用 Python、PHP 脚本语言的开发， 建一个脚本测试是非常快速的，因为曾经很长一段时间，我就是如此。</description></item><item><title>Go 中如何使用反射 Part Two</title><link>https://www.poloxue.com/posts/2019-08-17-reflection-in-golang-part2/</link><pubDate>Sat, 17 Aug 2019 17:25:03 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-17-reflection-in-golang-part2/</guid><description>译者前言 这篇博文介绍的内容比较实在，主要是关于两方面的内容。一是介绍 reflection 在 encoding/json 中的应用，另一个开发了一个 Cacher 工厂函数，实现函数式编程中的记忆功能，其实就是根据输入对输出进行一定限期的缓存。
+这篇文章的翻译没有上一篇那么轻松，因为涉及了一些函数式编程的术语，之前也并没有接触过。为了翻译这篇文章，简单阅读了网上的一篇关于函数式编程的文章，文章地址。望没有知识性错误。
+译文如下：
+上一篇文章，(阅读英文原版)，我们介绍了 Go 的反射包 reflection。并通过一些示例介绍了它的特性。但是，我们还不清楚它究竟有什么。
+通过反射实现的功能，不用反射也能实现，而且更加高效简洁。但是 Go 团队肯定不会因为自己而为 Go 增加一个新的特性。
+那究竟什么情况下会使用反射呢？
+寻找反射使用案例 通过反射，我们可以实现各种奇淫巧技。但每天的工作中，我该如何使用它呢？
+其实，大部分时间里，我们都用不到它。反射主要是用在一些特殊的场景下，使一些不可能的实现成为可能。我们常会在一些库、工具、框架中找到反射的使用场景。
+那你是否可以告诉我，哪些库、框架或工具中使用反射呢？一个技巧，查看函数参数类型。如果一个函数的参数类型是 interface{}，那么，它极有可能使用了反射来检查或改变参数的值。
+JSON 处理 反射，最常见的使用场景之一，是对网络或文件中的数据进行解包和组包。当你通过 struct tag 映射 JSON 或数据库中的数据时，便是通过反射实现的。这类场景，我们通常会用某个库帮助我们创建结构体实例，它通过分析 struct tag 和数据，以此为 struct 的字段赋值。
+我们就以 Go 官方标准库中的 JSON 解包为例，来介绍一下它的实现。
+通过调用 json.Unmarshal 函数，我们可以把 JSON 字符串解包并赋值给某个变量。Unmarshal 函数接收两个参数：
+类型为 []byte 的 JSON 字符串； 类型为 interface{}，用于存放 JSON 解析结果的变量； 深入看看这个函数究竟是如何进行反射的？
+阅读 json 包的源码，其中有个私有函数 unmarshal，主要看其中与反射相关的部分代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 func (d *decodeState) unmarshal(v interface{}) (err error) { &amp;lt;skip some setup&amp;gt; rv := reflect.</description></item><item><title>如何阅读 Go 源码</title><link>https://www.poloxue.com/posts/2019-08-15-how-to-read-golang-source-code/</link><pubDate>Thu, 15 Aug 2019 17:40:14 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-15-how-to-read-golang-source-code/</guid><description>Go 的源码在安装包的 src/ 目录下。怎么看它的源码呢？直接看吧！没人教的情况下，只能自己撸了。当然，这种内容一般也不会有人教。
+怎么撸？
+Go 源码中，应该可分为与语言息息相关的部分，和官方提供的标准库。与语言实现相关的肯定是最难的，不是那么容易理解。可以先主要看标准库，其他的可以先大概了解下。
+先把源码目录整体扫一遍，大概看看涉及了哪些模块，然后再挑自己喜欢的部分进行更深一步的学习与研究。建议每个目录都简单写个 hello world，如此的体悟会更深。如果连 hello world 也写不出来，这个模块的源码暂时就没必要研究了，先学好基础吧。毕竟，包的使用不仅与语言相关，还涉及具体场景和实现原理，这都是要学习的。
+对包的使用熟悉理解后，就可以阅读源码了，但此时最好还是不要太抠细节，求理解涉及设计思想，整体流程。源码阅读可以通过画 UML 的方式辅助，从纵向和横向帮助理解。代码设计时，一般最容易想到的就是按顺序方式写，很快就能搞定。但当项目变大，抽象的模块会越来越多，抽象出接口和具体的实现，实现可能包含其他类型的组合。搞明白这些关系，对于理解源码实现会较有帮助。
+如果能顺利经过前面两步，接下来的源码阅读就比较简单了。而且 Go 语言的特点就是简洁易读，没什么语法糖。当然，如果是一些实现比较复杂的包，你还需知道它们的底层原理，就比如 net/http 包，你得对 http 协议熟悉到一定程度，才可能从细节研究源码实现。
+可能是我闲的蛋疼，准备试着先从第一步出发，整体撸一下 Go 的源码中包含的模块，没事的时候就更新一点进去。等把这些大致撸完一遍，感觉我的 Golang 之旅 专栏又可以多出很多写作素材了。
+我的环境是 Go 1.11。关于每个模块，我会把读过的一些文章放在下面，由于只是粗略阅读，并不能保证读过的每篇文章都是精品。
+补充：
+2019年8月8日 凌晨 01:13， 大概花了两个多星期的零碎时间，简单撸完了一版。总的感觉，还是有很多地方理解不够，希望后面可以按前面说的思路，按包逐步进行源码解剖。
+archive 包含了文件归档的相关内容，其中涉及了两个包，分别是 tar 和 zip。
+archive/tar，即归档，如果了解 Linux 下的 tar 命令，可与之对应理解。如果要在归档基础上进行压缩，还要借助 compress 下的相关包。提醒一点，是使用时要注意理解归档与压缩的区别。
+相关阅读：
+鸟哥的文件与文件系统的压缩与打包
+archive/tar 实现打包压缩及解压
+archive/zip，与 zip 格式压缩文件操作相关的包，使用方法与 tar 很类似。在寻找与 zip 包相关的资料时，了解到 zip 的作者年仅 37 岁就逝世了，而全世界所有使用 zip 压缩的文件开头部分都有他的名字 &amp;ldquo;PK&amp;rdquo;，而我们识别一个文件是否是 zip 正是通过这种方法。
+相关阅读：</description></item><item><title>Go 中如何使用反射 Part One</title><link>https://www.poloxue.com/posts/2019-08-10-reflection-in-golang/</link><pubDate>Sat, 10 Aug 2019 17:22:04 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-reflection-in-golang/</guid><description>什么是反射 多数情况下，Go 中的变量、类型和函数的使用都是非常简单的。
+当你需要一个类型：
+1 2 3 4 type Foo struct { A int B string } 当你需要一个变量，定义如下：
+1 var x Foo 当你需要一个函数，定义如下：
+1 2 3 func DoSomething(f Foo) { fmt.Println(f.A, f.B) } 但有时候，你想使用的变量依赖于运行时信息，它们在编程时并不存在。比如数据来源于文件，或来源于网络，你想把它映射到一个变量，而它们可能是不同的类型。在这类场景下，你就需要用到反射。反射让你可以在运行时检查类型，创建、更新、检查变量以及组织结构。
+Go 中的反射主要围绕着三个概念：类型（Types）、类别（Kinds）和值（Values）。反射的实现源码位于 Go 标准库 reflection 包中。
+检查类型 首先，让我们来看看类型（Types）。你可以通过 reflect.TypeOf(var) 形式的函数调用获取变量的类型，它会返回一个类型为 reflect.Type 的变量，reflect.Type 中的操作方法涉及了定义该类型变量的各类信息。
+我们要看的第一个方法是 Name()，它返回的是类型的名称。有些类型，比如 slice 或 指针，没有类型名称，那么将会返回空字符串。
+下一个介绍方法是 Kind()，我的观点，这是第一个真正有用的方法。Kind，即类别，比如切片 slice、映射 map、指针 pointer、结构体 struct、接口 interface、字符串 string、数组 array、函数 function、整型 int、或其他的基本类型。type 和 kind 是区别不是那么容易理清楚，但是可以这么想：
+当你定义一个名称为 Foo 的结构体，那么它的 kind 是 struct，而它的 type 是 Foo。</description></item><item><title>Go 问答汇总 Part Two</title><link>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</link><pubDate>Sat, 10 Aug 2019 15:38:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-08-10-zhihu-go-part2/</guid><description>继上篇 Go 问答汇总，已经过去了一个多月。今天汇总下近一个多月我关于 Go 的回答。
+粗略数了一下，一个多月的时间里，大约回答了 18 个与 Go 有关的问题，问题主要是来源于 segmentfault 和 zhihu 两个平台。后面希望加入更多平台，如 stackoverflow、github 的感兴趣主题。
+最近在写一个小工具，准备用于帮助自己回答不同平台的问题，同时也便于每个月的问题汇总。写的有点慢，希望月底可以完成。
+正文部分开始。
+golang中如何将redis取出的map[string]string数据解析到目标struct中？
+主要和反射相关。
+问题主要是关于 map 中如果存在日期字符格式串，如何解析到 time.Time 类型成员中，而对于结构体而言，reflect.Kind() 返回的只能说明字段类型是 struct，并不能确定真正的类型，这时可以用 Go 的 switch type 类型查询语法实现。
+补充一点，在回答中没有提到的。
+在实现 map 到 struct 的通用方法时，我们比较容易想到支持基础类型，但对于结构体类型而言，可能性太多，如何更灵活地解决问题？我觉得，可通过钩子方式实现，即如果自定义类型需要支持 map 到 struct 的转化，可通过在自定义类型上增加钩子方法实现，比如 UnmarshalMap。如何实现可参考下 encoding/json。
+当然，这个工作已经有人做了，参考 github 上的包，mitchellh/mapstructure。前面说的 Hook 也是支持的。
+golang 怎么优雅的实现错误码？
+Go 对错误处理有一套自己的理念。这个问题，我只是简单回答了一下，简单的思路，我定义了用户级别错误和系统级别错误。上篇问答汇总也会类似问题。
+golang什么时候该返回error，什么时候panic？
+我的建议是，发生的 error 是否已经严重影响服务逻辑，如果在预判之内的错误，我们就应该 return error，记录日志，并不需要人工干预才能恢复，否则建议 panic。
+举个例子，在一般情况下，服务启动时，需要进行完善的初始化工作，确认各个组件的运行正常。如果初始化都失败了，那就没有必要继续向下走了，应该 panic 赶紧提示。
+Golang time 如何实现的？
+问题标题看着挺大，其实题主关心是几个核心常量之间的转化关系。主要是三个时间，分别 unix 时间、wall 时间和 absolute 时间。这里面有个相对重要的转化公式，在需要考虑平润年的时候稍微有点复杂。</description></item><item><title>Go 实现词法分析与解析 Part Three</title><link>https://www.poloxue.com/posts/2019-07-29-golang-lexer-and-parser-part3/</link><pubDate>Mon, 29 Jul 2019 17:10:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-29-golang-lexer-and-parser-part3/</guid><description>译者前言 最近发现我的翻译是越来越随性了，刚开始文章翻译的时候比较拘束，现在更多强调可读性，比如有些对文章大意没有什么影响的文字我现在都会选择直接跳过。
+这篇文章主要是关于 INI 解释器的 parser 实现，它会从上一节中 Lexer 中接收 Token 解析，最终返回给使用者具有实际意义的结构体。读了这个系列的文章，我相信大家对词法器实现的原理将会有了基本的理解，但如果要真正实践，似乎还有一段距离。有兴趣的话，我们可以实现个自己的 JSON 解释器。要求可以稍微简化，只解析到 JSON 的第一层。
+译文如下：
+本系列第一篇文章，英文原版，我们介绍了词法分析解析的一些基础概念，了解了 INI 文件的基本组成，并在此基础上定义了一些常量和结构体，这对我们接下来实现 INI 文件解析会很有帮助。
+第二篇文章，英文原版，因主要聚焦在 Lexer 的实现。它完成了将输入文本转化为 Token 的过程。
+今天是本系列的最后一篇文章，最终完成我们的解释器。解释器负责从 channel 读取 Token，并最终创建表示 INI 文件内容的结构体实例。解析完成后，我们可以用 JSON 格式将结果打印出来。
+结构体 解析器负责启动词法器和从 channel 读取 Token 的组件。接收到 Token 后，解析器需要知道当前 Token 状态，然后将其解析到对应结构中。我们要做的第一件事就是，定义表示 INI 内容的结构体。将主要涉及三个结构体。
+第一个表示 Key/Value 的结构体，名称为 IniKeyValue，如下。
+model/ini/IniKeyValue.go
+1 2 3 4 5 6 package ini type IniKeyValue struct { Key string `json:&amp;#34;key&amp;#34;` Value string `json:&amp;#34;value&amp;#34;` } 第二个表示 Section 的结构体，名称为 IniSection，如下：</description></item><item><title>Colly 从入门到不放弃指南</title><link>https://www.poloxue.com/posts/2019-07-25-colly-from-zero-to-hero/</link><pubDate>Thu, 25 Jul 2019 13:35:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-25-colly-from-zero-to-hero/</guid><description>平时比较喜欢逛逛问答平台，比如 stackvoerflow，最近想聚合下一些平台的技术问答，比如 stackoverflow。
+要完成这个工作，肯定是离不开爬虫工具。于是，我就想着顺便抽时间研究了 Go 的一款爬虫框架 colly。
+概要介绍 colly 是 Go 实现的比较有名的一款爬虫框架，而且 Go 在高并发和分布式场景的优势也正是爬虫技术所需要的。它的主要特点是轻量、快速，设计非常优雅，并且分布式的支持也非常简单，易于扩展。
+本文将基于 colly 的官方文档，介绍 colly 的学习指南，以及我对 colly 的理解。
+如何学习 爬虫最有名的框架应该就是 Python 的 scrapy，很多人最早接触的爬虫框架就是它，我也不例外。它的文档非常齐全，扩展组件也很丰富。当我们要设计一款爬虫框架时，常会参考它的设计。之前看到一些文章介绍 Go 中也有类似 scrapy 的实现。
+相比而言，colly 的学习资料就少的可怜了。刚看到它的时候，我总会情不自禁想借鉴我的 scrapy 使用经验，但结果发现这种生搬硬套并不可行。
+到此，我们自然地想到去找些文章阅读，但结果是 colly 相关文章确实有点少，能找到的基本都是官方提供的，而且看起来似乎不是那么完善。没办法，慢慢啃吧！官方的学习资料通常都会有三处，分别是文档、案例和源码。
+今天，暂时先从官方文档角度吧！正文开始。
+官方文档 官方文档介绍着重使用方法，如果是有爬虫经验的朋友，扫完一遍文档很快。我花了点时间将官网文档的按自己的思路整理了一版。
+主体内容不多，涉及安装、快速开始、如何配置、调试、分布式爬虫、存储、运用多收集器、配置优化、扩展。
+其中的每篇文档都很短小，甚至是少的基本都不用翻页滚动。
+如何安装 colly 的安装和其他的 Go 库安装一样简单。如下：
+1 go get -u github.com/gocolly/colly 一行命令搞定。So easy!
+快速开始 我们来通过一个 hello word 案例快速体验下 colly 的使用。步骤如下：
+第一步，导入 colly。
+1 import &amp;#34;github.com/gocolly/colly&amp;#34; 第二步，创建 collector。
+1 c := colly.</description></item><item><title>Go 实现词法分析与解析 Part Two</title><link>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</link><pubDate>Wed, 24 Jul 2019 17:10:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-24-golang-lexer-and-parser-part2/</guid><description>本文是关于词法器实现的具体介绍，如果在阅读时遇到困难，建议参考源码阅读，文中的代码片段为了介绍思路。如何解析会在下一篇介绍。
+最近简单看了下 Go 源码，在 src/go 目录下有几个模块，token、scanner 和 parser 应该就是 Go 词法相关实现的核心代码，打开 token 目录会发现其中的源码和上一节介绍的内容有诸多相似之处。
+由于最近并发任务比较多，不能以最快的速度更新。词法的相关内容，除了本系列，我把其他一些相关文章的链接都贴在下面，如果英文阅读功底不错，可自行阅读。
+A look at Go lexer/scanner packages
+Rob Pike&amp;rsquo;s Functional Way
+Handwritten Parser &amp;amp; Lexers In Go
+译文如下：
+本系列的第一篇文章（英文原版）。
+我介绍了关于词法分析与解析的一些基本概念和 INI 文件内容的基本组成。之后，我们创建了部分相关结构体与常量，帮助实现接下来的 INI 文本解析器。
+本篇文章将实际深入到词法分析的细节。
+词法分析 (lexing)，指的是将输入文本转化为一系列 Token 的过程。Token 是比文本更小的单元，将它们组合在一起才可能产生有实际意义的内容，如程序、配置文件等。
+本系列文章中的 INI 文件，Token 包括左括号、右括号、SectionName、Key，Value 以及等于号。用正确的顺序组合它们，你就会有一个 INI 文件。词法器的职责是读取 INI 文件内容、分析创建 Token，以及通过 channel 将 Token 发送给解析器。
+词法分析器 为了实现文本到 Token 的转化，我们还需要追踪一些信息，比如文本内容，当前分析文本的位置，以及当前分析的 Token 的开始和结束位置。
+完成分析后，我们还要将 Token 发送给解析器，可以通过 channel 传递。
+我们还需要一个函数实现词法器状态的追踪。Rob Pike 的演讲中谈到利用函数追踪词法器当前和接下来期望的状态。简单而言，就是一个函数处理一个 Token，并返回下一个状态函数生成下一个期望 Token。下面，我就简单翻译为状态函数吧.</description></item><item><title>Go 问答汇总 Part One</title><link>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</link><pubDate>Mon, 22 Jul 2019 15:03:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-22-zhihu-go-part1/</guid><description>最近比较忙，因为工作需要，必须快速了解一些新知识，写文少了，翻译多了。
+原因吗？也简单。
+翻译好文不仅可以帮助大家学习，自己也能学到更多。
+最近，单独开了个专栏，用于保存自己翻译的计算机相关译文，大家如果有兴趣可以关注一下。Go 专栏或许当写到一定的程度时，更新频率会下降，但译文应该不会。
+这周简单总结下近期在知乎上我的一些关于 Go 的问答。一方面是希望只关注专栏的朋友也能看到，毕竟不是所有内容都可以写出文章，另一方面，梳理一下也能方便以后自己查找。
+为什么Golang没有像Python中in一样的功能？ Go 中没有 in，为什么会这样呢？其实还是因为它比较简单，实现起来也不是很复杂。回答中介绍了三种关于在 Go 中实现 in 的方式。
+golang中byte转int涉及到大小端问题吗？ 关于 Go 中大小端的问题，其实有专门的包处理这个问题，encoding/binary。回答中介绍了如何在 Go 中检查机器的大小端。还有，如何将 []byte 分别按大小端转化为 int 类型。
+golang切片扩容时底层内存地址是连续的么,会不会出现不连续的情况？ 主要介绍了切片的底层结构，数组是连续，因而数据肯定是连续的。回答通过具体的代码测试了下 slice 是如何扩容的。
+Golang如何把json中的unicode编码转换成中文字符？ 在调试接口的时候，经常遇到 \uxxxx 之类的字符串，为什么需要这样做呢？回答中说了一点个人的理解，\uxxxx 本质是 ascii 码，可以不用在意客户端的编码。但是这种方式，在我理解，也存在缺点，回答有所介绍。
+为什么go的map数据竞争是fatal错误, 而不是panic? 题主要求挺高，要求从源码上去回答这个问题。为什么在发生数据竞争时，是 fatal error，而不是 panic。如果从设计上说，发生数据竞争是个比较严重的错误，会直接影响程序的执行结果，需要直接退出，而 panic 还是可以 recover 的，而这种错误还是不要 recover 比较好。当然，从源码层面，
+如何理解 Go 的接口&amp;quot; 对于传统面向对象语言的开发者，对于 Go 接口还是难以理解。最需要强调的一点，就是要先理解鸭子模型，基于此，再来理解为什么说 Go 接口是一组方法的集合，Go 接口是一种非侵入式的设计。
+Go 接口如何正确的运继承 关于第二个问题，确切的说，就是题主还没有正确的理解 Go 的接口，简单地利用以往经验来理解 Go，理解 Go 的继承。从某种意义上说，Go 没有语法层面的继承，要实现继承的效果，需要通过组合实现。
+golang与C语言相比最重要的改进是什么？ 当别人问到 Go 相对 C 最重要的改进是什么的时候，我优先想到并不是 Go 的并发模型，而是接口。经过前面两个问题，也会发现 Go 的接口的有点。它让我们的编码变的非常灵活。</description></item><item><title>Go 实现词法分析与解析 Part One</title><link>https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1/</link><pubDate>Wed, 17 Jul 2019 17:03:59 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-17-golang-lexer-and-parser-part1/</guid><description>一直对词法分析与解析的话题比较感兴趣，最近发现了好几篇相关的优秀文章，准备好好翻译和研究下。我的理解，词法分析与解析的应用还是比较广泛的，无论简单的配置文件、各种模板语言、还是我们每天在写编程语言都离不开它。
+本篇文章一个系列文章的第一篇，主要介绍的是词法分析与解析的一些基础概念，包括什么是词法分析，什么是解析，Token 如何表示等等。
+正文如下：
+从今天开始，我将会用三篇文章介绍在 Go 中如何构建一个简单的词法分析与解释器。文中介绍的内容主要是基于 Rob Pike 在 2011 年关于 Lexical Scanning In Go 的演讲。这个系列文章最终会包含一个功能完善的代码，它可用于 INI 类型文件的解析。
+三篇文章涉及内容分别是：
+Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 1，如什么是词法分析、解析，以及案例的一部分介绍； Go 实现词法分析与解析)，译：Writing a Lexer and Parser in Go - Part 2； Go 实现词法分析与解析，译：Writing a Lexer and Parser in Go - Part 3； 概要 词法分析与解析是个比较复杂的话题，但这并不意味着我们无法一点点剖析和掌握它。为了帮助大家更好地了解它，接下来，我将会构建一个简单的 INI 文件解析器。这个解析器输入的是文本字符串，返回的是经过结构化处理的结果，结果包含多个 Section 和 Key/Value。我将用 Go 实现它。
+为什么选择 INI 文件？主要是因为它的简单性，结构容易理解。例如，下面就是一个简单的 INI 内容样例：
+1 2 3 [SetionName] key1=value 1 key2=value 2 样例中主要涉及了三个元素，充分理解它们对于我们如何设计 INI 解释器是非常有帮助的。</description></item><item><title>Go 通过 Context 实现并发控制</title><link>https://www.poloxue.com/posts/2019-07-12-concurrent-using-context/</link><pubDate>Fri, 12 Jul 2019 16:55:58 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-12-concurrent-using-context/</guid><description>译者前言 第二篇官方博客的翻译，主要是关于 Go 并发控制的 context 包。
+总体来说，我认为上一篇才是 Go 并发的基础与核心。context 是在前章基础之上，为 goroutine 控制而开发的一套便于使用的库。毕竟，在不同的 goroutine 之间只传递 done channel，包含信息量确实是太少。
+文章简单介绍了 context 提供的方法，以及简单介绍它们如何使用。接着，通过一个搜索的例子，介绍了在真实场景下的使用。
+文章的尾部部分说明了，除了官方实现的 context，也有一些第三方的实现，比如 github.com/context 和 Tomb，但这些在官方 context 出现之后就已经停止更新了。其实原因很简单，毕竟一般都是官方更强大。之前，go 模块管理也是百花齐放，但最近官方推出自己的解决方案，或许不久，其他方式都将会淘汰。
+其实，我觉得这篇文章并不好读，感觉不够循序渐进。突然的一个例子或许会让人有点懵逼。
+正文如下：
+Go 的服务中，每个请求都会有独立的 goroutine 处理，每个 goroutine 通常会启动新的 goroutine 执行一些额外的工作，比如进行数据库或 RPC 服务的访问。同请求内的 goroutine 需能共享请求数据访问，比如，用户认证，授权 token，以及请求截止时间。如果请求取消或发生超时，请求范围内的所有 goroutine 都应立刻退出，进行资源回收.
+在 Google，我们开发了一个 context 的包，通过它，我们可以非常方便地在请求内的 goroutine 之间传递请求数据、取消信号和超时信息。详情查看 context。
+本文将会具体介绍 context 包的使用，并提供一个完整的使用案例。
+Context context 的核心是 Context 类型。定义如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 // A Context carries a deadline，cancellation signal，and request-scoped values // across API.</description></item><item><title>Go 如何构建并发 Pipeline</title><link>https://www.poloxue.com/posts/2019-07-05-golang-pipeline/</link><pubDate>Fri, 05 Jul 2019 16:52:21 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-07-05-golang-pipeline/</guid><description>译者前言 这篇文章来自 Go 官网，不愧是官方的博客，写的非常详细。在开始翻译这篇文章前，先简单说明两点。
+首先，这篇文章我之前已经翻译过一遍，但最近再读，发现之前的翻译真是有点烂。于是，决定在完全不参考之前译文的情况下，把这篇文章重新翻译一遍。
+其二，文章中有一些专有名字，计划还是用英文来表达，以保证原汁原味，比如 pipeline（管道）、stage (阶段)、goroutine (协程)、channel (通道)。
+关于它们之间的关系，按自己的理解简单画了张草图，希望能帮助更好地理解它们之间的关系。如下：
+强调一点，如果大家在阅读这篇文章时，感到了迷糊，建议可以回头再看一下这张图。
+翻译的正文部分如下。
+Go 的并发原语使我们非常轻松地就构建出可以高效利用 IO 和多核 CPU 的流式数据 pipeline。这篇文章将会此为基础进行介绍。在这个过程中，我们将会遇到一些异常情况，关于它们的处理方法，文中也会详细介绍。
+什么是管道（pipeline） 关于什么是管道， Go 中并没有给出明确的定义，它只是众多并发编程方式中的一种。非正式的解释，我们理解为，它是由一系列通过 chanel 连接起来的 stage 组成，而每个 stage 都是由一组运行着相同函数的 goroutine 组成。每个 stage 的 goroutine 通常会执行如下的一些工作：
+从上游的输入 channel 中接收数据； 对接收到的数据进行一些处理，（通常）并产生新的数据； 将数据通过输出 channel 发送给下游； 除了第一个 stage 和最后一个 stage ，每个 stage 都包含一定数量的输入和输出 channel。第一个 stage 只有输出，通常会把它称为 &amp;ldquo;生产者&amp;rdquo;，最后一个 stage 只有输入，通常我们会把它称为 &amp;ldquo;消费者&amp;rdquo;。
+我们先来看一个很简单例子，通过它来解释上面提到那些与 pipeline 相关的概念和技术。了解了这些后，我们再看其它的更实际的例子。
+计算平方数 一个涉及三个 stage 的 pipeline。
+第一个 stage，gen 函数。它负责将把从参数中拿到的一系列整数发送给指定 channel。它启动了一个 goroutine 来发送数据，当数据全部发送结束，channel 会被关闭。</description></item><item><title>如何理解 Go 的接口</title><link>https://www.poloxue.com/posts/2019-06-18-understand-golang-interface/</link><pubDate>Tue, 18 Jun 2019 16:09:33 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-18-understand-golang-interface/</guid><description>如何理解 Golang 中的接口。
+个人认为，要理解 Go 的接口，一定先了解下鸭子模型。
+鸭子模型 那什么鸭子模型？
+鸭子模型的解释，通常会用了一个非常有趣的例子，一个东西究竟是不是鸭子，取决于它的能力。游泳起来像鸭子、叫起来也像鸭子，那么就可以是鸭子。
+动态语言，比如 Python 和 Javascript 天然支持这种特性，不过相对于静态语言，动态语言的类型缺乏了必要的类型检查。
+Go 接口设计和鸭子模型有密切关系，但又和动态语言的鸭子模型有所区别，在编译时，即可实现必要的类型检查。
+什么是 Go 接口 Go 接口是一组方法的集合，可以理解为抽象的类型。它提供了一种非侵入式的接口。任何类型，只要实现了该接口中方法集，那么就属于这个类型。
+举个例子，假设定义一个鸭子的接口。如下：
+1 2 3 4 type Duck interface { Quack() // 鸭子叫 DuckGo() // 鸭子走 } 假设现在有一个鸡类型，结构如下：
+1 2 3 4 5 6 type Chicken struct { } func (c Chicken) IsChicken() bool { fmt.Println(&amp;#34;我是小鸡&amp;#34;) } 这只鸡和一般的小鸡不一样，它比较聪明，也可以做鸭子能做的事情。
+1 2 3 4 5 6 7 func (c Chicken) Quack() { fmt.</description></item><item><title>如何防止你的 Goroutine 泄露(二)</title><link>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</link><pubDate>Mon, 17 Jun 2019 13:41:42 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-17-prevent-goroutine-from-leaking-part-2/</guid><description>上篇文章说到，防止 goroutine 泄露可从两个角度出发，分别是代码层面的预防与运行层面的监控检测。今天，我们来谈第二点。
+简述 前文已经介绍了一种简单检测 goroutine 是否泄露的方法，即通过 runtime.NumGoroutine 获取当前运行中的 goroutine 数量粗略估计。但 NumGoroutine 是否真的能确定我们代码存在泄露，除此之外，还有没有其他更优的方式吗。
+注：为了更好的演示效果，下面将会用常驻的 http 作为示例。
+NumGoroutine runtime.NumGoroutine 可以获取当前进程中正在运行的 goroutine 数量，观察这个数字可以初步判断出是否存在 goroutine 泄露异常。
+一个示例，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 package main import ( &amp;#34;net/http&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;strconv&amp;#34; ) func write(w http.ResponseWriter, data []byte) { _, _ = w.Write(data) } func count(w http.ResponseWriter, r *http.Request) { write([]byte(strconv.Itoa(runtime.NumGoroutine()))) } func main() { http.</description></item><item><title>如何防止你的 Goroutine 泄露</title><link>https://www.poloxue.com/posts/2019-06-10-prevent-goroutine-from-leaking/</link><pubDate>Mon, 10 Jun 2019 13:40:37 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-10-prevent-goroutine-from-leaking/</guid><description>今天简单谈谈，Go 如何防止 goroutine 泄露。
+概述 Go 的并发模型与其他语言不同，虽说它简化了并发程序的开发难度，但如果不了解使用方法，常常会遇到 goroutine 泄露的问题。虽然 goroutine 是轻量级的线程，占用资源很少，但如果一直得不到释放并且还在不断创建新协程，毫无疑问是有问题的，并且是要在程序运行几天，甚至更长的时间才能发现的问题。
+对于上面描述的问题，我觉得可以从两方面入手解决，如下：
+一是预防，要做到预防，我们就需要了解什么样的代码会产生泄露，以及了解正确的写法是如何的；
+二是监控，虽说预防减少了泄露产生的概率，但没有人敢说自己不犯错，因而，通常我们还需要一些监控手段进一步保证程序的健壮性；
+接下来，我将会分两篇文章分别从这两个角度进行介绍，今天先谈第一点。
+如何监控泄露 本文主要集中在第一点上，但为了更好的演示效果，可以先介绍一个最简单的监控方式。通过 runtime.NumGoroutine() 获取当前运行中的 goroutine 数量，通过它确认是否发生泄漏。它的使用非常简单，就不为它专门写个例子了。
+一个简单的例子 语言级别的并发支持是 Go 的一大优势，但这个优势也很容易被滥用。通常我们在开始 Go 并发学习时，常常听别人说，Go 的并发非常简单，在调用函数前加上 go 关键词便可启动 goroutine，即一个并发单元，但很多人可能只听到了这句话，然后就出现了类似下面的代码：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;runtime&amp;#34; &amp;#34;time&amp;#34; ) func sayHello() { for { fmt.Println(&amp;#34;Hello gorotine&amp;#34;) time.Sleep(time.Second) } } func main() { defer func() { fmt.</description></item><item><title>Golang 中如何使用 Set</title><link>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</link><pubDate>Mon, 03 Jun 2019 13:57:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-06-03-set-in-golang/</guid><description>在Go编程中，数据结构的选择对解决问题至关重要。本文将探讨如何使用set和bitset两种数据结构，以及它们在Go中的应用场景。
+Go 的数据结构 Go 内置的数据结构并不多。工作中，我们最常用的两种数据结构分别是 slice 和 map，即切片和映射。 其实，Go 中也有数组，切片的底层就是数组，只不过因为切片的存在，我们平时很少使用它。
+除了 Go 内置的数据结构，还有一些数据结构是由 Go 的官方 container 包提供，如 heap 堆、list 双向链表和ring 回环链表。但今天我们不讲它们，这些数据结构，对于熟手来说，看看文档就会使用了。
+我们今天将来聊的是 set 和 bitset。据我所知，其他一些语言，比如 Java，是有这两种数据结构。但 Go 当前还没有以任何形式提供。
+实现思路 先来看一篇文章，访问地址 2 basic set implementations 阅读。文中介绍了两种 go 实现 set 的思路， 分别是 map 和 bitset。
+有兴趣可以读读这篇文章，我们接下来具体介绍下。
+map 我们知道，map 的 key 肯定是唯一的，而这恰好与 set 的特性一致，天然保证 set 中成员的唯一性。而且通过 map 实现 set，在检查是否存在某个元素时可直接使用 _, ok := m[key] 的语法，效率高。
+先来看一个简单的实现，如下：
+1 2 3 4 5 6 7 8 set := make(map[string]bool) // New empty set set[&amp;#34;Foo&amp;#34;] = true // Add for k := range set { // Loop fmt.</description></item><item><title>Go 虚拟环境管理工具 gvm</title><link>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</link><pubDate>Mon, 27 May 2019 12:57:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-27-golang-virtualenv-tool-gvm/</guid><description>本文谈下我对 Go 版本管理的一些想法。让后，我将介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
+背景介绍 Go 的版本管理，并非包的依赖管理，而且关于如何在不同的 Go 版本之间切换。平时的工作中，正常情况，我们不会遇到这样的需求，所以可能并不明白它的价值。
+简单说下我写这篇文章的背景吧。
+最近几周，Go 最重要的一则消息应该莫过 9月份 Go 1.13 的正式发布。它的相关升级可查看 Go 1.13 正式发布，看看都有哪些值得关注的特性 或官方 Go 1.13 Relase Notes。
+对于一名 gopher 而言，可能早已按捺不住自己那颗躁动的心，想尽快体验下新版的升级项。但问题是，切换至新版 Go 通常会遇到一些问题，比如不同版本的环境配置，安装的辅助工具和程序包在不同版本下可能会存在兼容或被覆盖等问题。
+我自然就希望有一套方案可以帮助我完成 Go 版本的切换，实现不同版本间环境的完全隔离。
+思考方案 谈到环境隔离，有很多方案可供选择，如多主机、虚拟机、容器等技术。这些听起来都挺不错，都能实现需求。但如果只是为了 Go 版本管理，完全可以自己实现。
+多版本切换，主要是不同版本环境变量的隔离。Go 1.10 之前，我们关心的变量有 GOROOT、GOPATH 和 PATH。Go 1.10 之后，GOROOT 已经默认为 go 的当前安装路径，只要考虑 GOPATH 和 PATH 即可。
+最近，刚答过一个关于 Go 环境变量的问题，查看回答。其中对每个变量的作用进行了比较细致的描述。
+如何实现 现在，我要实现我自己电脑上的两个版本的 Go 自由切换，该如何做呢？
+假设它们分别位于 ~/.goversions/sdk/ 目录下的 go1.11/ 和 go1.13/。我现在要启用 go 1.11，运行如下命令即可：
+1 $ export PATH=~/.goversions/sdk/go1.11/bin/:$PATH 此时，GOROOT 已经自动识别，为 ~/.</description></item><item><title>Go 的那些 IDE</title><link>https://www.poloxue.com/posts/2019-05-06-golang-ide/</link><pubDate>Mon, 06 May 2019 12:28:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-05-06-golang-ide/</guid><description>经过前面的一系列工作后，Go 的语言环境已经搭建完成。
+我们初步体验了 Go 提供的大部分命令。但在正式进入开发之前，还有件工作要做，那就是选择一款适合自己的 IDE。
+为什么使用IDE &amp;ldquo;程序员为什么要使用 IDE&amp;rdquo;，在一些社区论坛，经常可以看到这样的提问。关于是否应该使用IDE，每个人都有着自己的看法。
+早期，程序的开发并不需要 IDE，那是以机器码编程为主的时代。后来随着计算机行业发展，为了进一步提升工程开发效率，IDE就产生了。
+要明白的是，IDE主要是通过把各类命令工具集整合起来，开发的一套易于程序开发的软件，通常它帮我们形成一套高效的编程开发习惯。最终目标是为了提升项目的开发效率。
+了解了 IDE 的本质，如果喜欢折腾，我们完全可以把诸如 vim 或 emacs 等文本编辑器打造一款属于自己的IDE。
+支持哪些功能 无论用的是市面上已有的 IDE，还是 vim 纯手动打造的IDE，都离不开一个话题：IDE 涉及的功能有哪些？文本编辑的能力就不必介绍了，它是最基本的功能。
+快捷键 双手不离键盘是高效开发中非常重要的一点，要做到它，我们就需要依赖功能强大的快捷键。IDE 通常都有一套独有的快捷键规范。当习惯了一款 IDE，快捷键或许是大家轻易不愿更换 IDE 的重要原因之一。
+代码高亮 代码高亮主要涉及变量、函数定义、类、常量、特殊符号、关键词等。代码高亮可以提高代码阅读体验，对不同语法采用不同的配色方案，也可降低代码错误的发生几率。而且，IDE一般都支持自定义配色，可以由个人爱好自由设置。
+代码格式化 为了方便团队开发，在项目开发前，通常都会制定统一的代码规范。制定好的规范需要遵从，而 IDE 一般都支持代码的格式化功能，帮我们更方便地实现目标。需要说明的是，不同于 Go，很多编程语言并没有类似 gofmt 的命令，代码规范也是多样。
+代码提示 IDE的代码提示能根据输入快速给出一系列的建议列表，比如参数信息、成员列表、代码片段等。为了给出更精准的提示，一些IDE可能甚至会分析用户历史的操作记录。感觉这俨然已经是一个小型的推荐系统了。
+导航跳转 大型项目的代码量通常较大，涉及文件也较多。在开发时，我们经常需要在变量、函数、类等代码间跳转。最不便利的方式，我们可以通过键盘方向键或鼠标实现切换。IDE通常都实现了在变量、类型定义、函数定义、文件之间快速跳转的方法。
+代码调试 多数情况下，通过打印函数就可以实现代码调试。但通过系统化工具提供的调试功能，我们就能应付各种复杂的场景。调试工具通常支持各种断点调试能力、变量观察等功能。
+构建编译 Linux 下最常用的构建工具应该是 Makefile，之前开发C/C++用的便是make。但有些语言项目用它构建会很复杂，比如 Java。IDE 的构建编译功能可以快捷地生成目标文件。编译功能通常使用的是语言自带编译器，比如 Go 用 go build 命令。
+其他功能 当然，除上面介绍的这些，IDE可能还有很多其他能力，比如代码重构、文件历史记录、语言环境管理、数据库管理等。只要是能想到的功能，基本都可集成进来，现在的 IDE 俨然已经完全超出了传统IDE的范畴。
+GO有哪些IDE GO的发展已有十几年之久。在这期间出现了很多能编写 GO 语言的 IDE，把它们都详细介绍一遍是不现实的。接下来，重点介绍我比较了解几款IDE。
+Goland Goland，商业公司 jetbrains 推出的 Go 集成开发环境，它真的是无比强大。</description></item><item><title>Go 命令快速体验</title><link>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</link><pubDate>Mon, 29 Apr 2019 10:40:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-29-golang-commandline/</guid><description>利用 go run 和 go build 可以完成 Go 的整个编译执行流程。但 Go 提供给我们的命令当然远不止这两个。
+本文将在所能及的范围内，尽量地介绍GO提供的所有命令，从而实现对它们有个整体的认识。
+概述 除了 gofmt 与 godoc 外，Go 中的命令一般都可通过go命令调用，这些命令可理解为go的子命令，查看下命令列表，如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 $ go Go is a tool for managing Go source code.</description></item><item><title>详细聊聊如何安装 Go</title><link>https://www.poloxue.com/posts/2019-04-15-install-golang/</link><pubDate>Mon, 15 Apr 2019 20:05:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-15-install-golang/</guid><description>本篇文章进入 Go 的开发环境搭建系列。
+我们知道，编写任何语言的代码都离不开两样工具，语言开发包和代码编辑工具。
+今天先来聊聊如何安装 Go。
+我们或许都会觉得这种事非常简单，不值得写篇文章介绍。最初我也是这么想的。但深入了解下来，渐渐感觉这也是一件很有意思的事情。
+如何安装 和其他语言的安装类似，Go 的安装我们也可以采用三种方式进行，从简单到复杂依次是通过系统方式安装、官方二进制包安装和源码编译安装。
+系统方式 不同操作系统通常都会为 Go 提供相应的软件安装方式。这种方式很大程度上简化了安装过程，能为我们省去一些繁杂的步骤。下面分别介绍下不同系统下的安装方式：
+windows
+在windows下，软件安装通常可通过下载类似 setup.exe/msi 软件包来操作。按照导航的提示，不断执行 &amp;ldquo;下一步&amp;rdquo; &amp;ldquo;下一步&amp;rdquo; 即可完成。访问 下地地址 将看到如下内容：
+选择其中的 &amp;ldquo;Microsoft Windows&amp;rdquo; 下载 windows 安装包。现在的系统基本都是64位的了，一般情况下不用考虑 32/64 位系统的问题。
+下载好了安装包，点击启动执行，接下来的步骤就是按导航提示一步步操作即可。有一点要注意的是，GO的默认安装在 C:\GO，如果要修改默认安装路径，在见到如下界面时重新选择。
+ubuntu/debian
+在debian或ubuntu上，我们可使用 apt-get 命令安装go。比如，在Ubuntu 16.04.5 LTS系统，使用如下命令安装：
+1 2 sudo apt-get update // 视情况决定是否更新 sudo apt-get install golang-go 如果是新建的系统，建议先update下软件源。否则可能会因为某些源异常而无法顺利安装。
+centos/redhat
+在centos或redhat上，我们可以使用yum命令安装go。比如，在CentOS 7.5上，使用如下命令安装：
+1 2 $ yum epel-release $ yum install golang 先下载了epel-releaes源，可防止出现yum安装golang不支持或版本太旧的问题。
+macos
+在macos上，我们可使用pkg文件或homebrew安装go。
+pkg的安装方式与windows的setup.exe/msi的类似，下载软件然后按导航 &amp;ldquo;下一步&amp;rdquo; &amp;ldquo;下一步&amp;rdquo; 即可完成。</description></item><item><title>为什么要学 Go</title><link>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</link><pubDate>Mon, 08 Apr 2019 17:31:32 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-04-08-why-learn-go/</guid><description>新学一门语言，大家都想先弄清楚为什么要学它？玩知乎一段时间更是让我感受深刻，诸如
+为什么要学习Python？ 为什么要学习C？ 为什么要学习Java？ 之类问题经常出现在眼前。以前学语言时倒没怎么关心过这类问题。今年公司由于新业务需要开始全面从PHP转型到Golang。所以我学习它也就是为了工资。额？不能这么俗气，还是具体想想自己为什么要学习Golang吧。
+作为一名golang新人，在写这篇文章时我搜罗到不少golang的优秀资料，在文章最后分享出来。
+大势所趋 趋势如此，这应该是多数朋友开始学习它的原因。追涨杀跌，这是大多数人喜欢的操作手法。
+何以证明这个趋势呢？
+首先，我的亲生经历是听到看到golang这个词的频率越来越高，不过，这个太难量化了。来介绍一款工具，google trend，即google趋势。它是google利用自身优势，通过对搜索关键词进行统计分析，根据单词频率分析特定时期某类事物发展趋势的一款分析工具。
+我们可以用 google 趋势来分析一下近年来 golang 的发展趋势，点击链接。
+先看看时间线上的表现，历史的变化趋势：
+可以看出，从2015年到2019年golang的发展趋势一直处在稳定上升阶段；
+不过我们会想，这只能说明golang在世界上整体趋势表现较好，但在中国是否一样火热。这个大可不必担心，google趋势中也有区域的统计信息：
+可以看出，Golang在世界区域的分布情况，前五名分别是，中国、新加坡、圣赫勒拿、韩国、香港。其中，Golang在中国的流行程度简直就是一骑绝尘、遥遥领先。
+注：如果想分析中国各城市的表现情况，可以点击地图就可进入特定国家进行分析。
+除了google趋势，还可以来看看在TIOBE语言排行榜上的表现。点击链接
+额？怎么才十六名，好紧张、好难过，难道学错语言了吗？不对，得找几个理由安慰下自己。
+Golang是一门非常年轻的语言，仅用十年时间就从世界上数以千计的编程语言中脱颖而出，发展速度迅猛。诸如Java、Python、PHP、Javascript都和我一样处在了奔三的路上，近30载的发展才有当前的生态与地位；
+Golang在2018年的最好成绩曾到达过前十名，这个成绩足以说明golang的流行程度。而且排名存在浮动也是很正常的事情，Golang这些年稳步的发展趋势还不能给我们足够的信心吗？
+通过以上的数据分析，我们得到了一些结论，不过感觉说服力不足，有种空喊口号 &amp;ldquo;我们能赢&amp;rdquo; 的感觉。趋势很好，就认为稳赢，显然这是很不合理的。所以，我们还需要分析一些更层次的原因。
+核心成员 为什么要了解核心成员呢？核心成员某种意义上是语言的招牌。就像投资，肯定选择相信巴菲特，而不是你。
+Golang的核心开发组成员由一群大神级人物组成。其中，最核心的三人分别是Ken Thompson、Rob Pike、Robert Griesemer。
+Robert Griesemer，参与开发了 Java HotSpot 虚拟机和Javascript的Chrome V8引擎；
+Ken Thompson，C和B语言的设计者、Unix创始人之一，操作系统Plan 9的主要作者，1983年图灵奖得主；
+Rob Pike，UTF8的主要设计者，与Ken Tompson为贝尔实验室的同事，共同参与了Plan9。而且Golang的logo，据说是囊地鼠，英文gopher，就是Rob Pike的妻子设计的；
+都是如此这般牛人坐镇，可见golang的层次已经高出其他语言很多个台阶了。
+背景历史 清楚它的产生背景与发展历史，才能更好了解它的特性与使用场景。
+首先，Golang诞生于google。有了大厂庇护，才好开挂。google曾经一直有个传统，允许员工自由支配本属于工作时间的20%来用于创新实践，这为google带来很多开创性的项目，其中就包括Golang。但听说，前几年该传统已经被取消了。
+Golang早起的讨论由前面介绍的三位大牛发起，针对性分析了当时的环境背景。
+首先，当时传统的编程语言通常都会有如下一些缺点：
+学习成本太高，如C++，为准确表达作者思想，我们要花费大量时间学习语言； 编译速度太慢，代码的编写、预处理、编译与运行流程花费时间太长； 缺乏类型检查，主要指诸如python、php等解释性语言，这常会导致一些低级错误发生； 而且计算机领域相比于前些年也发生了很多变化，比如： 计算机硬件发展迅速，软件已经不能充分发挥它们的优势，比如多CPU； 语言越来越复杂，要么并发与性能不佳，要么风格不够优雅且不统一； 人力成本越高越贵，项目的迭代周期越来越短； 针对如上的各种情况，于是在2007年，他们正式开始着手Golang的设计与开发，并在2009年的11月正式发布。我们列举下，接下来一段时间，Golang发展中几个关键节点。
+2012年3月，正式发布1.0版，走向成熟； 2015年8月，发布了1.5版，实现自编译，移除最后残余的 &amp;ldquo;C代码&amp;rdquo;； 更新迭代速度多，基本保持了每半年更新一个版本；
+2017年2月，发布1.8版 2017年8月，发布1.9版 2018年2月，发布1.10版 2018年8月，发布1.11版 2019年2月，发布1.12版 如此给力的团队与稳定的版本迭代速度，某种程度也促成了golang快速发展。</description></item><item><title>谈谈版本管理 GIT 的理论与架构</title><link>https://www.poloxue.com/posts/2019-03-18-git-architecture/</link><pubDate>Mon, 18 Mar 2019 10:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2019-03-18-git-architecture/</guid><description>GIT 是当前最流行的版本控制系统。之前在公司系统做过一次系统总结，抽时间整理成文。
+基础概念 GIT是一种版本控制软件，那就首先了解一下什么是 “版本控制”？
+比较官方的解释是，版本控制系统是一种记录一个或若干个内容变化，以便将来查询特定版本修订情况的系统。
+简言之，你的修改只要提到到版本控制系统，基本都可以找回，版本控制系统就像一台时光机器，可以让你回到任何一个时间点。
+了解了版本控制系统的功能，我们知道就算你把代码改的一塌糊涂，照样可以恢复到我们过去的任何一个时间点，工作量却微乎其微。是不是很amazing。
+总结一下版本控制系统有哪些优点：
+记录文件所有历史变化。这是版本控制系统的基本能力； 随时恢复到任意时间点。历史记录功能使我们不怕改错代码了； 支持多功能并行开发。通常版本控制系统都支持分支，保证了并行开发的可行； 多人协作并行开发。对于多人协作项目，支持多人协作开发的版本管理将事半功倍； 除了上面介绍的几个比较常见的优点，版本控制系统的好处还有很多，就不一一列举了，可通过实践自己逐渐体悟总结。下面基于GIT做更多介绍。
+常见类别 版本控制系统常见类别有三种：
+本地版本控制系统、 集中式版本控制系统、 分布式版本控制系统； 本地版本控制系统 代表有 RCS(Revision Control System)，Linux下面的可用来作为配置文件管理的版本控制工具，工作使用不多；
+关于其优缺点，简述如下：
+优点：
+简单，很多系统中都有内置； 适合管理文本，如系统配置； 缺点：
+管理少量文件，不支持项目的管理； 支持的文件类型单一； 不支持远程，网络传输； 集中式版本控制系统 代表如CVS，SVN(Subversion)，SVN是曾经最流行的版本管理系统，很多人都有用过，因而对于集中式版本控制系统很多人都很了解它。
+优点 适合多人团队协作开发； 代码集中化管理； 缺点 单点故障； 必须联网，无法单机工作； 优点就不多说了，大家可能对缺点更是记忆深刻。
+单点故障，集中式管理的缺点，代码集中一台机器上，这个问题其实可通过备份集群解决； 必须联网工作，这个缺点深恶痛觉，一旦公司网络出现问题，几个小时甚至一天无法工作； 由于这些缺点，便有了分布版本控制系统。
+分布式版本控制系统 代表就是今天要说的GIT了。想知道GIT有多流行吗？看看GITHUB就知道了，现在很多公司都已经把自己的代码库迁移到了GIT。可见GIT在如今的流行程度，也说明分布式版本控制系统是如今的趋势。如下基本架构图：
+关于分布式版本控制系统，这里只说优点：
+适合多人团队协作开发； 代码集中化管理； 可以离线工作； 每个计算机都是一个完整仓库； 前面两点SVN也可以做到，说一下后两点。
+可以离线工作，分布式版本管理系统每个计算机都有一个完整的仓库，可本地提交，可以做到离线工作。没有了SVN令人抓狂的断网无法工作问题;
+每个计算机都是一个完整的仓库，也就没有了SVN的单点故障。
+GIT与SVN的比较 GIT的作者Linus一直比较痛恨集中方式版本控制系统。虽然有很多已知免费的集中式版本控制系统，但是在2002之前提交Linux源码的方式都是通过diff提交给Linus的，然后进行手工合并。下面让我们来以GIT与SVN作为代表，来看看为什么Linus痛恨集中式版本管理系统，而喜欢分布式版本管理系统。下面具体比较一下它们的区别：
+GIT是分布式的，SVN为集中式的 常识，两者最重要的区别，也是后面所有区别的基石；
+GIT 随处都是版本库，SVN 只有一个中央版本库 因为GIT是分布式的所以能做到到处都是版本库，而SVN是集中式的，所以只有一个中央仓库。因而GIT能够做到无需网络提交，到处到时版本库，压根不用担心提交速度问题，不用时刻依赖与网络工作，不用担心单点故障。当工作完成之后直接推送远程即可实现工作协作；
+GIT没有全局版本号，SVN有全局版本号 GIT版本库到处都是，之间没有实时共享数据，所以无法确保版本号的唯一性，无法使用全局版本号，分布在各个机器上的版本库版本号使用40位的HASH值取代。重复的情况是存在的，从数学的角度考虑，可能性是2的63次方分之一，基本可忽略。而对于SVN，唯一版本，所以能够做到使用全局的版本号，版本号采用自增的方式；
+GIT把内容按元数据存储，SVN按文件存储 GIT存储的不是实际的文件，而是指向性数据。SVN保存的是文件数据。当GIT切换版本的时候，实际上切换的是元数据，而且本地操作，快捷有效；
+GIT记录文件快照，SVN记录文件差异 GIT的元数据，即指向性数据指向的是实际的文件快照，这也是GIT能够快速切换版本的一个原因。SVN保存的文件数据是各个版本之间的文件差异，所以切换版本的时候需要逐级的差异计算，速度比较慢，而且还需网络传输。当工程较大时，速度与GIT相比差异会相当的大。
+GIT的内容完整性高，SVN完整性低 因为GIT的数据记录都有HASH值校验，所以内容完整性较高。而SVN则没有此功能，内容完整性低。；</description></item><item><title>一文精通 crontab 从入门到出坑</title><link>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</link><pubDate>Sat, 31 Dec 2016 18:01:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</guid><description>此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。
+我的理解，后台任务通常分为两种：常驻和定时。之前的文章《pm2进程管理工具使用总结》主要针对的是常驻任务。今天来谈谈 crontab，主要针对的是定时任务。
+实验环境： centos7
+介绍crontab crontab的服务进程名为crond，英文意为周期任务。顾名思义，crontab在Linux主要用于周期定时任务管理。通常安装操作系统后，默认已启动crond服务。crontab可理解为cron_table，表示cron的任务列表。类似crontab的工具还有at和anacrontab，但具体使用场景不同，可参见附录《让你学会Linux计划任务》一文了解更多。
+关于crontab的用途很多，如
+定时系统检测； 定时数据采集； 定时日志备份； 定时更新数据缓存； 定时生成报表； &amp;hellip; 等等任务 当然，更多使用场景是要以视具体情况而定了。毕竟是工具通常都是常用规则总结而成的产物。
+确认crond服务已经安装与开启之后，下面开始具体说明
+简单示例 先来个简单示例体验一下。
+目标：每分钟向/tmp/time.txt文件下写入当前时间 新建crontab任务 1 2 $ crontab -e // 打开crontab任务编辑 * * * * * date &amp;gt;&amp;gt; /tmp/time.txt 静静等待几分钟 1 2 3 4 $ cat /tmp/time.txt Do 29. Dez 22:45:01 CST 2016 Do 29. Dez 22:46:01 CST 2016 Do 29. Dez 22:47:01 CST 2016 从上面结果看出，每分钟执行了date并写入到/tmp/time.txt。 简单示例演示成功。下面从细节深入说明crontab使用。
+使用选项 上面的实验中使用了crontab命令的-e选项。我们来看看crontab命令中有哪些选项?</description></item><item><title>循序渐进 MySQL 事务隔离级别</title><link>https://www.poloxue.com/posts/2016-12-10-isolation-in-mysql/</link><pubDate>Sat, 10 Dec 2016 18:14:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-10-isolation-in-mysql/</guid><description>本篇文章的重点在于总结MYSQL事务。
+什么是事务 事务简言之就是一组 SQL 执行要么全部成功，要么全部失败。MYSQL 的事务在存储引擎层实现。
+事务都有 ACID 特性：
+原子性（Atomicity）：一个事务必须被视为一个不可分割的单元； 一致性（Consistency）：数据库总是从一种状态切换到另一种状态； 隔离性（Isolation）：通常来说，事务在提交前对于其他事务不可见； 持久性（Durablity）：一旦事务提交，所做修改永久保存数据库； 事务最常用的例子就是银行转账。假设 polo 需给 lynn 转账1000元，如下步骤：
+确认 polo 账户余额高于1000元； 从 polo 的账户余额减去1000元； 将 lynn 的账户余额增加1000元； SQL语句如下:
+1 2 3 4 5 mysql&amp;gt; BEGIN; mysql&amp;gt; SELECT balance FROM bank_account WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance-1000 WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance+1000 WHERE uid=10002; mysql&amp;gt; COMMIT; mysql 启动事务可使用 BEGIN 或 START TRANSACTION；上述三个步骤执行在一个事务中就能够保证数据的完整性，要么全部成功，要么全部失败。
+MYSQL 提供两种事务型引擎：Innodb 和 NDBCluster。默认采用自动提交模式，执行一条语句自动 COMMIT。通过 AUTOCOMMIT 变量可启用或者禁用自动提交模式：</description></item><item><title>快速了解 Kafka 基础架构</title><link>https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/</link><pubDate>Wed, 30 Mar 2016 18:16:57 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/</guid><description>今天来聊下大数据场景下比较流行的消息队列组件 kafka。本篇文章将主要从理论角度来介绍。
+kafka 是一款开源、追求高吞吐、实时性，可持久化的流式消息队列，可同时处理在线（消息）与离线应用(业务数据和日志)。在如今火热的大数据时代，得到了广泛的应用。
+整体架构 kafka 的消息以 Topic 进行归类，支持分布式 distribution、可分区partition 和可复制 replicated 的特性。下面为本人梳理的一张 Kafka 系统架构图。
+Kafka的架构相较于其他消息系统而言，比较简单。其整体流程简述如下
+Producer 与指定 Topic 各分区 Partition 的 Leader 连接，从而将消息 push 到 Broker 中。
+Broker 可理解消息系统的中间代理，将消息写入磁盘实现持久化，并可对消息复制备份。
+Consumer 采用 pull 的方式主动获取 broker 中指定 Topic 的消息，并进行处理。
+Zookeeper负责Kafka服务相关metadata的存储，如broker，topic和consumer等信息的存储。
+注：zookeeper是一个分布式协调服务，分布式应用可基于它实现同步服务，配置维护和命名服务等。此篇文章不做介绍，以后有时间再做总结！
+下面对涉及的各个组件作详细介绍。
+主题Topic 首先，Kafka中的消息以Topic分类管理。在Kafka中，一个topic可被多个Consumer订阅。通过集群管理，每个Topic可由多个Partition组成。如下图
+从上图可以看出，Topic中数据是顺序不可变序列，采用log追加方式写入，因而kafka中无因随机写入导致性能低下的问题。
+Topic的数据可存储在多个partition中，即可存放在不同的服务器上。这可使Topic大小不限于一台server容量。同时，消息存在多个partition上，可以实现Topic上消息的并发访问。
+Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定消息保存时长。Topic中每个partition中的消息都有一个唯一的标识，也称为offset。因数据不会因消费而丢失，所以只要consumer指定offset，一个消息可被不同的consumer多次消费。
+基于此，消息获取即可采用顺序访问，我们也可以指定任意offset随机访问，且不会对其他consumer产生影响。
+分布式Distribution Kafka 的集群分布式主要涉及两个内容：Partition 分区与 Replication 备份。
+Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而分布在不同的 Kafka 节点之上，使 Topic 的数据大小不限于一台 Server。
+Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。
+虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item></channel></rss>

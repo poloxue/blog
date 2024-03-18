@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>crontab on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/crontab/</link><description>Recent content in crontab on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 31 Dec 2016 18:01:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/crontab/index.xml" rel="self" type="application/rss+xml"/><item><title>一文精通 crontab 从入门到出坑</title><link>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</link><pubDate>Sat, 31 Dec 2016 18:01:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</guid><description>此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。
+我的理解，后台任务通常分为两种：常驻和定时。之前的文章《pm2进程管理工具使用总结》主要针对的是常驻任务。今天来谈谈 crontab，主要针对的是定时任务。
+实验环境： centos7
+介绍crontab crontab的服务进程名为crond，英文意为周期任务。顾名思义，crontab在Linux主要用于周期定时任务管理。通常安装操作系统后，默认已启动crond服务。crontab可理解为cron_table，表示cron的任务列表。类似crontab的工具还有at和anacrontab，但具体使用场景不同，可参见附录《让你学会Linux计划任务》一文了解更多。
+关于crontab的用途很多，如
+定时系统检测； 定时数据采集； 定时日志备份； 定时更新数据缓存； 定时生成报表； &amp;hellip; 等等任务 当然，更多使用场景是要以视具体情况而定了。毕竟是工具通常都是常用规则总结而成的产物。
+确认crond服务已经安装与开启之后，下面开始具体说明
+简单示例 先来个简单示例体验一下。
+目标：每分钟向/tmp/time.txt文件下写入当前时间 新建crontab任务 1 2 $ crontab -e // 打开crontab任务编辑 * * * * * date &amp;gt;&amp;gt; /tmp/time.txt 静静等待几分钟 1 2 3 4 $ cat /tmp/time.txt Do 29. Dez 22:45:01 CST 2016 Do 29. Dez 22:46:01 CST 2016 Do 29. Dez 22:47:01 CST 2016 从上面结果看出，每分钟执行了date并写入到/tmp/time.txt。 简单示例演示成功。下面从细节深入说明crontab使用。
+使用选项 上面的实验中使用了crontab命令的-e选项。我们来看看crontab命令中有哪些选项?</description></item></channel></rss>

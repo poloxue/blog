@@ -1,0 +1,115 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>Go 定时器：如何避免潜在的内存泄漏陷阱 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="Go 定时器：如何避免潜在的内存泄漏陷阱"><meta itemprop=description content="这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。"><meta itemprop=datePublished content="2024-01-24T13:28:13+08:00"><meta itemprop=dateModified content="2024-01-24T13:28:13+08:00"><meta itemprop=wordCount content="268"><meta itemprop=keywords content><meta property="og:title" content="Go 定时器：如何避免潜在的内存泄漏陷阱"><meta property="og:description" content="这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2024-01-24-timer-potential-leaking-in-golang/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-01-24T13:28:13+08:00"><meta property="article:modified_time" content="2024-01-24T13:28:13+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Go 定时器：如何避免潜在的内存泄漏陷阱"><meta name=twitter:description content="这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>首页</a></li><li><a href=/posts>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/>关于我</a></li></ul></nav></div><div class=post><div class=post-header><div class=meta><div class=date><span class=day>24</span>
+<span class=rest>Jan 2024</span></div></div><div class=matter><h1 class=title>Go 定时器：如何避免潜在的内存泄漏陷阱</h1></div></div><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-timer-potential-leaking-in-golang-01.png alt></p><blockquote><p>嗨，大家好！本文是系列文章 Go 小技巧第七篇，系列文章查看：<a href="https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&amp;album_id=3291066778475053060">Go 语言小技巧</a>。</p></blockquote><p>这篇文章将探讨的是 Go 中如何高效使用 timer，特别是与select 一起使用时，如何防止潜在的内存泄漏问题。</p><h2 id=引出问题>引出问题</h2><p>先看一个例子，我们在 Go 中的 select 使用定时器，实现为消息监听加上超时能力。</p><p>核心代码，如下所示：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 启动一个goroutine
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>case</span> <span style=color:#a6e22e>num</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;获取到的数字是&#34;</span>, <span style=color:#a6e22e>num</span>)
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>After</span>(<span style=color:#ae81ff>2</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>):
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;时间到了!!!&#34;</span>)
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }()
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#ae81ff>5</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>i</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>1</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>在这个例子中，select 语句用于监听 channel 消息和超时。然而，我要关注的重点是 timer 的行为。它是不是能达到我们预期的目标呢？为消息监听加上超时效果呢？</p><h2 id=检查定时器行为>检查定时器行为</h2><p>如果运行这段代码，将会发现，如果 timer 设置为 2 秒，主循环设置 1 秒的延迟时间，timer 不会触发。</p><p>如下是程序的运行输出：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>获取到的数字是 <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>获取到的数字是 <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>获取到的数字是 <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>获取到的数字是 <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>获取到的数字是 <span style=color:#ae81ff>4</span>
+</span></span></code></pre></td></tr></table></div></div><p>这是因为每次循环，time.After 创建都会返回一个新的定时器，产生的后果就是，每次多会重置 select 调用的时间。</p><p>相反，如果将定时器的超时设置为 1 秒，将主循环的time.Sleep设置为 2 秒，就能触发定时器，输出 &ldquo;时间到了!!!"。这证明了这个定时器是有效运行的。</p><h2 id=潜在的内存泄漏>潜在的内存泄漏</h2><p>Go标准库文档提到，每次调用time.After都会创建一个新的定时器。然而，我们需要认真考虑一个重要问题。</p><p>来自官方文档引用：</p><blockquote><p>The underlying Timer is not recovered by the garbage collector until the timer fires.</p></blockquote><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-timer-potential-leaking-in-golang-03-v1.png alt></p><p>如果这些 timer 没有达到设定时间，就不会被 GC。这会导致内存泄漏。毫无疑问，如果在常驻程序中频繁使用 timer 的，内存泄漏将会日积月累。</p><h2 id=最佳实践>最佳实践</h2><p>要高效地管理资源并避免 timer 的内存泄漏，建议使用 time.NewTimer 和 timer.Reset 组合。这种方法允许重复使用一个定时器，减少资源消耗和潜在的内存泄漏风险。</p><p>例如，如下是使用 time.NewTimer 改进的代码示例：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 为定时器定义持续时间。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>idleDuration</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>5</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Minute</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 使用指定的持续时间创建新的定时器。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>idleDelay</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>NewTimer</span>(<span style=color:#a6e22e>idleDuration</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e>// 确保定时器适当地停止以避免资源泄漏。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>idleDelay</span>.<span style=color:#a6e22e>Stop</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 进入循环以处理传入的消息或基于时间的事件。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 在每次循环迭代开始时重置定时器到指定的持续时间。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#a6e22e>idleDelay</span>.<span style=color:#a6e22e>Reset</span>(<span style=color:#a6e22e>idleDuration</span>)
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 使用select等待多个通道操作。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 处理传入消息的情况。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>case</span> <span style=color:#a6e22e>s</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>in</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 检查通道是否关闭。如果是，退出循环。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>ok</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 处理接收到的消息`s`。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// 在这里添加相关代码来处理消息。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#75715e>// 处理定时器超时的情况。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>idleDelay</span>.<span style=color:#a6e22e>C</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 增加空闲计数器或处理超时事件。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// 这通常是您会在这里添加代码来处理超时情况的地方。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>idleCounter</span>.<span style=color:#a6e22e>Inc</span>()
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 处理取消或上下文过期的情况。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ctx</span>.<span style=color:#a6e22e>Done</span>():
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 如果上下文已完成，则退出循环。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></td></tr></table></div></div><p>流程如下所示：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-timer-potential-leaking-in-golang-02-v1.png alt></p><p>这里例子中演示了 Go 语言中如何正确使用和管理 timer。通过遵循 Go 标准库的建议将能产出更高效和可靠的程序。</p><h2 id=结论>结论</h2><p>本文通过一个代码案例演示了 GO 中 <code>timer.After</code> 可能产生的潜在内存泄漏问题。通过使用官方推荐的方案，利用重置定时器时间实现 <code>Timer</code> 的重复利用，避免了潜在的内存泄漏问题。</p><p>博文地址：<a href=https://www.poloxue.com/posts/2024-01-24-timer-potential-leaking-in-golang/>Go 定时器：如何避免潜在的内存泄漏陷阱</a></p><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post><img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2024 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script></body></html>
