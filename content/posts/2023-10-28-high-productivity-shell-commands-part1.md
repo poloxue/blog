@@ -7,17 +7,21 @@ description: "本篇是高效命令系列第一篇，介绍 exa、zoxide 、bat 
 tags: ["zsh"]
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-28-high-productivity-shell-commands-part1-00.png)
+
+如下是视频版本，没有文章详细。
+
 {{< video bb_id="235179220" yt_id="0yAP6ER8oGE" >}}
 
 类 Unix 系统发展多年，不少古董命令还在占据终端的绝大部分时间，但它们的使用体验上却是差强人意。从本文开始，我计划用几篇文章介绍提升终端效率的一系列命令，它们更具现代风格，希望能让你眼前一亮。
 
 ## 前言
 
-正式开始前，先推荐一个 github 仓库 - [modern-unix](https://github.com/ibraheemdev/modern-unix)，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。希望通过这些命令的学习，能进一步提升我们的效率。
-
 本文是高效命令系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令，分别是替换 ls 的 [exa](https://github.com/ogham/exa)，替换 cd 的 [zoxide](https://github.com/ajeetdsouza/zoxide) 和替换 cat 的 [bat](https://github.com/sharkdp/bat)。它们的优势会在文章中逐步展开说明。
 
 > 特别提醒：exa 已停止维护，可用 exa 的 fork 版本 [eza](https://github.com/eza-community/eza) 替代。
+
+正式开始前，先推荐一个 github 仓库 - [modern-unix](https://github.com/ibraheemdev/modern-unix)，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。希望通过这些命令的学习，能进一步提升我们的效率。
 
 ## [exa](https://the.exa.website/)
 
