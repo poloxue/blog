@@ -1,10 +1,12 @@
 ---
 title: "推荐 bubbletea 扩展库开发 TUI 应用"
 date: 2024-03-15T08:50:00+08:00
-draft: true
+draft: false
 comment: true
 description: "今天的文章重点介绍 bubbletea 的一系列扩展库，和  bubbletea 一样是位于 github.com/charmbracelet 下，由 charmbracelet 团队开发的其他开源库。"
 ---
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-15-tui-app-using-bubbletea-01.png)
 
 我对 TUI 的兴趣源于一个名为 LazyGit 的终端命令，它让我只需几次按键即可完成一次 Git 提交，而不是 zsh 的 git 插件那种通过 alias 的方式实现。
 
