@@ -10,13 +10,14 @@ entr，它的主要作用是在当监听文件变化后，执行相应的命令�
 如下是这几个命令的简单说明：
 fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快； ripgrep，用于高效的内搜索容； fzf，是一款命令行交互式的模糊搜索工具，可与其他命令进行结合，提高使用体验； 其中的 fd 与 ripgrep 是用 rust 编写，性能上完虐传统的 find 与 grep。
 系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（一）之目录文件 exa、zoxide 与 bat</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>类 Unix 系统发展多年，不少老古董命令还在占据终端的绝大部分时间，而使用体验上却依然差强人意。
-从本文开始，我将用一系列文章介绍提升终端效率的一系列命令，这些命令更具现代风格，希望能让你眼前一亮。
-前言 正式开始前，先推荐一个 github 仓库 - modern-unix，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。
-本系列将要介绍的命令，我大概可将其分为三个大类，分别是：文件目录查看相关的命令 - exa、zoxide、bat，文件目录搜索相关的命令 - fd、ripgrep、fzf ，HTTP Web 开发的相关命令 - entr、httpie、jq。
-希望通过这些命令的学习，进一步提升我们的工作效率。
-系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
+我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>类 Unix 系统发展多年，不少古董命令还在占据终端的绝大部分时间，但它们的使用体验上却是差强人意。从本文开始，我计划用几篇文章介绍提升终端效率的一系列命令，它们更具现代风格，希望能让你眼前一亮。
+前言 正式开始前，先推荐一个 github 仓库 - modern-unix，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。希望通过这些命令的学习，能进一步提升我们的效率。
+本文是高效命令系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令，分别是替换 ls 的 exa，替换 cd 的 zoxide 和替换 cat 的 bat。它们的优势会在文章中逐步展开说明。
+特别提醒：exa 已停止维护，可用 exa 的 fork 版本 eza 替代。
+exa 首先是 exa，它是一款可用于替换系统默认 ls 的命令，在平时工作中 ls 几乎使用最多的命令，而 exa 在支持 ls 的基本能力基础上，提供了更丰富的特性。
+快速安装 1 brew install exa # 其他系统请查看 GithHub README.md 使用 首先，exa 默认提供了配色效果，无需 ls 要追加 --color 参数，省去了 alias 别名的设置。
+其次，exa 支持显示文件图片，通过指明 --icons 实现，显示文件类型图标；
+更复杂的命令，支持 ls -l 显示文件列表详情，添加头部说明 header，如果是 git 仓库，可显示文件的 Git 信息。</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
 在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。
 什么是 powerlevel10k? Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。
 效果展示：
