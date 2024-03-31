@@ -198,7 +198,7 @@ https://github.com/ajeetdsouza/zoxide
 
 ## [bat](https://github.com/sharkdp/bat)
 
-说完了 ls 列举目录，cd 进入目录，我们继续介绍一个命令，[bat](https://github.com/sharkdp/bat)。
+说完了 ls 列举目录，cd 进入目录，我们继续介绍一个命令，[bat](https://github.com/sharkdp/bat) 查看文件内容。
 
 首先，bat 和 Baidu/Alibaba/Tencent 没有联系，它是一款支持语法高亮、GIT 集成的用于替换类 Unix 系统下快速查看文件内容的命令，功能与 cat 相似的命令。
 
