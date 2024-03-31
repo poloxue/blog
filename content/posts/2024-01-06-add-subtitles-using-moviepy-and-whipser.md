@@ -1,18 +1,21 @@
 ---
-title: "使用 Whisper 和 MoviePy 实现视频自动加字幕"
+title: "将 MoviePy 和 OpenAI Whisper 给视频添加字幕"
 date: 2024-01-05T21:39:29+08:00
 draft: false
 comment: true
 description: "本博文将就此主题展开，介绍如何基于 openai-whisper 和 moviepy 实现通过 Python 快速给视频添加字幕。"
 ---
 
-对于视频编辑而言，给视频添加字幕是一个常见的需求。而利用 python 的三方库 moviepy 和 openai-whisper，就可以轻松实现为视频添加字幕。
+OpenAI 因为发布了 ChatGPT 这款大模型产品，这两年是异常的火啊。ChatGPT 和 Sora 是自媒体上最常听到的 OpenAI 推出的两款产品。 除此以外，OpenAI 还有文生图的 Doll-E 模型，语音转文字的 Whisper，文字转语音的 OpenAI TTS。
 
-本博文将就此主题展开，介绍如何通过 Python 快速添加视频字幕。
+本文将基于 OpenAI 语音转文字的 Whisper 实现视频自动添加字幕的能力。
 
 ## 前言概述
 
 编辑视频时，为视频添加字幕不仅仅可以让内容易于理解性，而且可以增加视频的吸引力。
+
+于视频剪辑而言，给视频添加字幕是一个常见的需求，而 python 的三方库 moviepy 配合 Openai Whisper，我们可以轻松实现这个需求。
+
 
 Python 提供了 MoviePy 库，同时近期开源的 openai-whisper 模块使得为视频添加字幕变得十分简单。
 
