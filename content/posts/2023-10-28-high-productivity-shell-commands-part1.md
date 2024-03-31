@@ -165,7 +165,7 @@ cd ~/Hello/trading-strategies
 
 其次是部分匹配，由于记录中只有一个目录包含 python，执行 cd python 会直接进入到 `python-examples`；
 
-最后是重名按算法选择最优目录，我不清楚它的具体算法，但观察来看，它当前在 python-examples 目录下，执行 cd examples 会优先找到最近访问的包含 examples 的目录，且非当前位置。
+最后是重名按算法选择最优目录，我不清楚它的具体算法，但观察来看，它当前在 python-examples 目录下，执行 cd examples 会优先找到最近访问的包含 examples 的目录，且非当前位置，即 `golang-examples`。
 
 如果觉得它的智能算法不够灵活，还可以尽量补全路径，和使用普通 cd 一样。如果还想要它的效率，也可以进入它的交互搜索模式，zoxide 支持两种方式进入交互模式：
 
