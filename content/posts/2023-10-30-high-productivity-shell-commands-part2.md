@@ -1,5 +1,5 @@
 ---
-title: "我的终端环境：高效 shell 命令（二）之查找搜索 - fd ripgrep fzf"
+title: "推荐 3 个现代化的高效搜索命令"
 date: 2023-10-30T20:13:53+08:00
 draft: false
 comment: true
@@ -7,31 +7,19 @@ description: "本文将介绍一些高效的查找搜索命令，分别是 fd、
 tags: ["zsh"]
 ---
 
+本文将试图介绍三个实现终端上高效搜索的命令，分别是 fd、ripgrep 与 fzf。它们相对于传统 grep 和 find，这些命令在性能有大部分提升，而且，它们的使用方式上更符合人性。
+
+视频版本，没有文章详细。
+
 {{< video bb_id="962959372" yt_id="CcnmD_dHsnk" >}}
-本文将介绍一些用于高效查找和搜索的命令，它们分别是 fd、ripgrep 与 fzf。相对于常用的 grep 和 find，这些命令在性能有大部分提升，而且，它们的使用方式上更符合人性。
 
 如下是这几个命令的简单说明：
 
 - [fd](https://github.com/sharkdp/fd)，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快；
-- [ripgrep](https://github.com/BurntSushi/ripgrep)，用于高效的内搜索容；
-- [fzf](https://github.com/junegunn/fzf)，是一款命令行交互式的模糊搜索工具，可与其他命令进行结合，提高使用体验；
+- [ripgrep](https://github.com/BurntSushi/ripgrep)，可用于高效的内容搜索，比默认的 grep 命令速度更快；
+- [fzf](https://github.com/junegunn/fzf)，命令行交互式模糊搜索工具，可与其他命令进行结合，提高使用体验；
 
 其中的 fd 与 ripgrep 是用 rust 编写，性能上完虐传统的 find 与 grep。
-
-> 系列阅读：
->
-> - [我的终端环境：iTerm2 的安装与体验](https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/)
-> - [我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件](https://poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/)
-> - [我的终端环境：6 个强大的 zsh 插件](https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/)
-> - [我的终端环境：与众不同的 zsh 主题 - powerlevel10k](https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/)
-> - [我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat](https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/)
-> - [我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf](https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/)
-> - [我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq](https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/)
-> - [我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令](https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/)
-> - [我的终端环境：终端启动消息 - ASCII art](https://www.poloxue.com/posts/2023-11-15-beautify-your-terminal-welcome-message)
-> - [我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch](https://www.poloxue.com/posts/2023-11-16-beautify-your-terminal-welcome-using-fetch/)
->
-> 更多待续...
 
 ## [fd](https://github.com/sharkdp/fd)
 
