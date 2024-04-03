@@ -1,5 +1,5 @@
 ---
-title: "2024 04 03 Aichat in Terminal"
+title: "我在终端上免费使用 GPT"
 date: 2024-04-03T18:21:36+08:00
 draft: false
 comment: true
