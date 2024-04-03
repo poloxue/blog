@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 15 Mar 2024 08:50:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>推荐 bubbletea 扩展库开发 TUI 应用</title><link>https://www.poloxue.com/posts/2024-03-15-tui-app-using-bubbletea/</link><pubDate>Fri, 15 Mar 2024 08:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-03-15-tui-app-using-bubbletea/</guid><description>我对 TUI 的兴趣源于一个名为 LazyGit 的终端命令，它让我只需几次按键即可完成一次 Git 提交，而不是 zsh 的 git 插件那种通过 alias 的方式实现。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 03 Apr 2024 18:21:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>2024 04 03 Aichat in Terminal</title><link>https://www.poloxue.com/posts/2024-04-03-aichat-in-terminal/</link><pubDate>Wed, 03 Apr 2024 18:21:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-03-aichat-in-terminal/</guid><description>最近尝试了一款内置 AI 能力的终端软件，名为 Warp，它的交互设计非常不错，很值得上手。但它的主要问题是中文支持不够友好，且我也不希望 AI 的能力被限制在某款终端上。
+在这个背景下，我开始尝试从网上搜索一些将 AI 引入终端的命令，发现了两款不错的软件，一个就是今天要介绍的这款名为 tgpt 的命令，无 API Key 要求，可以免费用。
+本文带大家快速体验下这个命令。另特别提示，如遇网络问题，自行处理，
+介绍 tgpt 是一个可以在终端上使用 ChatGPT，我觉得，它的最大卖点是无需 API Key 即可使用，毕竟免费才是王道。
+提到免费，ChatGPT 最近开放了无需注册即可使用，有条件的可以去体验下。
+tgpt 的默认模型是 phind，是一款对开发者友好的大模型。tgpt 支持多种模型，包括但不限于 KoboldAI、Phind、Llama2、Blackbox AI，以及需要 API 密钥的 OpenAI 所有模型和 Craiyon V3 图像生成模型。
+接下来，开始快速安装体验下吧。
+安装 1 curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin 使用 它的使用方法也非常简单，只要在终端中输入如下命令：
+1 tgpt &amp;#34;What is internet?&amp;#34; 或者，你也可以使用指定的模型：
+1 tgpt --provider opengpts &amp;#34;What is 1+1&amp;#34; 场景 tgpt 另一个不错的点是在于它默认提供了三个场景的支持，分别是生成 shell 命令、代码和图片。
+我们来具体测试下。
+生成 shell 命令</description></item><item><title>推荐 bubbletea 扩展库开发 TUI 应用</title><link>https://www.poloxue.com/posts/2024-03-15-tui-app-using-bubbletea/</link><pubDate>Fri, 15 Mar 2024 08:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-03-15-tui-app-using-bubbletea/</guid><description>我对 TUI 的兴趣源于一个名为 LazyGit 的终端命令，它让我只需几次按键即可完成一次 Git 提交，而不是 zsh 的 git 插件那种通过 alias 的方式实现。
 不同于 GUI，TUI 低系统资源消耗和高效的全键盘操作，这让我对如何开发这类应用产生了兴趣。
 最终，我找到了 Bubbletea 这个框架。一个月前，还写了一篇基于 Bubbletea 开发 TUI 命令的文章。当时的我对这个框架的认识并不深入，仅限于开发一些简单小程序，如果想开发一个如 LazyGit 般复杂的程序时，就没有那么容易了。
 今天的文章重点介绍 bubbletea 的一系列扩展库，和 bubbletea 一样是位于 github.com/charmbracelet 下，由 charmbracelet 团队开发的其他开源库。
