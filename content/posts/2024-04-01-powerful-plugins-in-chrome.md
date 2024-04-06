@@ -1,7 +1,7 @@
 ---
 title: "如何像使用终端一样使用浏览器？"
 date: 2024-04-01T16:57:45+08:00
-draft: true
+draft: false
 comment: true
 description: "今天写一篇小短文，推荐两个 Chrome 插件，用于程序员们提高浏览器的操作效率，像使用终端一样使用浏览器。"
 ---

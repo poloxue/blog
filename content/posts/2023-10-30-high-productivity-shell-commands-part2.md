@@ -7,13 +7,13 @@ description: "本文将介绍一些高效的查找搜索命令，分别是 fd、
 tags: ["zsh"]
 ---
 
-本文将试图介绍三个实现终端上高效搜索的命令，分别是 fd、ripgrep 与 fzf。它们相对于传统 grep 和 find，这些命令在性能有大部分提升，而且，它们的使用方式上更符合人性。
+本文将试图介绍三个终端上高效搜索的命令，分别是 fd、ripgrep 与 fzf。它们相对于传统 grep 和 find，它们在性能有大幅提升。而且，它们的使用方式上更符合人性。
 
 视频版本，没有文章详细。
 
 {{< video bb_id="962959372" yt_id="CcnmD_dHsnk" >}}
 
-如下是这几个命令的简单说明：
+快速一览：
 
 - [fd](https://github.com/sharkdp/fd)，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快；
 - [ripgrep](https://github.com/BurntSushi/ripgrep)，可用于高效的内容搜索，比默认的 grep 命令速度更快；
