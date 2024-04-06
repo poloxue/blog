@@ -423,12 +423,22 @@ GitHub 支持接口获取仓库文件列表，基本流程是先通过某个接�
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;</description></item><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
 系列阅读：
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
-命令集合 第一篇文章中推荐一个 github 仓库：modern-unix，其中收录了大量的更具现代风格的命令。例如，最常用的命令，如 ls、cd、grep、find 等等命令，这个仓库都提供了合适的替代命令。</description></item><item><title>我的终端环境：高效 shell 命令（三）之提效日常开发 - entr httpie jq</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
-系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
+命令集合 第一篇文章中推荐一个 github 仓库：modern-unix，其中收录了大量的更具现代风格的命令。例如，最常用的命令，如 ls、cd、grep、find 等等命令，这个仓库都提供了合适的替代命令。</description></item><item><title>提效开发调试的三个命令</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
 前言 对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。
 大概说明，如下所示：
-entr，它的主要作用是在当监听文件变化后，执行相应的命令； httpie，相对于 curl，一款体验更加友好的 http client 命令； jq，一款强大的 JSON 数据的解析命令，甚至可简单的编程； 这三个命令在日常的 web 开发过程中扮演着不同的角色。</description></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。
+entr，它的主要作用是在当监听文件变化后，执行相应的命令； httpie，相对于 curl，一款体验更加友好的 http client 命令； jq，一款强大的 JSON 数据的解析命令，甚至可简单的编程； 这三个命令在日常的 web 开发过程中扮演着不同的角色。
+开始具体介绍。
+entr 实现 Live Reloading entry 命令的是什么？直接看演示效果，如下所示：
+大概看出，entr 是用于监听文件变化并执行指定命令。看到这，有没有想到啥？对，entr 可用于服务的热加载（Live Reloading）。
+安装 安装命令，如下所示：
+1 brew install entr 案例 最直接的示例效果，监听文件变化并发出通知，如下所示：
+1 ls test.txt | entr echo &amp;#34;test.txt changed!&amp;#34; OK, 现在想到啥了吗？这个命令对于 Web 开发人员有什么样的价值呢？
+回想一下，平时开发 web 程序时，我们是不是经常手动重启服务呢？
+如果不是，或许是你所用框架默认支持或是你通过其他工具实现了 live-reading，比如我所有的博客工具 hugo，就有内置了自动加载的能力。
+但由于这并不是框架默认能力，不同语言不同框架都要去寻找相应的实现方案。
+庆幸的是，通过 entr，可以很方便地实现这个功能。
+以一个 Go server 为例，文件名是 main.go，代码如下所示：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.</description></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。
 我将介绍的 fd 和 ripgreap 对标的是传统 grep 和 find，它们在性能和使用体验上都有大幅提升。如果你成为 10x 程序员，强烈推荐使用它们。
 fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快；
 ripgrep，可用于高效的内容搜索，比默认的 grep 命令速度更快；
