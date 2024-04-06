@@ -6,20 +6,22 @@
 我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
 前言 对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。
 大概说明，如下所示：
-entr，它的主要作用是在当监听文件变化后，执行相应的命令； httpie，相对于 curl，一款体验更加友好的 http client 命令； jq，一款强大的 JSON 数据的解析命令，甚至可简单的编程； 这三个命令在日常的 web 开发过程中扮演着不同的角色。</description></item><item><title>推荐 3 个现代化的高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>本文将试图介绍三个终端上高效搜索的命令，分别是 fd、ripgrep 与 fzf。它们相对于传统 grep 和 find，它们在性能有大幅提升。而且，它们的使用方式上更符合人性。
+entr，它的主要作用是在当监听文件变化后，执行相应的命令； httpie，相对于 curl，一款体验更加友好的 http client 命令； jq，一款强大的 JSON 数据的解析命令，甚至可简单的编程； 这三个命令在日常的 web 开发过程中扮演着不同的角色。</description></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。
+我将介绍的 fd 和 ripgreap 对标的是传统 grep 和 find，它们在性能和使用体验上都有大幅提升。如果你成为 10x 程序员，强烈推荐使用它们。
+fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快；
+ripgrep，可用于高效的内容搜索，比默认的 grep 命令速度更快；
+fzf，命令行交互式模糊搜索工具，可与其他命令进行结合，提高使用体验；
+如上的 fd 与 ripgrep 是由 rust 编写，性能上完虐传统的 find 与 grep。
 视频版本，没有文章详细。
-快速一览：
-fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快； ripgrep，可用于高效的内容搜索，比默认的 grep 命令速度更快； fzf，命令行交互式模糊搜索工具，可与其他命令进行结合，提高使用体验； 其中的 fd 与 ripgrep 是用 rust 编写，性能上完虐传统的 find 与 grep。
-fd fd 是一款文件查找的命令，可用于替换默认的 find，它在体验上更加友好，且查询效率极高。
-安装 1 brew install fd 使用 案例一 简单搜索 - fd pattern
-案例二 正则查询 - fd regex_exp
-如查找包含文件名中包含日期的文件：
+fd fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。
+如何使用呢？
+安装 1 brew install fd 递归 文件系统下搜索文件名，最常见的场景是递归搜索文件名包含 pattern 的文件，不知道有你是否能立刻想起来 find 如何写呢？
+示例：遍历查找。
+1 $ fd pattern 正则 如果要正则查询，pattern 默认即支持正则表达式。
+查找文件名包含日期的文件：
 或者查找所有的 go 代码文件。
 这个表达式更加正确的表述是 fd .*\.go$，查出所有以 .go 结尾的文件。
-案例三 通配符
-案例四 指定类型
-前面的查找 go 文件的方式，无论是通过正则还是通配符，都相对繁琐一点，可直接通过 fd -e go pattern 的模式直接寻找指定扩展的文件。
-如下示例查找以 .py 为扩展且文件名包含 moving_average 的文件：</description></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>如下是视频版本，没有文章详细。
+通配符 fd 同样是支持统配符的，通过 -g 选项指定通配符。</description></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>如下是视频版本，没有文章详细。
 类 Unix 系统发展多年，不少古董命令还在占据终端的绝大部分时间，但它们的使用体验上却是差强人意。最能说明问题的就是那个 cd 命令，无论是多么丝滑的操作，一旦遇到需要 change directory 就会变得磕磕绊绊。
 从本文开始，我计划用几篇文章介绍提升终端效率的一系列命令，它们更具现代风格，希望能让你眼前一亮。
 前言 本文是高效命令系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令，分别是替换 ls 的 exa，替换 cd 的 zoxide 和替换 cat 的 bat。它们的优势会在文章中逐步展开说明。
