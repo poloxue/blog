@@ -48,6 +48,7 @@ jobs:
           hugo mod get -u
           hugo --minify
           cd ..
+
       - name: Build mytermenv
         run: |
           cd mytermenv
@@ -56,7 +57,9 @@ jobs:
           cd ..
 
       - name: Merge Sites
-        run: rm -rf public/gofyne && mv gofyne/public public/gofyne
+        run: |
+          rm -rf public/gofyne && mv gofyne/public public/gofyne
+          rm -rf public/mytermenv && mv mytermenv/public public/mytermenv
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
