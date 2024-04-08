@@ -1,1 +1,0 @@
-navigator.serviceWorker&&navigator.serviceWorker.register("/mytermenv/sw.js",{scope:"/mytermenv/"})
