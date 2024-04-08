@@ -1,3 +1,6 @@
 [submodule "gofyne"]
 	path = gofyne
 	url = https://github.com/poloxue/fyne-chinese.git
+[submodule "mytermenv"]
+	path = mytermenv
+	url = https://github.com/poloxue/docs.mytermenv.git

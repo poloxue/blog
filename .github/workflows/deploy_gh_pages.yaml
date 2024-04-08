@@ -48,6 +48,12 @@ jobs:
           hugo mod get -u
           hugo --minify
           cd ..
+      - name: Build mytermenv
+        run: |
+          cd mytermenv
+          hugo mod get -u
+          hugo --minify
+          cd ..
 
       - name: Merge Sites
         run: rm -rf public/gofyne && mv gofyne/public public/gofyne
