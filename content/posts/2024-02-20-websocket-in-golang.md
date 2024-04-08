@@ -1,6 +1,6 @@
 ---
 title: "Go 中如何实现 WebSocket？从原理到第三方库"
-date: 2024-02-11T18:43:12+08:00
+date: 2024-04-11T18:43:12+08:00
 draft: true
 comment: true
 description: "我们知道，基于 HTTP 轮询的通信模式不仅仅是浪费服务器资源，而且还降低了用户体验。这种情况，直到 2008 年 WebSocket 的出现，才有所改变。WebSocket 提供实时、双向通信，极大地提高了交互性和效率。"

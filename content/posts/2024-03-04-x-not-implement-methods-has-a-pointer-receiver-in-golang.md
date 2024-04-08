@@ -1,6 +1,6 @@
 ---
 title: "2024 02 23 X Does Not Implement All Methods Has a Pointer Receiver in Golang"
-date: 2024-03-29T19:13:31+08:00
+date: 2024-04-29T19:13:31+08:00
 draft: true
 comment: true
 description: ""

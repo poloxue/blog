@@ -1,6 +1,6 @@
 ---
 title: "Rune in Golang"
-date: 2024-02-29T19:29:16+08:00
+date: 2024-04-29T19:29:16+08:00
 draft: true
 comment: true
 description: "GO 中有个叫做 `rune` 的类型，它是 `uint32` 的别名。这点我相信很多人都知道。而且关于它是作用，用于表示 utf8 码点，肯定也是知道的。但问题，是不是感觉缺点什么呢？为什么它可以被用来表示 UTF8 码点。"

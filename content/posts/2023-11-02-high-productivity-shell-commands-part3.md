@@ -7,9 +7,9 @@ description: "本文将介绍的 3 命令，用于提高 Web 开发人员们的�
 tags: ["zsh"]
 ---
 
-{{< youtube bb_id="748039783" yt_id="XLlYFat4chE" >}}
-
 本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
+
+{{< youtube bb_id="748039783" yt_id="XLlYFat4chE" >}}
 
 ## 前言
 

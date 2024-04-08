@@ -13,8 +13,6 @@ description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Ne
 
 {{< video bb_id=619786097 yt_id=vNX_sReGZ5E >}}
 
-本文是高效终端环境第一篇，系列查看：[我的终端环境](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3299748150420979713#wechat_redirect)
-
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 
 本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。

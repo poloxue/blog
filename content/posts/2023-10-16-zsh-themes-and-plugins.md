@@ -9,13 +9,11 @@ description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 �
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-17.png)
 
-本文是高效终端环境第二篇，系列查看：[我的终端环境](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3299748150420979713#wechat_redirect)
+前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 
 视频版本，没有文章详细：
 
 {{< video bb_id=619786097 yt_id=1zJcH4hZW4o >}}
-
-前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 
 本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
 
