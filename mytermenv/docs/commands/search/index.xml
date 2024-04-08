@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>搜索查找 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/</link><description>Recent content in 搜索查找 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/commands/search/index.xml" rel="self" type="application/rss+xml"/><item><title>fd</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</guid><description>fd # fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。
+如何使用呢？
+安装 # brew install fd 递归 # 文件系统下搜索文件名，最常见的场景是递归搜索文件名包含 pattern 的文件，不知道有你是否能立刻想起来 find 如何写呢？
+示例：遍历查找。
+$ fd pattern 正则 # 如果要正则查询，pattern 默认即支持正则表达式。
+查找文件名包含日期的文件：
+或者查找所有的 go 代码文件。
+这个表达式更加正确的表述是 fd .*\.go$，查出所有以 .go 结尾的文件。
+通配符 # fd 同样是支持统配符的，通过 -g 选项指定通配符。
+文件类型 # 前面的查找 go 文件，其实也是查找类型是 Go 源码。但正则和通配符，都比较繁琐，可直接通过 fd -e go pattern 的模式直接寻找指定扩展的文件。
+示例：查找 python 源码文件。
+如果无需 patern，则表明查找所有的 .py 的文件。
+隐藏文件和 .gitinogre # fd 搜索效率高的一个原因是它默认不查找隐藏文件和 gitignore 文件。</description></item><item><title>ripgrep</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</guid><description>ripgrep # ripgrep 是一款文本搜索命令，功能与 grep 类似。和 fd 之于 find 一样，ripgrep 在体验和性能上同样完胜 grep。
+安装 # brew install ripgrep 递归 # ripgrep 的默认行为也是递归搜索，命令为 rg pattern，且默认高亮显示，与 grep --color main . -nR 对比，明显更加简洁易用，体验更好。
+示例效果：
+指定目录 # ripgrep 最后的参数即可指定搜索的目录。
+rg main ~/Code/golang-examples/ 指定文件 # 搜索指定文件与指定目录类似，命令的最后一个参数指定即可。
+rg main ~/Code/golang-examples/main.go 通配符 # 我们使用 -g 通过通配符指定搜索路径。
+如下是禁用目录递归：
+rg main -g &amp;#39;!/*/*&amp;#39; 还可实现如排除指定的文件：
+rg main -g &amp;#39;!main.go&amp;#39; 或者排除指定的目录
+rg -g &amp;#39;!directory&amp;#39; 正则 # ripgrep 支持通过 -e 选项启用正则表达式搜索，如搜索文件中的指定日期格式内容。
+rg -e &amp;#39;[0-9]{2}:[0-9]{2}&amp;#39; 默认过滤 # 和 fd 一样，ripgrep 的高效率搜索能力一方面也是因为默认忽略了一些文件，如它忽略隐藏文件以及 .</description></item><item><title>fzf</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</guid><description>fzf # fzf 全名 fuzzy finder，一款通用的命令行模糊查找工具。它可与其他命令结合，提升其他命令的使用体验。
+安装 # brew install fzf 目录搜索 # fzf 的默认行为是在当前目录搜索。当然它的搜索和 fd 的搜索不同，它会进入交互式模式搜索文件或目录路径。
+它支持通过 CTRL+P/N 上下选择，确认搜索结果后，输入 Enter 确认后，它会将输出直接作为输出打印到标准输出。由于它输出为标准输出，我们就有了更多可能性，通过管道将它与其他命令结合。
+命令组合 # fzf 最大的魅力在于，我们可将其与其他命令组合，如
+将其他命令的输出作为 fzf 的输入，基于它进行搜索； 或将 fzf 的搜索内容作为其他命令的输入，更智能使用其他命令。 我们具体介绍下吧。
+首先，我们示例将 one、two、three、four 作为输入，通过 fzf 搜索选择。
+echo &amp;#34;one\ntwo\nthree\nfour&amp;#34; | fzf 更多可能就诞生了，我们可以讲 ls 的输出作为 fzf 的输入。
+ls | fzf 将 fd 查找结果作为 fzf 的输入。
+fd --type file | fzf 接下来，我们尝试将搜索结果作为其他命令的输入。毕竟，如果 fzf 的搜索结果只是输出到终端，那就太可惜了，可将其作为其它命令的输入。
+如将 fzf 搜索结果作为 vim 的输入，助力 vim 快速打开文件。</description></item></channel></rss>

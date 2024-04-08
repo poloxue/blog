@@ -1,0 +1,90 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="人性化 HTTP Client 命令 - httpie # 快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。
+httpie 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。
+安装 # brew install httpie 快手上手 # 最简单的使用案例，快速发起 GET 和 POST 请求。
+GET 请求：
+http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
+http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
+http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 <space> 便可直接使用：
+例如，GET 方法请求 http://httpbin.org/get，如下所示：
+http ://httpbin.org/get 演示效果：
+另外，METHOD 默认也可省略的，省略规则是："><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:title" content="httpie - 人性化 HTTP Client"><meta property="og:description" content="人性化 HTTP Client 命令 - httpie # 快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。
+httpie 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。
+安装 # brew install httpie 快手上手 # 最简单的使用案例，快速发起 GET 和 POST 请求。
+GET 请求：
+http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
+http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
+http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 <space> 便可直接使用：
+例如，GET 方法请求 http://httpbin.org/get，如下所示：
+http ://httpbin.org/get 演示效果：
+另外，METHOD 默认也可省略的，省略规则是："><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2024-04-08T17:27:01+08:00"><title>httpie - 人性化 HTTP Client | 我的终端环境</title><link rel=manifest href=/mytermenv/manifest.json><link rel=icon href=/mytermenv/favicon.png><link rel=canonical href=https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/><link rel=stylesheet href=/mytermenv/book.min.4f0117e74e5337280f18eb9641eae520cb4b25adcf5dd64fafad4664145a5957.css integrity="sha256-TwEX505TNygPGOuWQerlIMtLJa3PXdZPr61GZBRaWVc=" crossorigin=anonymous><script defer src=/mytermenv/flexsearch.min.js></script>
+<script defer src=/mytermenv/en.search.min.7b990f2e937672dd3a6d39696861e5b0fa48723e83b04b1dc74f6920ca361e3d.js integrity="sha256-e5kPLpN2ct06bTlpaGHlsPpIcj6DsEsdx09pIMo2Hj0=" crossorigin=anonymous></script>
+<script defer src=/mytermenv/sw.min.f888ca3f1a884bc850259e210b912f7631cc5beedc2fa1e324653bab31b8871a.js integrity="sha256-+IjKPxqIS8hQJZ4hC5EvdjHMW+7cL6HjJGU7qzG4hxo=" crossorigin=anonymous></script>
+<script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/mytermenv/><img src=/mytermenv/logo.png alt=Logo><span>我的终端环境</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><input type=checkbox id=section-fba4a8db7261d54d261a0776b385c4b7 class=toggle>
+<label for=section-fba4a8db7261d54d261a0776b385c4b7 class="flex justify-between"><a href=/mytermenv/docs/terminal/>iTerm2</a></label><ul><li><a href=/mytermenv/docs/terminal/hello/>简要介绍</a></li><li><a href=/mytermenv/docs/terminal/install/>安装与主题</a></li><li><a href=/mytermenv/docs/terminal/usage/>开始使用</a></li><li><a href=/mytermenv/docs/terminal/pyapi/>Python API</a></li></ul></li><li><input type=checkbox id=section-0f880db9bf74f7d21521e992a6c21656 class=toggle>
+<label for=section-0f880db9bf74f7d21521e992a6c21656 class="flex justify-between"><a href=/mytermenv/docs/zsh/>zsh</a></label><ul><li><a href=/mytermenv/docs/zsh/why/>为什么选择 zsh ？</a></li><li><a href=/mytermenv/docs/zsh/install/>快速安装</a></li></ul></li><li><input type=checkbox id=section-3cbc02454a3859bda006f4f5dbaa0992 class=toggle>
+<label for=section-3cbc02454a3859bda006f4f5dbaa0992 class="flex justify-between"><a href=/mytermenv/docs/ohmyzsh/>ohmyzsh</a></label><ul><li><a href=/mytermenv/docs/ohmyzsh/install/>安装与主题</a></li><li><a href=/mytermenv/docs/ohmyzsh/basicplugins/>基础插件</a></li><li><a href=/mytermenv/docs/ohmyzsh/basicplugins2/>基础插件 2</a></li><li><a href=/mytermenv/docs/ohmyzsh/advancedplugins/>高级插件</a></li><li><a href=/mytermenv/docs/ohmyzsh/powerlevel10k/>自定义提示主题</a></li></ul></li><li><input type=checkbox id=section-3fb225060dbc6eb1fda04fb19c520b9e class=toggle checked>
+<label for=section-3fb225060dbc6eb1fda04fb19c520b9e class="flex justify-between"><a href=/mytermenv/docs/commands/>高效命令</a></label><ul><li><a href=/mytermenv/docs/commands/filesystem/>文件目录</a><ul><li><a href=/mytermenv/docs/commands/filesystem/exa/>exa</a></li><li><a href=/mytermenv/docs/commands/filesystem/zoxide/>zoxide</a></li><li><a href=/mytermenv/docs/commands/filesystem/bat/>bat</a></li></ul></li><li><a href=/mytermenv/docs/commands/search/>搜索查找</a><ul><li><a href=/mytermenv/docs/commands/search/fd/>fd</a></li><li><a href=/mytermenv/docs/commands/search/ripgrep/>ripgrep</a></li><li><a href=/mytermenv/docs/commands/search/fzf/>fzf</a></li></ul></li><li><a href=/mytermenv/docs/commands/dev/>开发调试</a><ul><li><a href=/mytermenv/docs/commands/dev/entr/>entr - 实现语言无关热重启</a></li><li><a href=/mytermenv/docs/commands/dev/httpie/ class=active>httpie - 人性化 HTTP Client</a></li></ul></li></ul></li><li><input type=checkbox id=section-ff2ed6a53270462fb3b310011e3cce1a class=toggle>
+<label for=section-ff2ed6a53270462fb3b310011e3cce1a class="flex justify-between"><a href=/mytermenv/docs/startup/>启动消息</a></label><ul></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/mytermenv/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>httpie - 人性化 HTTP Client</strong>
+<label for=toc-control><img src=/mytermenv/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#安装>安装</a></li><li><a href=#快手上手>快手上手</a></li><li><a href=#体现易用性>体现易用性</a></li><li><a href=#输出美化>输出美化</a></li><li><a href=#文件下载>文件下载</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=人性化-http-client-命令---httpie>人性化 HTTP Client 命令 - httpie
+<a class=anchor href=#%e4%ba%ba%e6%80%a7%e5%8c%96-http-client-%e5%91%bd%e4%bb%a4---httpie>#</a></h1><p>快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。</p><p><a href=https://github.com/httpie/cli/>httpie</a> 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。</p><h2 id=安装>安装
+<a class=anchor href=#%e5%ae%89%e8%a3%85>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>brew install httpie
+</span></span></code></pre></div><h2 id=快手上手>快手上手
+<a class=anchor href=#%e5%bf%ab%e6%89%8b%e4%b8%8a%e6%89%8b>#</a></h2><p>最简单的使用案例，快速发起 GET 和 POST 请求。</p><p>GET 请求：</p><pre tabindex=0><code>http GET http://httpbin.org/get name==poloxue age==18
+</code></pre><p>POST 请求：</p><pre tabindex=0><code>http POST http://httpbin.org/post name=poloxue age=18
+</code></pre><p>http 命令的完整语法，如下所示：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>http <span style=color:#f92672>[</span>flags<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>METHOD<span style=color:#f92672>]</span> URL <span style=color:#f92672>[</span>ITEM <span style=color:#f92672>[</span>ITEM<span style=color:#f92672>]]</span>
+</span></span></code></pre></div><h2 id=体现易用性>体现易用性
+<a class=anchor href=#%e4%bd%93%e7%8e%b0%e6%98%93%e7%94%a8%e6%80%a7>#</a></h2><p>从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 &lt;space> 便可直接使用：</p><p>例如，GET 方法请求
+<a href=http://httpbin.org/get>http://httpbin.org/get</a>，如下所示：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>http ://httpbin.org/get
+</span></span></code></pre></div><p>演示效果：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-02-high-productivity-shell-commands-part3-06.gif alt></p><p>另外，METHOD 默认也可省略的，省略规则是：</p><ul><li>当有 data：POST，如 <code>http ://httpbin.org/post name=poloxue age=18</code></li><li>当无 data：GET，如 <code>http ://httpbin.org/get</code></li></ul><p>httpie 还支持一种 offline 模式，debug 神器，只打印 HTTP 请求文本，但不进行网络请求；</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>http --offline ://httpbin.org/get
+</span></span></code></pre></div><p>输出内容：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>GET /get HTTP/1.1
+</span></span><span style=display:flex><span>Accept: */*
+</span></span><span style=display:flex><span>Accept-Encoding: gzip, deflate
+</span></span><span style=display:flex><span>Connection: keep-alive
+</span></span><span style=display:flex><span>Host: httpbin.org
+</span></span><span style=display:flex><span>User-Agent: HTTPie/3.2.2
+</span></span></code></pre></div><p>现在，通过 offline 快速了解 httpie 的 header 设置，query 参数、JSON 请求体 等；</p><p>几个规则，如下所示：</p><ul><li>header：使用 <code>key:value</code> 设置 header；</li><li>query string，使用 <code>key==value</code>，表示 query params，快速拼接 query string；</li><li>body json data，使用 <code>key=value</code> 即可，更复杂结构，可通过命令管道或文件导入；</li></ul><p>一个命令演示下如何设置：</p><pre tabindex=0><code>http --offline POST http://httpbin.org/post \
+                    X-API-Token:123456\
+                    User-Agent:foo\
+                    name==poloxue\
+                    age==18\
+                    password=123456\
+                    email=poloxue123@gmail.com
+</code></pre><p>启用 offline 调试模式，输出结果：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>POST /post?name<span style=color:#f92672>=</span>poloxue&amp;age<span style=color:#f92672>=</span><span style=color:#ae81ff>18</span> HTTP/1.1
+</span></span><span style=display:flex><span>Accept: application/json, */*;q<span style=color:#f92672>=</span>0.5
+</span></span><span style=display:flex><span>Accept-Encoding: gzip, deflate
+</span></span><span style=display:flex><span>Connection: keep-alive
+</span></span><span style=display:flex><span>Content-Length: <span style=color:#ae81ff>55</span>
+</span></span><span style=display:flex><span>Content-Type: application/json
+</span></span><span style=display:flex><span>Host: httpbin.org
+</span></span><span style=display:flex><span>User-Agent: foo
+</span></span><span style=display:flex><span>X-API-Token: <span style=color:#ae81ff>123456</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;email&#34;</span>: <span style=color:#e6db74>&#34;poloxue123@gmail.com&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;password&#34;</span>: <span style=color:#e6db74>&#34;123456&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><h2 id=输出美化>输出美化
+<a class=anchor href=#%e8%be%93%e5%87%ba%e7%be%8e%e5%8c%96>#</a></h2><p>httpie 还有一个能力，它默认会对返回数据进行格式化与语法高亮处理。如此一来，其他的 json 格式化命令就用不到了，如早前介绍的 <code>pp_json</code> 这个命令。毕竟，httpie 的格式美化能力更强大。</p><p>想修改它的配色风格？</p><p>通过 <code>--style</code> 选项即可修改。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>http --style autumn GET ://httpbin.org/get
+</span></span></code></pre></div><p>如果想查看所有可用该配色，直接输入 <code>http --style</code> 即可查看：</p><p>输出内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>usage:
+</span></span><span style=display:flex><span>    http -s/--style <span style=color:#f92672>{</span>abap, algol, algol_nu, arduino, auto, autumn, borland, bw, colorful, default, dracula, emacs,
+</span></span><span style=display:flex><span>friendly, friendly_grayscale, fruity, github-dark, gruvbox-dark, gruvbox-light, igor, inkpot, lightbulb, lilypond,
+</span></span><span style=display:flex><span>lovelace, manni, material, monokai, murphy, native, nord, nord-darker, one-dark, paraiso-dark, paraiso-light,
+</span></span><span style=display:flex><span>pastie, perldoc, pie, pie-dark, pie-light, rainbow_dash, rrt, sas, solarized, solarized-dark, solarized-light,
+</span></span><span style=display:flex><span>staroffice, stata, stata-dark, stata-light, tango, trac, vim, vs, xcode, zenburn<span style=color:#f92672>}</span> <span style=color:#f92672>[</span>METHOD<span style=color:#f92672>]</span> URL <span style=color:#f92672>[</span>REQUEST_ITEM ...<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>error:
+</span></span><span style=display:flex><span>    argument --style/-s: expected one argument
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> more information:
+</span></span><span style=display:flex><span>    run <span style=color:#e6db74>&#39;http --help&#39;</span> or visit https://httpie.io/docs/cli
+</span></span></code></pre></div><p>httpie 的格式方式也是可配置的，选项 <code>--pretty</code>，可配置值有 <code>all|colors|format|none</code>，看名字大概能猜出它们的区别：</p><ul><li>all，默认值，即高亮又格式化；</li><li>format，不高亮但格式化；</li><li>colors，高亮但不格式化；</li></ul><pre tabindex=0><code>http --style=autumn ://httpbin.org/get
+</code></pre><p>演示效果：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-02-high-productivity-shell-commands-part3-07.png alt></p><h2 id=文件下载>文件下载
+<a class=anchor href=#%e6%96%87%e4%bb%b6%e4%b8%8b%e8%bd%bd>#</a></h2><p>通过 <code>--donwload</code> 即可：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>http --download https://github.com/httpie/cli/archive/master.tar.gz
+</span></span></code></pre></div><p>文件下载，除去最基本的需求，肯定还是要支持断点续传的。</p><p>要支持断点续传的话，首先，要通过 <code>--output/-o</code> 选项指定输出的文件名称。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>http --donwload -o httpie.tar.gz https://github.com/httpie/cli/archive/master.tar.gz
+</span></span></code></pre></div><p>断点续传，要启用 <code>--continue/-c</code> 选项。</p><p>为了掩饰效果，选择一个大文件进行下载，下载飞书的海外版 Mac 安装包。</p><p>命令如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-zsh data-lang=zsh><span style=display:flex><span>http -dco lark.dmg https://sf16-va.larksuitecdn.com/obj/lark-artifact-storage/49f5b75a/Lark-darwin_x64-6.11.16-signed.dmg
+</span></span></code></pre></div><p>演示效果，如下所示：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-02-high-productivity-shell-commands-part3-08.gif alt></p><p>httpie 就介绍这么多，其他还有 cookie、session，authentication 等等请自行查阅文档
+<a href=https://httpie.io/docs/cli/>httpie 文档</a>。</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/poloxue/myterminal/commit/20dc56dd97876a32eafd9c5106848cbe2af1c4e5 title='Last modified by poloxue.xue | Apr 8, 2024' target=_blank rel=noopener><img src=/mytermenv/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Apr 8, 2024</span></a></div><div><a class="flex align-center" href=https://github.com/poloxue/myterminal/blob/master/content/docs/commands/dev/httpie.md target=_blank rel=noopener><img src=/mytermenv/svg/edit.svg class=book-icon alt=Edit>
+<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#安装>安装</a></li><li><a href=#快手上手>快手上手</a></li><li><a href=#体现易用性>体现易用性</a></li><li><a href=#输出美化>输出美化</a></li><li><a href=#文件下载>文件下载</a></li></ul></nav></div></aside></main></body></html>

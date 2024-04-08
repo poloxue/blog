@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>zsh on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/zsh/</link><description>Recent content in zsh on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么选择 zsh ？</title><link>https://www.poloxue.com/mytermenv/docs/zsh/why/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/why/</guid><description>为什么选择 zsh ？ # 开始前，先问为什么，知其然，要知其所以然，是个好习惯。所以，为什么要用 zsh 呢？
+大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？
+改进的自动补全能力 # zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。
+对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
+更好的脚本和插件支持 # zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。
+这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
+高级的主题和提示符定制 # zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
+我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
+更智能的命令行交互 # zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
+如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;
+❯ lls zsh: correct &amp;#39;lls&amp;#39; to &amp;#39;ls&amp;#39; [nyae]? 输入 y 接受纠正建议。</description></item><item><title>快速安装</title><link>https://www.poloxue.com/mytermenv/docs/zsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/install/</guid><description> 安装 # 对于不同系统，zsh 的安装命令，如下所示：
+Debian
+apt install zsh Centos
+yum install -y zsh Arch Linux
+pacman -S zsh Fedora
+dnf install zsh 对于 macOS 系统的用户，MacOS 的默认 shell 从 2019 开始以前替换为 zsh，该步骤可省略。可阅读： What is Zsh? Should You Use it? 其中有介绍为什么 2019 macOS 将默认的 shell 从 bash 切换到 zsh。
+我看下来，主要原因就是版权问题啦。
+如果你是个老古董，还是用 MacOS 2019 之前的系统，可通过如下命令安装：
+brew install zsh 安装完成后，将 zsh 设置为默认 shell，命令如下所示：
+chsh -s /bin/zsh 通过如下命令检查下是否成功。
+echo $SHELL zsh</description></item></channel></rss>

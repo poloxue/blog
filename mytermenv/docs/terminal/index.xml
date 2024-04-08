@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iTerm2 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/terminal/</link><description>Recent content in iTerm2 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/terminal/index.xml" rel="self" type="application/rss+xml"/><item><title>简要介绍</title><link>https://www.poloxue.com/mytermenv/docs/terminal/hello/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/hello/</guid><description>简要介绍 # iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。
+iTerm2 vs 默认 Terminal # 为什么要用 iTerm2 替换默认终端？相较于 Terminal，iTerm2 的几点优势：
+首先，它美观大方，相对于默认终端，它支持真彩。且它的功能上更加丰富，如灵活地分屏、主题配置；搜索功能，支持的搜索规则丰富；快捷键，快捷键的定制性更强；支持静态图片和 GIF 的展示；编程控制，支持如 python 编程控制，可实现自动背景，布局管理等。</description></item><item><title>安装与主题</title><link>https://www.poloxue.com/mytermenv/docs/terminal/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/install/</guid><description>安装与主题 # 本节介绍 iTerm2 安装与主题。
+安装 # 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。
+如果还未安装 brew，安装命令：
+/bin/bash -c &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&amp;#34; 安装 iterm2，命令如下：
+brew install --cask iterm2 等待执行完成，即安装完毕。
+主题 # iTerm2 支持自定义主题，即设置颜色面板 color preset。我将先以 material design colors 为例，介绍如何安装设置。
+它的安装命令，如下所示：
+curl -Ls https://raw.githubusercontent.com/MartinSeeler/iterm2-material-design/master/material-design-colors.itermcolors &amp;gt; /tmp/material-design-colors.itermcolors &amp;amp;&amp;amp; open /tmp/material-design-colors.itermcolors 如果成功执行，将会在 iTerm2 的 Preferences （使用快捷键 CMD+, 可快捷打开）-&amp;gt; Color 下的 &amp;ldquo;Color Presets&amp;rdquo; 中新增一条颜色面板选项，即 &amp;ldquo;material-design-color&amp;rdquo;。选中确认即可将 iTerm2 默认的颜色面板修改为 &amp;ldquo;material-design-color&amp;rdquo;。
+上面的命令分为两步：首先通过 curl 下载配色文件，然后再通过 open 打开下载即可直接安装。</description></item><item><title>开始使用</title><link>https://www.poloxue.com/mytermenv/docs/terminal/usage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/usage/</guid><description>开始使用 # 打开 &amp;lsquo;iTerm2&amp;rsquo;，快速使用体验一下吧。
+分屏功能 # 如下图所示，&amp;ldquo;CommandL+d&amp;rdquo; 垂直分屏，&amp;ldquo;Command+D&amp;rdquo; 水平分屏。
+当然，这个快捷键是可以配置的，因为这两个快捷键趋势不够便捷。我们打开它的快捷键配置，进入 Preferences -&amp;gt; Keys -&amp;gt; key Binds 即可开始设置快捷键键。
+其中的红色框内容可用于设置如何水平和垂直分割屏幕：
+SHIFT+COMMAND+| -&amp;gt; 水平切片 split horizontally； SHIFT+COMMAND+- -&amp;gt; 水平切片 split horizontally； 其中的蓝色框区域可用于设置 vim 风格的上下左右分屏切换：
+COMMAND+h：向左选中 COMMAND+j：向下选中 COMMAND+k：向上选中 COMMAND+l：向右选中 对于习惯使用 vim，但不是每个任务都有打开 tmux + vim 组合的时候，这个快捷键的设置就是效率神器啊。
+分屏最大化 # 如下图所示，&amp;ldquo;Shift+Command+Enter&amp;rdquo; 分屏最大化。
+再次 &amp;ldquo;Shift+Command+Enter&amp;rdquo; 恢复分屏。
+如果你习惯于在终端工作，那么分屏功能肯定是日常使用最多的能力了吧。如上的三分屏幕效果，左边座位代码编辑区域、右上方用于调试或运行代码，下面可用于其他一些测试或者运行命令区域。
+支持搜索 # 相对于 通过 &amp;ldquo;Command+f&amp;rdquo; 开启搜索框：
+iTerm2 的搜索能力更强大，可以在搜索框下拉仔细检查下它能力。诸如默认的 smartcase 模式、大小写敏感和不敏感模式、正则。可能你觉得这些不是很正常吗？俗话说，没有对比就没有伤害，如果你和系统默认的终端对比下就知道它的优秀之处了。
+其他 # iTerm2 是真彩 256 colors，这才让我们可以在 iTerm2 将 neovim 打造成媲美 vscode 的 IDE。</description></item><item><title>Python API</title><link>https://www.poloxue.com/mytermenv/docs/terminal/pyapi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/pyapi/</guid><description>Python API # 这部分主要介绍 iTerm2 提供的 Python API，利用它，带你实现一些不一样的能力。我将演示两个案例，分别是背景图自动更换和分屏创建自动化。
+自动更换背景图 # 编程枯燥无味，想通过背景图为枯燥生活提供一些趣味。假设，我们要设计一个脚本，给终端一小时自动更好一个背景图。
+假设我的壁纸图片都在 ~/Public/images/beauties 目录下。
+实现下这个代码，如下所示：
+import iterm2 import random import os import asyncio import sys # 替换背景图片的函数 async def change_background(session, image_path): # 获取当前会话的配置文件 profile = await session.async_get_profile() # 设置透明度，值在0（完全透明）到1（完全不透明）之间 await profile.async_set_transparency(0.2) # 设置为50%透明度 # 设置背景图像位置 await profile.async_set_background_image_location(image_path) async def main(connection): app = await iterm2.async_get_app(connection) window = app.current_terminal_window if window is None: return session = window.current_tab.current_session # 获取脚本参数提供的目录 directory = sys.</description></item></channel></rss>

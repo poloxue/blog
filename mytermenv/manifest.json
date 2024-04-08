@@ -1,0 +1,15 @@
+{
+  "name": "我的终端环境",
+  "short_name": "我的终端环境",
+  "start_url": "/mytermenv/",
+  "scope": "/mytermenv/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/mytermenv/favicon.svg",
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>高效终端 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/</link><description>Recent content in 高效终端 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>entr - 实现语言无关热重启 # 在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
+本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 entry。
+特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。
+什么 entry # 简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。
+$ ls text.txt | entr echo &amp;#34;file changed&amp;#34; 我们通过 ls text.txt 告诉 entry 监听的文件。当编辑并保存文件后，它通过指定命令 echo 打印提示 file changed。
+我们只要对它稍做修改，就可以实现在监听到文件变化后，自动执行 停止服务 -&amp;gt; 重新编译 -&amp;gt; 启动服务 等一系列动作。
+安装 # # mac 安装命令 brew install entr 实现热重启 # 首先，开发一个简单 Go server 服务，文件是 main.go，代码如下：
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(w http.ResponseWriter, req *http.Request) { _, _ = w.</description></item><item><title>exa</title><link>https://www.poloxue.com/mytermenv/docs/commands/filesystem/exa/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/filesystem/exa/</guid><description>exa # 首先是 exa，一款可用于替换系统默认 ls 的命令，在平时工作中 ls 几乎使用最多的命令，而 exa 在支持 ls 的基本能力基础上，提供了更丰富的特性。
+快速安装 # brew install exa # 其他系统请查看 GithHub README.md 默认配色 # 首先，exa 默认提供了配色效果，无需 ls 要追加 --color 参数，省去了 alias 别名的设置。
+显示图标 # 其次，exa 支持显示文件图片，通过指明 --icons 实现，显示文件类型图标；
+详情与 GIT # 更复杂的命令，支持 ls -l 显示文件列表详情，添加头部说明 header，如果是 git 仓库，可显示文件的 Git 信息。
+目录树 Tree # 如果想显示文件数，也不需要单独安装 tree 命令，如下 exa --tree --icons，显示文件树；
+别名 # 如果你钟爱 exa 的这些能力，可通过别名将默认 ls 和 tree 命令替换为 exa。
+如下是一些常见的别名设置：</description></item><item><title>安装与主题</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/install/</guid><description>安装与主题 # 本节介绍 ohmyzsh 的安装与主题。
+安装 # oh-my-zsh 的安装很简单。安装命令，如下所示：
+sh -c &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&amp;#34; 安装后，就已经有一些默认效果，如命令行提示符的主题变化。
+这是默认的 oh-my-zsh 主题 &amp;ldquo;robbyrussell&amp;rdquo;。
+主题 # oh-my-zsh 提供了许多内置主题，可查看 themes 获取一系列的主题。
+我们可直接通过 ~/.zshrc 配置更新主题配置，将内容修改如下：
+ZSH_THEME=&amp;#34;agnoster&amp;#34;` # 默认为 robbyrussell 执行 source ~/.zshrc 生效配置，就能看到主题效果。
+另外，oh-my-zsh 还提供了 random 主题，它会在 oh-my-zsh 内置主题中随机选择一个主题展示。只需编辑 ~/.zshrc，将 ZSH_THEME 更新为 random 即可。
+配置如下所示：
+ZSH_THEME=&amp;#34;random&amp;#34; 演示效果，如下所示：
+说实话，我觉得没人会这么用吧。这明显很鸡肋的功能啊。</description></item><item><title>简要介绍</title><link>https://www.poloxue.com/mytermenv/docs/terminal/hello/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/hello/</guid><description>简要介绍 # iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。
+iTerm2 vs 默认 Terminal # 为什么要用 iTerm2 替换默认终端？相较于 Terminal，iTerm2 的几点优势：
+首先，它美观大方，相对于默认终端，它支持真彩。且它的功能上更加丰富，如灵活地分屏、主题配置；搜索功能，支持的搜索规则丰富；快捷键，快捷键的定制性更强；支持静态图片和 GIF 的展示；编程控制，支持如 python 编程控制，可实现自动背景，布局管理等。</description></item><item><title>fd</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</guid><description>fd # fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。
+如何使用呢？
+安装 # brew install fd 递归 # 文件系统下搜索文件名，最常见的场景是递归搜索文件名包含 pattern 的文件，不知道有你是否能立刻想起来 find 如何写呢？
+示例：遍历查找。
+$ fd pattern 正则 # 如果要正则查询，pattern 默认即支持正则表达式。
+查找文件名包含日期的文件：
+或者查找所有的 go 代码文件。
+这个表达式更加正确的表述是 fd .*\.go$，查出所有以 .go 结尾的文件。
+通配符 # fd 同样是支持统配符的，通过 -g 选项指定通配符。
+文件类型 # 前面的查找 go 文件，其实也是查找类型是 Go 源码。但正则和通配符，都比较繁琐，可直接通过 fd -e go pattern 的模式直接寻找指定扩展的文件。
+示例：查找 python 源码文件。
+如果无需 patern，则表明查找所有的 .py 的文件。
+隐藏文件和 .gitinogre # fd 搜索效率高的一个原因是它默认不查找隐藏文件和 gitignore 文件。</description></item><item><title>httpie - 人性化 HTTP Client</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。
+httpie 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。
+安装 # brew install httpie 快手上手 # 最简单的使用案例，快速发起 GET 和 POST 请求。
+GET 请求：
+http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
+http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
+http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 &amp;lt;space&amp;gt; 便可直接使用：
+例如，GET 方法请求 http://httpbin.org/get，如下所示：
+http ://httpbin.org/get 演示效果：
+另外，METHOD 默认也可省略的，省略规则是：</description></item><item><title>ripgrep</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</guid><description>ripgrep # ripgrep 是一款文本搜索命令，功能与 grep 类似。和 fd 之于 find 一样，ripgrep 在体验和性能上同样完胜 grep。
+安装 # brew install ripgrep 递归 # ripgrep 的默认行为也是递归搜索，命令为 rg pattern，且默认高亮显示，与 grep --color main . -nR 对比，明显更加简洁易用，体验更好。
+示例效果：
+指定目录 # ripgrep 最后的参数即可指定搜索的目录。
+rg main ~/Code/golang-examples/ 指定文件 # 搜索指定文件与指定目录类似，命令的最后一个参数指定即可。
+rg main ~/Code/golang-examples/main.go 通配符 # 我们使用 -g 通过通配符指定搜索路径。
+如下是禁用目录递归：
+rg main -g &amp;#39;!/*/*&amp;#39; 还可实现如排除指定的文件：
+rg main -g &amp;#39;!main.go&amp;#39; 或者排除指定的目录
+rg -g &amp;#39;!directory&amp;#39; 正则 # ripgrep 支持通过 -e 选项启用正则表达式搜索，如搜索文件中的指定日期格式内容。
+rg -e &amp;#39;[0-9]{2}:[0-9]{2}&amp;#39; 默认过滤 # 和 fd 一样，ripgrep 的高效率搜索能力一方面也是因为默认忽略了一些文件，如它忽略隐藏文件以及 .</description></item><item><title>zoxide</title><link>https://www.poloxue.com/mytermenv/docs/commands/filesystem/zoxide/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/filesystem/zoxide/</guid><description>zoxide # 在正式介绍 zoxide 前，尝试提前问自己一个问题，Linux 默认命令 cd 好不好用？我的答案是，相当难用，无论多么丝滑的操作，一旦遇到 cd，只能说一句 f**k。
+你是不是经常这样使用 cd 呢？
+cd ../ cd ../ cd ../ cd ../../../ cd x/ cd y/ cd z/ 如果不想被 cd 折磨的话，我强烈推荐这个工具： zoxide。
+zoxide 是一款受到 z 和 autojump 启发而来的命令，它会记录访问过的目录，通过搜索找到最匹配你目标的目标。从而实现以 最最最最 少按键就能实现目录跳转。
+一般情况下，我们关注的目录就那几个，90% 的情况用它的快速跳转能力即可，而一些特殊情况，cd 绝对路径即可，亦或者是使用它提供的另一种方式，交互式搜索。
+前面我写过一篇文章 介绍了 oh-my-zsh 提供的 z 插件，zoxide 与 z 相比更易于使用。这有一份对比报告： zoxide vs zsh-z。
+具体介绍它的安装使用吧。
+安装 # brew install zoxide # 其他系统请查看 GithHub README.md 配置 # 在 zsh 中使用 zoxide 要简单配置下，一行命令将 zoxide 初始化命令追加到 ~/.</description></item><item><title>为什么选择 zsh ？</title><link>https://www.poloxue.com/mytermenv/docs/zsh/why/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/why/</guid><description>为什么选择 zsh ？ # 开始前，先问为什么，知其然，要知其所以然，是个好习惯。所以，为什么要用 zsh 呢？
+大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？
+改进的自动补全能力 # zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。
+对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
+更好的脚本和插件支持 # zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。
+这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
+高级的主题和提示符定制 # zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
+我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
+更智能的命令行交互 # zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
+如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;
+❯ lls zsh: correct &amp;#39;lls&amp;#39; to &amp;#39;ls&amp;#39; [nyae]? 输入 y 接受纠正建议。</description></item><item><title>基础插件</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins/</guid><description>基础插件 # 重点来了，接下来我们一起来看看 zsh 的效率神器 - 插件能力吧。本问先给大家推荐 5 款常用的插件。ohmyzsh 提供的所有内置插件，都可以在仓库 ohmyzsh/ohmyzsh/plugins 中找到，每个插件都有相应的介绍文档。
+本教程将要介绍的 5 个 oh-my-zsh 内置插件，如下所示：
+git，Git 插件，其实就是提供一些常用的 git 命令别名。 web-search，命令行打开搜索引擎，已支持大部分搜索引擎； jsontools，用于格式化 json 数据； z，基于历史访问目录的快速跳转； vi-mode，使用 vi 模式编辑命令行； 启用所有插件，打开 zshrc 配置，把这些内置插件都打开，如下所示：
+plugins=(git web-search jsontools z vi-mode) 插件 1 - git # Git 插件提供了 git 命令的大量别名，查看 git 插件文档。
+如下一些常用命令的别名：
+git clone -&amp;gt; gcl git status -&amp;gt; gst git commit -&amp;gt; gc git add -&amp;gt; ga git add --all -&amp;gt; gaa git diff -&amp;gt; gd git push -&amp;gt; gp git pull -&amp;gt; gl 更多命令的映射关键关系，可自行查看它的 文档。</description></item><item><title>安装与主题</title><link>https://www.poloxue.com/mytermenv/docs/terminal/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/install/</guid><description>安装与主题 # 本节介绍 iTerm2 安装与主题。
+安装 # 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。
+如果还未安装 brew，安装命令：
+/bin/bash -c &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&amp;#34; 安装 iterm2，命令如下：
+brew install --cask iterm2 等待执行完成，即安装完毕。
+主题 # iTerm2 支持自定义主题，即设置颜色面板 color preset。我将先以 material design colors 为例，介绍如何安装设置。
+它的安装命令，如下所示：
+curl -Ls https://raw.githubusercontent.com/MartinSeeler/iterm2-material-design/master/material-design-colors.itermcolors &amp;gt; /tmp/material-design-colors.itermcolors &amp;amp;&amp;amp; open /tmp/material-design-colors.itermcolors 如果成功执行，将会在 iTerm2 的 Preferences （使用快捷键 CMD+, 可快捷打开）-&amp;gt; Color 下的 &amp;ldquo;Color Presets&amp;rdquo; 中新增一条颜色面板选项，即 &amp;ldquo;material-design-color&amp;rdquo;。选中确认即可将 iTerm2 默认的颜色面板修改为 &amp;ldquo;material-design-color&amp;rdquo;。
+上面的命令分为两步：首先通过 curl 下载配色文件，然后再通过 open 打开下载即可直接安装。</description></item><item><title>快速安装</title><link>https://www.poloxue.com/mytermenv/docs/zsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/install/</guid><description> 安装 # 对于不同系统，zsh 的安装命令，如下所示：
+Debian
+apt install zsh Centos
+yum install -y zsh Arch Linux
+pacman -S zsh Fedora
+dnf install zsh 对于 macOS 系统的用户，MacOS 的默认 shell 从 2019 开始以前替换为 zsh，该步骤可省略。可阅读： What is Zsh? Should You Use it? 其中有介绍为什么 2019 macOS 将默认的 shell 从 bash 切换到 zsh。
+我看下来，主要原因就是版权问题啦。
+如果你是个老古董，还是用 MacOS 2019 之前的系统，可通过如下命令安装：
+brew install zsh 安装完成后，将 zsh 设置为默认 shell，命令如下所示：
+chsh -s /bin/zsh 通过如下命令检查下是否成功。
+echo $SHELL zsh</description></item><item><title>bat</title><link>https://www.poloxue.com/mytermenv/docs/commands/filesystem/bat/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/filesystem/bat/</guid><description>bat # 说完了 ls 列举目录，cd 进入目录，我们继续介绍一个命令， bat 查看文件内容。
+这个 bat 和 Baidu/Alibaba/Tencent 没有联系，它是一款支持语法高亮、GIT 集成的用于替换类 Unix 系统下快速查看文件内容的命令，功能与 cat 相似的命令。
+我们直接介绍它的安装与使用吧。
+安装 # brew install bat # 其他系统请查看 GithHub README.md 使用 # 对于 bat 命令，我先介绍它的使用，然后再谈配置，因为配置并非它的必选项而是优化项。
+bat 相比于 cat 的第一个优势，就是它支持语法高亮效果与行号显示。如我们查看一个 Go 的源码文件，效果如下：
+而且，bat 还集成 Git。如下我们修改了 logger.go 文件，通过 bat 即可查看它的修改点；
+默认情况下，bat 采用分页输出，这对于读取大文件非常有帮助，不用担心失误导致产生一大片控制台输出。但如果你希望 bat 和 cat 一样，一次性无分页输出文本，可通过 --pager=never 或 --no-pager 选项实现。
+bat --pager=never logger.go bat --no-pager logger.go 如果你习惯使用 cat 的模式，希望默认不启用分页能力，可直接在配置文件配置默认行为，在其中增加 --pager=never。
+接下来说说如何通过 bat 的配置改变它的默认行为吧。</description></item><item><title>基础插件 2</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</guid><description>本文是基础篇插件的第二篇，继续介绍 4 个常用的 zsh 插件。我将涉及的插件，如下所示：
+name description copypath 拷贝路径到剪贴版； copyfile 拷贝文件内容到剪贴板； copybuffer 拷贝命令行内容到剪贴板； sudo 命令行开头快速添加 sudo； 让我们正式开始。
+推荐插件 # 先说 oh-my-zsh 的内置插件。
+打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
+plugins=(... copypath copyfile copybuffer sudo ...) 保存退出，执行 source ~/.zshrc 生效。
+copypath # copypath 的用途如其名，就是用来 copy 路径的。
+支持两种用法。
+copypath: 无参数，直接拷贝当前路径；
+copypath &amp;lt;文件或目录&amp;gt;：拷贝指定文件或目录的绝对路径；
+相比于 pwd 之后再拷贝，这种方式真的是省心省力的方式。
+copyfile # copyfile，用于拷贝文件内容，命令格式 copyfile &amp;lt;文件路径&amp;gt;。
+假设，现有一个文件 test.txt。
+cat test.txt Hello oh my zsh 一个测试命令，copyfile test.txt，即可将 test.txt 文件中的内容拷贝到剪贴板中。
+效果如下：</description></item><item><title>开始使用</title><link>https://www.poloxue.com/mytermenv/docs/terminal/usage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/usage/</guid><description>开始使用 # 打开 &amp;lsquo;iTerm2&amp;rsquo;，快速使用体验一下吧。
+分屏功能 # 如下图所示，&amp;ldquo;CommandL+d&amp;rdquo; 垂直分屏，&amp;ldquo;Command+D&amp;rdquo; 水平分屏。
+当然，这个快捷键是可以配置的，因为这两个快捷键趋势不够便捷。我们打开它的快捷键配置，进入 Preferences -&amp;gt; Keys -&amp;gt; key Binds 即可开始设置快捷键键。
+其中的红色框内容可用于设置如何水平和垂直分割屏幕：
+SHIFT+COMMAND+| -&amp;gt; 水平切片 split horizontally； SHIFT+COMMAND+- -&amp;gt; 水平切片 split horizontally； 其中的蓝色框区域可用于设置 vim 风格的上下左右分屏切换：
+COMMAND+h：向左选中 COMMAND+j：向下选中 COMMAND+k：向上选中 COMMAND+l：向右选中 对于习惯使用 vim，但不是每个任务都有打开 tmux + vim 组合的时候，这个快捷键的设置就是效率神器啊。
+分屏最大化 # 如下图所示，&amp;ldquo;Shift+Command+Enter&amp;rdquo; 分屏最大化。
+再次 &amp;ldquo;Shift+Command+Enter&amp;rdquo; 恢复分屏。
+如果你习惯于在终端工作，那么分屏功能肯定是日常使用最多的能力了吧。如上的三分屏幕效果，左边座位代码编辑区域、右上方用于调试或运行代码，下面可用于其他一些测试或者运行命令区域。
+支持搜索 # 相对于 通过 &amp;ldquo;Command+f&amp;rdquo; 开启搜索框：
+iTerm2 的搜索能力更强大，可以在搜索框下拉仔细检查下它能力。诸如默认的 smartcase 模式、大小写敏感和不敏感模式、正则。可能你觉得这些不是很正常吗？俗话说，没有对比就没有伤害，如果你和系统默认的终端对比下就知道它的优秀之处了。
+其他 # iTerm2 是真彩 256 colors，这才让我们可以在 iTerm2 将 neovim 打造成媲美 vscode 的 IDE。</description></item><item><title>Python API</title><link>https://www.poloxue.com/mytermenv/docs/terminal/pyapi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/pyapi/</guid><description>Python API # 这部分主要介绍 iTerm2 提供的 Python API，利用它，带你实现一些不一样的能力。我将演示两个案例，分别是背景图自动更换和分屏创建自动化。
+自动更换背景图 # 编程枯燥无味，想通过背景图为枯燥生活提供一些趣味。假设，我们要设计一个脚本，给终端一小时自动更好一个背景图。
+假设我的壁纸图片都在 ~/Public/images/beauties 目录下。
+实现下这个代码，如下所示：
+import iterm2 import random import os import asyncio import sys # 替换背景图片的函数 async def change_background(session, image_path): # 获取当前会话的配置文件 profile = await session.async_get_profile() # 设置透明度，值在0（完全透明）到1（完全不透明）之间 await profile.async_set_transparency(0.2) # 设置为50%透明度 # 设置背景图像位置 await profile.async_set_background_image_location(image_path) async def main(connection): app = await iterm2.async_get_app(connection) window = app.current_terminal_window if window is None: return session = window.current_tab.current_session # 获取脚本参数提供的目录 directory = sys.</description></item><item><title>高级插件</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/advancedplugins/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/advancedplugins/</guid><description>高级插件 # 我们再来了解 4 个非 oh-my-zsh 内置插件，它们 zsh-syntax-highlighting、zsh-autosuggestions、zsh-substring-history-search 和 you-should-use。这两个插件由 zsh 社区开发。
+开始介绍前，先将这两个插件全部安装配置完成。
+下载 # 下载命令如下所示：
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/you-should-use 配置 # 打开 .zshrc 完成配置：
+plugins=(..., zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search you-should-use)) 记得执行 source ~/.zshrc 生效配置。
+插件 1：zsh-syntax-highlighting # zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或者输入 shell 语法不正确，将会自动以红色表示。它的优点就是，当我们在终端输入，实时输入实时反馈。
+首先，我们尝试下错误命令，提示效果，如下所示：
+再来看看，正确命令提示效果，如下所示：
+对，就是这么简单。通过这个插件提供的实时反馈，可以防止我们在命令执行后，才知道输入错了。
+插件 2：zsh-autosuggestions # zsh-autosuggestions 可以说是我最喜欢的插件了。
+它的作用是什么呢？
+它可用于提示补全建议，当输入字符，默认情况下，它基于我们的历史命令自动提供输入建议。还记得前面提到的，zsh 的历史命令是在不同的会话间共享。现在，再结合 zsh-autosuggestions 插件，简直不要太爽。哈哈。
+我们先看下效果，如下所示：</description></item><item><title>自定义提示主题</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/powerlevel10k/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/powerlevel10k/</guid><description>自定义提示主题 # 不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
+在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。
+什么是 powerlevel10k? # Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。
+效果展示：
+安装依赖字体 # 在安装 powerlevel10k 前，要先安装它依赖的字体： NerdFont。不同系统下的安装方法，查看 它的文档。
+简单说下 Nerd Fonts 字体。它是一系列开源字体的集合，被特别增强，它包含大量的图标和符号，如开发工具、编程语言和版本控制系统的图标。这些字体对于提高我们终端和编辑器的视觉体验和功能性有着极大帮助。
+有了它，我们的终端才能显示一些复杂字体甚至是图标。
+MacOS 的话，可直接通过 Homebrew 快速安装：
+brew tap homebrew/cask-fonts brew install font-hack-nerd-font 安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。
+现在，我们终端就支持 NerdFont 字体了。
+如何测试？
+接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。</description></item><item><title/><link>https://www.poloxue.com/mytermenv/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/readme/</guid><description>Fyne 中文文档 # Fyne 是一款 GO 实现 GUI 框架，本文档是基于 Fyne v2.4 的官方文档中文翻译版。英文原版，请异步 docs.fyne.io。</description></item><item><title>fzf</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</guid><description>fzf # fzf 全名 fuzzy finder，一款通用的命令行模糊查找工具。它可与其他命令结合，提升其他命令的使用体验。
+安装 # brew install fzf 目录搜索 # fzf 的默认行为是在当前目录搜索。当然它的搜索和 fd 的搜索不同，它会进入交互式模式搜索文件或目录路径。
+它支持通过 CTRL+P/N 上下选择，确认搜索结果后，输入 Enter 确认后，它会将输出直接作为输出打印到标准输出。由于它输出为标准输出，我们就有了更多可能性，通过管道将它与其他命令结合。
+命令组合 # fzf 最大的魅力在于，我们可将其与其他命令组合，如
+将其他命令的输出作为 fzf 的输入，基于它进行搜索； 或将 fzf 的搜索内容作为其他命令的输入，更智能使用其他命令。 我们具体介绍下吧。
+首先，我们示例将 one、two、three、four 作为输入，通过 fzf 搜索选择。
+echo &amp;#34;one\ntwo\nthree\nfour&amp;#34; | fzf 更多可能就诞生了，我们可以讲 ls 的输出作为 fzf 的输入。
+ls | fzf 将 fd 查找结果作为 fzf 的输入。
+fd --type file | fzf 接下来，我们尝试将搜索结果作为其他命令的输入。毕竟，如果 fzf 的搜索结果只是输出到终端，那就太可惜了，可将其作为其它命令的输入。
+如将 fzf 搜索结果作为 vim 的输入，助力 vim 快速打开文件。</description></item></channel></rss>
