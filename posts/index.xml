@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 03 Apr 2024 18:21:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>我在终端上免费使用 GPT</title><link>https://www.poloxue.com/posts/2024-04-03-aichat-in-terminal/</link><pubDate>Wed, 03 Apr 2024 18:21:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-03-aichat-in-terminal/</guid><description>最近尝试了一款内置 AI 能力的终端软件，名为 Warp，它的交互设计非常不错，很值得上手。但它的主要问题是中文支持不够友好，且我也不希望 AI 的能力被限制在某款终端上。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 08 Apr 2024 17:06:30 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>entry，一个语言无关的热重启方案</title><link>https://www.poloxue.com/posts/2024-04-08-hot-restart-service/</link><pubDate>Mon, 08 Apr 2024 17:06:30 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-08-hot-restart-service/</guid><description>在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
+本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 entry。
+特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。
+什么 entry 简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。
+1 $ ls text.txt | entr echo &amp;#34;file changed&amp;#34; 我们通过 ls text.txt 告诉 entry 监听的文件。当编辑并保存文件后，它通过指定命令 echo 打印提示 file changed。
+我们只要对它稍做修改，就可以实现在监听到文件变化后，自动执行 停止服务 -&amp;gt; 重新编译 -&amp;gt; 启动服务 等一系列动作。
+安装 1 2 # mac 安装命令 brew install entr 实现热重启 首先，开发一个简单 Go server 服务，文件是 main.go，代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.</description></item><item><title>我在终端上免费使用 GPT</title><link>https://www.poloxue.com/posts/2024-04-03-aichat-in-terminal/</link><pubDate>Wed, 03 Apr 2024 18:21:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-03-aichat-in-terminal/</guid><description>最近尝试了一款内置 AI 能力的终端软件，名为 Warp，它的交互设计非常不错，很值得上手。但它的主要问题是中文支持不够友好，且我也不希望 AI 的能力被限制在某款终端上。
 在这个背景下，我开始尝试从网上搜索一些将 AI 引入终端的命令，发现了两款不错的软件，一个就是今天要介绍的这款名为 tgpt 的命令，无 API Key 要求，可以免费用。
 本文带大家快速体验下这个命令。另特别提示，如遇网络问题，自行处理，
 介绍 tgpt 是一个可以在终端上使用 ChatGPT，我觉得，它的最大卖点是无需 API Key 即可使用，毕竟免费才是王道。
@@ -485,9 +492,8 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
 推荐插件 先说 oh-my-zsh 的内置插件。
 打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
-1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本文是高效终端环境第二篇，系列查看：我的终端环境
+1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 视频版本，没有文章详细：
-前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
 为什么使用 zsh？ 开始前，先问为什么，知其然，要知其所以然，是个好习惯。
 所以，为什么要用 zsh 呢？
@@ -499,7 +505,8 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 高级的主题和提示符定制 zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
 我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
 更智能的命令行交互 zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
-如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;</description></item><item><title>Golang 中如何实现多行字符串</title><link>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</link><pubDate>Tue, 10 Oct 2023 22:00:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</guid><description>Python 中，如果想要表示多行字符串，只要通过三单/双引号(&amp;quot;&amp;quot;&amp;quot;）包裹字符串即可。
+如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;
+1 2 ❯ lls zsh: correct &amp;#39;lls&amp;#39; to &amp;#39;ls&amp;#39; [nyae]?</description></item><item><title>Golang 中如何实现多行字符串</title><link>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</link><pubDate>Tue, 10 Oct 2023 22:00:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-10-multi-lines-string-in-golang/</guid><description>Python 中，如果想要表示多行字符串，只要通过三单/双引号(&amp;quot;&amp;quot;&amp;quot;）包裹字符串即可。
 类似代码，如下所示。
 1 2 3 4 a = &amp;#34;&amp;#34;&amp;#34;line1 line2 line3&amp;#34;&amp;#34;&amp;#34; print(a) 执行代码，查看输出效果，如下所示：
 1 2 3 line1 line2 line3 Golang 中如何实现呢？不复杂，简单展示两种方式：
@@ -514,7 +521,6 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 基于 Go 标准库 net/http，已经足够写出一个 Web 应用。但不足的是，它提供的路由能力 http.</description></item><item><title>从头构建 Go Web 框架（三）：中间件的数据共享</title><link>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3/</link><pubDate>Fri, 29 Sep 2023 13:35:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-30-build-your-own-webframework-in-golang-part-3/</guid><description>本系列文章写于 2014 年，相较于 golang 极短的发展历程，这已经是古董级别的一篇文章了，但 web 框架思想概念依然有效。系统通过这个系列文章，能让大家都现有 Go Web 框架有更深的认识。
 本文是 &amp;ldquo;构建属于自己的 Web 框架&amp;rdquo; 系列文章中的第二篇，将介绍中间件的最佳实践。
 第 1 部分：简介，Build Your Own Web Framework In Go 第 2 部分：Go 中间件：最佳实践和示例，Part 2: Middlewares in Go: Best practices and examples 第 3 部分：中间件数据共享，Part 3: Share Values Between Middlewares 第 4 部分：第三方路由，Part 4: Guide to 3rd Party Routers in Golang 第 5 部分：使用 MongoDB 实现 JSON-API，How to implement JSON-API standard in MongoDB and Go 附加福利：上传文件到 s3，Bonus: File Upload REST API with Go and Amazon S3 我们在 上文 中介绍了 middleware 的实现，通过创建 func (http.</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
-本文是高效终端环境第一篇，系列查看：我的终端环境
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
 本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。

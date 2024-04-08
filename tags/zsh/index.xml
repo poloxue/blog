@@ -63,9 +63,8 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
 推荐插件 先说 oh-my-zsh 的内置插件。
 打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
-1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>本文是高效终端环境第二篇，系列查看：我的终端环境
+1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 视频版本，没有文章详细：
-前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
 为什么使用 zsh？ 开始前，先问为什么，知其然，要知其所以然，是个好习惯。
 所以，为什么要用 zsh 呢？
@@ -77,8 +76,8 @@ copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝�
 高级的主题和提示符定制 zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
 我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
 更智能的命令行交互 zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
-如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
-本文是高效终端环境第一篇，系列查看：我的终端环境
+如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;
+1 2 ❯ lls zsh: correct &amp;#39;lls&amp;#39; to &amp;#39;ls&amp;#39; [nyae]?</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
 我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
 本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
