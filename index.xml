@@ -1,4 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 08 Apr 2024 17:06:30 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>entry，一个语言无关的热重启方案</title><link>https://www.poloxue.com/posts/2024-04-08-hot-restart-service/</link><pubDate>Mon, 08 Apr 2024 17:06:30 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-08-hot-restart-service/</guid><description>在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 09 Apr 2024 15:12:11 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>我想用 Go 的 plugin 机制实现热更新，我失败了</title><link>https://www.poloxue.com/posts/2024-04-09-try-hot-update-using-plugin-package-in-golang/</link><pubDate>Tue, 09 Apr 2024 15:12:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-09-try-hot-update-using-plugin-package-in-golang/</guid><description>昨天发了一篇名为 &amp;ldquo;entr 一个通用的热重启方案&amp;rdquo; 的文章，写完这个命令的简单使用后，我开始思考一个问题：Go 这样的静态编译型语言是否能实现热更新？如果能，该如何实现呢？
+什么是热更新？ 先简单说下什么是热更新。
+热更新，或称热重载或动态更新，是一种软件更新技术，允许程序在运行时，不停机更新代码或资源。这种技术特别适用于需要高可用性的场景，如线上服务和游戏等，从而减少或消除因更新而造成的服务中断时间。
+热更新有不同场景，常见的如：
+代码热替换
+动态替换或更新应用程序中的一部分代码。这通常需要特定的编程语言支持或运行时支持，如 Java 的类加载机制或 Go 的插件系统（其实无法实现）。
+资源热更新
+在不更改任何执行代码的情况下，更新应用程序使用的资源文件，如配置文件、图像或其他媒体资源。
+状态热迁移
+在更新过程中，将应用程序的状态从旧版本迁移到新版本，确保数据的连续性和一致性，如要考虑登录态、连接状态、执行中的事务等等。
+简单归纳，这三种场景分别主要作用于代码层、资源层和逻辑层。而不同的场景有不同的方案，而后两者具有语言无关性。
+实现方案 本文将主要关心的是第一种场景，即与编程语言相关的方案。具体描述为，如何在 Go 中动态替换或者说更新应用中的一部分代码。
+Go 语言（通常被称为 Golang）在设计上是一种静态、编译型的语言。这意味着 Go 程序在运行前要被编译成机器代码。相比动态语言，静态编译型语言在实现热更新方面面临更多挑战。不过还是想尝试下 Go 能否可以实现热更新。
+我们上面提到 Go 中实现这个代码层面的热更新能力，要借助于一个叫 plugin 系统的技术，我在网上搜索了半天，也是这个方案。不过我提前打个预防针，我的测试告诉我，Go 的插件机制其实不支持这个能力。
+go 的 plugin 机制是从 go1.8 引入，是一个实验特性。 支持的是系统是类 Unix 系统（Linux 和 MacOS），不支持 win。 只能加载不能卸载，且加载内容无法修改。 主要是最后一点，不支持 plugin 库的重载和卸载，我们就无法用它实现热更新了。Go 本身是基于静态库编译，这是它的优势，易于分享部署和发布。而这个 plugin 动态库机制，就只有动态库节省内存这个不是优势的优势。
+不仅感慨，怪不得看到不少评论说 Go 的插件机器很鸡肋。
+如果你关心验证过程，可继续源码实现部分。
+开始验证 Go 1.8 引入的这个的插件系统（plugin 包），允许 Go 程序动态地加载其他编译好的 Go 代码作为插件。这个机制可以用来实现某种形式的热更新：</description></item><item><title>entry，一个语言无关的热重启方案</title><link>https://www.poloxue.com/posts/2024-04-08-hot-restart-service/</link><pubDate>Mon, 08 Apr 2024 17:06:30 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-04-08-hot-restart-service/</guid><description>在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
 本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 entry。
 特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。
 什么 entry 简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。
