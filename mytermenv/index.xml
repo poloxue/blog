@@ -36,14 +36,14 @@ $ fd pattern 正则 # 如果要正则查询，pattern 默认即支持正则表�
 文件类型 # 前面的查找 go 文件，其实也是查找类型是 Go 源码。但正则和通配符，都比较繁琐，可直接通过 fd -e go pattern 的模式直接寻找指定扩展的文件。
 示例：查找 python 源码文件。
 如果无需 patern，则表明查找所有的 .py 的文件。
-隐藏文件和 .gitinogre # fd 搜索效率高的一个原因是它默认不查找隐藏文件和 gitignore 文件。</description></item><item><title>httpie - 人性化 HTTP Client</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 如果要你快速调试 HTTP API 接口，你首先想到的工具是什么？是 GUI 版 HTTP 客户端 Postman，还是命令行 curl，亦或是直接浏览器即可。
-本文介绍一款更人性化的 HTTP 客户端命令 - httpie ，它比 curl 更易于使用。
-我们提前预览它的一些超强特性和效果吧。
-安装 # brew install httpie 快手开始 # 最简单的使用案例，快速发起 GET 和 POST 请求。
-GET 请求：
-http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
-http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
-http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 &amp;lt;space&amp;gt; 便可直接使用：</description></item><item><title>ripgrep - 更高效的文件搜索</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</guid><description>ripgrep # ripgrep 是一款文本搜索命令，功能与 grep 类似。和 fd 之于 find 一样，ripgrep 在体验和性能上同样完胜 grep。
+隐藏文件和 .gitinogre # fd 搜索效率高的一个原因是它默认不查找隐藏文件和 gitignore 文件。</description></item><item><title>HTTPie - 人性化 HTTP 客户端</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 作为程序员，如果你要快速调试 HTTP 接口，首先想到的工具是什么？GUI 版 HTTP 客户端 Postman？命令行 curl？还是使用浏览器？不知道你是否抱怨过，如 curl 的很多传统命令基本都存在一个问题：虽然功能强大，但用户体验极差，基本不考虑使用者的感受。
+本文介绍一款意外丢失 54k star，不到两年重获 34k 的 HTTP 客户端命令 - HTTPie ，它比 curl 更易于使用，是一款注重用户体验的 HTTP 客户端命令。
+一个趣事 # 先说关于 HTTPie 的 star 数的一个趣事：
+2022 年，由于 HTTPie 的作者出现了一次误操作，将仓位设为私有，导致 HTTPie 的 star 直接清零。经历了两年时间，如今重新恢复到 36k star。
+当时，HTTPie 官方还写了一篇博客，专门反思了这次的事故，查看博客： How We Lost 54k stars。
+为什么推荐 HTTPie # HTTPie 的哲学是使 API 测试和调试变得直观友好，相比传统命令行工具（如 curl 和 wget），它提供了更丰富的功能和更易读的输出。
+来自官方的示例：
+首先是，它的命令行语法直观易懂，如发送 GET 请求只需 http GET &amp;lt;URL&amp;gt;，而 POST 请求则是 http POST &amp;lt;URL&amp;gt; &amp;lt;body&amp;gt;，这比 curl 的命令行参数更易于理解和记忆。</description></item><item><title>ripgrep - 更高效的文件搜索</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</guid><description>ripgrep # ripgrep 是一款文本搜索命令，功能与 grep 类似。和 fd 之于 find 一样，ripgrep 在体验和性能上同样完胜 grep。
 安装 # brew install ripgrep 递归 # ripgrep 的默认行为也是递归搜索，命令为 rg pattern，且默认高亮显示，与 grep --color main . -nR 对比，明显更加简洁易用，体验更好。
 示例效果：
 指定目录 # ripgrep 最后的参数即可指定搜索的目录。
