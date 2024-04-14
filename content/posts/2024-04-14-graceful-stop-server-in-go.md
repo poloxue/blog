@@ -6,6 +6,8 @@ comment: true
 description: "Go 中如何实现优雅停止呢？本文将从 Go 的优雅实现中抽象出一般思路。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-14-grace-stop-server-in-golang-01.png)
+
 和其他语言相比，Go 中有相同也有不同，相同的是实现思路上和其他语言没啥差异，不同在于 Go 采用的是 goroutine + channel 的并发模型，与传统的进程线程相比，实现细节上存在差异。
 
 本文将从实际场景和它的一般实现方式展开，逐步讨论这个话题。
