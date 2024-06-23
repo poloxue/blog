@@ -45,14 +45,12 @@ jobs:
       - name: Build gofyne
         run: |
           cd gofyne
-          hugo mod get
           hugo --minify
           cd ..
 
       - name: Build mytermenv
         run: |
           cd mytermenv
-          hugo mod get
           hugo --minify
           cd ..
 
