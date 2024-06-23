@@ -1,4 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 13 May 2024 16:23:09 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>一个 Python 轻量级交易图表库 - lightweight-charts-python</title><link>https://www.poloxue.com/posts/2024-05-10-lightweight-charts-python/</link><pubDate>Mon, 13 May 2024 16:23:09 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-05-10-lightweight-charts-python/</guid><description>今天这篇可能有点跨域了，其实这段时间，我一直在做交易。如果大家对自动化交易感兴趣，我也有很多内容可以写。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 23 Jun 2024 20:15:17 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>谈谈加密货币市场上的资金费率套利</title><link>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</link><pubDate>Sun, 23 Jun 2024 20:15:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</guid><description>不同市场可以制定不同的交易策略。
+在加密货币市场中，我基本围绕一个思路展开交易：通过套利控制回撤，即使是震荡行情也能让我能平静赚些许收益，耐心等待高收益趋势策略的入场条件。于是，找到合适的低风险套利策略，就变得很重要，因为这决定了我等待大趋势的耐心程度。
+今天，我首先想分享的套利策略是资金费率套利。
+资金费率套利是一种基于加密货币市场特有的永续合约（Perpetual Contract）来实现的巧妙赚取收益的策略。
+本文将介绍什么是资金费率、它的影响因素、基于它的套利思路、一些简单的操作方法等。
+什么是资金费率? 资金费率是一种存在于币圈永续合约中的独特机制。
+永续合约是一种没有到期日期的衍生品合约，最早是由 BitMEX 推出。由于永续合约不同于交割合约，没有到期日按现货价格交割的机制，为了保证它的价格与现货价格保持一致，交易所引入了资金费率机制。它的作用是平衡市场上的买卖力量。
+简单化理解资金费用：当市场上买单多于卖单时，多头需要支付资金费率给空头，反之亦然。资金费率的高低取决于市场需求和供给的关系。
+实际运作时，每隔一段时间（通常是每 8 小时），交易所会计算出一个资金费率，并在多空之间转移资金费。
+举例来说，假设你在某交易所开设了一个 10 个比特币（BTC）的多头永续合约仓位，如果当前资金费率为 0.05%，则下一个 8 小时结算时，你需要支付 10 BTC * 0.05% = 0.005 BTC 的资金费用给空方。
+这个机制就是我们实施套利的基本前提。
+注意，资金费用 = 仓位价值 * 资金费率，而仓位价值一般是基于 Mark Price 计算的，本文重点在资金费率，计算资金费用时会假设 mark price 不变，忽略价格的影响。
+资金费率的计算因子 在正式介绍资金费率套利策略前，先说下资金费率的影响因子。
+不同交易所的资金费率在公式实现上或有些许差异，但主要影响因素有两个：无风险利率和溢价指数。
+无风险利率：无风险利率是指在不承担任何风险的情况下可以获得的收益率，通常基于国家发行的短期债券利率。在加密货币交易所中，或是主要与数字货币的借贷利率相关。
+溢价指数：溢价指数反映了永续合约价格与现货价格之间的差异。当永续合约价格高于现货价格时，溢价为正，反之亦然。溢价指数直接影响资金费率，因为它反映了市场参与者的预期。
+某种意义上，资金费率套利就是通过捕捉无风险利率和期现价差来实现收益的一种方式。这看起来似乎有点是同时把质押借贷和期现套利的钱赚了。
+如果对公式有兴趣，我常用的三个交易所资金费率计算公式文档如下：
+Bybit - Introduction to Funding Rate； OKX - Funding fee Mechanism Binance - Introduction to Binance Futures Funding Rates 基于资金费率的套利思路 什么是资金费率套利策略呢？
+前面的案例，空方虽然赚了 0.</description></item><item><title>一个 Python 轻量级交易图表库 - lightweight-charts-python</title><link>https://www.poloxue.com/posts/2024-05-10-lightweight-charts-python/</link><pubDate>Mon, 13 May 2024 16:23:09 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-05-10-lightweight-charts-python/</guid><description>今天这篇可能有点跨域了，其实这段时间，我一直在做交易。如果大家对自动化交易感兴趣，我也有很多内容可以写。
 这两天发现一个可在 Python 显示交易图表的库，名为 lightweight-charts-python。顾名思义，它是基于 tradingview 轻量级库 lightweight-charts 开发而来。
 TradingView 是一款非常流行的交易行情分析软件，而 lightweight-charts 是它提供的精简版 Js 开源库。因为 TradingView 本身就是一款专注交易的软件，lightweight-charts 有这高性能和用户体验友好的特点。
 它的实现是 Python 通过 webview 集成 lightweight-charts 开发而来的库，使用 Python 的小伙伴无需学习 Javascript 也能使用 lightweight-charts 了。
