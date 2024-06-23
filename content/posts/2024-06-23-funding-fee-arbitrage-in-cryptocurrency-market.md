@@ -1,7 +1,7 @@
 ---
 title: "谈谈加密货币市场上的资金费率套利"
 date: 2024-06-23T20:15:17+08:00
-draft: true
+draft: false
 comment: true
 description: "资金费率套利是一种基于加密货币市场特有的永续合约（Perpetual Contract）来实现的巧妙赚取收益的策略。"
 ---
