@@ -85,7 +85,7 @@ description: "资金费率套利是一种基于加密货币市场特有的永续
 
 这个策略的重点是基于对品种的把控，必须是长期上涨的品种，如 BTC。我的策略就是长期有稳定资金费率的合约。
 
-我收集了 binance 历史上的资金费率数据，简单绘制了 BTCUSDT 的资金费率。
+我收集了 binance 历史上的资金费率数据并简单绘制了它的 BTCUSDT 资金费率曲线图，如下所示。
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-06/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market-02.png)
 
