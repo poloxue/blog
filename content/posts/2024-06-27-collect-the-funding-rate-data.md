@@ -51,6 +51,36 @@ description: "在上一篇博文中，我介绍了永续合约资金费率套利
 
 Binance的正向合约和反向合约需要分别调用不同的API，这是对接时要注意的点。为了简化API对接，我将使用Python的第三方包ccxt来连接不同的交易所。
 
+安装（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+（已有 Python 环境）：
+
+```bash
+pip install ccxt
+```
+
 我们只需通过ccxt提供的`fetch_funding_rate_history`方法调用上述API文档中的接口。以下是使用API从Binance下载资金费率数据，以永续合约BTCUSDT为例。
 
 ```python
