@@ -65,7 +65,7 @@ print(funding_rates)
 
 输出数据包含多个时间点的资金费率数组，如下所示：
 
-```json
+```bash
 [
   {
     'info': {'symbol': 'BTCUSDT', 'fundingTime': '1716624000000', 'fundingRate': '0.00010000', 'markPrice': '68775.00000000'}, 
