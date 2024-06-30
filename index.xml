@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 23 Jun 2024 20:15:17 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>谈谈加密货币市场上的资金费率套利</title><link>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</link><pubDate>Sun, 23 Jun 2024 20:15:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</guid><description>不同市场可以基于不同的交易策略获利。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 01 Jul 2024 03:57:08 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>永续合约资金费率数据的搜集</title><link>https://www.poloxue.com/posts/2024-06-27-collect-the-funding-rate-data/</link><pubDate>Mon, 01 Jul 2024 03:57:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-27-collect-the-funding-rate-data/</guid><description>永续合约资金费率数据的收集 在上一篇博文中，我介绍了永续合约资金费率套利的原理。任何一个交易策略如果想要长期使用，必须挖掘和分析它在不同行情下的表现，而这一过程离不开获取历史数据。
+本文将重点介绍如何收集资金费率数据。
+交易所页面 资金费率是由每家交易所计算的，因此，最先想到的数据来源自然是交易所本身。
+早期，交易所只提供最新的资金费率，过期数据无法获取。然而，随着资金费率套利的增多，交易所开始提供全量或近几个月的资金费率数据供用户下载。
+如下图所示，Binance交易页实时计算的下一次资金费率：
+这个值并不是固定的，随着行情变化会有所波动。它只是预测下一次的资金费率，而非历史数据。
+那么如何获取历史数据呢？
+以Binance为例，它提供了一个可以查看和下载全量资金费率历史数据的页面，访问 Funding Rate History。
+如下图所示，我们只需点击右上角的 &amp;ldquo;Save as CSV&amp;rdquo; 即可下载所有数据：
+其他交易所的获取方式也基本一致，如Bybit和OKX，它们也提供了类似的历史资金费率页面。
+Bybit - Funding Rate History，Bybit和Binance一样，提供全量数据下载。 OKX - Funding Rate History，OKX只提供近三个月的数据，无法下载全量数据，这是一个缺点。 对于数据分析而言，从页面下载已经足够。如果是实盘交易，则需要借助交易所的API，实时分析历史数据和获取下一次的资金费率。
+交易所的API接口 接下来介绍如何通过API获取资金费率。这需要你至少了解一种编程语言，如Python，并且能够调用交易所API。
+以下是三个主流交易所的资金费率API文档：
+Binance Coin-M - Funding Rate History API Binance USDⓈ-M - Funding Rate History API Bybit - Funding Rate History API OKX - Funding Rate History API Binance的正向合约和反向合约需要分别调用不同的API，这是对接时要注意的点。为了简化API对接，我将使用Python的第三方包ccxt来连接不同的交易所。
+我们只需通过ccxt提供的fetch_funding_rate_history方法调用上述API文档中的接口。以下是使用API从Binance下载资金费率数据，以永续合约BTCUSDT为例。
+1 2 3 4 5 import ccxt binance = ccxt.</description></item><item><title>谈谈加密货币市场上的资金费率套利</title><link>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</link><pubDate>Sun, 23 Jun 2024 20:15:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</guid><description>不同市场可以基于不同的交易策略获利。
 在加密货币市场中，我基本围绕一个思路展开交易：通过套利控制回撤，即使是震荡行情也能让我能平静赚些许收益，耐心等待高收益趋势策略的入场条件。于是，找到合适的低风险套利策略，就变得很重要，因为这决定了我等待大趋势的耐心程度。
 今天，我首先想分享的套利策略是资金费率套利。
 资金费率套利是一种基于加密货币市场特有的永续合约（Perpetual Contract）来实现的巧妙赚取收益的策略。
