@@ -12,8 +12,8 @@ Bybit - Funding Rate History，Bybit和Binance一样，提供全量数据下载�
 交易所的API接口 接下来介绍如何通过API获取资金费率。这需要你至少了解一种编程语言，如Python，并且能够调用交易所API。
 以下是三个主流交易所的资金费率API文档：
 Binance Coin-M - Funding Rate History API Binance USDⓈ-M - Funding Rate History API Bybit - Funding Rate History API OKX - Funding Rate History API Binance的正向合约和反向合约需要分别调用不同的API，这是对接时要注意的点。为了简化API对接，我将使用Python的第三方包ccxt来连接不同的交易所。
-我们只需通过ccxt提供的fetch_funding_rate_history方法调用上述API文档中的接口。以下是使用API从Binance下载资金费率数据，以永续合约BTCUSDT为例。
-1 2 3 4 5 import ccxt binance = ccxt.binanceusdm() funding_rates = binance.</description></item><item><title>谈谈加密货币市场上的资金费率套利</title><link>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</link><pubDate>Sun, 23 Jun 2024 20:15:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</guid><description>不同市场可以基于不同的交易策略获利。
+安装（已有 Python 环境）：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash （已有 Python 环境）： ```bash pip install ccxt 我们只需通过ccxt提供的fetch_funding_rate_history方法调用上述API文档中的接口。以下是使用API从Binance下载资金费率数据，以永续合约BTCUSDT为例。</description></item><item><title>谈谈加密货币市场上的资金费率套利</title><link>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</link><pubDate>Sun, 23 Jun 2024 20:15:17 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market/</guid><description>不同市场可以基于不同的交易策略获利。
 在加密货币市场中，我基本围绕一个思路展开交易：通过套利控制回撤，即使是震荡行情也能让我能平静赚些许收益，耐心等待高收益趋势策略的入场条件。于是，找到合适的低风险套利策略，就变得很重要，因为这决定了我等待大趋势的耐心程度。
 今天，我首先想分享的套利策略是资金费率套利。
 资金费率套利是一种基于加密货币市场特有的永续合约（Perpetual Contract）来实现的巧妙赚取收益的策略。
