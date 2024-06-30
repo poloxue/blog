@@ -54,30 +54,6 @@ Binance的正向合约和反向合约需要分别调用不同的API，这是对�
 安装（已有 Python 环境）：
 
 ```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
-（已有 Python 环境）：
-
-```bash
 pip install ccxt
 ```
 
