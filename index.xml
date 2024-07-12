@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 01 Jul 2024 03:57:08 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>永续合约资金费率数据的搜集</title><link>https://www.poloxue.com/posts/2024-06-27-collect-the-funding-rate-data/</link><pubDate>Mon, 01 Jul 2024 03:57:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-27-collect-the-funding-rate-data/</guid><description>在上一篇博文中，我介绍了永续合约资金费率套利的原理。任何一个交易策略如果想要长期使用，必须挖掘和分析它在不同行情下的表现，而这一过程离不开历史数据的收集。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 12 Jul 2024 18:10:16 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Akshare 下载国内的期货（主力连续）、股票和指数数据</title><link>https://www.poloxue.com/posts/2024-07-12-download-quote-data-in-china-market/</link><pubDate>Fri, 12 Jul 2024 18:10:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-12-download-quote-data-in-china-market/</guid><description>本文介绍如何使用 akshare 下载国内期货、股票和指数的历史行情数据。
+Akshare 是一个丰富的金融数据查询的 Python 库，提供了大量的金融数据接口。本文将详细介绍如何使用 Akshare 下载期货、股票和指数数据，并提供完整的代码示例，以求大家能快速拿到数据少走弯路。
+期货合约主要是主力连续合约的历史行情数据下载，并于进行回测分析使用。
+安装 Akshare 请确保已安装 Akshare，如下命令安装：
+1 pip install akshare 了解它的更多数据，可查看它的文档：akshare documentation
+下载期货数据 我使用 akshare 的重要原因就是它提供了下载期货的主力或连续合约的历史数据。开始我想 tushare 实现，映射每天的主力合约并对应获取其历史数据和拼接，这个过程本身就比较繁琐。再就是 tushare 的频率限制严重，测试几次就没有额度了。
+akshare 中的主力和连续合约的数据是从新浪财经下载的，它的 symbol 名称与标准的是不一致的，不过可以通过函数 futures_display_main_sina 拿到映射关系。具体我不演示了，我搞了一份表格，便于我平时查看。
+如需查看，可访问 期货名称关系表格。
+有了主力和连续合约的 symbol 名称，就可以使用 futures_main_sina 函数下载历史数据。
+1 2 3 4 data = aks.futures_main_sina( symbol=&amp;#34;C0&amp;#34;, start_date=&amp;#34;20230101&amp;#34; ) 如上的 C0 表示的是玉米主力合约。
+我们可以定义一个函数，参数接受 symbol 名称和长度，输出结果其转换为易读的格式。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 def future_history_bar(symbol, length=100): start_date = datetime.</description></item><item><title>永续合约资金费率数据的搜集</title><link>https://www.poloxue.com/posts/2024-06-27-collect-the-funding-rate-data/</link><pubDate>Mon, 01 Jul 2024 03:57:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-06-27-collect-the-funding-rate-data/</guid><description>在上一篇博文中，我介绍了永续合约资金费率套利的原理。任何一个交易策略如果想要长期使用，必须挖掘和分析它在不同行情下的表现，而这一过程离不开历史数据的收集。
 本文将重点介绍如何收集资金费率的历史数据。
 交易所页面 资金费率是由每家交易所计算的，因此，最先想到的数据来源自然是交易所本身。
 早期，交易所只提供最新的资金费率，过期数据无法获取。然而，随着资金费率套利的增多，交易所开始提供全量或近几个月的资金费率数据供用户下载。
