@@ -233,7 +233,28 @@ print(data)
 
 通过以上代码，现在就有了轻松下载股票、指数和期货历史数据的能力。这为数据分析提供了有力的支持。
 
-完成代码请查看 [hist_data.py](https://gist.github.com/poloxue/a913534bc92c7fb29f0ffab5647a8ab3)。
+`history_bars` 的代码请查看 [hist_data.py](https://gist.github.com/poloxue/a913534bc92c7fb29f0ffab5647a8ab3)。
+
+现在有了数据，就可以实现任何其他我们像实现的事情，如计算指标发送告警，绘制图表，如果有交易 API 接口，可直接报单，不过这个前提是有了好的策略。
+
+## 指标计算
+
+简单演示下指标计算，如 rsi 上穿 30 可能表示短期价格有反弹，就可以发个报警，增加对这个标的的观察。
+
+指标计算可用 talib 实现，如下所示：
+
+```python
+import talib
+data = history_bar("000001", length=100, equity_type="stock")
+rsi = talib.RSI(data['close'].values)
+
+rsi0 = rsi[-1]
+rsi1 = rsi[-2]
+
+crossover = rsi0 > 30 and rsi1 < 30
+if crossover:
+  print("触发报警条件")
+```
 
 希望本文对您有所帮助。如果有任何问题或建议，欢迎随时联系我。
 
