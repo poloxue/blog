@@ -28,7 +28,7 @@ pip install akshare
 
 akshare 中的主力和连续合约的数据是从新浪财经下载的，它的 symbol 名称与标准的是不一致的，不过可以通过函数 `futures_display_main_sina` 拿到映射关系。具体我不演示了，我搞了一份表格，便于我平时查看。
 
-如需查看，可访问 [期货名称关系表格](https://gist.github.com/poloxue/89395ef4001f244c4ad872ea9cfa1cb8)。
+如需查看，可访问 [新浪期货名称关系表格](https://gist.github.com/poloxue/89395ef4001f244c4ad872ea9cfa1cb8)。
 
 有了主力和连续合约的 symbol 名称，就可以使用 `futures_main_sina` 函数下载历史数据。
 
