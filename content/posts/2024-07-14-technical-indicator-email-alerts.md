@@ -230,7 +230,45 @@ if alerts.iloc[-1] < 50:
     send_email("告警！", message, "to_email@163.com")
 ```
 
-注意将以上的邮件地址和授权码替换为真实的即可。现在，我们就可以实现对基于技术指标的告警配置，还能通过邮件接收告警信息。
+注意将以上的邮件地址和授权码替换为真实的即可。
+
+## 定时执行
+
+现在，我们只要配置脚本的定时执行即可，可以使用 python 的 schedule 包，或是在 Linux
+ 系统上，直接通过 Crontab 配置定时任务。
+
+演示案例：如配置周一到周五，每天9点检查并告警。
+
+如果使用 scheduler，要讲如上的过程封装下便于调用。
+
+```python
+import time
+import datetime
+from scheduler import Scheduler
+
+
+def indicator_alerts():
+  # 你的检测代码
+
+# 配置周一到周五的早上九点执行任务
+schedule.every().monday.at("09:00").do(indicator_alerts)
+schedule.every().tuesday.at("09:00").do(indicator_alerts)
+schedule.every().wednesday.at("09:00").do(indicator_alerts)
+schedule.every().thursday.at("09:00").do(indicator_alerts)
+schedule.every().friday.at("09:00").do(indicator_alerts)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+```
+
+如果是 Crontab，直接配置定时任务即可，如下所示：
+
+```python
+0 9 * * 1-5 python your_script.py
+```
+
+现在，我们就可以实现对基于技术指标的告警配置，还能通过邮件接收告警信息。
 
 最后，希望这篇文章对你有所帮助。如果有任何问题或建议，欢迎留言讨论。
 
