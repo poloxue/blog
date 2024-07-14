@@ -34,7 +34,7 @@ df.to_csv("index_000001.csv", index=False)
 
 python 的指标计算库有如 talib、pandas-ta、ta 等等，其中 talib 最出名，支持超过 150 中技术指标，由 C 语言实现，性能更高。我将使用的就是 talib。
 
-TA-Lib 的安装要提前安装依赖的动态库，参考 [TA-Lib 官方文档](https://ta-lib.github.io/ta-lib-python/install.html)。我简单展开说说不同操作系统的安装方法吧。
+TA-Lib 的安装要提前安装依赖的动态库，参考 [TA-Lib 官方文档](https://ta-lib.github.io/ta-lib-python/install.html)。我简单展开说说不同操作系统下依赖库的安装方法吧。
 
 **macOS**
 
@@ -65,11 +65,13 @@ Windows 上下载 [ta-lib-0.4.0-msvc.zip](https://prdownloads.sourceforge.net/ta
 
 **pip install**
 
-在依赖库安装完成后，如下命令 pip 安装 TA-Lib 即可：
+在依赖库安装完成后，直接 pip 即可安装 TA-Lib。
 
 ```bash
 pip install ta-lib
 ```
+
+到此，TA-Lib 就安装成功了。有不少人开始入手指标计算的时候，都被 TA-Lib 的安装给卡住了，希望以上的介绍对你有用。
 
 ## 指标计算与告警
 
