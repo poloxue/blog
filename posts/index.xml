@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 14 Jul 2024 18:53:16 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是非常重要的。
 市面上有不少的付费软件支持这个能力，如果你可以使用 TradingView，它的免费版也可以做到，缺点是缺少国内期货品种。我是不想花钱的，秉承着自己动手，丰衣足食，毕竟小散户不是大机构。
 本文将基于开源数据方案，通过 Python 一套免费的方案，编写指标告警并将其发送到邮件。我将利用 akshare 获取历史行情数据，使用 TA-Lib 计算技术指标。
-接下来将按照这个流程逐步展开介绍。 ## 数据下载
-在上一篇文章中，我们介绍了如何使用 akshare 下载国内期货、股票和指数的历史行情。假设，我们已经下载了数据，将其存储在一个 DataFrame 中。
+接下来将按照这个流程逐步展开介绍。
+数据下载 在上一篇文章中，我们介绍了如何使用 akshare 下载国内期货、股票和指数的历史行情。假设，我们已经下载了数据，将其存储在一个 DataFrame 中。
 如下是上证指数 000001 的数据下载，我们可直接使用上篇文章的 history_bars 方法，并将数据保存到 index_000001.csv 文件中。
 1 2 3 # 下载上证指数的历史行情数据 df = history_bars(symbol=&amp;#34;000001&amp;#34;, length=100) df.to_csv(&amp;#34;index_000001.csv&amp;#34;, index=False) 我提前下载行情是为了防止重复调用产生可能的网络问题，把行情查询和指标计算分离，提高报警程序稳定性。
 安装 TA-Lib 库 现在可以开始计算指标了。
