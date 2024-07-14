@@ -134,7 +134,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 def send_email(subject, body, to_email):
-    from_email = 'your_email@example.com'
+    from_email = 'your_email@163.com'
     from_password = 'your_email_password' # smtp 的授权码
 
     msg = MIMEText(body)
@@ -152,7 +152,7 @@ def send_email(subject, body, to_email):
 
 
 ```python
-send_email("你好", "测试邮件", "poloxue123@163.com")
+send_email("你好", "测试邮件", "to_email@163.com")
 ```
 
 万事具备，我们现在可以发送告警信息了。
@@ -207,7 +207,7 @@ PASSWORD = "your_email_password"
 
 
 def send_email(subject, body, to_email):
-    from_email = "your_email@example.com"
+    from_email = "your_email@163.com"
     from_password = PASSWORD
 
     msg = MIMEText(body)
@@ -215,7 +215,7 @@ def send_email(subject, body, to_email):
     msg["From"] = from_email
     msg["To"] = to_email
 
-    server = smtplib.SMTP_SSL("smtp.example.com", 465)
+    server = smtplib.SMTP_SSL("smtp.163.com", 465)
     server.login(from_email, from_password)
     server.sendmail(from_email, [to_email], msg.as_string())
     server.quit()
@@ -227,10 +227,10 @@ if alerts.iloc[-1] < 50:
     last_rsi = df["RSI"].iloc[-1]
     last_upperband = df["upperband"].iloc[-1]
     message = f"告警！RSI：{last_rsi}，收盘价：{last_close}，上轨：{last_upperband}"
-    send_email("告警！", message, "to_email@example.com")
+    send_email("告警！", message, "to_email@163.com")
 ```
 
-通过以上步骤，我们可以实现对基于技术指标的告警配置，还能通过邮件接收告警信息。
+注意将以上的邮件地址和授权码替换为真实的即可。现在，我们就可以实现对基于技术指标的告警配置，还能通过邮件接收告警信息。
 
 最后，希望这篇文章对你有所帮助。如果有任何问题或建议，欢迎留言讨论。
 
