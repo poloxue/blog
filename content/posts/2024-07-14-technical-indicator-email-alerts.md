@@ -61,7 +61,7 @@ $ sudo make install
 
 Windows 上下载 [ta-lib-0.4.0-msvc.zip](https://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-msvc.zip) 文件，并将其解压到 `C:\ta-lib`。
 
-我记得 windows 上也是可以直接下载 wheel 文件。
+我记得 windows 上也是可以直接下载 wheel 文件安装 ta-lib，我很早之前使用 windows 就是通过这种方式安装的。
 
 **pip install**
 
