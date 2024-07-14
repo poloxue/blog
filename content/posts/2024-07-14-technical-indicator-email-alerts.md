@@ -106,7 +106,7 @@ df['SMA_50'] = talib.SMA(df['close'], timeperiod=50)
 df['SMA_200'] = talib.SMA(df['close'], timeperiod=200)
 ```
 
-基本在市面上常见的指数指标在 TA-Lib 中都可以找到，查看[它的指标函数](https://ta-lib.github.io/ta-lib-python/funcs.html)。
+基本在市面上常见的指数指标在 TA-Lib 中都可以找到，查看它的 [指标函数列表](https://ta-lib.github.io/ta-lib-python/funcs.html)。
 
 有了指标后，开始定义报警条件。我为了演示，定义 RSI 和布林带的告警条件为常用的超买信号，即 RSI 大于 70 和收盘价大于布林带上轨为报警条件。
 
