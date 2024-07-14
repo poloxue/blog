@@ -117,7 +117,9 @@ rsi_alerts = df['RSI'] > 70  # RSI 超过 70
 bollinger_alerts = df['close'] > df['upperband']  # 收盘价超过上轨
 ```
 
-有了两条告警后，设置为每天收盘后运行，决定第二天是否交易。也或许，你希望收盘临近时检测，从而在收盘前提前入场，不过这个前提是要能获取到实时行情，akshare 中也提供了这样的接口，可查看它的 [接口列表](https://akshare.akfamily.xyz/tutorial.html) 查找。
+有了两条告警后，设置为每天收盘后运行，决定第二天是否交易。
+
+或许，你希望收盘临近时检测，从而在收盘前提前入场，不过这个前提是要能获取到实时行情，akshare 中也提供了这样的接口，可查看它的 [接口列表](https://akshare.akfamily.xyz/tutorial.html) 查找。
 
 ## 发送告警信息
 
