@@ -124,7 +124,7 @@ bollinger_alerts = df['close'] > df['upperband']  # 收盘价超过上轨
 告警规则有了，将信息发送到我们就变得非常重要了，我选择的发送到邮件。我将其封装消息发送函数。
 
 ```python
-send_email(title, body, send_to)
+send_email(title, body, to_email)
 ```
 
 使用 Python 的 smtplib 库可以轻松发送邮件。当然，你需要提前开始 smtp 支持，如 163 邮箱，登录到邮箱的设置页 -> POP3/SMTP/IMAP，启用 POP3/SMTP 服务，会得到一串授权码，而 163 的 smtp 的地址和 SSL 的端口分别是smtp.163.com 和 465。
