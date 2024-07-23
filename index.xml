@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 14 Jul 2024 18:53:16 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是非常重要的。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 23 Jul 2024 17:06:52 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>如何通过 Python 将日线行情转为周线</title><link>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</link><pubDate>Tue, 23 Jul 2024 17:06:52 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</guid><description>将低周期的蜡烛图转换为长周期蜡烛图是一种常见的需求，如分钟线到小时线、日线到周线，这可以帮我们更好观察和分析图表。或许，你用的行情图表软件或数据提供商都会提供多周期的数据。
+今天，我将介绍如何通过 Python 实现这个需求，以日线转为周线为例。
+基础思路 蜡烛图可以按不同时间周期，如分钟、小时、日、周和月。在转换前，先了解下蜡烛图的基本结构。
+每根蜡烛表示一个时间段内的价格信息，包含四个关键数据：
+开盘价（Open）：该时间段的第一个交易价格。 收盘价（Close）：该时间段的最后一个交易价格。 最高价（High）：该时间段内的最高交易价格。 最低价（Low）：该时间段内的最低交易价格。 如何将日线数据转换为周线数据？我们只要按每周的数据重新计算开盘价、收盘价、最高价和最低价即可。
+规则如下：
+开盘价（Open）：每周的开盘价是该周第一个交易日的开盘价。 收盘价（Close）：每周的收盘价是该周最后一个交易日的收盘价。 最高价（High）：每周的最高价是该周所有交易日中的最高价。 最低价（Low）：每周的最低价是该周所有交易日中的最低价。 有了基本思路，现在让我们来实现吧。我将通过 Python 的数据处理库 pandas 实现这个需求。
+转换为周线数据 我直接用 tushare 下载南华期货指数的日线数据，这个数据 tushare 上没有提供周线行情。
+南华连玉米指数行情下载，如下所示：
+1 2 3 4 import tushare as ts pro = ts.pro_api() df = pro.index_daily(&amp;#34;C.NH&amp;#34;) 使用 Python 的 Pandas 库即可轻松实现这一转换。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import pandas as pd # 将日期列转换为日期时间类型 df[&amp;#39;trade_date&amp;#39;] = pd.</description></item><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是非常重要的。
 市面上有不少的付费软件支持这个能力，如果你可以使用 TradingView，它的免费版也可以做到，缺点是缺少国内期货品种。我是不想花钱的，秉承着自己动手，丰衣足食，毕竟小散户不是大机构。
 本文将基于开源数据方案，通过 Python 一套免费的方案，编写指标告警并将其发送到邮件。我将利用 akshare 获取历史行情数据，使用 TA-Lib 计算技术指标。
 接下来将按照这个流程逐步展开介绍。
