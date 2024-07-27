@@ -34,6 +34,8 @@ pip install akshare
 
 我使用 akshare 的重要原因就是它提供了下载期货的主力或连续合约的历史数据。开始我想 tushare 实现，映射每天的主力合约并对应获取其历史数据和拼接，这个过程本身就比较繁琐。再就是 tushare 的频率限制严重，测试几次就没有额度了。
 
+> 注：tushare 其实也有主力和连续合约的数据，且数据质量更高。
+
 akshare 中的主力和连续合约的数据是从新浪财经下载的，它的 symbol 名称与标准的是不一致的，不过可以通过函数 `futures_display_main_sina` 拿到映射关系。具体我不演示了，我搞了一份表格，便于我平时查看。
 
 如需查看，可访问 [新浪期货名称关系表格](https://gist.github.com/poloxue/89395ef4001f244c4ad872ea9cfa1cb8)。
