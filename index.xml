@@ -1,4 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 08 Sep 2024 11:30:27 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>期权备兑策略介绍与通过 Python 绘制收益图</title><link>https://www.poloxue.com/posts/2024-09-08-covered-call-strategy-in-python/</link><pubDate>Sun, 08 Sep 2024 11:30:27 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-08-covered-call-strategy-in-python/</guid><description>译文原文 - Covered Call Strategy in Python 本文介绍备兑期权（covered calls）策略，一个交易者员常用的策略。期权交易看起来复杂，常常使新手却步。然而，一旦正确掌握了，就会变得简单易懂。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 20 Sep 2024 11:43:05 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Python 三方库 Opstrat 绘制收益图加深期权策略理解</title><link>https://www.poloxue.com/posts/2024-09-09-visualizing-option-strategy-using-python/</link><pubDate>Fri, 20 Sep 2024 11:43:05 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-09-visualizing-option-strategy-using-python/</guid><description>本文介绍介绍一个 Python 包- opstrat，通过它绘制期权收益图，帮助我们理解期权策略的收益风险比。
+什么是期权收益图？ 期权收益图展示了某个期权或期权组合的盈亏情况，如下图中，展示一张标的现价 100，行权价 102 的看涨期权合约。
+这种图表是理解风险与收益的重要工具，尤其是在期权的交易结构中，通过这些图表可以直观地看到交易的潜在利润与风险区间。
+Opstrat Opstrat 是一个 Python 工具包，它提供了便捷的方法来可视化期权交易策略，无需复杂的编程知识。通过这个工具，交易者能够快速构建单个期权或者多个期权组合的收益图。
+安装 你可以通过以下命令安装 Opstrat：
+1 pip install opstrat 该包会自动安装所需的依赖库，包括 pandas、matplotlib、seaborn 和 yfinance，这些都是用来处理数据和绘图的库。
+使用 Opstrat 进行期权可视化 安装完成后，你可以通过如下方式导入该包：
+1 import opstrat as op 接下来，我们将展示如何使用 opstrat 绘制各种期权策略的收益图。
+绘制单个期权的收益图 要绘制单个期权的收益图，你可以使用 single_plotter() 函数。
+如绘制一张默认的看涨期权收益图：
+1 op.single_plotter() 默认生成一个看涨期权的收益图，现价为 100 元，行权价为 102 元。
+如下图所示：
+自定义单腿期权 通过提供参数，你可以自定义这个图表。例如，假设交易者卖出了行权价为 400 元的看跌期权，并收取了 12 元的期权费。以下代码将生成该卖出期权的收益图：
+1 op.single_plotter(spot=400, strike=400, op_type=&amp;#39;p&amp;#39;, tr_type=&amp;#39;s&amp;#39;, op_pr=12) 如下图：
+这个图表显示不同价格水平下的潜在盈利或亏损。tr_type 参数 s 表示 short 空这张 PUT 期权，如果为 b 表示是 buy。</description></item><item><title>期权备兑策略介绍与通过 Python 绘制收益图</title><link>https://www.poloxue.com/posts/2024-09-08-covered-call-strategy-in-python/</link><pubDate>Sun, 08 Sep 2024 11:30:27 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-08-covered-call-strategy-in-python/</guid><description>译文原文 - Covered Call Strategy in Python 本文介绍备兑期权（covered calls）策略，一个交易者员常用的策略。期权交易看起来复杂，常常使新手却步。然而，一旦正确掌握了，就会变得简单易懂。
 本博客中，我们将学习备兑期权策略的基础知识，并获取实用且易于理解的见解。我们还将讨论在 Python 中如何实现备兑期权策略，实现通过 Python 实现策略的可视化。这个过程中，我们将强调实践，同时确保深度，让每个部分能被理解。无论是希望拓展交易知识的新手，还是想要优化策略的老手，希望这篇博客都能对你有所帮助。
 期权交易概述 期权交易涉及到期权合约，这些合约赋予持有人在某个时间内以设定价格买入或卖出某项资产的权利，但不具备买卖的义务。期权有两种类型，即看涨期权和看跌期权。
 看涨期权：持有该期权的人有权（但无义务）在到期时以预定价格购买某项标的资产或股票。 看跌期权：持有该期权的人有权（但无义务）在到期时以预定价格卖出某项标的资产或股票。 期权交易的其他关键要素包括“多头”和“空头”，这两者指的是交易者在期权市场中的头寸。
