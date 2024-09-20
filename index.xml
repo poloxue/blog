@@ -1,4 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 23 Jul 2024 17:06:52 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>如何通过 Python 将日线行情转为周线</title><link>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</link><pubDate>Tue, 23 Jul 2024 17:06:52 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</guid><description>将低周期的蜡烛图转换为长周期蜡烛图是一种常见的需求，如分钟线到小时线、日线到周线，这可以帮我们更好观察和分析图表。或许，你用的行情图表软件或数据提供商都会提供多周期的数据。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 08 Sep 2024 11:30:27 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>期权备兑策略介绍与通过 Python 绘制收益图</title><link>https://www.poloxue.com/posts/2024-09-08-covered-call-strategy-in-python/</link><pubDate>Sun, 08 Sep 2024 11:30:27 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-08-covered-call-strategy-in-python/</guid><description>译文原文 - Covered Call Strategy in Python 本文介绍备兑期权（covered calls）策略，一个交易者员常用的策略。期权交易看起来复杂，常常使新手却步。然而，一旦正确掌握了，就会变得简单易懂。
+本博客中，我们将学习备兑期权策略的基础知识，并获取实用且易于理解的见解。我们还将讨论在 Python 中如何实现备兑期权策略，实现通过 Python 实现策略的可视化。这个过程中，我们将强调实践，同时确保深度，让每个部分能被理解。无论是希望拓展交易知识的新手，还是想要优化策略的老手，希望这篇博客都能对你有所帮助。
+期权交易概述 期权交易涉及到期权合约，这些合约赋予持有人在某个时间内以设定价格买入或卖出某项资产的权利，但不具备买卖的义务。期权有两种类型，即看涨期权和看跌期权。
+看涨期权：持有该期权的人有权（但无义务）在到期时以预定价格购买某项标的资产或股票。 看跌期权：持有该期权的人有权（但无义务）在到期时以预定价格卖出某项标的资产或股票。 期权交易的其他关键要素包括“多头”和“空头”，这两者指的是交易者在期权市场中的头寸。
+多头期权
+当交易者持有期权的“多头”头寸时，这意味着他们以某个特定的期权费买入期权合约（买入看涨期权或看跌期权）。这意味着交易者可以进行以下操作：
+买入看涨期权：买入标的资产的权利 买入看跌期权：卖出标的资产的权利 空头期权
+相反，当交易者持有期权的“空头”头寸时，意味着他们通过卖出期权合约赚取一定的期权费。这意味着交易者可以进行以下操作：
+卖出看涨期权：卖出标的资产的义务 卖出看跌期权：买入标的资产的义务 要进行期权交易，交易者通常根据市场展望选择策略，分析市场趋势，选择合适的行权价和到期日期，并通过券商平台进行交易，同时了解市场动态和风险管理。
+期权交易策略丰富，如常见的额买卖期权、跨式套利、宽跨式套利等。
+案例 假设你认为目前以每股 50 元交易的 XYZ 公司股票在下个月会涨价。你决定不直接买入股票，而是购买一份 XYZ 公司的看涨期权合约，行权价格为 55 元，合约到期日为一个月后。
+下面是此示例的策略分解：
+操作：你购买一份 XYZ 公司的看涨期权合约。 原因：你预期 XYZ 公司股票价格将会上涨。 购买看涨期权，你要支付了一定的期权费（如每股 2 元，一份合约计 200 元，合约规模 100 股）。这赋予你在到期日前以每股 55 元购买 100 股 XYZ 公司股票的权利，但非义务。
+如果 XYZ 公司的股价在下个月上涨至 55 元以上，你的看涨期权将最大化收益。例如，如果股价上涨至 60 元，你可以行使期权，以 55 元的价格购买股票，然后以市场价 60 元卖出股票，获得每股 5 元的利润（扣除购买期权时支付的期权费）。如果到期时股价未能突破 55 元，你可以让期权失效，只损失所支付的期权费。</description></item><item><title>如何通过 Python 将日线行情转为周线</title><link>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</link><pubDate>Tue, 23 Jul 2024 17:06:52 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</guid><description>将低周期的蜡烛图转换为长周期蜡烛图是一种常见的需求，如分钟线到小时线、日线到周线，这可以帮我们更好观察和分析图表。或许，你用的行情图表软件或数据提供商都会提供多周期的数据。
 今天，我将介绍如何通过 Python 实现这个需求，以日线转为周线为例。
 基础思路 蜡烛图可以按不同时间周期，如分钟、小时、日、周和月。在转换前，先了解下蜡烛图的基本结构。
 每根蜡烛表示一个时间段内的价格信息，包含四个关键数据：
