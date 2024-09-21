@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 18 Sep 2024 13:26:13 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>如何使用 Python Matplotlib 绘制 3D 曲面图</title><link>https://www.poloxue.com/posts/2024-09-18-plot-3d-using-matplotlib-using-python/</link><pubDate>Wed, 18 Sep 2024 13:26:13 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-18-plot-3d-using-matplotlib-using-python/</guid><description>在数据可视化中，3D 图表是一个非常有用的工具，特别是当我们想要展示复杂的三维数据时，如期权的波动率曲面。Python 的 matplotlib 库提供了生成各种类型图表，包括 3D 图表。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 20 Sep 2024 13:37:25 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>跨式期权交易和 Python</title><link>https://www.poloxue.com/posts/2024-09-20-02-straddle-options-strategy-trading-python-and-more/</link><pubDate>Fri, 20 Sep 2024 13:37:25 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-20-02-straddle-options-strategy-trading-python-and-more/</guid><description>译文原文 期权作为一种灵活的工具提供了精准把控市场的可能性。在众多策略中，跨式期权策略有着简单性和潜在的收益最大化的特点。
+跨式期权策略的核心是同时购买相同行权价和到期日的看涨期权和看跌期权。这种双重策略让我们在不确定市场方向时，利用价格大幅波动获利。
+本文将探讨跨式期权策略的原理和工作机制，以及如何用它构建有效的交易策略。本文的目的是提供一个关于跨式期权策略的入门，助你创建自己的跨式期权策略。
+什么是跨式期权策略？ 跨式期权策略的逻辑在于其从市场波动性中获利的能力。当交易者预期标的资产的价格会有显著波动，但不确定价格方向时，该策略就可以派上用场。通过同时持有看涨期权和看跌期权，就可以在价格急剧波动时获利，无论标的资产的最终方向如何。
+跨式期权的组成：看涨期权（Call Option） 和 看跌期权（Put Option）。
+如果标的价格在到期日前有显著的波动，无论上涨下跌，如果其中一个期权的利润抵消另一个期权的损失，就会产生净利润。
+这种策略仅在股票价格方向不确定但波动性较大时才有效，如特斯拉（TESLA），马斯克曾警告2024年的表现可能不如2023年出色。
+以苹果公司（Apple Inc.，股票代码：AAPL）为例，更好地理解跨式期权策略。此例假设苹果公司即将发布季度财报，但市场预期波动较大，且对财报的好坏预期不一。然而，交易者预计市场会有剧烈的价格波动。
+如果用跨式期权策略的交易，我们就会同时购买苹果公司股票的看涨和看跌期权，行权价为100美元，到期日为一个月后。
+跨式策略的工作原理：
+看涨期权：购买看涨期权，我们有权在到期日或之前以100美元的行权价购买苹果股票。如果股票价格大幅上涨，就可以以行权价买入股票，并以更高的市场价卖出。 看跌期权：购买看跌期权，我们有权在到期日或之前以100美元的行权价卖出苹果股票。如果股票价格大幅下跌，就可以以行权价卖出股票，并从中获利。 讨论两个可能的场景：
+场景 1：财报好于预期：如果苹果公司的财报超出预期，股价可能飙升。在这种情况下，交易者可以行使看涨期权，低价买入股票并高价卖出，而看跌期权将变得毫无价值。 场景 2：财报低于预期：如果财报不如预期，股价可能下跌。在这种情况下，交易者可以行使看跌期权，高价卖出股票，而看涨期权将变得毫无价值。 在两个场景中，跨式期权策略能够从显著的价格波动中获利，和价格涨跌无关。
+但值得注意的是，该策略获利的前提是价格波动要足够大，以覆盖同时购买两个期权的成本（即权利金费用）。
+接下来，我们将讨论跨式期权策略的类型。
+跨式期权策略的类型 跨式期权策略有两种类型：
+买入跨式（Long Straddle）：购买相同行权价的看涨期权和看跌期权时，称为买入跨式期权。 卖出跨式（Short Straddle）：与买入跨式期权相反。 买入跨式期权 这种策略通常在标的资产的价格接近行权价时进行，但也可以在其他情况下使用。
+跨式期权策略在隐含波动率较低、期权成本较低的市场中表现良好，但要求标的资产价格有显著的波动。这种策略要求同时买入看涨期权和看跌期权，行权价相同，且有相同的到期日和标的资产。
+买入跨式的到期收益图：
+跨式期权策略的要点 策略中，我们关注购买期权时的实值程度，即期权相对于标的资产当前价格的状态。
+图表展示了策略的不同组成和总体的盈亏情况：
+看涨期权（红线）：
+当股票价格上涨超过执行价格（100）时，买入看涨期权的收益将增加。 如果股票价格低于执行价格，损失则是支付的权利金（约为20）。 看跌期权（绿线）：
+当股票价格跌破执行价格时，买入看跌期权的收益将增加。 如果股票价格高于执行价格，损失也是支付的权利金。 长跨式策略（蓝线，V形）：
+这是同时买入看涨期权和看跌期权来构建的组合策略。 如果股票价格出现显著上涨或下跌，无论方向，策略都会有盈利。 如果股票价格维持在执行价格附近不动，则策略将遭遇最大亏损，即两个期权的权利金之和。 最大亏损： 发生在股票价格接近执行价格（100左右）时。这时，亏损为两个期权的权利金之和，即看涨期权权利金 + 看跌期权权利金。
+策略中的盈亏平衡点 若到期时，如果行权价与资产价格之差高于或低于权利金总额，则策略可达到盈亏平衡。
+无论价格是高于还是低于行权价，如果一个期权的价值等于支付的权利金，另一个期权将失效。
+盈亏平衡点可描述为：
+向上盈亏平衡点 = 行权价 + 支付的权利金 向下盈亏平衡点 = 行权价 - 支付的权利金 接下来开始讨论如何运用跨式期权策略获利。</description></item><item><title>如何使用 Python Matplotlib 绘制 3D 曲面图</title><link>https://www.poloxue.com/posts/2024-09-18-plot-3d-using-matplotlib-using-python/</link><pubDate>Wed, 18 Sep 2024 13:26:13 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-18-plot-3d-using-matplotlib-using-python/</guid><description>在数据可视化中，3D 图表是一个非常有用的工具，特别是当我们想要展示复杂的三维数据时，如期权的波动率曲面。Python 的 matplotlib 库提供了生成各种类型图表，包括 3D 图表。
 本文将介绍如何使用 Python 中的 matplotlib 绘制 3D 曲面图，适用于不同领域的数据可视化需求。
 准备工作 安装 matplotlib，命令如下：
 1 pip install matplotlib 绘制简单的 3D 曲面图 引入所需库：为了绘制 3D 图形，我们需要使用 matplotlib 中的 Axes3D 和 plot_surface 方法。为了演示，还要引入 numpy 生成绘图数据。
