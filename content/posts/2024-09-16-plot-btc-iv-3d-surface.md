@@ -6,7 +6,6 @@ comment: true
 description: "波动率曲面（Volatility Surface）是期权交易中展示隐含波动率随行权价（strike price）和到期时间（expiry time）变化的一种三维图形。"
 ---
 
-
 波动率曲面（Volatility Surface）是期权交易中展示隐含波动率随行权价（strike price）和到期时间（expiry time）变化的一种三维图形。
 
 本文尝试通过 Python，通过 ccxt 基于从交易所获取期权的指标数据绘制构建 BTC 波动率曲面。
