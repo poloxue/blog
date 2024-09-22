@@ -1,4 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 21 Sep 2024 11:20:44 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Python 绘制 BTC 期权的波动率曲面</title><link>https://www.poloxue.com/posts/2024-09-16-plot-btc-iv-3d-surface/</link><pubDate>Sat, 21 Sep 2024 11:20:44 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-16-plot-btc-iv-3d-surface/</guid><description>波动率曲面（Volatility Surface）是期权交易中展示隐含波动率随行权价（strike price）和到期时间（expiry time）变化的一种三维图形。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 22 Sep 2024 15:56:26 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>隐含波动率理解与 Python 计算</title><link>https://www.poloxue.com/posts/2024-09-22-mastering-implied-volatility-from-basic-to-python-calculation/</link><pubDate>Sun, 22 Sep 2024 15:56:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-22-mastering-implied-volatility-from-basic-to-python-calculation/</guid><description>译文原文 你是否曾想过如何衡量市场对波动率的预期？有没有一种方法可以预测未来的波动率，助我们在期权交易中制定策略？希望这篇文章给你这些问题的答案，它将详细介绍有关隐含波动率的知识。
+&amp;ldquo;当长期趋势失去动力时，短期波动率往往会上升。&amp;rdquo; ——乔治·索罗斯
+有趣吧？
+在不断波动的市场中，波动性在影响金融工具的定价和行为方面起着关键作用。在波动性的各个方面中，有一个重要的指标占据中心位置：隐含波动率（Implied Volatility，IV）。
+隐含波动率作为一个重要的指标，反映了市场对未来价格波动的预期。理解并有效利用隐含波动率对于做出明智的决策至关重要，尤其是在期权交易中，它直接影响期权的价格和策略。
+波动率本质上捕捉了金融资产的价格变动——无论是向上还是向下。它反映了市场的不确定性，受到供需动态、市场情绪以及外部事件（如经济变化或危机）的影响。隐含波动率是一种前瞻性指标，衡量市场对未来价格波动的预期，特别是在期权市场中。
+深入了解隐含波动率需要探讨它是什么，区分它与历史波动率和实际波动率的不同之处，探索其计算背后的数学复杂性，理解各种市场因素的影响。隐含波动率不仅仅是一个单一的概念，它是交易者用来处理多种用途的灵活工具，从期权定价和市场预期评估到实施复杂的交易策略。
+本文涵盖了期权交易中隐含波动率的所有主要话题。
+了解隐含波动率 我们首先将简要介绍波动率，以便从头开始了解隐含波动率。
+波动率 波动率是金融市场中最重要的支柱之一。
+简单来说，波动率指的是金融资产的价格向上和向下的波动（波动幅度）。这些波动是由多个因素引起的，包括供需、市场情绪、公司行为、贪婪和恐惧等。一些常见的交易波动性例子包括新冠疫情、2008年的金融危机等。
+现在已经知道了什么是波动率，让我们来了解什么是隐含波动率吧。
+隐含波动率的含义 隐含波动率（IV）是衡量期权市场中预期的未来波动率的指标。本质上，隐含波动率过去是，现在仍然是Black-Scholes-Merton模型（一个流行的期权定价模型）中的重要组成部分，它代表了与标的资产相关的未来波动率。
+但是，你知道吗？这并不是市场上唯一的波动率衡量指标。另一种常见的波动率衡量方法是实际波动率，也被称为历史波动率（HV）。
+实际波动率或历史波动率（HV） 历史波动率表示标的资产在过去一段时间内的价格波动或变化。通常，历史波动率是按一年来计算的，即252个交易日。交易者用它来比较标的资产的当前波动率水平与其历史波动率。
+每当当前波动率和历史波动率之间存在差距时，交易者会基于这个机会进行头寸。然而，历史波动率的问题在于它是一个向后看的指标，这意味着它基于过去的回报，并不是最可靠的波动率形式。
+期权交易中解释隐含波动率 隐含波动率是考虑了市场预期后得出的。市场预期可能包括重大市场事件、法院裁决、高层管理变动等。
+本质上，隐含波动率比历史波动率更能有效预测未来的波动率，后者仅基于过去的回报。此外，解释和可视化隐含波动率的方法不止一种，我们将详细介绍每一种。
+那么让我们开始吧！
+数据表 可视化隐含波动率数据的最基本方式是通过数据表格格式。在期权市场中，这被称为期权链。
+示例：AAPL隐含波动率倾斜与数据表 以下是美国股票Apple（代码：AAPL）的期权链。
+从上面的图像中可以清楚地看出，相同执行价格的看涨期权和看跌期权的隐含波动率是不同的。此外，对于不同的执行价格，隐含波动率随着市场预期的变化而波动。
+隐含波动率不是基于方向的参数，因此它仅表示标的资产未来可能波动的价格区间。
+这种在不同执行价格的看涨和看跌期权中隐含波动率的变化，称为“波动率微笑”和“波动率倾斜”。
+波动率微笑发生在隐含波动率在价外（OTM）和价内（ITM）的看涨或看跌期权中最高，而在平值期权（ATM）中最低的情况下。 波动率倾斜是指相同标的资产的不同执行价格有不同的隐含波动率。 这两种解释都用于期权市场中，以更好地可视化数据。以下是一个关于看涨期权执行价格和隐含波动率的波动率倾斜示例。
+好了，我们已经从期权链数据表中理解并解释了隐含波动率，我们将通过图表来可视化隐含波动率，并从中解释隐含波动率水平。
+在图表中，我们有过去一年隐含波动率（IVX）和30天的历史波动率（HV）数据。
+市场参与者使用历史隐含波动率水平了解隐含波动率在例如3个月前的水平，及它今天的水平，从而寻找机会交易。
+交易者还使用历史和隐含波动率的过去趋势，来了解历史波动率和隐含波动率当前是否比以前的时期更高或更低。如果你今天开始交易期权，这是你衡量隐含波动率水平的首选工具。
+如前面提到的，隐含波动率水平在某一时刻高或低的原因有很多。
+隐含波动率等级（IVR） 隐含波动率等级是一种常用的计算过去一年或52周隐含波动率的方式。它的计算是为了找出当前隐含波动率相对于年化水平的高低。
+隐含波动率等级计算公式 隐含波动率等级的计算公式为：
+[当前隐含波动率(%) - 52周低点隐含波动率(%)] / [52周高点隐含波动率(%) - 52周低点隐含波动率(%)]
+计算AAPL隐含波动率等级： 以之前提到的Apple（代码：AAPL）为例，当前隐含波动率为32.5%，52周低点隐含波动率为18%，52周高点隐含波动率为34%。
+现在我们来进行计算：
+(32.5% - 18%) / (34% - 18%) = 14.5% / 16% = 90.625%</description></item><item><title>使用 Python 绘制 BTC 期权的波动率曲面</title><link>https://www.poloxue.com/posts/2024-09-16-plot-btc-iv-3d-surface/</link><pubDate>Sat, 21 Sep 2024 11:20:44 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-16-plot-btc-iv-3d-surface/</guid><description>波动率曲面（Volatility Surface）是期权交易中展示隐含波动率随行权价（strike price）和到期时间（expiry time）变化的一种三维图形。
 本文尝试通过 Python，通过 ccxt 基于从交易所获取期权的指标数据绘制构建 BTC 波动率曲面。
 准备工作 首先，安装所需的库，确保环境可与交易所交互并绘制图表。
 ccxt: 一个用于便于连接加密货币交易所的库。 pandas: 用于数据处理，本文主要用于将 datetime 字符串转为 timestamp。 matplotlib: 用于绘图。 mpl_toolkits.mplot3d: 用于绘制三维图表。 安装命令：
