@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 23 Sep 2024 13:24:08 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>理解未平仓量（Open Interest）在期权交易中的作用</title><link>https://www.poloxue.com/posts/2024-09-23-open-interest-in-options-trading/</link><pubDate>Mon, 23 Sep 2024 13:24:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-23-open-interest-in-options-trading/</guid><description>译文原文 理解未平仓量在期权交易中至关重要，它有助于做出明智的决策并制定成功的交易策略。未平仓量代表市场中特定执行价格和到期日的未关闭或未行权的期权合约总数。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 01 Nov 2024 14:50:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>浅谈算法交易</title><link>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</link><pubDate>Fri, 01 Nov 2024 14:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</guid><description>本文想基于我的简单理解说说什么是算法交易，或者说是量化交易也是可以的。
+什么是算法交易？ 刚开始接触算法交易的时候，对它的理解，它就是把我平时的交易规则搬进计算机里自动执行。这个理解也没错，算法交易就是一系列明确的交易规则。
+一个简单的交易算法要包含有如：
+什么时候买？ 什么时候卖？ 止损是多少？ 等等。
+一旦确认了规则，我们将其转化为程序交给计算机去执行即可。
+如果你已经熟练掌握如何开发一个算法交易程序，时间更多会被耗在如何找到一个能赚钱的策略。这个研究过程就需要一套方法论了，本身并不容易。如果没有这个过程，你设计的规则极有可能是一个稳定亏钱的策略。
+为什么要算法交易？ 不同于人工操作，算法交易不需要全天候盯盘。一旦设定了规则，它就会不停息地在后台运行，能省下我们不少精力去做其他事情。
+具体展开说说算法交易的优势，我觉得有三大点。
+提高交易速度和效率 在行情剧烈波动时，手动交易难免会出现反应慢半拍的情况。手动交易常会来不及点买卖键，眼睁睁地看着机会溜走。算法交易能在毫秒级完成交易决策，尤其在高频交易里，速度就是决定成败的关键。
+避免情绪干扰 手动交易常常会因为市场波动导致情绪反复，跌多了害怕，涨多了想追，这个真的很可怕。
+算法交易完全可避免情绪问题，只要设定好了规则，绝不会临阵退缩，毅然决然会按照规则执行。避免了我们被情绪左右，长期来看效果反而更好。
+稳健的风险管理 算法交易里可以设定各种风险管理的条件，比如最大亏损限制、止盈止损条件等。这相当于给交易过程套上了“安全锁”。
+之前手动操作时，我偶尔会因为没来得及止损而遭遇更大的亏损，而算法交易则让我不再担心这类问题，系统会在价格触及设定时点后自动平仓实现风险控制。
+扩大交易策略的应用范围 算法交易可以同时使用多种策略，覆盖多个市场或资产。我可以设定不同的策略，让它们各自执行不同的任务，去挖掘更多的机会，这样既能分散风险，也能提高收益率。
+算法交易策略分类 一般而言，算法交易策略有如下几个大类：
+趋势跟踪策略 这种策略就是俗话说的“顺势而为”。
+当市场有明确的趋势时，跟随趋势的策略往往表现不错。如市场在上涨的时候系统自动买入，在下跌时系统会自动卖出。趋势跟踪的策略在牛市或熊市中比较有效，不过在震荡市中可能会出现较多的“假信号”。
+均值回归策略 均值回归策略就是“超买卖出、超卖买入”。
+常常可用于均值回归的指标有布林带和RSI等指标，市场偏离平均水平时，就采取反向操作。这类策略可用于震荡市效果或者在大周期使用。
+套利策略 套利策略的本质是“低买高卖”，是通过不同市场或品种间的价格差异实现低风险套利。
+交易的两者要具有强相关性，如股指期货和现货股票、不同交易所间的套利。这种策略对计算要求较高，但如果找到市场间的价格不一致，就有机会赚取稳健的收益。
+除了以上低风险的套利，也有相对高风险的套利策略，如基于跨月合约的统计套利等。
+高频交易策略 高频交易可以说是“割草机”，靠超短期波动赚钱。它在市场中寻找细微的价差，通过极高的速度进行大量小额交易。高频交易对速度要求非常高，要配合高性能硬件，靠大量交易产生收益优势。
+机器学习与AI策略 基于机器学习算法来分析市场走势，这些算法基于历史数据和统计模型，可以识别市场中的潜在模式，甚至会随着市场变化“自我学习”。实现起来复杂，要通过数据挖掘建模，找到优势。
+AI 策略似乎越来越流行，不过因为能力有限，这个方向我还一直没有涉入，希望有能力早点涉入吧。
+当然，除此以外，还有其他的策略分类，这里就不一一介绍了。
+如何实现算法交易？ 要开始算法交易，其实不需要多高的门槛，现在有不少实现算法交易的工具和编程平台，选择合适的工具能让交易过程变得顺利高效。
+介绍几种常见的实现方式：
+Python：适合有编程能力的交易员 Python 是目前算法交易中最流行的编程语言之一。
+Python 语法简洁，而且有丰富的数据处理和金融交易库（如 Pandas、NumPy、Matplotlib、TA-Lib 等），适合用来开发和测试自己的策略。
+如果喜欢自由度高、可定制性强的实现方式，那么 Python 是个好选择。这种方式对编程能力有一定要求，需要自己进行数据处理、策略测试和交易接口的对接。
+如果你的目标是高频交易，那么 Python 可能就不太适合，选择类似 C++、Rust 这类高性能语言。
+专业软件：如文化财经、MT5、MultiCharts等 对于不想自己编写代码或只需要简单策略的人来说，文化财经、MT5、MultiCharts 都是很好的选择。
+这些软件可用于期货、外汇、股票等不同的市场，提供了图表分析、自动化交易和策略测试功能。不过可能要学习它们内置的编程语言，编写和测试自动交易程序。
+如 MultiCharts 是一款支持多市场、多资产交易的软件平台，用户可以利用内置的 EasyLanguage 编写算法交易策略。它的优势在于界面友好、数据处理能力强，支持股票、期货、外汇等多个市场。MultiCharts 还支持图表交易、模拟交易等功能，适合想要同时参与多个市场的交易者。</description></item><item><title>理解未平仓量（Open Interest）在期权交易中的作用</title><link>https://www.poloxue.com/posts/2024-09-23-open-interest-in-options-trading/</link><pubDate>Mon, 23 Sep 2024 13:24:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-09-23-open-interest-in-options-trading/</guid><description>译文原文 理解未平仓量在期权交易中至关重要，它有助于做出明智的决策并制定成功的交易策略。未平仓量代表市场中特定执行价格和到期日的未关闭或未行权的期权合约总数。
 本文将深入探讨期权交易中的未平仓量的概念，分析其重要性、解读方式、实际应用等内容。此外，我们将演示如何使用Python来分析和解读未平仓量数据，为交易者提供有价值的见解和工具，以助力决策。
 什么是期权交易中的未平仓量？ 期权交易中的未平仓量代表已经建立但仍未关闭或尚未行权的合约数量。与衡量特定时期内交易合约数量的成交量不同，未平仓量提供了市场对特定期权合约的兴趣深度。
 期权交易中未平仓量的关键概念：
