@@ -1,4 +1,23 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 01 Nov 2024 14:50:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>浅谈算法交易</title><link>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</link><pubDate>Fri, 01 Nov 2024 14:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</guid><description>本文想基于我的简单理解说说什么是算法交易，或者说是量化交易也是可以的。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 01 Nov 2024 16:36:56 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>通过 python 获取金融市场数据</title><link>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</link><pubDate>Fri, 01 Nov 2024 16:36:56 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</guid><description>研究交易策略时，高质量数据是分析和构建交易策略的根本。你可能会遇到如下的一些问题。
+数据从哪找？ 数据怎么清理？ 数据又该如何维护？ 本文，我将先开始介绍第一个主题，即 &amp;ldquo;数据从哪里找？&amp;quot;，我将基于 Python 开源数据包下载数据。
+常见分类 在研究和构建策略时，基于目标不同，对数据的要求也不同。不同的数据适合不同的策略。找到合适的数据集，能显著提升策略。
+市场价格数据，即开高低收和交易量数据，如果构建 CTA 策略，价格数据已经足够了；
+公司财务数据，财务三大报表，如资产负债表、损益表，可助我们评估股票的长期投资价值，作为选股因子等；
+宏观经济数据，比如 GDP、通胀率、就业情况或是针对不同行业的数据等，有助于评估整体经济、观周期或某个行业的前景等；
+其他另类数据，也开始逐渐被重视，如像新闻、社交媒体信息等文本信息，重要人物的社交账号等，有助于我们及时抓住短期的波动；
+这篇文章主要演示如上的这些数据的下载方法。
+还想细化分类的话，不同角度还可以有不同分类，如：
+从品种上，有股票、期货、期权、外汇、债券和基金的不同品种上的区别，如股票有财报数据，而期货可能更加关注供需分析；非场内基金的价格数据就没有了开高低收；期权还包含独特的衍生数据，即它的隐含波动率和各类希腊字母；如果你关注数字货币市场，还要关注一些链上的活动，如跟踪巨鲸的账户，识别链上地址的活跃度，大额转账。
+从频率上，有小时线日线周线月线，还有高频数据，如分钟级、秒级甚至 tick 分笔的数据。对于如趋势追踪等 CTA 策略只要日线小时线级别即可，高频交易则要分析分钟或订单薄的分笔数据，这类高频数据的数据量会非常大，开源数据不会提供，购买的费用也相对贵一些。
+注：我在淘宝上发现有卖高频数据，价格一般几百块，因为数据量巨大，还送硬盘，不过我没有买，也不知道真假。
+数据的种类繁多，上面是一些常规分类。不同的交易策略，对数据的要求还是有很大区别，如你分析的是一些特殊事件对行业的影响，如美联储主席讲话对行情的实时影响，可能需要从视频提取字幕与行情相映射，还有如新冠疫情的影响，要收集每日的疫情数据，分析它和行情的关系。
+选择数据源 对于数据源方面，我选择开源数据，如 akshare、tushare 和 yfinance。
+akshare 是一个金融数据的 Python 包，数据种类繁多，主要是通过爬虫实时抓取网上的公开数据，提供国内股票、期货、外汇、宏观经济等多领域的金融数据接口，可以说，它的数据非常庞杂。
+tushare，和 akshare 一样，是专注于国内市场，虽然它有积分要求，但积分的获取难度不高，算是半开源的数据源，它的数据是单独维护管理的，毫无疑问，数据质量很高的。
+yfinance 是一个用于从 Yahoo Finance 获取金融数据的 Python 库。主要是国外市场，可下载如股票、期货、外汇等资产的历史市场数据，包括价格、交易量、公司财务数据等。
+如果你已经有可用的 Python 环境，安装过程就非常简单，如下命令安装这三个 Python 包：
+1 2 3 pip install akshare pip install tushare pip install yfinance 如果没有 Python 环境，可以去了解下 anaconda，用它安装我们的 Python 环境。
+数据下载 本文目标是先通过 akshare 实现 Python 下载 A 股的数据，毕竟它是完全免费的，门槛最低。我会通过代码快速一览 akshare 获取这些数据的函数。而对于 tushare 和 yfinance，准备另外的篇章介绍。</description></item><item><title>浅谈算法交易</title><link>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</link><pubDate>Fri, 01 Nov 2024 14:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</guid><description>本文想基于我的简单理解说说什么是算法交易，或者说是量化交易也是可以的。
 什么是算法交易？ 刚开始接触算法交易的时候，对它的理解，它就是把我平时的交易规则搬进计算机里自动执行。这个理解也没错，算法交易就是一系列明确的交易规则。
 一个简单的交易算法要包含有如：
 什么时候买？ 什么时候卖？ 止损是多少？ 等等。
