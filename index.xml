@@ -5,7 +5,7 @@
 安装与注册 首先，你需要安装 Tushare 的 Python 包，在终端中运行以下命令来安装 Tushare。
 1 pip install tushare 然后，注册 tushare.pro，获取 API 密钥。这个过程我就不介绍了，可查看 tushare.pro 操作手册。
 验证是否安装成功：
-1 2 3 4 5 6 import tushare as ts ts.set_token(&amp;#34;Your API Token&amp;#34;) pro = ts.pro_api() data = pro.daily(ts_code=&amp;#34;000001.SZ&amp;#34;) print(data) 输出：</description></item><item><title>通过 python 获取金融市场数据</title><link>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</link><pubDate>Fri, 01 Nov 2024 16:36:56 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</guid><description>研究交易策略时，高质量数据是分析和构建交易策略的根本。你可能会遇到如下的一些问题。
+1 2 3 4 5 6 import tushare as ts ts.set_token(&amp;#34;Your API Token&amp;#34;) pro = ts.pro_api() data = pro.daily(ts_code=&amp;#34;000001.SZ&amp;#34;) print(data) 输出：</description></item><item><title>通过 python 获取金融数据-akshare</title><link>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</link><pubDate>Fri, 01 Nov 2024 16:36:56 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</guid><description>研究交易策略时，高质量数据是分析和构建交易策略的根本。你可能会遇到如下的一些问题。
 数据从哪找？ 数据怎么清理？ 数据又该如何维护？ 本文，我将先开始介绍第一个主题，即 &amp;ldquo;数据从哪里找？&amp;quot;，我将基于 Python 开源数据包下载数据。
 常见分类 在研究和构建策略时，基于目标不同，对数据的要求也不同。不同的数据适合不同的策略。找到合适的数据集，能显著提升策略。
 市场价格数据，即开高低收和交易量数据，如果构建 CTA 策略，价格数据已经足够了；
