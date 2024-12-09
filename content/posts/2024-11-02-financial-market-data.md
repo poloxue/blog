@@ -1,5 +1,5 @@
 ---
-title: "通过 python 获取金融市场数据"
+title: "通过 python 获取金融数据-akshare"
 date: 2024-11-01T16:36:56+08:00
 draft: false
 comment: true
