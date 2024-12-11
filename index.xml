@@ -10,7 +10,7 @@
 1 2 3 4 Date Close Price 0 2024-12-01 100.</description></item><item><title>从 Tushare 数据下载金融数据</title><link>https://www.poloxue.com/posts/2024-11-04-financial-data-using-tushare/</link><pubDate>Wed, 04 Dec 2024 21:44:13 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-04-financial-data-using-tushare/</guid><description>本文介绍如何使用 tushare 下载金融数据，主要还是通过最基础的数据介绍它的使用。
 什么是 Tushare？ Tushare 是一个 Python 开源金融数平台，最初由 Jimmy 开发的，最早版 tushare 是借助爬虫从财经数据平台如新浪财经实时抓取数据。可查看 tushare.org，这是 tushare 早期的文档。
 2018 年，Tushare 经过了几年的发展，Tushare 开发了独立的数据平台-tushare.pro，从爬虫方案改为自建服务存储数据，数据质量上有了质的提升，让 Tushare Pro 成为了金融分析师和研究人员常用的金融数据源之一。
-我曾参与 Tushare 的开发工作，和 Tushare 作者 Jimmy 一起开发了 Tushare 的新平台，主要是构建了数据上线的流程，从零搭建了这个平台，为其提供了配置支持，简化了数据上线流程，加快了数据上线效率。
+我曾参与 Tushare 的开发工作，大概2018 下半年的半年时间，和 Tushare 作者 Jimmy 一起开发了 Tushare 的新平台，主要是构建了数据上线的流程，从零搭建了这个平台，为其提供了配置支持，简化了数据上线流程，加快了数据上线效率。
 安装与注册 首先，你需要安装 Tushare 的 Python 包，在终端中运行以下命令来安装 Tushare。
 1 pip install tushare 然后，注册 tushare.pro，获取 API 密钥。这个过程我就不介绍了，可查看 tushare.pro 操作手册。
 验证是否安装成功：
