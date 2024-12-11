@@ -104,6 +104,8 @@ mpf.plot(data, type='candle', volume=True)
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-11-mplfinance-chart-library-02.png)
 
+其他风格：
+
 ```python
 mpf.plot(data, type='line', volume=True)
 mpf.plot(data, type='renko', volume=True)
