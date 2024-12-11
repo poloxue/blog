@@ -132,11 +132,11 @@ mpf.plot(data, type='candle', mav=(3, 6, 9))
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-11-mplfinance-chart-library-04.png)
 
---
+---
 
 ## 其他指标
 
-除了均线，我们也可以在图表中叠加自己的技术指标，如 EMA，还有不领带。
+除了均线，我们也可以在图表中叠加自己的技术指标，如 EMA，还有布林带。
 
 可以通过 talib 计算指标，示例如下：
 
