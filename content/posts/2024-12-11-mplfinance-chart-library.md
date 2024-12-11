@@ -178,9 +178,9 @@ mpf.plot(data, type='candle', volume=True, savefig='output.png')
 
 ## 动画与实时更新
 
-`mplfinance` 支持动态更新图表，适合实时显示金融数据。通过 `animation` 功能，可以生成动态图表。
+`mplfinance` 支持动态更新图表，适合实时显示金融数据。通过 `animation` 功能，可以生成动态图表，可参考官方文档中的示例：[Animation/Updating plots](https://github.com/matplotlib/mplfinance/blob/master/markdown/animation.md)。这块就不展开介绍了，因为如果确有动态更新的需求，lightweight-charts 比 mplfinance 更合适。
 
-这块就不展开介绍了，详细示例可参考官方文档：[Animation/Updating plots](https://github.com/matplotlib/mplfinance/blob/master/markdown/animation.md)。
+
 
 ---
 
