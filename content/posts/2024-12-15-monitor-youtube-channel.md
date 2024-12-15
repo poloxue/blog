@@ -255,6 +255,20 @@ def main(channel_url, count, output_dir):
 
 最核心的部分全部完成了。
 
+摘取生成文章的开头部分，如下：
+
+```
+来源：[Wall Street Elites Are Going To Pump Crypto: Find Out Who!!](https://www.youtube.com/watch?v=WQCCwC2-Wkw)
+
+# 华尔街精英将推动加密货币市场：看看是谁在背后！
+
+近年来，加密货币市场一直不乏看涨的催化剂。但如果我告诉你，全球金融界最强大的力量之一正悄悄准备在2025年大规模撼动市场，你会怎么想？这个力量就是与华尔街精英同义的Cantor Fitzgerald。
+
+## Cantor Fitzgerald的崛起与发展
+
+Cantor Fitzgerald成立于1945年，由Bernard Gerald Cantor和John Fitzgerald创立。最初这是一家不起眼的投资银行，但很快演变为华尔街的强大力量。在早期，Cantor涉足大型区块销售和机构投资者的股票交易，为其未来的成功奠定了基础。1972年，公司成为全球首个美国政府证券的电子市场，这一里程碑让其在金融技术创新领域声名鹊起。在Howard Lutnik于1991年成为Cantor的首席执行官后，公司加倍致力于技术创新。
+```
+
 ## 注意点
 
 - openai 是要 APIKEY 的，我已经设置了环境变量，关于 openai 权限，需要各位自己想办法。
