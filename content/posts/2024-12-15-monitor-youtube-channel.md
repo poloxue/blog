@@ -159,7 +159,7 @@ $ python index.py --channel-url https://www.youtube.com/@CoinBureau/videos
 
 ## **提取字幕**
 
-把视频文件下载下来后，通过 OpenAI 的 Whisper 模型，就可以将音频内容转化为文本字幕，whisper 的使用很简单。
+下载了音频文件后，我们通过 OpenAI 的 Whisper 模型，就可以从音频中提取出文本字幕，whisper 的使用很简单。
 
 代码示例：
 
