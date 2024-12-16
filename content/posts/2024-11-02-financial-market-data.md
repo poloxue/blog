@@ -12,7 +12,7 @@ description: "本文将介绍如何获取金融数据，我将基于 Python 开�
 - 数据怎么清理？
 - 数据又该如何维护？
 
-本文，我将先开始介绍第一个主题，即 "数据从哪里找？"，我将基于 Python 开源数据包下载数据。
+本文将先开始介绍第一个主题，即 "数据从哪里找？"，我将首先基于 Python 开源数据包 akshare 下载数据，为什么选择作为第一个数据源？因为它是完全免费的。
 
 ## 常见分类
 
@@ -44,7 +44,7 @@ description: "本文将介绍如何获取金融数据，我将基于 Python 开�
 
 akshare 是一个金融数据的 Python 包，数据种类繁多，主要是通过爬虫实时抓取网上的公开数据，提供国内股票、期货、外汇、宏观经济等多领域的金融数据接口，可以说，它的数据非常庞杂。
 
-tushare，和 akshare 一样，是专注于国内市场，虽然它有积分要求，但积分的获取难度不高，算是半开源的数据源，它的数据是单独维护管理的，毫无疑问，数据质量很高的。
+tushare，和 akshare 一样，是专注于国内市场，虽然它有积分要求，但积分的获取难度不高，如果是购买积分，500/年就能使用 90% 的数据。它的数据是单独维护管理的，毫无疑问，数据质量很高的，在性价比这块，没有其他数据源可比。
 
 yfinance 是一个用于从 Yahoo Finance 获取金融数据的 Python 库。主要是国外市场，可下载如股票、期货、外汇等资产的历史市场数据，包括价格、交易量、公司财务数据等。
 
@@ -67,7 +67,7 @@ pip install yfinance
 先提前导入 Python 包：
 
 ```python
-import akshare as ak
+import akshare as aks
 ```
 
 ## 市场价格
@@ -78,23 +78,34 @@ import akshare as ak
 
 ```python
 # 日线/周线/月线
-ak.stock_zh_a_hist(symbol="000001", 
+aks.stock_zh_a_hist(symbol="000001", 
                    start_date="20200101",
                    end_date="20241201",
                    period="daily", # daily/weekly/monthly
                    adjust="qfq") # qfq-前复权/hfq-后复权/默认不复权
 # 日线
-ak.stock_zh_a_daily(symbol="sz000001",
+aks.stock_zh_a_daily(symbol="sz000001",
                     start_date="20200101",
                     end_date="20241201",
                     adjust="qfq")
 # 分钟线
-ak.stock_zh_a_minute(symbol="sz000001",
+aks.stock_zh_a_minute(symbol="sz000001",
                      period="1", # 1-1分钟/5-5分钟/15-15分钟/30-30分钟/60-1小时
                      adjust="qfq")
 ```
 
 如上的代码演示了获取 A 股市场日线/周线/月线/小时/分钟级别的历史行情数据的函数。
+
+日线数据示例：
+
+```bash
+   日期        股票代码 开盘     收盘 最高  最低   成交量   成交额      振幅  涨跌幅  涨跌额 换手率
+0  2020-01-02  000001  14.77  14.99  15.07  14.67  1530232  2.571196e+09  2.75  2.88  0.42  0.79
+1  2020-01-03  000001  15.06  15.30  15.43  15.04  1116195  1.914495e+09  2.60  2.07  0.31  0.58
+2  2020-01-06  000001  15.13  15.19  15.46  15.03   862084  1.477930e+09  2.81 -0.72 -0.11  0.44
+3  2020-01-07  000001  15.25  15.27  15.40  15.07   728608  1.247047e+09  2.17  0.53  0.08  0.38
+4  2020-01-08  000001  15.12  14.78  15.17  14.75   847824  1.423609e+09  2.75 -3.21 -0.49  0.44
+```
 
 因为 akshare 的数据是从直接财经网站拉取的，不同站的 symbol 规则有所差异，如 `stock_zh_a_hist` 是东方财富的接口，symbol 为 000001 即可，而其余两个接口是 sina 新浪财经，要加上交易所前缀：深交所-sz和上交所-sh。
 
@@ -103,15 +114,26 @@ ak.stock_zh_a_minute(symbol="sz000001",
 实时行情的接口示例：
 
 ```python
-ak.stock_zh_a_spot()
+aks.stock_zh_a_spot()
 ```
 
-这个接口返回的是全部股票的实时行情数据，确实在可用性不怎么好，tushare 上也有实时行情接口 `realtime_quote`，同样是从各个财经站点上抓取的，不过封装的更好。
+输出示例：
+
+```bash
+   代码    名称    最新价   涨跌额    涨跌幅     买入     卖出     昨收     今开     最高     最低        成交量          成交额       时间戳
+0  bj430017  星昊医药  15.35 -0.36 -2.292  15.32  15.35  15.71  15.86  15.87  15.28  1922319.0   29838001.0  15:30:01
+1  bj430047  诺思兰德  13.57 -0.51 -3.622  13.56  13.57  14.08  14.12  14.18  13.44  3269916.0   45133670.0  15:30:01
+2  bj430090  同辉信息   7.56 -0.27 -3.448   7.56   7.57   7.83   7.89   8.01   7.53  7122586.0   54781060.0  15:30:01
+3  bj430139  华岭股份  28.69 -1.87 -6.119  28.68  28.69  30.56  30.26  30.59  28.52  8799534.0  258453787.0  15:30:01
+4  bj430198  微创光电  13.38 -0.36 -2.620  13.37  13.38  13.74  13.62  14.08  13.00  4379609.0   59129424.0  15:30:01
+```
+
+这个接口返回的是全部股票的实时行情数据，请求耗时较长，确实在可用性不怎么好，tushare 上也有实时行情接口 `realtime_quote`，同样是从各个财经站点上抓取的，不过封装的更好。
 
 当日的分笔数据的接口示例：
 
 ```python
-ak.stock_zh_a_tick_tx_js(symbol="sz000001")
+aks.stock_zh_a_tick_tx_js(symbol="sz000001")
 ```
 
 这个接口返回的是某个股票当日的每笔成交列表。
@@ -122,9 +144,9 @@ ak.stock_zh_a_tick_tx_js(symbol="sz000001")
 
 ```python
 # 日线
-ak.stock_zh_index_daily(symbol="sh000300") # sina
-ak.stock_zh_index_daily_tx(symbol="sh000300") # tencent
-ak.stock_zh_index_daily_em(symbol="sh000300") # 东方财富
+aks.stock_zh_index_daily(symbol="sh000300") # sina
+aks.stock_zh_index_daily_tx(symbol="sh000300") # tencent
+aks.stock_zh_index_daily_em(symbol="sh000300") # 东方财富
 ```
 
 这个接口会直接拉取指定指数的全部日线行情。
@@ -132,8 +154,8 @@ ak.stock_zh_index_daily_em(symbol="sh000300") # 东方财富
 实时行情的演示示例：
 
 ```python
-ak.stock_zh_index_spot_sina() # sina
-ak.stock_zh_index_spot_em() # 东方财富
+aks.stock_zh_index_spot_sina() # sina
+aks.stock_zh_index_spot_em() # 东方财富
 ```
 
 这两个接口都是获取当前的实时行情，不过它返回的是一个全部数据的 `pd.Dataframe`，没有提供 symbol 参数指定指数 Symbol，要简单过滤才能拿到指定的 symbol 数据。
@@ -145,20 +167,35 @@ ak.stock_zh_index_spot_em() # 东方财富
 A 股三大报表：
 
 ```python
-ak.stock_financial_report_sina(stock="sz000001", symbol="资产负债表")
-ak.stock_financial_report_sina(stock="sz000001", symbol="利润表")
-ak.stock_financial_report_sina(stock="sz000001", symbol="现金流量表")
+aks.stock_financial_report_sina(stock="sz000001", symbol="资产负债表")
+aks.stock_financial_report_sina(stock="sz000001", symbol="利润表")
+aks.stock_financial_report_sina(stock="sz000001", symbol="现金流量表")
 ```
 
-我们通过 symbol 指定获取的报名名称，这也是挺奇怪。不得不吐槽下，易用性上和 tushare 不好比。
+如资产负载表数据示例：
+
+```bash
+        报告日   资产     现金及存放中央银行款项 其中:现金 存放中央银行款 结算准备金  ...   数据源 是否审计      公告日期   币种    类型                 更新日期
+0  20240930  NaN  281777000000.0   NaN     NaN   NaN  ...  定期报告  未审计  20241019  CNY  合并期末  2024-10-18T18:20:11
+1  20240630  NaN  305998000000.0   NaN     NaN   NaN  ...  定期报告  未审计  20240816  CNY  合并期末  2024-08-15T20:35:13
+2  20240331  NaN  322076000000.0   NaN     NaN   NaN  ...  定期报告  未审计  20240420  CNY  合并期末  2024-04-19T19:15:02
+3  20231231  NaN  274663000000.0   NaN     NaN   NaN  ...  定期报告    是  20241019  CNY  合并期末  2024-03-14T19:05:04
+4  20230930  NaN  350143000000.0   NaN     NaN   NaN  ...  定期报告  未审计  20231025  CNY  合并期末  2023-10-24T20:40:01
+
+[5 rows x 150 columns]
+```
+
+数据列非常的多，这里面只展示了部分。
+
+这个接口通过 symbol 指定名称获取不同的财报，这也是挺奇怪。不得不吐槽下，易用性上和 tushare 不好比。
 
 其它常用数据还有如业绩预告、分红送股等数据。
 
 ```python
 # 业绩预告
-ak.stock_yjyg_em(date="20240930") # 从 20081231 开始，日期必须是 20200331 20200630 20200930 20201231
+aks.stock_yjyg_em(date="20240930") # 从 20081231 开始，日期必须是 20200331 20200630 20200930 20201231
 # 分红送股
-ak.stock_history_dividend_detail("000001")
+aks.stock_history_dividend_detail("000001")
 ```
 
 财务数据大概就找这么多吧。
@@ -170,12 +207,23 @@ ak.stock_history_dividend_detail("000001")
 宏观数据方面，主要看如何获取如 GDP、CPI、PMI、PPI、利率和就业数据等。
 
 ```python
-ak.macro_china_gdp() # GDP 国内生产总值
-ak.macro_china_cpi() # CPI 居民消费价格指数
-ak.macro_china_pmi() # PMI 采购经理人指数
-ak.macro_china_ppi() # PPI 工业品出厂价格指数
-ak.macro_china_lpr() # LRP 贷款报价利率
-ak.macro_china_urban_unemployment()  # 城镇调查失业率
+aks.macro_china_gdp() # GDP 国内生产总值
+aks.macro_china_cpi() # CPI 居民消费价格指数
+aks.macro_china_pmi() # PMI 采购经理人指数
+aks.macro_china_ppi() # PPI 工业品出厂价格指数
+aks.macro_china_lpr() # LRP 贷款报价利率
+aks.macro_china_urban_unemployment()  # 城镇调查失业率
+```
+
+如国内生产总值 GDP 的数据样例：
+
+```bash
+            季度  国内生产总值-绝对值  国内生产总值-同比增长  第一产业-绝对值  第一产业-同比增长  第二产业-绝对值  第二产业-同比增长  第三产业-绝对值  第三产业-同比增长
+0  2024年第1-3季度    949745.7          4.8   57733.1        3.4  361361.6        5.4  530651.1        4.7
+1  2024年第1-2季度    616836.0          5.0   30660.0        3.5  236529.9        5.8  349646.1        4.6
+2    2024年第1季度    296299.5          5.3   11538.4        3.3  109846.3        6.0  174914.7        5.0
+3  2023年第1-4季度   1260582.1          5.2   89755.2        4.1  482588.5        4.7  688238.4        5.8
+4  2023年第1-3季度    912692.0          5.2   56330.1        4.0  348885.6        4.4  507476.2        6.0
 ```
 
 akshare 提供了各类宏观数据，相对 tushare 丰富了很多。除了国内的宏观经济数据，还有中国香港和其他不少国家的宏观数据，如美国、日本、欧洲等一些国家。
@@ -184,7 +232,7 @@ akshare 提供了各类宏观数据，相对 tushare 丰富了很多。除了国
 
 ## 总结
 
-本文介绍了如何从 akshare 获取常用的数据，提供了使用代码。如果想查看它提供的其他接口函数，可查看 [akshare 接口文档]()。
+本文介绍了如何从 akshare 获取常用的数据，提供了使用代码。如果想查看它提供的其他接口函数，可查看 [akshare 接口文档](https://akshare.akfamily.xyz/tutorial.html)。
 
 不得不说，akshare 提供的数据丰富，是收集公开数据的一个利器，免去了我们自行寻找数据的时间。
 
