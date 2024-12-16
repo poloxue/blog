@@ -32,7 +32,7 @@ yt-dlp：一个强大的 YouTube 下载工具，可以获取视频元数据或�
 1 pip install tushare 然后，注册 tushare.pro，获取 API 密钥。这个过程我就不介绍了，可查看 tushare.pro 操作手册。
 验证是否安装成功：
 1 2 3 4 5 6 import tushare as ts ts.set_token(&amp;#34;Your API Token&amp;#34;) pro = ts.pro_api() data = pro.daily(ts_code=&amp;#34;000001.SZ&amp;#34;) print(data) 输出：</description></item><item><title>通过 python 获取金融数据-akshare</title><link>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</link><pubDate>Fri, 01 Nov 2024 16:36:56 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-02-financial-market-data/</guid><description>研究交易策略时，高质量数据是分析和构建交易策略的根本。你可能会遇到如下的一些问题。
-数据从哪找？ 数据怎么清理？ 数据又该如何维护？ 本文，我将先开始介绍第一个主题，即 &amp;ldquo;数据从哪里找？&amp;quot;，我将基于 Python 开源数据包下载数据。
+数据从哪找？ 数据怎么清理？ 数据又该如何维护？ 本文将先开始介绍第一个主题，即 &amp;ldquo;数据从哪里找？&amp;quot;，我将首先基于 Python 开源数据包 akshare 下载数据，为什么选择作为第一个数据源？因为它是完全免费的。
 常见分类 在研究和构建策略时，基于目标不同，对数据的要求也不同。不同的数据适合不同的策略。找到合适的数据集，能显著提升策略。
 市场价格数据，即开高低收和交易量数据，如果构建 CTA 策略，价格数据已经足够了；
 公司财务数据，财务三大报表，如资产负债表、损益表，可助我们评估股票的长期投资价值，作为选股因子等；
@@ -46,11 +46,10 @@ yt-dlp：一个强大的 YouTube 下载工具，可以获取视频元数据或�
 数据的种类繁多，上面是一些常规分类。不同的交易策略，对数据的要求还是有很大区别，如你分析的是一些特殊事件对行业的影响，如美联储主席讲话对行情的实时影响，可能需要从视频提取字幕与行情相映射，还有如新冠疫情的影响，要收集每日的疫情数据，分析它和行情的关系。
 选择数据源 对于数据源方面，我选择开源数据，如 akshare、tushare 和 yfinance。
 akshare 是一个金融数据的 Python 包，数据种类繁多，主要是通过爬虫实时抓取网上的公开数据，提供国内股票、期货、外汇、宏观经济等多领域的金融数据接口，可以说，它的数据非常庞杂。
-tushare，和 akshare 一样，是专注于国内市场，虽然它有积分要求，但积分的获取难度不高，算是半开源的数据源，它的数据是单独维护管理的，毫无疑问，数据质量很高的。
+tushare，和 akshare 一样，是专注于国内市场，虽然它有积分要求，但积分的获取难度不高，如果是购买积分，500/年就能使用 90% 的数据。它的数据是单独维护管理的，毫无疑问，数据质量很高的，在性价比这块，没有其他数据源可比。
 yfinance 是一个用于从 Yahoo Finance 获取金融数据的 Python 库。主要是国外市场，可下载如股票、期货、外汇等资产的历史市场数据，包括价格、交易量、公司财务数据等。
 如果你已经有可用的 Python 环境，安装过程就非常简单，如下命令安装这三个 Python 包：
-1 2 3 pip install akshare pip install tushare pip install yfinance 如果没有 Python 环境，可以去了解下 anaconda，用它安装我们的 Python 环境。
-数据下载 本文目标是先通过 akshare 实现 Python 下载 A 股的数据，毕竟它是完全免费的，门槛最低。我会通过代码快速一览 akshare 获取这些数据的函数。而对于 tushare 和 yfinance，准备另外的篇章介绍。</description></item><item><title>浅谈算法交易</title><link>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</link><pubDate>Fri, 01 Nov 2024 14:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</guid><description>本文想基于我的简单理解说说什么是算法交易，或者说是量化交易。
+1 2 3 pip install akshare pip install tushare pip install yfinance 如果没有 Python 环境，可以去了解下 anaconda，用它安装我们的 Python 环境。</description></item><item><title>浅谈算法交易</title><link>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</link><pubDate>Fri, 01 Nov 2024 14:50:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-11-01-algorithmic-trading/</guid><description>本文想基于我的简单理解说说什么是算法交易，或者说是量化交易。
 什么是算法交易？ 刚开始接触算法交易的时候，对它的理解，它就是把我平时的交易规则搬进计算机里自动执行。这个理解也没错，算法交易就是用计算机程序去执行一系列明确的交易规则。
 一个简单的交易算法要包含有如：
 什么时候买？ 什么时候卖？ 止损是多少？ 等等。
