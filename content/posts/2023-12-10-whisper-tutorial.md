@@ -1,5 +1,5 @@
 ---
-title: "语音识别 OpenAI whisper 完全指南"
+title: "语音识别 OpenAI whisper 应用指南"
 date: 2023-12-09T20:25:35+08:00
 draft: true
 comment: true
@@ -10,7 +10,7 @@ description: "本文介绍如何使用 OpenAI whisper 进行语音文字识别�
 
 ## 前言
 
-最近用 whisper 给英文视频加字幕，整体的单词识别正确率还是很高的。除了会出现断句不准确，但这会导致翻译不准确，以至提高校验字幕的时间成本。
+我用过 whisper 给英文视频加字幕，整体的单词识别正确率还是很高的。除了会出现断句不准确，但这会导致翻译不准确，以至提高校验字幕的时间成本。
 
 本文将从一个用户角度，介绍如何使用 whisper，包括一些代码使用细节，和我使用过程中所遇到的一些问题等，从而提高 whisper 的使用效率。
 
@@ -102,7 +102,7 @@ Detected language: English
 ...
 ```
 
-非常 easy 是不是。
+非常 easy 是不是？
 
 输出内容的基本格式：start 开始时间 --> end 结束时间 text 语音识别的文本内容。
 
