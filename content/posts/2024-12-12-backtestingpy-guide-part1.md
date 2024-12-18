@@ -18,11 +18,11 @@ description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的
 
 ## 什么是 Backtesting.py
 
-Backtesting.py 是一个轻量级的 Python 回测框架，专注于策略回测的核心功能，适合快速实现和测试交易策略。与其他回测框架，如 VectorBT 或 Backtrader 等回测框架相比，Backtesting.py 简化了使用流程，没有过多复杂功能，自然地，它更加简单易用与高效。
+**Backtesting.py** 是一个轻量级的 Python 回测框架，专注于策略回测的核心功能，适合快速实现和测试交易策略。与其他回测框架，如 VectorBT 或 Backtrader 等回测框架相比，**Backtesting.py** 简化了使用流程，没有过多复杂功能，自然地，它更加简单易用与高效。
 
-Backtesting.py 内置了策略参数优化工具，可与 Pandas 数据框和 NumPy 数组兼容，易于集成。当然简单是有代价的，它的缺点是不支持多资产交易和分数股交易，这也限制了它的普适性。
+**Backtesting.py** 内置了策略参数优化工具，可与 Pandas 数据框和 NumPy 数组兼容，易于集成。当然简单是有代价的，它的缺点是不支持多资产交易和分数股交易，这也限制了它的普适性。
 
-让我们快速上手 Backtesting.py 的使用吧。
+让我们快速上手 **Backtesting.py** 的使用吧。
 
 ## 安装
 
@@ -50,7 +50,7 @@ from backtesting.test import GOOG  # 示例数据
 import talib
 ```
 
-简单起见，我们就用 backtestingpy 提供的样例数据 GOOG，即 Google 某段时间点的价格数据来演示。
+简单起见，我们就用 **Backtesting.py** 提供的样例数据 GOOG，即 Google 某段时间点的价格数据来演示。
 
 
 ### 定义策略类
@@ -100,7 +100,7 @@ fast_ma[-1] > slow_ma[-1] and fast_ma[-2] < slow_ma[-2]
 fast_ma[-1] < slow_ma[-1] and fast_ma[-2] > slow_ma[-2]
 ```
 
-好在 `Backtesting.py` 提供了一个函数，专门用于判断这种两条线交叉的场景，即 `backtesting.lib` 下 `crossover(s1, s2)` 函数，如果 `s1` 上穿 `s2`，则返回 `True`，否则返回 `False`。
+好在 **Backtesting.py** 提供了一个函数，专门用于判断这种两条线交叉的场景，即 `backtesting.lib` 下 `crossover(s1, s2)` 函数，如果 `s1` 上穿 `s2`，则返回 `True`，否则返回 `False`。
 
 
 ```python
@@ -187,11 +187,11 @@ bt.plot()
 bt.run(fast_ma_window=15, slow_ma_window=30)
 ```
 
-在这不到 30 行代码里，我们就实现了一个简单的均线交叉策略，可见 Backtesting.py 的简洁高效。
+在这不到 30 行代码里，我们就实现了一个简单的均线交叉策略，可见 **Backtesting.py** 的简洁高效。
 
 ## 自定义数据
 
-`backtesting.py` 是允许使用自定义数据的。
+**Backtesting.py** 是允许使用自定义数据的。
 
 ### 要求格式 
 
@@ -222,7 +222,7 @@ print(GOOG)
 
 ### 示例：适配 tushare
 
-演示下将 tushare 数据转为 backtesting.py 支持的格式吧。
+演示下将 tushare 数据转为 **Backtesting.py** 支持的格式吧。
 
 示例代码：
 
@@ -265,7 +265,7 @@ Datetime
 
 ## 参数优化
 
-在策略开发时，有一个过程非常重要，即参数优化，它是提升回测表现的重要步骤。Backtesting.py 内置了参数优化功能，能助我们快速找到最佳策略参数组合。
+在策略开发时，有一个过程非常重要，即参数优化，它是提升回测表现的重要步骤。**Backtesting.py** 内置了参数优化功能，能助我们快速找到最佳策略参数组合。
 
 ### 优化示例
 
@@ -365,11 +365,11 @@ bt.optimize(
 
 ## 回测图表保存
 
-Backtesting.py 提供了保存回测图表的功能，便于后续分析。
+**Backtesting.py** 提供了保存回测图表的功能，便于后续分析。
 
 ### 保存 HTML 文件
 
-我们上面运行回测时，Backtesting.py 会在当前目录下自动生成一个 HTML 文件，即上面展示的回测图表。
+我们上面运行回测时，**Backtesting.py** 会在当前目录下自动生成一个 HTML 文件，即上面展示的回测图表。
 
 默认的文件名称是 "策略类名.html"，参数优化的话，文件名会带上参数。
 
@@ -408,4 +408,4 @@ bt.plot(
 
 ## 总结
 
-本文介绍了 Backtesting.py 回测框架的快速上手使用，从策略创建、回测与参数优化。Backtesting.py 的参数优化部分还有不少的内容，后续文章再继续介绍。
+本文介绍了 **Backtesting.py** 回测框架的快速上手使用，从策略创建、回测与参数优化。**Backtesting.py** 的参数优化部分还有不少的内容，后续文章再继续介绍。
