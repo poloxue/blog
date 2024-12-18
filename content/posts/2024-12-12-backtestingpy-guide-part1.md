@@ -52,6 +52,7 @@ import talib
 
 简单起见，我们就用 backtestingpy 提供的样例数据 GOOG，即 Google 某段时间点的价格数据来演示。
 
+
 ### 定义策略类
 
 我们定义一个名为 `MovingAverageCrossStrategy` 策略类，继承 `Strategy`：
@@ -82,6 +83,36 @@ class MovingAverageCrossStrategy(Strategy):
 在 `init` 初始化阶段，我们可以通过 talib 计算 SMA 均线的快慢线。数据可以通过 `self.data` 访问，指标计算用到了收盘价，即 `self.data.Close`。
 
 在 `next` 交易逻辑阶段，只需要拿到当前的指标数据，判断是否要入场就行了，`self.fast_ma[-1]` 和 `self.slow_ma[-1]` 分别代表了最新的快线和慢线的值，当 `fast_ma` 大于 `slow_ma` 且当前没有仓位（`self.position.size` == 0) 执行买入，否则执行平仓。
+
+### 交叉 crossover
+
+如果你希望策略的判断严格是金叉死叉的那一刻，不仅仅要比较 -1，即当前的指标，还有比较 -2，即上个周期的大小。
+
+金叉，即快线 fast_ma 上穿慢线 slow_ma：
+
+```python
+fast_ma[-1] > slow_ma[-1] and fast_ma[-2] < slow_ma[-2]
+```
+
+死叉，即快线 fast_ma 下穿慢线 slow_ma，也就是慢线 slow_ma 上穿快线 fast_ma：
+
+```python
+fast_ma[-1] < slow_ma[-1] and fast_ma[-2] > slow_ma[-2]
+```
+
+好在 `Backtesting.py` 提供了一个函数，专门用于判断这种两条线交叉的场景，即 `backtesting.lib` 下 `crossover(s1, s2)` 函数，如果 `s1` 上穿 `s2`，则返回 `True`，否则返回 `False`。
+
+
+```python
+from backtesting.lib import crossover
+
+# 金叉
+crossover(fast_ma, slow_ma)
+# 死叉
+crossover(slow_ma, fast_ma)
+```
+
+现在就简洁多了。
 
 ### 运行回测
 
@@ -157,6 +188,80 @@ bt.run(fast_ma_window=15, slow_ma_window=30)
 ```
 
 在这不到 30 行代码里，我们就实现了一个简单的均线交叉策略，可见 Backtesting.py 的简洁高效。
+
+## 自定义数据
+
+`backtesting.py` 是允许使用自定义数据的。
+
+### 要求格式 
+
+数据要求是 `pandas.DataFrame`，且满足按时间升序排列，时间为 DataFrame 的索引，同时数据列至少包含 Open、High、Low、Close、Volume 五个字段即可。
+
+查看样例数据格式；
+
+```python
+print(GOOG)
+```
+
+输出：
+
+```bash
+              Open    High     Low   Close    Volume
+2004-08-19  100.00  104.06   95.96  100.34  22351900
+2004-08-20  101.01  109.08  100.50  108.31  11428600
+2004-08-23  110.75  113.48  109.05  109.40   9137200
+2004-08-24  111.24  111.60  103.57  104.87   7631300
+2004-08-25  104.96  108.00  103.88  106.00   4598900
+...            ...     ...     ...     ...       ...
+2013-02-25  802.30  808.41  790.49  790.77   2303900
+2013-02-26  795.00  795.95  784.40  790.13   2202500
+2013-02-27  794.80  804.75  791.11  799.78   2026100
+2013-02-28  801.10  806.99  801.03  801.20   2265800
+2013-03-01  797.80  807.14  796.15  806.19   2175400
+```
+
+### 示例：适配 tushare
+
+演示下将 tushare 数据转为 backtesting.py 支持的格式吧。
+
+示例代码：
+
+```python
+import tushare as ts
+import pandas as pd
+
+pro = ts.pro_api()
+df = pro.daily(ts_code="000001.SZ", start_date="2024-01-01")
+df["trade_date"] = pd.to_datetime(df["trade_date"])
+df.set_index("trade_date", inplace=True)
+df.index.name = "Datetime"
+df.sort_index(inplace=True)
+
+df.rename(
+    columns={
+        "open": "Open",
+        "high": "High",
+        "low": "Low",
+        "close": "Close",
+        "vol": "Volume",
+    },
+    inplace=True,
+)
+df = df[["Open", "High", "Low", "Close", "Volume"]]
+print(df.head())
+```
+
+输出：
+
+```bash
+            Open  High   Low  Close      Volume
+Datetime
+2024-01-02  9.39  9.42  9.21   9.21  1158366.45
+2024-01-03  9.19  9.22  9.15   9.20   733610.31
+2024-01-04  9.19  9.19  9.08   9.11   864193.99
+2024-01-05  9.10  9.44  9.07   9.27  1991622.16
+2024-01-08  9.23  9.30  9.11   9.15  1121156.19
+```
 
 ## 参数优化
 
