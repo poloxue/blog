@@ -22,11 +22,9 @@ Backtesting.py 是一个轻量级的 Python 回测框架，专注于策略回测
 
 Backtesting.py 内置了策略参数优化工具，可与 Pandas 数据框和 NumPy 数组兼容，易于集成。当然简单是有代价的，它的缺点是不支持多资产交易和分数股交易，这也限制了它的普适性。
 
-## 快速开始
-
 让我们快速上手 Backtesting.py 的使用吧。
 
-### 安装
+## 安装
 
 确保你已经有了 Python 环境，使用如下命令安装 backtesting.py 和 TA-Lib 两个依赖包。
 
@@ -36,7 +34,7 @@ pip install backtesting TA-Lib
 
 如果 TA-Lib 安装遇到困难，请查看 [TA-Lib 安装指南](https://ta-lib.github.io/ta-lib-python/install.html)，或者也可以选择其他技术指标库，如 pandas-ta。
 
-### 编写第一个策略
+## 编写第一个策略
 
 开始通过 backtesting.py 实现第一个策略，就以均线交叉策略为例。策略的规则也很简单，就是 SMA 金叉买入、死叉卖出。
 
