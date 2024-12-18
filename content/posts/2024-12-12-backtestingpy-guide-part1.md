@@ -38,7 +38,7 @@ pip install backtesting TA-Lib
 
 开始通过 backtesting.py 实现第一个策略，就以均线交叉策略为例。策略的规则也很简单，就是 SMA 金叉买入、死叉卖出。
 
-**导入必要的模块**
+### 导入必要的模块
 
 首先，创建一个名为 `strategy.py` 的 Python 文件，开始编写我们的策略。
 
@@ -52,7 +52,7 @@ import talib
 
 简单起见，我们就用 backtestingpy 提供的样例数据 GOOG，即 Google 某段时间点的价格数据来演示。
 
-**定义策略类**
+### 定义策略类
 
 我们定义一个名为 `MovingAverageCrossStrategy` 策略类，继承 `Strategy`：
 
@@ -81,7 +81,7 @@ class MovingAverageCrossStrategy(Strategy):
 
 在 `next` 交易逻辑阶段，只需要拿到当前的指标数据，判断是否要入场就行了，`self.fast_ma[-1]` 和 `self.slow_ma[-1]` 分别代表了最新的快线和慢线的值，当 `fast_ma` 大于 `slow_ma` 且当前没有仓位（`self.position.size` == 0) 执行买入，否则执行平仓。
 
-**运行回测**
+### 运行回测
 
 我们要创建 `Backtest` 实例运行回测，将 Google 数据，策略类、初始金额和交易费率传递 `Backtest` 完成实例化。
 

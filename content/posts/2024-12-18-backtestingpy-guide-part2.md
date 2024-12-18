@@ -40,34 +40,17 @@ Backtesting.py 提供了自定义优化指标的功能，使用户可以优化�
 以下是一个优化策略的示例代码，基于“在市场中停留最少时间获取最大收益”的自定义指标：
 
 ```python
-def my_optim_func(series):
-    final_equity = series['Equity Final [$]']
-    exposure_time = series['Exposure Time [%]']
+def my_optim_func(r):
+    final_equity = r['Equity Final [$]']
+    exposure_time = r['Exposure Time [%]']
     return final_equity / exposure_time
 
-class RSIStrategy(Strategy):
-    upper_bound = 70
-    lower_bound = 30
-    rsi_window = 14
-
-    def init(self):
-        self.rsi = self.I(talib.RSI, self.data.Close, self.rsi_window)
-
-    def next(self):
-        if self.rsi[-1] > self.upper_bound:
-            self.position.close()
-        elif self.rsi[-1] < self.lower_bound:
-            self.buy()
-
 # 使用自定义优化函数
-bt = Backtest(GOOG, RSIStrategy, cash=10000, commission=0.002)
+bt = Backtest(GOOG, MovingAverageCrossStrategy, cash=10000, commission=0.002)
 
 stats = bt.optimize(
-    upper_bound=range(50, 85, 5),
-    lower_bound=range(10, 45, 5),
-    rsi_window=range(10, 30, 2),
     maximize=my_optim_func,
-    constraint=lambda param: param.lower_bound < param.upper_bound
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window.
 )
 print(stats)
 bt.plot()
