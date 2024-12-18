@@ -63,10 +63,12 @@ class MovingAverageCrossStrategy(Strategy):
   slow_ma_window = 20
 
   def init(self):
+    # 初始化阶段：计算指标
     self.fast_ma = self.I(talib.SMA, self.data.Close, timeperiod=self.fast_ma_window)
     self.slow_ma = self.I(talib.SMA, self.data.Close, timeperiod=self.slow_ma_window)
 
   def next(self):
+    # 交易阶段：逻辑判断和执行交易
     if self.fast_ma[-1] > self.slow_ma[-1] and self.position.size == 0:
       self.buy()
     elif self.fast_ma[-1] < self.slow_ma[-1] and self.position.size > 0:
