@@ -1,5 +1,5 @@
 ---
-title: "Backtesting.py 由浅入深 PartI: 快速上手使用"
+title: "Backtesting.py 由浅入深 Part1: 快速上手使用"
 date: 2024-12-18T12:15:18+08:00
 draft: false
 comment: true
