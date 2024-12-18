@@ -1,5 +1,5 @@
 ---
-title: "mplfinance 使用教程：从入门到进阶"
+title: "mplfinance - 一个轻松绘制股票行情图表的 python 库"
 date: 2024-12-10T15:17:39+08:00
 draft: false
 comment: true

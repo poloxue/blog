@@ -1,5 +1,5 @@
 ---
-title: "Backtesting.py 教程：由浅入深-Part2"
+title: "Backtesting.py 由浅入深 Part2：策略参数优化"
 date: 2024-12-18T12:15:18+08:00
 draft: true
 comment: true
