@@ -196,7 +196,7 @@ slow_ma_window 20
 
 ### 参数约束
 
-上面的优化代码有个明显的不合理，`slow_ma_window` 可能出现小于 `fast_ma_window`的情况，如 `fast_ma_window=20`、`slow_ma_window=10` 的组合，这不仅不符合策略的逻辑，且还会增加优化耗时。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
+上面的优化代码有个明显的不合理，可能出现 `fast_ma_window` 小于 `slow_ma_window` 的情况，如 `fast_ma_window=20`，但 `slow_ma_window=10` 的组合，这不仅会增加优化耗时，也不符合策略的逻辑，。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
 
 示例代码：
 
