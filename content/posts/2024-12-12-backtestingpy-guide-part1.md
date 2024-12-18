@@ -1,18 +1,18 @@
 ---
-title: "Backtesting.py 教程：由浅入深"
+title: "Backtesting.py 教程：由浅入深-PartI"
 date: 2024-12-12T15:15:18+08:00
-draft: true
+draft: false
 comment: true
 description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的交易回测框架。"
 ---
 
 在算法交易中，验证一个策略是否有效至关重要，但该如何验证呢？
 
-最快捷的方式就是进行交易回测（Backtesting） ，即通过历史数据，模拟策略在过去市场中的表现，帮助我们评估收益和风险，从而避免盲目实盘操作。
+我们可以通过模拟盘或直接实盘测试策略，但能看到的问题有限。最快捷有效的方式是基于历史数据回测（Backtesting），模拟策略在过去市场中的表现，在评估收益和风险后，再进行模拟和实盘。
 
 那该如何回测呢？
 
-回测的方式有很多，既可以手工测试、也可以借助 excel 或是 python 的向量计算库，如 numpy 和 pandas 进行。不过这些方式都比较原始，我们可直接借助市面一些现成的回测框架，把重点放在策略的逻辑上。
+回测的方式有很多，既可以手工测试、也可以借助 excel 或是 python 的向量计算库，如 numpy 和 pandas 进行。不过这些方式都比较原始，我们可使用市面一些现成的回测框架，不仅能尽可能避免回测中常见的问题，还能把重点放在策略的逻辑上。
 
 本文将先介绍 **Backtesting.py**，一个 Python 实现轻量级、事件驱动的回测框架。之所以先介绍它，主要是它非常简单。
 
@@ -90,119 +90,174 @@ class MovingAverageCrossStrategy(Strategy):
 示例代码：
 
 ```python
-bt = Backtest(GOOG, MovingAverageCrossStrategy, cash=10000, commission=0.002)
+bt = Backtest(GOOG, MovingAverageCrossStrategy, cash=10000, commission=0.002, slippge)
 stats = bt.run()
 ```
 
-运行 `bt.run()`，得到它的返回值 `stats`，这就是回测结果。
+运行 `bt.run()`，得到它的返回值 `stats`，这就是我们要的回测结果。
 
 ```python
 print(stats)
 ```
 
-输出：
+输出评测结果，如下：
 
 ```bash
-Start                     2004-08-19 00:00:00 # 开始时间
-End                       2013-03-01 00:00:00
-Duration                   3116 days 00:00:00
-Exposure Time [%]                   61.545624
-Equity Final [$]                   99485.0574
-Equity Peak [$]                   100607.2574
-Return [%]                         894.850574
-Buy & Hold Return [%]              703.458242
-Return (Ann.) [%]                   30.934891
-Volatility (Ann.) [%]               32.215003
-Sharpe Ratio                         0.960263
-Sortino Ratio                        2.125336
-Calmar Ratio                         1.497421
-Max. Drawdown [%]                  -20.658779
-Avg. Drawdown [%]                   -3.678412
-Max. Drawdown Duration      584 days 00:00:00
-Avg. Drawdown Duration       38 days 00:00:00
-# Trades                                   48
-Win Rate [%]                        64.583333
-Best Trade [%]                       57.11931
-Worst Trade [%]                    -12.446769
-Avg. Trade [%]                       4.923007
-Max. Trade Duration         121 days 00:00:00
-Avg. Trade Duration          39 days 00:00:00
-Profit Factor                        4.729158
-Expectancy [%]                        5.66852
-SQN                                  2.643361
-_strategy                 MovingAverageCro...
-_equity_curve                             ...
-_trades                       Size  EntryB...
+Start                  2004-08-19 00:00:00 # 开始时间
+End                    2013-03-01 00:00:00 # 结束时间
+Duration                3116 days 00:00:00 # 总持续时间
+Exposure Time [%]                61.545624 # 资金暴露时间比例（%）
+Equity Final [$]                99485.0574 # 最终净值（美元）
+Equity Peak [$]                100607.2574 # 最高净值（美元）
+Return [%]                      894.850574 # 总收益率（%）
+Buy & Hold Return [%]           703.458242 # 买入持有策略收益率（%）
+Return (Ann.) [%]                30.934891 # 年化收益率（%）
+Volatility (Ann.) [%]            32.215003 # 年化波动率（%）
+Sharpe Ratio                      0.960263 # 夏普比率（风险调整收益）
+Sortino Ratio                     2.125336 # 索提诺比率（下行风险调整收益）
+Calmar Ratio                      1.497421 # 卡尔玛比率（收益与最大回撤之比）
+Max. Drawdown [%]               -20.658779 # 最大回撤（%）
+Avg. Drawdown [%]                -3.678412 # 平均回撤幅度（%）
+Max. Drawdown Duration   584 days 00:00:00 # 最大回撤持续时间
+Avg. Drawdown Duration    38 days 00:00:00 # 平均回撤持续时间
+# Trades                                48 # 总交易次数
+Win Rate [%]                     64.583333 # 胜率（%）
+Best Trade [%]                    57.11931 # 最佳单笔交易收益率（%）
+Worst Trade [%]                 -12.446769 # 最差单笔交易收益率（%）
+Avg. Trade [%]                    4.923007 # 平均单笔交易收益率（%）
+Max. Trade Duration      121 days 00:00:00 # 最长持仓时间
+Avg. Trade Duration       39 days 00:00:00 # 平均持仓时间
+Profit Factor                     4.729158 # 盈亏比（获利交易总额与亏损交易总额之比）
+Expectancy [%]                     5.66852 # 期望收益率（平均每笔交易的收益率）
+SQN                               2.643361 # 系统质量数（策略表现综合评分）
+_strategy              MovingAverageCro... # 策略名称（移动均线交叉）
+_equity_curve                          ... # 净值曲线
+_trades                    Size  EntryB... # 交易详情
 dtype: object
 ```
 
+如上是策略统计数据，有包括初始资金、最终净值、最大回撤等，还有其他评价策略表现的指标，如最大回撤、夏普比率、胜率等。
+
+如果想查看回测的收益曲线，`Backtest` 提供方法 `plot` 查看可视化结果：
 
 ```python
 bt.plot()
 ```
 
-
-
-### 结果解读
-
 运行上述代码后，你将看到：
 
-- **策略统计数据**：包括初始资金、最终净值、最大回撤等。
-- **交互式回测图表**：图表显示了买卖点、指标和交易统计信息。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-12-backtestingpy-guide-part1-01.png)
 
-在短短 30 行代码内，我们实现了一个简单的 RSI 交叉策略。这是 Backtesting.py 简洁高效的一个典型例子。
+图表中显示了策略的收益曲线、买卖点、指标曲线和我们重点的几个交易统计数据，如最终净值、最高净值、最大回撤等。
+
+除了使用默认参数外，我们可以在调用 `bt.run()` 修改默认参数：
+
+```python
+bt.run(fast_ma_window=15, slow_ma_window=30)
+```
+
+在这不到 30 行代码里，我们就实现了一个简单的均线交叉策略，可见 Backtesting.py 的简洁高效。
 
 ## 参数优化
 
-在策略开发中，参数优化是提升回测表现的重要步骤。Backtesting.py 内置了参数优化功能，能够帮助开发者高效找到最佳策略参数组合。
+在策略开发时，有一个过程非常重要，即参数优化，它是提升回测表现的重要步骤。Backtesting.py 内置了参数优化功能，能助我们快速找到最佳策略参数组合。
 
-### 使用优化器
+### 优化示例
 
-以下是一个优化 RSI 策略的示例代码：
+backtestingpy 默认的优化方式是将是将所有的参数组合测试一遍，以下是优化 MovingAverageCross 策略的示例代码：
+
 ```python
-class RSIStrategy(Strategy):
-    upper_bound = 70
-    lower_bound = 30
-    rsi_window = 14
-
-    def init(self):
-        self.rsi = self.I(talib.RSI, self.data.Close, self.rsi_window)
-
-    def next(self):
-        if self.rsi[-1] > self.upper_bound:
-            self.position.close()
-        elif self.rsi[-1] < self.lower_bound:
-            self.buy()
-
-# 运行优化
-bt = Backtest(GOOG, RSIStrategy, cash=10000, commission=0.002)
-
+bt = Backtest(GOOG, MovingAverage, cash=10000, commission=0.002)
 stats = bt.optimize(
-    upper_bound=range(50, 85, 5),
-    lower_bound=range(10, 45, 5),
-    rsi_window=range(10, 30, 2),
-    maximize='Sharpe Ratio',
-    constraint=lambda param: param.lower_bound < param.upper_bound
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
 )
 print(stats)
 bt.plot()
 ```
 
-### 优化器参数说明
+如果通过 `range` 指定了参数范围，运行的结果就是表现最好的参数的结果。
 
-- **`upper_bound` 和 `lower_bound`**：分别表示 RSI 的超买和超卖阈值。
-- **`rsi_window`**：RSI 的时间窗口大小。
-- **`maximize`**：优化的目标，可以选择 `Sharpe Ratio`、`Equity Final [$]` 等指标。
-- **`constraint`**：添加约束条件，确保参数组合的合理性。
-
-### 并行计算和性能优化
-
-Backtesting.py 支持多线程并行计算，可以充分利用计算机的多核性能：
+我们可以通过打印策略实例拿到表现最好的参数。
 
 ```python
-import os
-os.environ['BACKTESTING_NUM_WORKERS'] = '4'  # 使用 4 个线程
+print(stats._strategy)
+print("fast_ma_window", stats._strategy.fast_ma_window)
+print("slow_ma_window", stats._strategy.slow_ma_window)
 ```
 
-在运行优化时，Backtesting.py 会并行计算每种参数组合，显著提高效率。
+输出：
 
+```bash
+MovingAverageCrossStrategy(fast_ma_window=5,slow_ma_window=20)
+fast_ma_window 5
+slow_ma_window 20
+```
+
+### 参数约束
+
+上面的优化代码有个明显的不合理，`slow_ma_window` 不应该小于 `fast_ma_window`，但优化的时候，还会测试 `fast_ma_window=20`、`slow_ma_window=10` 的组合，这会增加优化的耗时。`backtestingpy` 的优化器提供了参数约束能力，我们只要限制 `fast_ma_window` 必须小于 `slow_ma_window` 即可。
+
+示例代码：
+
+```python
+stats = bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+)
+```
+
+这将能极大提升回测优化速度。
+
+### 评价标准
+
+优化器默认只返回了一个表现最好的参数，但这个最好是如何评价的呢？
+
+backtestingpy 优化器的默认评价标准是 SQN，一句话表述它的含义就是，SQN 通过平均收益（高更好）、收益波动性（低更好）和交易次数（多更好）衡量策略稳健性，值越高越优质。
+
+假设，我想修改这个评价可以吗？当然可以。`optimize` 提供了一个名为 `maximize`参数来修改评价标准。我可以将最大回撤或夏普比率作为评价标准。
+
+将评价标准改为最大回撤：
+
+```python
+bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+    maximize='Max. Drawdown [%]',
+)
+```
+
+将评价标准改为夏普比率：
+
+```python
+bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+    maximize="Sharpe Ratio",
+)
+```
+
+这个评价标准默认是选设置的评价指标的最大值，如果想越小越好，可通过传递函数实现，如果选择年化波动率最小的参数组合。
+
+示例代码：
+
+```python
+
+bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+    maximize=lambda r: -r["Volatility (Ann.) [%]"],
+)
+```
+
+通过 `maximize=lambda r: -r["Volatility (Ann.) [%]"]` 选择年化波动波动率最小的组合。
+
+不过，从我平时的使用体验来看，还是默认的 SQN 的优化结果比较合理，它的评价维度更加全面。
+
+## 总结
+
+本文介绍了 Backtesting.py 回测框架的基本，从策略创建到参数优化。Backtesting.py 的参数优化部分还有不少的内容，后续文章再继续介绍。
