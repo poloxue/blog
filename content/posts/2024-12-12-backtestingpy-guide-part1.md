@@ -1,6 +1,6 @@
 ---
 title: "Backtesting.py 教程：由浅入深-PartI"
-date: 2024-12-12T15:15:18+08:00
+date: 2024-12-18T12:15:18+08:00
 draft: false
 comment: true
 description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的交易回测框架。"
@@ -196,7 +196,7 @@ slow_ma_window 20
 
 ### 参数约束
 
-上面的优化代码有个明显的不合理，`slow_ma_window` 不应该小于 `fast_ma_window`，但优化的时候，还会测试 `fast_ma_window=20`、`slow_ma_window=10` 的组合，这会增加优化的耗时。`backtestingpy` 的优化器提供了参数约束能力，我们只要限制 `fast_ma_window` 必须小于 `slow_ma_window` 即可。
+上面的优化代码有个明显的不合理，`slow_ma_window` 可能出现小于 `fast_ma_window`的情况，如 `fast_ma_window=20`、`slow_ma_window=10` 的组合，这不仅不符合策略的逻辑，且还会增加优化耗时。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
 
 示例代码：
 
