@@ -72,18 +72,6 @@ def my_optim_func(series):
 通过自定义优化指标，你可以更灵活地定义回测目标并发现符合特定需求的最佳参数组合。
 
 
-### 提取回测参数
-
-可以通过 `stats` 对象提取回测参数，用于动态命名文件：
-
-```python
-lower_bound = stats._strategy.lower_bound
-upper_bound = stats._strategy.upper_bound
-bt.plot(filename=f'results/plot_lb{lower_bound}_ub{upper_bound}.html')
-```
-
-通过保存 HTML 文件和动态命名功能，你可以轻松管理和归档不同的回测结果，为后续优化和分析提供便利支持。
-
 ## 随机网格搜索
 
 在优化过程中，测试所有参数组合可能非常耗时。例如，当存在 20,000 种参数组合时，逐一测试显然不现实。为此，Backtesting.py 提供了随机网格搜索功能，可以显著减少计算量。
