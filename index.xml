@@ -8,7 +8,7 @@ Backtesting.py 内置了策略参数优化工具，可与 Pandas 数据框和 Nu
 让我们快速上手 Backtesting.py 的使用吧。
 安装 确保你已经有了 Python 环境，使用如下命令安装 backtesting.py 和 TA-Lib 两个依赖包。
 1 pip install backtesting TA-Lib 如果 TA-Lib 安装遇到困难，请查看 TA-Lib 安装指南，或者也可以选择其他技术指标库，如 pandas-ta。
-编写第一个策略 开始通过 backtesting.py 实现第一个策略，就以均线交叉策略为例。策略的规则也很简单，就是 SMA 金叉开仓买入、死叉平仓。
+编写第一个策略 开始通过 backtesting.py 实现第一个策略，就以均线交叉策略为例。策略的规则也很简单，就是 SMA 金叉开仓买入、死叉平仓。暂时只考虑做多的情况。
 导入必要的模块 首先，创建一个名为 strategy.py 的 Python 文件，开始编写我们的策略。
 导入要用到的模块：
 1 2 3 from backtesting import Backtest, Strategy from backtesting.</description></item><item><title>效率神器：用 Python 监控油管频道，AI 生成文章</title><link>https://www.poloxue.com/posts/2024-12-15-monitor-youtube-channel/</link><pubDate>Sun, 15 Dec 2024 17:17:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-15-monitor-youtube-channel/</guid><description>油管是很多人获取专业知识和行业资讯的渠道，有很多有价值的信息。对于要深入学习的内容，我们肯定要看完整个视频，而如果你只是关注一些资讯时间或分析视频，跟进热点信息，比如我平时关注一些财经币圈相关的内容资讯，花时间看完每个视频，效率地下。还有，油管上有不少高质量的英文视频，看起来有点吃力，将其转为中文，理解起来更容易。
