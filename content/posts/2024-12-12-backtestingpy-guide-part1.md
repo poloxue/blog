@@ -260,4 +260,4 @@ bt.optimize(
 
 ## 总结
 
-本文介绍了 Backtesting.py 回测框架的快速上手使用，从策略创建到参数优化。Backtesting.py 的参数优化部分还有不少的内容，后续文章再继续介绍。
+本文介绍了 Backtesting.py 回测框架的快速上手使用，从策略创建、回测与参数优化。Backtesting.py 的参数优化部分还有不少的内容，后续文章再继续介绍。
