@@ -9,7 +9,21 @@ yt-dlp：一个强大的 YouTube 下载工具，可以获取视频元数据或�
 1 pip install yt-dlp openai-whisper openai 开始具体的实现吧！我将按步骤进行。
 监控油管频道 油管频道页面会列出了最新发布的视频，通过 yt-dlp 工具来抓取这些信息。
 代码示例：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 import click import yt_dlp def fetch_latest_videos(channel_url, fetch_count=5): ydl_opts = { &amp;#34;quiet&amp;#34;: True, &amp;#34;extract_flat&amp;#34;: &amp;#34;in_playlist&amp;#34;, &amp;#34;playlist_items&amp;#34;: f&amp;#34;1-{fetch_count}&amp;#34;, } with yt_dlp.</description></item><item><title>mplfinance 使用教程：从入门到进阶</title><link>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</link><pubDate>Tue, 10 Dec 2024 15:17:39 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</guid><description>mplfinance 是一个基于 matplotlib 的金融数据可视化工具，旨在方便地生成 OHLC、K线图和其他金融相关图表。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 import click import yt_dlp def fetch_latest_videos(channel_url, fetch_count=5): ydl_opts = { &amp;#34;quiet&amp;#34;: True, &amp;#34;extract_flat&amp;#34;: &amp;#34;in_playlist&amp;#34;, &amp;#34;playlist_items&amp;#34;: f&amp;#34;1-{fetch_count}&amp;#34;, } with yt_dlp.</description></item><item><title>Backtesting.py 教程：由浅入深-PartI</title><link>https://www.poloxue.com/posts/2024-12-12-backtestingpy-guide-part1/</link><pubDate>Thu, 12 Dec 2024 15:15:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-12-backtestingpy-guide-part1/</guid><description>在算法交易中，验证一个策略是否有效至关重要，但该如何验证呢？
+我们可以通过模拟盘或直接实盘测试策略，但能看到的问题有限。最快捷有效的方式是基于历史数据回测（Backtesting），模拟策略在过去市场中的表现，在评估收益和风险后，再进行模拟和实盘。
+那该如何回测呢？
+回测的方式有很多，既可以手工测试、也可以借助 excel 或是 python 的向量计算库，如 numpy 和 pandas 进行。不过这些方式都比较原始，我们可使用市面一些现成的回测框架，不仅能尽可能避免回测中常见的问题，还能把重点放在策略的逻辑上。
+本文将先介绍 Backtesting.py，一个 Python 实现轻量级、事件驱动的回测框架。之所以先介绍它，主要是它非常简单。
+什么是 Backtesting.py Backtesting.py 是一个轻量级的 Python 回测框架，专注于策略回测的核心功能，适合快速实现和测试交易策略。与其他回测框架，如 VectorBT 或 Backtrader 等回测框架相比，Backtesting.py 简化了使用流程，没有过多复杂功能，自然地，它更加简单易用与高效。
+Backtesting.py 内置了策略参数优化工具，可与 Pandas 数据框和 NumPy 数组兼容，易于集成。当然简单是有代价的，它的缺点是不支持多资产交易和分数股交易，这也限制了它的普适性。
+快速开始 让我们快速上手 Backtesting.py 的使用吧。
+安装 确保你已经有了 Python 环境，使用如下命令安装 backtesting.py 和 TA-Lib 两个依赖包。
+1 pip install backtesting TA-Lib 如果 TA-Lib 安装遇到困难，请查看 TA-Lib 安装指南，或者也可以选择其他技术指标库，如 pandas-ta。
+编写第一个策略 开始通过 backtesting.py 实现第一个策略，就以均线交叉策略为例。策略的规则也很简单，就是 SMA 金叉买入、死叉卖出。
+导入必要的模块
+首先，创建一个名为 strategy.py 的 Python 文件，开始编写我们的策略。
+导入要用到的模块：
+1 2 3 from backtesting import Backtest, Strategy from backtesting.</description></item><item><title>mplfinance 使用教程：从入门到进阶</title><link>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</link><pubDate>Tue, 10 Dec 2024 15:17:39 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</guid><description>mplfinance 是一个基于 matplotlib 的金融数据可视化工具，旨在方便地生成 OHLC、K线图和其他金融相关图表。
 本文将带你逐步从基础到高级使用，帮助你熟练掌握 mplfinance 的使用技巧。
 安装 mplfinance 在使用 mplfinance 前，需要先安装它。可以通过以下命令安装：
 1 pip install --upgrade mplfinance mplfinance 依赖于 matplotlib 和 pandas，确保你的环境中已安装这些库。
