@@ -1,10 +1,35 @@
 ---
-title: "Backtesting.py 教程：由浅入深"
-date: 2024-12-12T15:15:18+08:00
+title: "Backtesting.py 教程：由浅入深-Part2"
+date: 2024-12-18T12:15:18+08:00
 draft: true
 comment: true
-description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的交易回测框架。"
+description: "本文介绍 Backtesting.py 的参数优化，尽量把它的参数优化能力都挖掘出来。"
 ---
+
+本文继续介绍 Backtesting.py 的参数优化，尽量把它的参数优化能力都挖掘出来。
+
+我们还是使用之前的均线交叉策略。
+
+```python
+from backtesting import Backtest, Strategy
+from backtesting.test import GOOG  # 示例数据
+import talib
+
+class MovingAverageCrossStrategy(Strategy):
+  # 参数
+  fast_ma_window = 10
+  slow_ma_window = 20
+
+  def init(self):
+    self.fast_ma = self.I(talib.SMA, self.data.Close, timeperiod=self.fast_ma_window)
+    self.slow_ma = self.I(talib.SMA, self.data.Close, timeperiod=self.slow_ma_window)
+
+  def next(self):
+    if self.fast_ma[-1] > self.slow_ma[-1] and self.position.size == 0:
+      self.buy()
+    elif self.fast_ma[-1] < self.slow_ma[-1] and self.position.size > 0:
+      self.position.close()
+```
 
 ## 自定义优化指标
 
