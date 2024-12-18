@@ -71,35 +71,6 @@ def my_optim_func(series):
 
 通过自定义优化指标，你可以更灵活地定义回测目标并发现符合特定需求的最佳参数组合。
 
-## 回测结果保存
-
-Backtesting.py 提供了保存回测结果的功能，便于后续分析。
-
-### 保存 HTML 文件
-
-运行回测时，Backtesting.py 会自动生成一个 HTML 文件，包含交互式图表和详细的回测结果。
-
-```python
-bt.plot(filename='results/plot.html')
-```
-
-在上述代码中，回测结果将保存在 `results` 文件夹下。如果文件夹不存在，需要提前创建：
-
-```bash
-mkdir -p results
-```
-
-### 动态命名文件
-
-可以动态设置文件名以区分不同的参数组合。例如：
-
-```python
-lower_bound = 30
-upper_bound = 70
-bt.plot(filename=f'results/plot_lb{lower_bound}_ub{upper_bound}.html')
-```
-
-这将保存文件名为 `plot_lb30_ub70.html` 的 HTML 文件，方便管理不同的回测结果。
 
 ### 提取回测参数
 

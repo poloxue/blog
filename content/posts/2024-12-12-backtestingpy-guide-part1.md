@@ -258,6 +258,49 @@ bt.optimize(
 
 不过，从我平时的使用体验来看，还是默认的 SQN 的优化结果比较合理，它的评价维度更加全面。
 
+## 回测图表保存
+
+Backtesting.py 提供了保存回测图表的功能，便于后续分析。
+
+### 保存 HTML 文件
+
+我们上面运行回测时，Backtesting.py 会在当前目录下自动生成一个 HTML 文件，即上面展示的回测图表。
+
+默认的文件名称是 "策略类名.html"，参数优化的话，文件名会带上参数。
+
+示例：
+
+```bash
+MovingAverageCrossStrategy(fast_ma_window=5,slow_ma_window=20).html
+MovingAverageCrossStrategy.html
+```
+
+这个名称是可以修改的：
+
+```python
+bt.plot(filename='results/plot.html')
+```
+
+上述代码将回测结果保存在 `results` 目录下。如果目录不存在，需要提前创建：
+
+```bash
+mkdir -p results
+```
+
+### 动态命名文件
+
+我们也可以动态设置文件名以区分不同的参数组合。例如：
+
+```python
+fast =  stats._strategy.fast_ma_window
+slow = stats._strategy.slow_ma_window
+bt.plot(
+  filename=f'results/fast{fast}_slow{slow}.html',
+)
+```
+
+这将保存文件名如 `fast10_slow20.html` 的 HTML 文件，方便管理不同的回测结果。
+
 ## 总结
 
 本文介绍了 Backtesting.py 回测框架的快速上手使用，从策略创建、回测与参数优化。Backtesting.py 的参数优化部分还有不少的内容，后续文章再继续介绍。
