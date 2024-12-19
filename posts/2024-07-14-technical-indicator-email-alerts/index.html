@@ -219,7 +219,7 @@
 </span></span><span style=display:flex><span>    message <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;告警！RSI：</span><span style=color:#e6db74>{</span>last_rsi<span style=color:#e6db74>}</span><span style=color:#e6db74>，收盘价：</span><span style=color:#e6db74>{</span>last_close<span style=color:#e6db74>}</span><span style=color:#e6db74>，上轨：</span><span style=color:#e6db74>{</span>last_upperband<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
 </span></span><span style=display:flex><span>    send_email(<span style=color:#e6db74>&#34;告警！&#34;</span>, message, <span style=color:#e6db74>&#34;to_email@163.com&#34;</span>)
 </span></span></code></pre></td></tr></table></div></div><p>注意将以上的邮件地址和授权码替换为真实的即可。</p><h2 id=定时执行>定时执行</h2><p>现在，我们只要配置脚本的定时执行即可，可以使用 python 的 schedule 包，或是在 Linux
-系统上，直接通过 Crontab 配置定时任务。</p><p>演示案例：如配置周一到周五，每天9点检查并告警。</p><p>如果使用 scheduler，要讲如上的过程封装下便于调用。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+系统上，直接通过 Crontab 配置定时任务。</p><p>演示案例：如配置周一到周五，每天9点检查并告警。</p><p>如果使用 schedule，要讲如上的过程封装下便于调用。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
@@ -237,13 +237,15 @@
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> time
 </span></span><span style=display:flex><span><span style=color:#f92672>import</span> datetime
-</span></span><span style=display:flex><span><span style=color:#f92672>from</span> scheduler <span style=color:#f92672>import</span> Scheduler
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> schedule
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>indicator_alerts</span>():
 </span></span><span style=display:flex><span>  <span style=color:#75715e># 你的检测代码</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>pass</span>
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#75715e># 配置周一到周五的早上九点执行任务</span>
 </span></span><span style=display:flex><span>schedule<span style=color:#f92672>.</span>every()<span style=color:#f92672>.</span>monday<span style=color:#f92672>.</span>at(<span style=color:#e6db74>&#34;09:00&#34;</span>)<span style=color:#f92672>.</span>do(indicator_alerts)
