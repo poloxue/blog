@@ -235,7 +235,7 @@ Opstrat Opstrat 是一个 Python 工具包，它提供了便捷的方法来可�
 接下来将按照这个流程逐步展开介绍。
 数据下载 在上一篇文章中，我们介绍了如何使用 akshare 下载国内期货、股票和指数的历史行情。假设，我们已经下载了数据，将其存储在一个 DataFrame 中。
 如下是上证指数 000001 的数据下载，我们可直接使用上篇文章的 history_bars 方法，并将数据保存到 index_000001.csv 文件中。
-1 2 3 # 下载上证指数的历史行情数据 df = history_bars(symbol=&amp;#34;000001&amp;#34;, length=100) df.to_csv(&amp;#34;index_000001.csv&amp;#34;, index=False) 我提前下载行情是为了防止重复调用产生可能的网络问题，把行情查询和指标计算分离，提高报警程序稳定性。
+1 2 3 # 下载上证指数的历史行情数据 df = history_bars(symbol=&amp;#34;000001&amp;#34;, length=100) df.to_csv(&amp;#34;index_000001.csv&amp;#34;, index=False) 提前下载行情是为了防止重复调用产生可能的网络问题，把行情查询和指标计算分离，提高报警程序稳定性。
 安装 TA-Lib 库 现在可以开始计算指标了。
 python 的指标计算库有如 talib、pandas-ta、ta 等等，其中 talib 最出名，支持超过 150 中技术指标，由 C 语言实现，性能更高。我将使用的就是 talib。
 TA-Lib 的安装要提前安装依赖的动态库，参考 TA-Lib 官方文档。我简单展开说说不同操作系统下依赖库的安装方法吧。
