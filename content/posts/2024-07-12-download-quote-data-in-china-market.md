@@ -6,19 +6,17 @@ comment: true
 description: "本文介绍如何使用 akshare 下载国内的期货、股票和指数的历史行情数据。"
 ---
 
-本文介绍如何使用 akshare 下载国内期货、股票和指数的历史行情数据。
+本文介绍如何使用 akshare 封装一个易用的国内期货、期货指数、股票和股票指数的历史行情数据接口。
 
-Akshare 是一个丰富的金融数据查询的 Python 库，通过爬虫实现了大量的金融数据接口，非常便于我们日常分析研究使用。
-
-本文将详细介绍如何使用 Akshare 下载期货、股票和指数数据，并提供完整的代码示例，以求大家能快速拿到数据少走弯路。
-
-我最初是为了下载期货合约主要是主力连续合约的历史行情数据，用于回测分析，然后顺便延展到指数和股票的行情数据。
-
-最终成果是封装一个定义如下的函数，即日线历史行情的数据下载函数。
+目标接口的定义如下所示：
 
 ```python
-history_bar(symbol, length=100)
+history_bars(symbol, length=100, equity_type="future")
 ```
+
+这么封装也是为了便于使用。
+
+如果不了解 akshare，我已经写过一篇关于 akshare 下载金融数据的文章：[通过 python 获取金融数据-akshare](https://www.poloxue.com/posts/2024-11-02-financial-market-data/)。
 
 ## 安装 Akshare
 
@@ -32,15 +30,36 @@ pip install akshare
 
 ## 下载期货数据
 
-我使用 akshare 的重要原因就是它提供了下载期货的主力或连续合约的历史数据。开始我想 tushare 实现，映射每天的主力合约并对应获取其历史数据和拼接，这个过程本身就比较繁琐。再就是 tushare 的频率限制严重，测试几次就没有额度了。
+akshare 中的主力和连续合约的数据是从新浪财经下载的，要请求行情接口，首先要知道品种对应的 symbol 名称。它的 symbol 名称可以通过函数 `futures_display_main_sina` 拿到映射关系。
 
-> 注：tushare 其实也有主力和连续合约的数据，且数据质量更高。
+```python
+import akshare as aks
+print(aks.futures_display_main_sina())
+```
 
-akshare 中的主力和连续合约的数据是从新浪财经下载的，它的 symbol 名称与标准的是不一致的，不过可以通过函数 `futures_display_main_sina` 拿到映射关系。具体我不演示了，我搞了一份表格，便于我平时查看。
+输出：
 
-如需查看，可访问 [新浪期货名称关系表格](https://gist.github.com/poloxue/89395ef4001f244c4ad872ea9cfa1cb8)。
+```bash
+   symbol exchange         name
+0      V0      dce        PVC连续
+1      P0      dce        棕榈油连续
+2      B0      dce         豆二连续
+3      M0      dce         豆粕连续
+4      I0      dce        铁矿石连续
+..    ...      ...          ...
+72    IC0    cffex  中证500指数期货连续
+73    TS0    cffex    2年期国债期货连续
+74    IM0    cffex   中证连续指数期货连续
+75    SI0     gfex        工业硅连续
+76    LC0     gfex        碳酸锂连续
 
-有了主力和连续合约的 symbol 名称，就可以使用 `futures_main_sina` 函数下载历史数据。
+[77 rows x 3 columns]
+```
+
+
+现在将 symbol 传递给 `futures_main_sina` 函数即可下载合约的历史数据。
+
+如上的 C0 表示的是玉米主力合约，下载它的日线行情：
 
 ```python
 data = aks.futures_main_sina(
@@ -49,12 +68,10 @@ data = aks.futures_main_sina(
 )
 ```
 
-如上的 C0 表示的是玉米主力合约。
-
-我们可以定义一个函数，参数接受 symbol 名称和长度，输出结果其转换为易读的格式。
+为便于统一封装到 `history_bars`，我们定义一个函数 `future_history_bars`，参数是 symbol 名称和长度，将输出结果转换为易读的格式。
 
 ```python
-def future_history_bar(symbol, length=100):
+def future_history_bars(symbol, length=100):
     start_date = datetime.now() - timedelta(days=length * 2)
     data = aks.futures_main_sina(
         symbol=symbol, start_date=start_date.strftime("%Y%m%d")
@@ -80,6 +97,53 @@ def future_history_bar(symbol, length=100):
 
 上面的参数和输出的定义看个人习惯，我比较习惯这样的使用方式，便于我计算指标。
 
+> **提醒：**
+>
+> 上述的按 length 获取数据的方式没有按交易日历来，只是粗略地从当前时间往前推 `2*length` 个周期得到开始时间 `start_date`，如果 `length` 太小，例如两个周期，如果赶上假期，就可能获取不到数据，这点要注意的。
+> 
+> 如果想长度精确，最简单的方式就是把数据存入数据库，通过 SOL 加载。或者是拿到交易日历，按日历计算交易天数。
+
+## 南华期货指数
+
+我最初封装这个接口是为了回测策略，但发现期货主连数据是未复权的数据，没有考虑换仓，不符合真实交易场景。
+
+有没有满足需求的数据？
+
+当然有！市面上有南华期货指数，它考虑了换仓的场景，经过复权编制出的数据，符合真实交易场景，可用来回测。
+
+akshare 的文档中提供了南华指数的接口，我测试了下。很遗憾，几个接口都不能用了。
+
+```python
+# aks.futures_index_symbol_table_nh() 南华 symbol 表格
+# aks.futures_price_index_nh() 南华价格指数
+# aks.futures_return_index_nh() 南华收益指数
+```
+
+我本希望这篇文章中都是免费数据，但确实没有找到好的渠道。如果确有需要，可从 tushare 下载，访问 [南华期货指数日线行情](https://www.tushare.pro/document/2?doc_id=155)。
+
+除了使用南华期货指数，也可自己计算，前提是知道主连合约的换仓时间。在 akshare 上没发现这个数据，如需要，也可从 tushare 下载，访问[期货主力与连续合约](https://www.tushare.pro/document/2?doc_id=189)，其中包含了主连合约每天映射的实际合约。
+
+我将 tushare 的南华指数行情封装到了这个接口：
+
+
+```python
+def nanhua_future_history_bars(symbol, length=100):
+    start_date = (datetime.now() - timedelta(days=length * 2)).strftime("%Y%m%d")
+    end_date = datetime.now().strftime("%Y%m%d")
+
+    pro = ts.pro_api()
+    data = pro.index_daily(ts_code=symbol, start_date=start_date, end_date=end_date)
+    if not len(data):
+        return
+
+    data.dropna(inplace=True)
+    data.rename(columns={"trade_date": "date", "vol": "volume"}, inplace=True)
+    data.sort_values(by="date")
+    data["date"] = pd.to_datetime(data["date"])
+    data.set_index("date", inplace=True)
+
+    return data
+```
 ## 下载股票数据
 
 A 股股票数据可使用 `stock_zh_a_hist` 下载，它的输入参数包括股票代码、周期、复权方式和起始日期等参数。
@@ -98,7 +162,7 @@ data = aks.stock_zh_a_hist(
 为了使用方便，同样可定义一个函数，易于使用：
 
 ```python
-def stock_history_bar(symbol, length=100):
+def stock_history_bars(symbol, length=100):
     start_date = datetime.now() - timedelta(days=length * 2)
     data = aks.stock_zh_a_hist(
         symbol=symbol,
@@ -149,7 +213,7 @@ data = aks.index_zh_a_hist(
 将其实现为 history_bar 函数的形式，便于我的使用。如下所示：
 
 ```python
-def index_history_bar(symbol, length=100):
+def index_history_bars(symbol, length=100):
     start_date = (datetime.now() - timedelta(days=length * 2)).strftime("%Y%m%d")
     end_date = datetime.now().strftime("%Y%m%d")
     data = aks.index_zh_a_hist(
@@ -188,11 +252,13 @@ def index_history_bar(symbol, length=100):
 最后，还可以定义一个主函数，根据输入的类型下载相应的历史数据：
 
 ```python
-def history_bar(symbol, length=100, equity_type="stock"):
+def history_bars(symbol, length=100, equity_type="stock"):
     if equity_type == "stock":
         return stock_history_bar(symbol, length=length)
     elif equity_type == "future":
         return future_history_bar(symbol, length=length)
+    elif equity_type == "nan_future":
+        return nanhua_future_history_bar(symbol, length=length)
     elif equity_type == "index":
         return index_history_bar(symbol, length=length)
     else:
@@ -211,7 +277,7 @@ def history_bar(symbol, length=100, equity_type="stock"):
 symbol = "000001"  # 上证指数
 length = 100
 equity_type = "index"
-data = history_bar(symbol, length, equity_type)
+data = history_bars(symbol, length, equity_type)
 print(data)
 ```
 
@@ -221,7 +287,7 @@ print(data)
 symbol = "000001"  # 平安银行
 length = 100
 equity_type = "stock"
-data = history_bar(symbol, length, equity_type)
+data = history_bars(symbol, length, equity_type)
 print(data)
 ```
 
@@ -231,7 +297,7 @@ print(data)
 symbol = "MA0"  # 甲醇主连
 length = 100
 equity_type = "stock"
-data = history_bar(symbol, length, equity_type)
+data = history_bars(symbol, length, equity_type)
 print(data)
 ```
 
@@ -249,7 +315,7 @@ print(data)
 
 ```python
 import talib
-data = history_bar("000001", length=100, equity_type="stock")
+data = history_bars("000001", length=100, equity_type="stock")
 rsi = talib.RSI(data['close'].values)
 
 rsi0 = rsi[-1]

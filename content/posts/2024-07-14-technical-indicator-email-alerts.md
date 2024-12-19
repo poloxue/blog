@@ -243,16 +243,17 @@ if alerts.iloc[-1] < 50:
 
 演示案例：如配置周一到周五，每天9点检查并告警。
 
-如果使用 scheduler，要讲如上的过程封装下便于调用。
+如果使用 schedule，要讲如上的过程封装下便于调用。
 
 ```python
 import time
 import datetime
-from scheduler import Scheduler
+import schedule
 
 
 def indicator_alerts():
   # 你的检测代码
+  pass
 
 # 配置周一到周五的早上九点执行任务
 schedule.every().monday.at("09:00").do(indicator_alerts)
