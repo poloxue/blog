@@ -6,6 +6,8 @@ comment: true
 description: "mplfinance 是一个基于 matplotlib 的金融数据可视化工具，旨在方便地生成 OHLC、K线图和其他金融相关图表。本教程将逐步带你从基础到高级使用，帮助你熟练掌握 `mplfinance` 的使用技巧。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-11-mplfinance-chart-library-00.jpeg)
+
 `mplfinance` 是一个基于 `matplotlib` 的金融数据可视化工具，旨在方便地生成 OHLC、K线图和其他金融相关图表。
 
 本文将带你逐步从基础到高级使用，帮助你熟练掌握 `mplfinance` 的使用技巧。
