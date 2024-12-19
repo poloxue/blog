@@ -243,7 +243,7 @@ macOS
 macOS 上可通过 Homebrew 安装：
 1 brew install ta-lib Linux
 Linux 上要手动编译安装，提前下载 ta-lib-0.4.0-src.tar.gz，并执行如下命令：
-1 2 3 4 5 6 $ wget https://prdownloads.</description></item><item><title>使用 Akshare 下载国内的期货（主力连续）、股票和指数的历史行情数据</title><link>https://www.poloxue.com/posts/2024-07-12-download-quote-data-in-china-market/</link><pubDate>Fri, 12 Jul 2024 18:10:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-12-download-quote-data-in-china-market/</guid><description>本文介绍如何使用 akshare 封装一个易用的国内期货、期货指数、股票和股票指数的历史行情数据接口。
+1 2 3 4 5 6 $ wget https://prdownloads.</description></item><item><title>使用 Akshare 下载国内的期货（主力连续）、股票和指数的历史行情数据</title><link>https://www.poloxue.com/posts/2024-07-12-download-quote-data-in-china-market/</link><pubDate>Fri, 12 Jul 2024 18:10:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-12-download-quote-data-in-china-market/</guid><description>本文介绍如何使用 akshare 封装一个易用的下载国内期货、期货指数、股票和股票指数的历史行情数据接口。
 目标接口的定义如下所示：
 1 history_bars(symbol, length=100, equity_type=&amp;#34;future&amp;#34;) 这么封装也是为了便于使用。
 如果不了解 akshare，我已经写过一篇关于 akshare 下载金融数据的文章：通过 python 获取金融数据-akshare。
