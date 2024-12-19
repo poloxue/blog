@@ -220,17 +220,17 @@ Opstrat Opstrat 是一个 Python 工具包，它提供了便捷的方法来可�
 案例 假设你认为目前以每股 50 元交易的 XYZ 公司股票在下个月会涨价。你决定不直接买入股票，而是购买一份 XYZ 公司的看涨期权合约，行权价格为 55 元，合约到期日为一个月后。
 下面是此示例的策略分解：
 操作：你购买一份 XYZ 公司的看涨期权合约。 原因：你预期 XYZ 公司股票价格将会上涨。 购买看涨期权，你要支付了一定的期权费（如每股 2 元，一份合约计 200 元，合约规模 100 股）。这赋予你在到期日前以每股 55 元购买 100 股 XYZ 公司股票的权利，但非义务。
-如果 XYZ 公司的股价在下个月上涨至 55 元以上，你的看涨期权将最大化收益。例如，如果股价上涨至 60 元，你可以行使期权，以 55 元的价格购买股票，然后以市场价 60 元卖出股票，获得每股 5 元的利润（扣除购买期权时支付的期权费）。如果到期时股价未能突破 55 元，你可以让期权失效，只损失所支付的期权费。</description></item><item><title>如何通过 Python 将日线行情转为周线</title><link>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</link><pubDate>Tue, 23 Jul 2024 17:06:52 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</guid><description>将低周期的蜡烛图转换为长周期蜡烛图是一种常见的需求，如分钟线到小时线、日线到周线，这可以帮我们更好观察和分析图表。或许，你用的行情图表软件或数据提供商都会提供多周期的数据。
-今天，我将介绍如何通过 Python 实现这个需求，以日线转为周线为例。
-基础思路 蜡烛图可以按不同时间周期，如分钟、小时、日、周和月。在转换前，先了解下蜡烛图的基本结构。
-每根蜡烛表示一个时间段内的价格信息，包含四个关键数据：
-开盘价（Open）：该时间段的第一个交易价格。 收盘价（Close）：该时间段的最后一个交易价格。 最高价（High）：该时间段内的最高交易价格。 最低价（Low）：该时间段内的最低交易价格。 如何将日线数据转换为周线数据？我们只要按每周的数据重新计算开盘价、收盘价、最高价和最低价即可。
-规则如下：
-开盘价（Open）：每周的开盘价是该周第一个交易日的开盘价。 收盘价（Close）：每周的收盘价是该周最后一个交易日的收盘价。 最高价（High）：每周的最高价是该周所有交易日中的最高价。 最低价（Low）：每周的最低价是该周所有交易日中的最低价。 有了基本思路，现在让我们来实现吧。我将通过 Python 的数据处理库 pandas 实现这个需求。
-转换为周线数据 我直接用 tushare 下载南华期货指数的日线数据，这个数据 tushare 上没有提供周线行情。
-南华连玉米指数行情下载，如下所示：
-1 2 3 4 import tushare as ts pro = ts.pro_api() df = pro.index_daily(&amp;#34;C.NH&amp;#34;) 使用 Python 的 Pandas 库即可轻松实现这一转换。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import pandas as pd # 将日期列转换为日期时间类型 df[&amp;#39;trade_date&amp;#39;] = pd.</description></item><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是很有帮助的。
+如果 XYZ 公司的股价在下个月上涨至 55 元以上，你的看涨期权将最大化收益。例如，如果股价上涨至 60 元，你可以行使期权，以 55 元的价格购买股票，然后以市场价 60 元卖出股票，获得每股 5 元的利润（扣除购买期权时支付的期权费）。如果到期时股价未能突破 55 元，你可以让期权失效，只损失所支付的期权费。</description></item><item><title>如何使用 Python 将日线行情转换为周线</title><link>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</link><pubDate>Tue, 23 Jul 2024 17:06:52 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-23-conver-daily-ohlc-to-weekly/</guid><description>引言部分 在数据分析中，周期转换是一个常见的需求，尤其是在处理时间序列数据时。Python 提供了一个非常强大的工具 —— resample 函数，用于轻松地对时间序列数据进行重新采样。比如，将日线数据转换为周线数据，或者将分钟线数据转换为小时线数据。
+今天，我们将详细介绍如何使用 Python 的 pandas 库中的 resample 函数，将日线数据转换为周线数据，并展示如何处理一些常见的数据问题。
+基础知识和思路部分 时间序列数据：
+时间序列数据是指按时间顺序排列的数据，常用于表示价格波动、气温变化等。在金融市场中，蜡烛图是非常常见的时间序列数据。每根蜡烛图通常代表一个特定时间段（如一分钟、一天、一周）的价格数据。
+要将一个较短周期的时间序列（如日线数据）转换为较长周期的时间序列（如周线数据），我们需要使用周期转换的方法。
+resample 函数的基本概念：
+在 pandas 中，resample 函数是用来重新采样时间序列数据的强大工具。它可以将时间序列数据从一个时间频率转换为另一个时间频率。例如，使用 resample('W') 可以将日线数据转换为周线数据，使用 resample('M') 可以将日线数据转换为月线数据。
+resample 函数的基本语法如下：
+1 df.resample(&amp;#39;时间频率&amp;#39;).聚合函数() 时间频率：指定目标频率，如 'D'（日）、'W'（周）、'M'（月）、'H'（小时）等。 聚合函数：指定如何对数据进行聚合（例如：first、last、mean、sum、max、min等）。 使用 resample 函数进行周期转换 接下来，我们将使用 pandas 的 resample 函数将日线数据转换为周线数据。我们以南华期货指数的数据为例，展示如何使用 resample 完成这一任务。
+代码实现：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 import tushare as ts import pandas as pd # 获取数据 pro = ts.</description></item><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是很有帮助的。
 市面上有不少的付费软件支持这个能力，如果你可以使用 TradingView，它的免费版也可以做到，缺点是缺少国内期货品种。我是不想花钱的，秉承着自己动手，丰衣足食，毕竟小散户不是大机构。
 本文将基于开源数据方案，通过 Python 一套免费的方案，编写指标告警并将其发送到邮件。我将利用 akshare 获取历史行情数据，使用 TA-Lib 计算技术指标。
 接下来将按照这个流程逐步展开介绍。
@@ -427,7 +427,22 @@ iTerm2 支持 Python API 首先，我了解到 iTerm2 支持通过 Python 脚本
 接着，我安装了 iTerm2 的 Python API 所需的库。
 1 $ pip install iterm2 配置文件的设计 我选择用 YAML 作为配置文件的格式，因为它的可读性好，格式简洁，有现成的解析库。我要做的就是通过 YAML 文件要定义布局，包括窗口、窗格和命令。
 这是 tmuxifier 的配置文件。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 # 设置窗口名称和根目录 session_root &amp;#34;~/Projects/my-project&amp;#34; window_name &amp;#34;my-project&amp;#34; # 创建一个新窗口，并分割成两个窗格 new_window &amp;#34;my-project&amp;#34; split_h 50 # 第一个窗格运行 vim run_cmd &amp;#34;vim&amp;#34; 0 # 第二个窗格运行 go run main.</description></item><item><title>如何正确处理 Go 项目中关于文件路径的问题</title><link>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</link><pubDate>Fri, 23 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：Go 语言技巧。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 # 设置窗口名称和根目录 session_root &amp;#34;~/Projects/my-project&amp;#34; window_name &amp;#34;my-project&amp;#34; # 创建一个新窗口，并分割成两个窗格 new_window &amp;#34;my-project&amp;#34; split_h 50 # 第一个窗格运行 vim run_cmd &amp;#34;vim&amp;#34; 0 # 第二个窗格运行 go run main.</description></item><item><title>我是如何每天在 binance 套利 20 美金的？</title><link>https://www.poloxue.com/posts/2024-02-24-earn-20dollar-every-day-in-binance/</link><pubDate>Sat, 24 Feb 2024 14:00:07 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-24-earn-20dollar-every-day-in-binance/</guid><description>本文是关于我如何在 binance 无风险套利实现每天挣 20-25 美金的。
+不谈本金只谈收入就是耍流氓，我的本金投入大概是 33k 美金，其实算起来年化不算高，如果考虑复利且策略一直有效的话，年化也就 30% 多。
+背景 我做自由职业主要是两个方向：一个是自媒体方向，分享个人技术和交易领域的知识和见解。另一个是交易，通过多策略从市场套利，争取相对稳定的收益，能让我的写作生涯能坚持下去。
+我从 1 月份开始想在 medium 上挣钱，写的基本针对 Go 语言的技术文，连续写了快两个月了，现在每天收入也就是 0.5-1.5 美金。
+我就想着偶尔写点别的主题，看看是否能刺激下我的收入。我的梦想是成为一名自由者，如果只是固定思维不做改变，估计目标是很难实现的。
+进入主题，谈谈我的套利策略吧。
+策略 今天，我先讲讲第一个我在 binance 做的套利策略 - 二重资金费率套利。这是我的其中一个策略。如果你是一名热衷于策略交易的人，可能多少是了解什么是资金费率套利。区别是，我在策略做了一点点升级。
+简单来说：我通过同时做空 BTCUSDT 和 ETHBTC 这两个永续合约，提升了我的套利收益。
+ETHBTC 是binance 去年 4 月份开始支持的永续合约，这也是为什么单独强调在 binance 而不是其其他平台执行这个策略。
+首先，什么是资金费率套利呢？
+资金费率套利是一种在加密货币市场利用永续合约的资金费率差异来赚取无风险利润的策略。我们在资金费率为正时做空，并在资金费率为负时做多，实现买低卖高。
+永续合约是加密货币衍生出了一种特别合约，通过资金费率这种实现锚定现货价格的目标。我就不更加深入的展开了。简单理解，就是如果市场做多多于做空的人，多方需要支付费率给空方。一般交易所是 8 小时结算一次，也就是一天结算 3 次。
+从去年 4 月份 biannce 的 ETHBTC 上线后，我一直在观察它，希望通过这种币币合约找到新的交易策略。而它能否资金费率套利，也是我的一个方向，从 2023 年 10 开始，它经过一段时间的下跌，我发现它开始出现资金费率，普遍是 &amp;gt;= 0。我就在我原本的 BTCUDT 套利策略上，加上了 ETHBTC 套利。
+这个策略的执行有个前提，要将账户改为 binance 的多币种交易模式，即升级为统一保证金账户，才能最大化收益。
+如果操作呢？
+假设，我手里中 25000 美金 USDT，此时的 BTC 价格是 25000 美金，ETH 价格为 0.</description></item><item><title>如何正确处理 Go 项目中关于文件路径的问题</title><link>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</link><pubDate>Fri, 23 Feb 2024 08:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-23-get-filepath-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：Go 语言技巧。
 在使用 Go 开发项目时，估计有不少人遇到过无法正确处理文件路径的问题，特别是刚从如 PHP、python 这类动态语言转向 Go 的朋友，已经习惯了通过相对源码文件找到其他文件。这个问题能否合理解决，不仅关系到程序的可移植性，还直接影响到程序的稳定性和安全性。
 本文将尝试从简单到复杂，详细介绍 Go 中获取路径的不同方法及应用场景。
 引言 首先，为什么要获取文件路径？
