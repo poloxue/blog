@@ -229,7 +229,7 @@ Opstrat Opstrat 是一个 Python 工具包，它提供了便捷的方法来可�
 转换为周线数据 我直接用 tushare 下载南华期货指数的日线数据，这个数据 tushare 上没有提供周线行情。
 南华连玉米指数行情下载，如下所示：
 1 2 3 4 import tushare as ts pro = ts.pro_api() df = pro.index_daily(&amp;#34;C.NH&amp;#34;) 使用 Python 的 Pandas 库即可轻松实现这一转换。
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import pandas as pd # 将日期列转换为日期时间类型 df[&amp;#39;trade_date&amp;#39;] = pd.</description></item><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是非常重要的。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 import pandas as pd # 将日期列转换为日期时间类型 df[&amp;#39;trade_date&amp;#39;] = pd.</description></item><item><title>Python 实现技术指标邮件告警通知</title><link>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</link><pubDate>Sun, 14 Jul 2024 18:53:16 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-07-14-technical-indicator-email-alerts/</guid><description>在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是很有帮助的。
 市面上有不少的付费软件支持这个能力，如果你可以使用 TradingView，它的免费版也可以做到，缺点是缺少国内期货品种。我是不想花钱的，秉承着自己动手，丰衣足食，毕竟小散户不是大机构。
 本文将基于开源数据方案，通过 Python 一套免费的方案，编写指标告警并将其发送到邮件。我将利用 akshare 获取历史行情数据，使用 TA-Lib 计算技术指标。
 接下来将按照这个流程逐步展开介绍。
