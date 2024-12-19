@@ -1,5 +1,5 @@
 ---
-title: "开发一个效率小工具监控油管频道生成文章"
+title: "借助 OpenAI 开发一个效率小工具监控油管频道"
 date: 2024-12-15T17:17:48+08:00
 draft: false
 comment: true
