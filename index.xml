@@ -470,7 +470,22 @@ ETHBTC 是binance 去年 4 月份开始支持的永续合约，这也是为什�
 本文的重点在于如何使用 GO 实现按行读取，基于的是标准库的 bufio.Reader 和 bufio.Scanner 。
 正式进入主题吧。
 准备一个文本文件 我们先准备一个文本文件 example.txt，内容如下：
-1 2 3 4 5 6 7 This post covers the Golang Interface. Let’s dive into it. Duck Typing To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept. So, what’s Duck Typing? 基于 bufio.Reader Go 中的按行读取文件，首先可通过 bufio 提供的 Reader 类型实现。</description></item><item><title>Go 中如何高效遍历目录？探索几种方法</title><link>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</link><pubDate>Tue, 20 Feb 2024 19:39:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：Go 语言技巧。
+1 2 3 4 5 6 7 This post covers the Golang Interface. Let’s dive into it. Duck Typing To understand Go’s interfaces, it’s crucial to grasp the Duck Typing concept. So, what’s Duck Typing? 基于 bufio.Reader Go 中的按行读取文件，首先可通过 bufio 提供的 Reader 类型实现。</description></item><item><title>数据库结构变更同步：增量 VS 差异</title><link>https://www.poloxue.com/posts/2024-02-26-database-structure-migration/</link><pubDate>Tue, 20 Feb 2024 22:17:31 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-26-database-structure-migration/</guid><description>嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第三篇，主要是闲扯，为后面两个工具做铺垫。系列查看：Golang 三方库。
+平时在开发项目时，常会需要改动数据库结构，比如说，有时候需要加个表，改个字段名，这是个挺常见的事。为了搞定这些改动，一般有两种做法：增量同步和差异同步。
+今天，简单聊聊这两种同步方式，看看它们各自有啥优点和缺点。我曾经在工作中即用过增量同步，也用过差异同步。
+增量同步 先说增量同步，这个方法挺直接的。就是每次你改了数据库，都会写一个迁移文件记录下来。想更新数据库的时候，就按这些文件的顺序，一步步来。
+我来通过一个实际场景介绍下这种同步方式。
+假设你有一个博客系统，现在需要为posts表增加一个views字段来记录每篇文章的浏览次数。使用增量同步，你会创建一个迁移文件，记录下这次变更。
+1 2 3 - 20210101_add_views_to_posts.sql ALTER TABLE posts ADD COLUMN views INT DEFAULT 0; 如果之后决定添加一个comments_count字段来记录评论数，你会创建另一个迁移文件：
+1 2 -- 20210202_add_comments_count_to_posts.sql ALTER TABLE posts ADD COLUMN comments_count INT DEFAULT 0; 使用增量同步工具，就会按照文件的顺序来更新数据库结构。我下篇文章介绍的一个 Go 实现的表结构同步同居 Goose 就是基于这种方式。
+这种方式的好处在于，我们能很清楚地知道每次的改动，需要回头看的时候，也容易找。而且，这些迁移文件可以放到版本控制里，团队里的成员都能看到，一起协作。
+不太好的地方是，时间一长，这些文件可能成堆积如山，管理起来就头疼了。特别是新起一个环境，得从头跑一遍所有的迁移，有时候还会中途卡壳。我自己就遇到过，为了让一个新环境跑起来，得一个一个检查哪里出了问题，中间还得修十几个迁移文件，那时候真是既烦躁又无奈。
+针对这个问题，我原本是寄希望于找到一款支持类似 git squash 能力的工具，能把一段时间的 SQL 改动合并成一个文件，按发布版本管理迁移文件。这样至少文件少点，依赖问题也能减轻些。不过，貌似大多数增量迁移工具没有这个能力。当然，即使支持也支持缓解，并没有根治。
+如果走手动合并的路线，版本控制和环境隔离就成了大问题，需要精心规划，多人审查来控制发布。
+差异同步 差异同步呢，就比较关注起点和终点。
+它看看你的数据库从现在到你想要的样子之间有啥不同，然后直接生成一个脚本，把数据库一次性改到你想要的样子。
+还是以上面的增量同步中介绍的场景为例。假设你的posts表初始状态没有views和comments_count字段，目标状态需要这两个字段，使用差异同步工具，它会生成如下的SQL脚本：
+1 2 3 ALTER TABLE posts ADD COLUMN views INT DEFAULT 0, ADD COLUMN comments_count INT DEFAULT 0; 这个脚本包含了将数据库从当前状态更新到目标状态所需的所有变更。</description></item><item><title>Go 中如何高效遍历目录？探索几种方法</title><link>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</link><pubDate>Tue, 20 Feb 2024 19:39:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-02-22-list-directory-in-golang/</guid><description>嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：Go 语言技巧。
 目录遍历是一个很常见的操作，它的使用场景有如文件目录查看（最典型的应用如 ls 命令）、文件系统清理、日志分析、项目构建等。
 本文将尝试逐步介绍在 Go 中几种遍历目录文件的方法，从传统的 ioutil.ReadDir 函数开始，逐渐深入。
 文中也会提供示例代码、提供一些性能剖析，以便于大家更好地理解。
