@@ -123,8 +123,7 @@ akshare 的文档中提供了南华指数的接口，我测试了下。很遗憾
 
 除了使用南华期货指数，也可自己计算，前提是知道主连合约的换仓时间。在 akshare 上没发现这个数据，如需要，也可从 tushare 下载，访问[期货主力与连续合约](https://www.tushare.pro/document/2?doc_id=189)，其中包含了主连合约每天映射的实际合约。
 
-我将 tushare 的南华指数行情封装到了这个接口：
-
+将 tushare 的南华指数行情封装到成 `history_bars` 的形式。
 
 ```python
 def nanhua_future_history_bars(symbol, length=100):
