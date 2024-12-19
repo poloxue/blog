@@ -6,7 +6,9 @@ comment: true
 description: "本文介绍如何使用 tushare 下载金融数据，主要还是通过最基础的数据介绍它的使用。"
 ---
 
-本文介绍如何使用 tushare 下载金融数据，主要还是通过最基础的数据介绍它的使用。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-11/2024-11-04-financial-data-using-tushare-00.jpeg)
+
+本文继续介绍如何获取金融数据。我将用 tushare 下载金融数据，主要还是通过最基础的数据介绍它的使用。
 
 ## 什么是 Tushare？
 
