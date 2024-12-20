@@ -11,19 +11,14 @@ Backtesting.py 内置了策略参数优化工具，可与 Pandas 数据框和 Nu
 编写第一个策略 开始通过 backtesting.py 实现第一个策略，就以均线交叉策略为例。策略的规则也很简单，就是 SMA 金叉开仓买入、死叉平仓。暂时只考虑做多的情况。
 导入必要的模块 首先，创建一个名为 strategy.py 的 Python 文件，开始编写我们的策略。
 导入要用到的模块：
-1 2 3 from backtesting import Backtest, Strategy from backtesting.</description></item><item><title>借助 OpenAI 开发一个效率小工具监控油管频道</title><link>https://www.poloxue.com/posts/2024-12-15-monitor-youtube-channel/</link><pubDate>Sun, 15 Dec 2024 17:17:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-15-monitor-youtube-channel/</guid><description>油管是很多人获取知识和资讯的渠道，有很多有价值的信息。对于要深入学习的内容，我们肯定要看完整个视频，而如果你只是关注一些资讯时间或分析视频，跟进热点信息，比如我平时关注一些财经币圈相关的内容资讯，花时间看完每个视频，效率地下。还有，油管上有不少高质量的英文视频，看起来有点吃力，将其转为中文，理解起来更容易。
-现在市面上有没有这样的工具呢？
-我知道有些 AI 工具，进到视频播放页面，用这些 AI 工具可以分析总结，但我很赖，压根不想去到某个频道查看它是否有新视频更新。我没有找到这类监听某个频道的分析推送的，或许即使有，费用应该也不低吧。
-这篇文章我将实现这样一个小工具，它能监控我指定的某个频道，还能把监控到最新视频内容提取成文章，用邮件推送给我们。我将用 Python 完成这一系列工作。
-目标是什么？ 先把目标明确下来，这个工具要实现以下功能：
-频道检测：检查感兴趣油管频道是否有新的视频发布； 下载音频：检测到新视频后，只下载它的音频部分，节省存储空间； 提取字幕：提取音频内容中的文字； 生成文章：将提取的字幕整理为通俗易懂的文章； 这样，我就不需要逐个观看每个视频，而是直接阅读整理后的文章，如果是比较刚兴趣的视频，可以去深入观看。
-这里其实还少了一步，我本身是做了一个发布的动作，支持自动邮件推送和 git 上传，用 python 实现也很简单。
-用到哪些工具？ 为了实现上述的目标，我们还需要几个重要的 Python 库：
-yt-dlp：一个强大的 YouTube 下载工具，可以获取视频元数据或音频； Whisper：OpenAI 的音频转文字模型，用于从音频中提取字幕文字； OpenAI：用来调用 OpenAI 的接口，将识别出来的字幕转换为通俗易懂的文章； 如下命令安装依赖包：
-1 pip install yt-dlp openai-whisper openai 开始具体的实现吧！我将按步骤进行。
-监控油管频道 油管频道页面会列出了最新发布的视频，通过 yt-dlp 工具来抓取这些信息。
-代码示例：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 import click import yt_dlp def fetch_latest_videos(channel_url, fetch_count=5): ydl_opts = { &amp;#34;quiet&amp;#34;: True, &amp;#34;extract_flat&amp;#34;: &amp;#34;in_playlist&amp;#34;, &amp;#34;playlist_items&amp;#34;: f&amp;#34;1-{fetch_count}&amp;#34;, } with yt_dlp.</description></item><item><title>mplfinance - 一个轻松绘制股票行情图表的 python 库</title><link>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</link><pubDate>Tue, 10 Dec 2024 15:17:39 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</guid><description>mplfinance 是一个基于 matplotlib 的金融数据可视化工具，旨在方便地生成 OHLC、K线图和其他金融相关图表。
+1 2 3 from backtesting import Backtest, Strategy from backtesting.</description></item><item><title>借助 OpenAI 开发一个效率小工具监控油管频道</title><link>https://www.poloxue.com/posts/2024-12-15-monitor-youtube-channel/</link><pubDate>Sun, 15 Dec 2024 17:17:48 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-15-monitor-youtube-channel/</guid><description>油管是很多人获取知识和资讯的渠道，有很多有价值的信息。对于要深入学习的内容，肯定要看完整个视频，而如果你只是关注一些资讯或分析视频，跟进热点事件，比如我平时回看一些财经币圈资讯，花时间看完每个视频，效率低下。油管上有不少高质量的英文视频，看起来有点吃力，转为中文，理解起来更容易。
+于是，我想实现一个小工具，自动检测我关注频道的更新，发现就下载整理成文章发给我。
+现在市面上有没有这样的工具呢？有些 AI 工具，要进到视频播放页面分析总结，但我很赖，压根不想去到某个频道查看它是否有新视频更新。我没有找到，或许即使有，也是付费产品。
+这篇文章我将实现个小工具，监控指定频道，把监控到的最新视频提取成文章，推送给我。我将用 Python 完成这一系列工作。
+实现流程 先把实现流程明确下来，这个工具要实现以下功能：
+频道检测：检查感兴趣油管频道是否有新的视频发布； 下载音频：检测到新视频后，只下载它的音频部分，节省存储空间； 提取字幕：提取音频内容中的文字； 生成文章：将提取的字幕整理为通俗易懂的文章； 这样，我就不需要逐个观看每个视频，直接阅读整理后的文章即可，如果是很感兴趣的视频，可以深入观看。
+按流程把代码结构明确下来：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 import click @click.command() @click.option(&amp;#34;--channel-url&amp;#34;, type=click.STRING, help=&amp;#34;Channel URL&amp;#34;) @click.option(&amp;#34;--count&amp;#34;, default=5, type=click.INT, help=&amp;#34;Video Count&amp;#34;) @click.option(&amp;#34;--output-dir&amp;#34;, default=&amp;#34;.&amp;#34;, type=click.STRING, help=&amp;#34;Output Directory&amp;#34;) def main(channel_url, count, output_dir): # 检测频道 videos = fetch_latest_videos(channel_url, count) for video in videos: # 下载音频 audio_path = download_audio(video[&amp;#34;url&amp;#34;], output_dir=output_dir) # 识别字幕 subtitles = transcribe_audio(audio_path) # 调用 openai 生成文章 article = generate_article(audio_path, subtitles, video[&amp;#34;title&amp;#34;], video[&amp;#34;url&amp;#34;]) print(article) 这里其实还少了一个推送的动作，支持自动邮件推送和 git 上传，这个用 python 实现也很简单。</description></item><item><title>mplfinance - 一个轻松绘制股票行情图表的 python 库</title><link>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</link><pubDate>Tue, 10 Dec 2024 15:17:39 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-11-mplfinance-chart-library/</guid><description>mplfinance 是一个基于 matplotlib 的金融数据可视化工具，旨在方便地生成 OHLC、K线图和其他金融相关图表。
 本文将带你逐步从基础到高级使用，帮助你熟练掌握 mplfinance 的使用技巧。
 安装 mplfinance 在使用 mplfinance 前，需要先安装它。可以通过以下命令安装：
 1 pip install --upgrade mplfinance mplfinance 依赖于 matplotlib 和 pandas，确保你的环境中已安装这些库。
