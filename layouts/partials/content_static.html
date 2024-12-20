@@ -11,7 +11,9 @@
   </aside>
   {{ end }}
   {{ .Content }}
+  {{ if not (eq .RelPermalink "/about/about/") }}
   <div>本文来源于 <a href="https://www.poloxue.com">POLOXUE's BLOG</a>，地址： <a href="{{ .Permalink }}">{{ .Title }}</a>
+    {{ end }}
 
     {{ partial "article_footer.html" . }}
   </div>

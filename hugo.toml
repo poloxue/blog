@@ -33,15 +33,10 @@ copyright = "Polo Xue All rights reserved"
     name = "分类标签"
     url = "/tags"
     weight = 3
-  # [[menu.main]]
-  #   identifier = "courses"
-  #   name = "系列课程"
-  #   url = "/courses"
-  #   weight = 4
   [[menu.main]]
     identifier = "about"
     name = "关于我"
-    url = "/about/"
+    url = "/about/about"
     weight = 6
 
 [[params.social]]
