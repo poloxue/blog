@@ -55,10 +55,10 @@ import talib
 
 ### 定义策略类
 
-我们定义一个名为 `MovingAverageCrossStrategy` 策略类，继承 `Strategy`：
+我们定义一个名为 `SMACrossStrategy` 策略类，继承 `Strategy`：
 
 ```python
-class MovingAverageCrossStrategy(Strategy):
+class SMACrossStrategy(Strategy):
   # 参数
   fast_ma_window = 10
   slow_ma_window = 20
@@ -121,7 +121,7 @@ crossover(slow_ma, fast_ma)
 示例代码：
 
 ```python
-bt = Backtest(GOOG, MovingAverageCrossStrategy, cash=10000, commission=0.002, slippge)
+bt = Backtest(GOOG, SMACrossStrategy, cash=10000, commission=0.002, slippge)
 stats = bt.run()
 ```
 
@@ -161,7 +161,7 @@ Avg. Trade Duration       39 days 00:00:00 # 平均持仓时间
 Profit Factor                     4.729158 # 盈亏比（获利交易总额与亏损交易总额之比）
 Expectancy [%]                     5.66852 # 期望收益率（平均每笔交易的收益率）
 SQN                               2.643361 # 系统质量数（策略表现综合评分）
-_strategy              MovingAverageCro... # 策略名称（移动均线交叉）
+_strategy                 SMACrossStrategy... # 策略名称（移动均线交叉）
 _equity_curve                          ... # 净值曲线
 _trades                    Size  EntryB... # 交易详情
 dtype: object
@@ -269,10 +269,10 @@ Datetime
 
 ### 优化示例
 
-backtestingpy 默认的优化方式是将是将所有的参数组合测试一遍，以下是优化 MovingAverageCross 策略的示例代码：
+backtestingpy 默认的优化方式是将是将所有的参数组合测试一遍，以下是优化 SMACross 策略的示例代码：
 
 ```python
-bt = Backtest(GOOG, MovingAverage, cash=10000, commission=0.002)
+bt = Backtest(GOOG, SMACross, cash=10000, commission=0.002)
 stats = bt.optimize(
     fast_ma_window=range(5, 30, 5),
     slow_ma_window=range(10, 60, 10),
@@ -294,7 +294,7 @@ print("slow_ma_window", stats._strategy.slow_ma_window)
 输出：
 
 ```bash
-MovingAverageCrossStrategy(fast_ma_window=5,slow_ma_window=20)
+SMACrossStrategy(fast_ma_window=5,slow_ma_window=20)
 fast_ma_window 5
 slow_ma_window 20
 ```
@@ -359,7 +359,7 @@ bt.optimize(
 )
 ```
 
-通过 `maximize=lambda r: -r["Volatility (Ann.) [%]"]` 选择年化波动波动率最小的组合。
+通过匿名函数 `maximize=lambda r: -r["Volatility (Ann.) [%]"]` 选择年化波动波动率最小的组合。
 
 不过，从我平时的使用体验来看，还是默认的 SQN 的优化结果比较合理，它的评价维度更加全面。
 
@@ -376,8 +376,8 @@ bt.optimize(
 示例：
 
 ```bash
-MovingAverageCrossStrategy(fast_ma_window=5,slow_ma_window=20).html
-MovingAverageCrossStrategy.html
+SMACrossStrategy(fast_ma_window=5,slow_ma_window=20).html
+SMACrossStrategy.html
 ```
 
 这个名称是可以修改的：

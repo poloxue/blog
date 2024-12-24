@@ -15,7 +15,7 @@ from backtesting import Backtest, Strategy
 from backtesting.test import GOOG  # 示例数据
 import talib
 
-class MovingAverageCrossStrategy(Strategy):
+class SMACrossStrategy(Strategy):
   # 参数
   fast_ma_window = 10
   slow_ma_window = 20
