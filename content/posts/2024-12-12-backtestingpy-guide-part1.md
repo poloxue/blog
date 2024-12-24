@@ -1,5 +1,5 @@
 ---
-title: "Backtesting.py 由浅入深 Part1: 快速上手使用"
+title: "Backtesting.py 快速上手"
 date: 2024-12-18T12:15:18+08:00
 draft: false
 comment: true
@@ -125,7 +125,7 @@ bt = Backtest(GOOG, SMACrossStrategy, cash=10000, commission=0.002)
 stats = bt.run()
 ```
 
-运行 `bt.run()`，得到它的返回值 `stats`，这就是我们要的回测结果。
+现在运行代码，`bt.run()` 的返回值 `stats` 就是我们要的回测结果。
 
 ```python
 print(stats)
@@ -195,7 +195,7 @@ bt.run(fast_ma_window=15, slow_ma_window=30)
 
 ### 要求格式 
 
-数据要求是 `pandas.DataFrame`，且满足按时间升序排列，时间为 DataFrame 的索引，同时数据列至少包含 Open、High、Low、Close、Volume 五个字段即可。
+数据要求是 `pandas.DataFrame`，且满足按时间升序排列，时间为 DataFrame 的索引，同时数据列至少包含 `Open`、`High`、`Low`、`Close`、`Volume` 五个字段即可。
 
 查看样例数据格式；
 
@@ -222,16 +222,13 @@ print(GOOG)
 
 ### 示例：适配 tushare
 
-演示下将 tushare 数据转为 **Backtesting.py** 支持的格式吧。
+演示下将 tushare 数据转为 **Backtesting.py** 支持的格式吧。从 tushare 获取南华商品期货黄金指数的价格。
 
 示例代码：
 
 ```python
-import tushare as ts
-import pandas as pd
-
 pro = ts.pro_api()
-df = pro.daily(ts_code="000001.SZ", start_date="2024-01-01")
+df = pro.index_daily(ts_code="AU.NH", start_date="2024-01-01")
 df["trade_date"] = pd.to_datetime(df["trade_date"])
 df.set_index("trade_date", inplace=True)
 df.index.name = "Datetime"
@@ -254,13 +251,13 @@ print(df.head())
 输出：
 
 ```bash
-            Open  High   Low  Close      Volume
+            Open       High        Low      Close    Volume
 Datetime
-2024-01-02  9.39  9.42  9.21   9.21  1158366.45
-2024-01-03  9.19  9.22  9.15   9.20   733610.31
-2024-01-04  9.19  9.19  9.08   9.11   864193.99
-2024-01-05  9.10  9.44  9.07   9.27  1991622.16
-2024-01-08  9.23  9.30  9.11   9.15  1121156.19
+2024-01-02  1805.2399  1813.4864  1802.4661  1811.6872   95373.0
+2024-01-03  1810.1883  1812.0918  1803.8779  1809.4987  187356.0
+2024-01-04  1799.2201  1804.1197  1792.3877  1802.4116  243384.0
+2024-01-05  1802.8461  1808.0885  1799.5808  1805.1527  142594.0
+2024-01-08  1801.9185  1813.1337  1796.4979  1802.6821  295652.0
 ```
 
 
@@ -272,16 +269,21 @@ Datetime
 
 我们上面运行回测时，**Backtesting.py** 会在当前目录下自动生成一个 HTML 文件，即上面展示的回测图表。
 
-默认的文件名称是 "策略类名.html"，参数优化的话，文件名会带上参数。
+默认的文件名称是 "策略类名.html"，。
 
 示例：
 
 ```bash
-SMACrossStrategy(fast_ma_window=5,slow_ma_window=20).html
 SMACrossStrategy.html
 ```
 
-这个名称是可以修改的：
+如果是参数优化得到的结果，文件名会带上参数：
+
+```python
+SMACrossStrategy(fast_ma_window=5,slow_ma_window=20).html
+```
+
+这个名称在调用 `bt.plot` 时可以修改。
 
 ```python
 bt.plot(filename='results/plot.html')
@@ -305,8 +307,8 @@ bt.plot(
 )
 ```
 
-这将保存文件名如 `fast10_slow20.html` 的 HTML 文件，方便管理不同的回测结果。
+这将保存文件名如 `fast10_slow20.html` 的 HTML 文件，方便管理批量的回测结果。
 
 ## 总结
 
-本文介绍了 **Backtesting.py** 回测框架的快速上手使用，从策略创建、回测与参数优化。**Backtesting.py** 的参数优化部分还有不少的内容，后续文章再继续介绍。
+本文介绍了 **Backtesting.py** 回测框架的快速上手使用，从策略创建、回测与结果保存。下篇文章介绍 **Backtesting.py** 的参数优化部分。
