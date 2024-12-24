@@ -1,64 +1,131 @@
 ---
 title: "Backtesting.py 由浅入深 Part2：策略参数优化"
-date: 2024-12-18T12:15:18+08:00
+date: 2024-12-24T12:15:18+08:00
 draft: true
 comment: true
 description: "本文介绍 Backtesting.py 的参数优化，尽量把它的参数优化能力都挖掘出来。"
 ---
 
-本文继续介绍 Backtesting.py 的参数优化，尽量把它的参数优化能力都挖掘出来。
+上篇文章介绍了如何使用 `Backetsting.py` 快速入门使用。今天继续介绍另一个非常重要的主题，参数优化。演示案例还是用上篇文章中的均线交叉策略。参数优化是提升策略表现的重要步骤。**Backtesting.py** 内置了参数优化功能，能助我们快速找到最佳策略参数组合。
 
-我们还是使用之前的均线交叉策略。
+## 优化示例
 
-```python
-from backtesting import Backtest, Strategy
-from backtesting.test import GOOG  # 示例数据
-import talib
-
-class SMACrossStrategy(Strategy):
-  # 参数
-  fast_ma_window = 10
-  slow_ma_window = 20
-
-  def init(self):
-    self.fast_ma = self.I(talib.SMA, self.data.Close, timeperiod=self.fast_ma_window)
-    self.slow_ma = self.I(talib.SMA, self.data.Close, timeperiod=self.slow_ma_window)
-
-  def next(self):
-    if self.fast_ma[-1] > self.slow_ma[-1] and self.position.size == 0:
-      self.buy()
-    elif self.fast_ma[-1] < self.slow_ma[-1] and self.position.size > 0:
-      self.position.close()
-```
-
-## 自定义优化指标
-
-Backtesting.py 提供了自定义优化指标的功能，使用户可以优化符合自身需求的特定指标。
-
-### 定义自定义优化函数
-
-以下是一个优化策略的示例代码，基于“在市场中停留最少时间获取最大收益”的自定义指标：
+backtestingpy 默认的优化方式是将是将所有的参数组合测试一遍，以下是优化 SMACross 策略的示例代码：
 
 ```python
-def my_optim_func(r):
-    final_equity = r['Equity Final [$]']
-    exposure_time = r['Exposure Time [%]']
-    return final_equity / exposure_time
-
-# 使用自定义优化函数
-bt = Backtest(GOOG, MovingAverageCrossStrategy, cash=10000, commission=0.002)
-
+bt = Backtest(GOOG, SMACross, cash=10000, commission=0.002)
 stats = bt.optimize(
-    maximize=my_optim_func,
-    constraint=lambda p: p.fast_ma_window < p.slow_ma_window.
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
 )
 print(stats)
 bt.plot()
 ```
 
-### 添加条件约束
+如上通过 `range` 指定了 `fast_ma_window` 和 `slow_ma_window` 的参数范围，运行的结果就是表现最好的参数的结果。
 
-通过为优化器添加条件约束，可以确保参数范围的合理性。例如，要求交易次数不低于 10 次：
+我们可以通过打印策略实例拿到表现最好的参数。
+
+```python
+print(stats._strategy)
+print("fast_ma_window", stats._strategy.fast_ma_window)
+print("slow_ma_window", stats._strategy.slow_ma_window)
+```
+
+输出：
+
+```bash
+SMACrossStrategy(fast_ma_window=5,slow_ma_window=20)
+fast_ma_window 5
+slow_ma_window 20
+```
+
+## 参数约束
+
+上面的优化代码有个明显的不合理，可能出现 `fast_ma_window` 小于 `slow_ma_window` 的情况，如 `fast_ma_window=20`，但 `slow_ma_window=10` 的组合，这不仅会增加优化耗时，也不符合策略的逻辑，。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
+
+示例代码：
+
+```python
+stats = bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+)
+```
+
+这将能极大提升回测优化速度。
+
+## 评价标准
+
+优化器默认只返回了一个表现最好的参数，但这个最好是如何评价的呢？
+
+backtestingpy 优化器的默认评价标准是 SQN，一句话表述它的含义就是，SQN 通过平均收益（高更好）、收益波动性（低更好）和交易次数（多更好）衡量策略稳健性，值越高越优质。
+
+假设，我想修改这个评价可以吗？当然可以。`optimize` 提供了一个名为 `maximize`参数来修改评价标准。我可以将最大回撤或夏普比率作为评价标准。
+
+将评价标准改为最大回撤：
+
+```python
+bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+    maximize='Max. Drawdown [%]',
+)
+```
+
+将评价标准改为夏普比率：
+
+```python
+bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+    maximize="Sharpe Ratio",
+)
+```
+
+这个评价标准默认是选设置的评价指标的最大值，如果想越小越好，可通过传递函数实现，如果选择年化波动率最小的参数组合。
+
+示例代码：
+
+```python
+
+bt.optimize(
+    fast_ma_window=range(5, 30, 5),
+    slow_ma_window=range(10, 60, 10),
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
+    maximize=lambda r: -r["Volatility (Ann.) [%]"],
+)
+```
+
+通过匿名函数 `maximize=lambda r: -r["Volatility (Ann.) [%]"]` 选择年化波动波动率最小的组合。
+
+不过，从我平时的使用体验来看，还是默认的 SQN 的优化结果比较合理，它的评价维度更加全面。
+
+## 自定义评价指标
+
+除了那些内置的指标，我们也可以自定义优化指标。举个例子，我们现在想寻找 "在市场中持仓时间最短收益最大” 的参数组合。
+
+定义优化目标函数：
+
+```python
+def equity_per_exposure(r):
+    final_equity = r['Equity Final [$]']
+    exposure_time = r['Exposure Time [%]']
+    return final_equity / exposure_time
+```
+
+目标函数是通过最终净值除以仓位持有时间计算得到，将其传递给 `bt.optimize` 即可。
+```python
+stats = bt.optimize(
+    maximize=equity_per_exposure,
+    constraint=lambda p: p.fast_ma_window < p.slow_ma_window.
+)
+```
+
+如果你使用通过为优化器添加条件约束，可以确保参数范围的合理性。例如，要求交易次数不低于 10 次：
 
 ```python
 def my_optim_func(series):

@@ -121,7 +121,7 @@ crossover(slow_ma, fast_ma)
 示例代码：
 
 ```python
-bt = Backtest(GOOG, SMACrossStrategy, cash=10000, commission=0.002, slippge)
+bt = Backtest(GOOG, SMACrossStrategy, cash=10000, commission=0.002)
 stats = bt.run()
 ```
 
@@ -263,105 +263,6 @@ Datetime
 2024-01-08  9.23  9.30  9.11   9.15  1121156.19
 ```
 
-## 参数优化
-
-在策略开发时，有一个过程非常重要，即参数优化，它是提升回测表现的重要步骤。**Backtesting.py** 内置了参数优化功能，能助我们快速找到最佳策略参数组合。
-
-### 优化示例
-
-backtestingpy 默认的优化方式是将是将所有的参数组合测试一遍，以下是优化 SMACross 策略的示例代码：
-
-```python
-bt = Backtest(GOOG, SMACross, cash=10000, commission=0.002)
-stats = bt.optimize(
-    fast_ma_window=range(5, 30, 5),
-    slow_ma_window=range(10, 60, 10),
-)
-print(stats)
-bt.plot()
-```
-
-如上通过 `range` 指定了 `fast_ma_window` 和 `slow_ma_window` 的参数范围，运行的结果就是表现最好的参数的结果。
-
-我们可以通过打印策略实例拿到表现最好的参数。
-
-```python
-print(stats._strategy)
-print("fast_ma_window", stats._strategy.fast_ma_window)
-print("slow_ma_window", stats._strategy.slow_ma_window)
-```
-
-输出：
-
-```bash
-SMACrossStrategy(fast_ma_window=5,slow_ma_window=20)
-fast_ma_window 5
-slow_ma_window 20
-```
-
-### 参数约束
-
-上面的优化代码有个明显的不合理，可能出现 `fast_ma_window` 小于 `slow_ma_window` 的情况，如 `fast_ma_window=20`，但 `slow_ma_window=10` 的组合，这不仅会增加优化耗时，也不符合策略的逻辑，。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
-
-示例代码：
-
-```python
-stats = bt.optimize(
-    fast_ma_window=range(5, 30, 5),
-    slow_ma_window=range(10, 60, 10),
-    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
-)
-```
-
-这将能极大提升回测优化速度。
-
-### 评价标准
-
-优化器默认只返回了一个表现最好的参数，但这个最好是如何评价的呢？
-
-backtestingpy 优化器的默认评价标准是 SQN，一句话表述它的含义就是，SQN 通过平均收益（高更好）、收益波动性（低更好）和交易次数（多更好）衡量策略稳健性，值越高越优质。
-
-假设，我想修改这个评价可以吗？当然可以。`optimize` 提供了一个名为 `maximize`参数来修改评价标准。我可以将最大回撤或夏普比率作为评价标准。
-
-将评价标准改为最大回撤：
-
-```python
-bt.optimize(
-    fast_ma_window=range(5, 30, 5),
-    slow_ma_window=range(10, 60, 10),
-    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
-    maximize='Max. Drawdown [%]',
-)
-```
-
-将评价标准改为夏普比率：
-
-```python
-bt.optimize(
-    fast_ma_window=range(5, 30, 5),
-    slow_ma_window=range(10, 60, 10),
-    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
-    maximize="Sharpe Ratio",
-)
-```
-
-这个评价标准默认是选设置的评价指标的最大值，如果想越小越好，可通过传递函数实现，如果选择年化波动率最小的参数组合。
-
-示例代码：
-
-```python
-
-bt.optimize(
-    fast_ma_window=range(5, 30, 5),
-    slow_ma_window=range(10, 60, 10),
-    constraint=lambda p: p.fast_ma_window < p.slow_ma_window,
-    maximize=lambda r: -r["Volatility (Ann.) [%]"],
-)
-```
-
-通过匿名函数 `maximize=lambda r: -r["Volatility (Ann.) [%]"]` 选择年化波动波动率最小的组合。
-
-不过，从我平时的使用体验来看，还是默认的 SQN 的优化结果比较合理，它的评价维度更加全面。
 
 ## 回测图表保存
 
