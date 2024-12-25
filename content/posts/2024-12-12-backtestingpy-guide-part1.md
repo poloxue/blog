@@ -70,9 +70,9 @@ class SMACrossStrategy(Strategy):
 
   def next(self):
     # 交易阶段：逻辑判断和执行交易
-    if self.fast_ma[-1] > self.slow_ma[-1] and self.position.size == 0:
+    if self.fast_ma[-1] > self.slow_ma[-1] and not self.position:
       self.buy()
-    elif self.fast_ma[-1] < self.slow_ma[-1] and self.position.size > 0:
+    elif self.fast_ma[-1] < self.slow_ma[-1] and self.position.is_long:
       self.position.close()
 ```
 
