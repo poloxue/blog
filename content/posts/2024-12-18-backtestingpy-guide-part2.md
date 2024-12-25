@@ -238,7 +238,7 @@ from backtesting.lib import plot_heatmaps
 
 粗略查看，表现最好区域在黄色区域，大概是 `fast_ma_window` 位于 `[5, 10]`, `slow_ma_window` 位于 `[20, 30, 40]` 区域；
 
-## 多参数组合的热力图
+### 多参数组合的热力图
 
 现在的 `SMACrossStrategy` 策略只有两个参数，如果是三个或更多参数，`plot_heatmaps` 会将参数两两组合绘制每个组合的热力图。
 
