@@ -1,5 +1,5 @@
 ---
-title: "Backtesting.py 参数优化入门篇"
+title: "Backtesting.py 参数优化入门"
 date: 2024-12-24T12:15:18+08:00
 draft: true
 comment: true
