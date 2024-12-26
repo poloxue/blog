@@ -6,6 +6,8 @@ comment: true
 description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的交易回测框架。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-12-backtestingpy-guide-part1-00.png)
+
 在算法交易中，验证一个策略是否有效至关重要，但该如何验证呢？
 
 我们可以通过模拟盘或直接实盘测试策略，但能看到的问题有限。最快捷有效的方式是基于历史数据回测（Backtesting），模拟策略在过去市场中的表现，在评估收益和风险后，再进行模拟和实盘。
@@ -20,7 +22,7 @@ description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的
 
 **Backtesting.py** 是一个轻量级的 Python 回测框架，专注于策略回测的核心功能，适合快速实现和测试交易策略。与其他回测框架，如 VectorBT 或 Backtrader 等回测框架相比，**Backtesting.py** 简化了使用流程，没有过多复杂功能，自然地，它更加简单易用与高效。
 
-**Backtesting.py** 内置了策略参数优化工具，可与 Pandas 数据框和 NumPy 数组兼容，易于集成。当然简单是有代价的，它的缺点是不支持多资产交易和分数股交易，这也限制了它的普适性。
+**Backtesting.py** 内置了策略参数优化工具，可与 Pandas 数据框和 NumPy 数组兼容，易于集成。当然简单是有代价的，它的缺点是不支持多资产交易和分数股交易，这也限制了它的普适性，一般被用于 CTA 策略的回测。
 
 让我们快速上手 **Backtesting.py** 的使用吧。
 
@@ -82,7 +84,7 @@ class SMACrossStrategy(Strategy):
 
 在 `init` 初始化阶段，我们可以通过 talib 计算 SMA 均线的快慢线。数据可以通过 `self.data` 访问，指标计算用到了收盘价，即 `self.data.Close`。
 
-在 `next` 交易逻辑阶段，只需要拿到当前的指标数据，判断是否要入场就行了，`self.fast_ma[-1]` 和 `self.slow_ma[-1]` 分别代表了最新的快线和慢线的值，当 `fast_ma` 大于 `slow_ma` 且当前没有仓位（`self.position.size` == 0) 执行买入，否则执行平仓。
+在 `next` 交易逻辑阶段，只需要拿到当前的指标数据，判断是否要入场就行了，`self.fast_ma[-1]` 和 `self.slow_ma[-1]` 分别代表了最新的快线和慢线的值，当 `fast_ma` 大于 `slow_ma` 且当前没有仓位（`not self.position`) 执行买入，否则执行平仓。
 
 ### 交叉 crossover
 
@@ -311,4 +313,4 @@ bt.plot(
 
 ## 总结
 
-本文介绍了 **Backtesting.py** 回测框架的快速上手使用，从策略创建、回测与结果保存。下篇文章介绍 **Backtesting.py** 的参数优化部分。
+本文介绍了 **Backtesting.py** 回测框架的快速上手使用，从策略创建、回测与结果保存。下篇文章介绍 **Backtesting.py** 的参数优化部分，这是策略开发是非常重要的一个点。

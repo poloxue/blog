@@ -21,6 +21,7 @@ copyright = "Polo Xue All rights reserved"
   wpm = 250
   maxTags = 7
 	mode = "dark"
+  math = true
 
 [menu]
   [[menu.main]]
@@ -69,3 +70,11 @@ url = "/"
     endLevel = 3
     ordered = true
     startLevel = 2 
+
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)']]
