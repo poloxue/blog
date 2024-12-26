@@ -33,12 +33,17 @@ copyright = "Polo Xue All rights reserved"
     identifier = "tags"
     name = "分类标签"
     url = "/tags"
-    weight = 3
+    weight = 2
+  [[menu.main]]
+    identifier = "crypto"
+    name = "每日币圈"
+    url = "https://crypto.poloxue.com/"
+    weight = 4
   [[menu.main]]
     identifier = "about"
     name = "关于我"
     url = "/about/about"
-    weight = 6
+    weight = 5
 
 [[params.social]]
 name = "Github"
