@@ -293,10 +293,20 @@ plot_heatmaps(hm, agg='mean')
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-18-backtestingpy-guide-part2-02-v1.png)
 
+如果参数数量太多，默认生成的两两参数会很庞大，而且很多组合不符合现实需求，如将 `atr_factor` 和 `fast_ma_window` 放在一起分析，并没有太大的价值，可以通过 `pandas` 分组聚合想分析的参数组合。
+
+示例代码：
+
+```python
+hm = hm.groupby(by=["fast_ma_window", "slow_ma_window"]).mean()
+plot_heatmaps(hm)
+```
+
 **注意点**
 
 - 热力图适用于分析两个参数间的关系，如果参数过多，图表数量会急剧增加。
 - 使用合理的参数范围和步长可以减少计算量并提高可读性。
+- 更灵活的使用方法，可分组聚合关心的参数组合进行分析。
 
 通过查看参数优化热力图，可以高效地探索参数空间，不仅能找到表现最佳的策略组合，还能减少选出过拟合参数组合的可能性。
 
