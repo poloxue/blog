@@ -293,7 +293,7 @@ plot_heatmaps(hm, agg='mean')
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-18-backtestingpy-guide-part2-02-v1.png)
 
-如果参数数量太多，默认生成的两两参数会很庞大，而且很多组合不符合现实需求，如将 `atr_factor` 和 `fast_ma_window` 放在一起分析，并没有太大的价值，可以通过 `pandas` 分组聚合想分析的参数组合。
+如果参数过多，参数组合会急剧增加，且大部分的组合没有分析价值，如将 `atr_factor` 和 `fast_ma_window` 放在一起分析，并没有太大的价值，可以通过 `pandas` 分组聚合想分析的参数组合。
 
 示例代码：
 
