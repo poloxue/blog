@@ -232,7 +232,7 @@ Name: SQN, dtype: float64
 
 参数组合对应的值就是优化指标的值，因为我的 `optimize` 没有指定 `maximize`，默认值就是 `SQN`。
 
-有了数据后，就可以用 **Backtesting.py** 内置函数绘制热力图了。
+有了数据后，就可以用 **Backtesting.py** 内置函数 `plot_heatmaps` 绘制热力图了。
 
 ```python
 from backtesting.lib import plot_heatmaps
