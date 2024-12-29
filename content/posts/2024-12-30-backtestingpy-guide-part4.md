@@ -1,101 +1,140 @@
 ---
-title: "Backtesting.py 教程：由浅入深"
-date: 2024-12-12T15:15:18+08:00
+title: "Backtesting.py 实现做空、止损、止盈、订单和交易记录"
+date: 2024-12-28T15:15:18+08:00
 draft: true
 comment: true
-description: "本文继续介绍 **Backtesting.py**，重点是关于它提供的一些交易相关的能力，如做空、止盈止损、订单、资金管理和交易记录等。"
+description: "本文继续介绍 **Backtesting.py**，重点是关于它提供的一些交易相关的能力，如做空、止盈止损、订单和交易记录等。"
 ---
 
-本文继续介绍 **Backtesting.py**，重点是关于它提供的一些交易相关的能力，如做空、止盈止损、订单、资金管理和交易记录等。
+本文继续探索 **Backtesting.py** 的使用，重点介绍它提供的交易方法，包括如何做空、止盈止损、订单和交易记录等。
 
-## 做空、止损和止盈
+## 做空
 
-除了基本的多头交易策略，我们还可以在 Backtesting.py 中实现做空、止损和止盈功能。
+之前的文章只演示了 `SMACrossStrategy` 的多头交易，**Backtesting.py** 实际也支持空头策略，实现起来也很简单。
 
-### 实现做空
-在 RSI 策略的基础上，可以通过以下代码实现做空：
+示例：
+
 ```python
-def next(self):
-    if crossover(self.daily_RSI, self.upper_bound):
-        if self.position.is_long:
-            self.position.close()
-        self.sell()
+import talib
 
-    if crossover(self.lower_bound, self.daily_RSI):
-        if self.position.is_short:
-            self.position.close()
-        self.buy()
+class SMACrossStrategy(Strategy):
+    def init(self):
+        self.fast_ma = self.data.Close.rolling(window=50).mean()
+        self.slow_sma = self.data.Close.rolling(window=200).mean()
+
+    def next(self):
+        if self.fast_sma[-1] > self.slow_sma[-1]:
+            if self.position.is_short:
+                self.position.close()  # 平空头
+            self.buy()
+
+        elif self.short_sma[-1] < self.long_sma[-1]:
+            if self.position.is_long:
+                self.position.close()  # 平多头
+            self.sell()
 ```
-此代码实现了 RSI 超过上限时平多头并开空头，而 RSI 低于下限时平空头并开多头。
 
-### 止损和止盈
+## 止损和止盈
 
-通过设置止损（Stop Loss, SL）和止盈（Take Profit, TP），可以更好地控制风险和锁定收益：
+为了更好地管理风险，我们可以在每次开仓时同时设置止损和止盈。以下是如何在策略中添加止损和止盈的代码：
+
 ```python
-def next(self):
-    price = self.data.Close[-1]
-    sl = 0.95 * price  # 止损设为当前价格的 95%
-    tp = 1.15 * price  # 止盈设为当前价格的 115%
+class SMACrossStrategy(Strategy):
+    def init(self):
+        # 定义短期与长期均线
+        self.short_sma = self.data.Close.rolling(window=50).mean()
+        self.long_sma = self.data.Close.rolling(window=200).mean()
 
-    if crossover(self.lower_bound, self.daily_RSI):
-        self.buy(sl=sl, tp=tp)
+    def next(self):
+        price = self.data.Close[-1]
+        sl = 0.95 * price  # 止损设为当前价格的 95%
+        tp = 1.15 * price  # 止盈设为当前价格的 115%
 
-    if crossover(self.daily_RSI, self.upper_bound):
-        self.sell(sl=sl, tp=tp)
+        # 短期均线上穿长期均线，开多头并设置止损止盈
+        if self.short_sma[-1] > self.long_sma[-1]:
+            if self.position.is_short:
+                self.position.close()  # 平空头
+            self.buy(sl=sl, tp=tp)
+
+        # 短期均线下穿长期均线，开空头并设置止损止盈
+        elif self.short_sma[-1] < self.long_sma[-1]:
+            if self.position.is_long:
+                self.position.close()  # 平多头
+            self.sell(sl=sl, tp=tp)
 ```
-此代码在每次开仓时，同时设置止损和止盈价格。
+
+在这个示例中，我们通过计算当前价格的止损和止盈位置（分别为当前价格的 95% 和 115%），并在每次开仓时设置止损和止盈。当市场价格触及这些点时，交易将自动平仓。
 
 ## 订单大小
 
-在策略中，订单大小的控制至关重要，它直接影响到风险管理和资金利用效率。Backtesting.py 提供了多种设置订单大小的方法，以满足不同交易策略的需求。
+在策略中，订单大小的控制非常关键，它直接影响到交易的风险管理与资金利用效率。Backtesting.py 提供了多种设置订单大小的方法，以下是几种常见的设置方式。
 
 ### 使用资金比例
 
-可以通过设置 `size` 参数为小数值，指定每笔交易占用可用资金的比例。例如：
+通过设置 `size` 参数为小数值，可以指定每笔交易占用可用资金的比例。例如：
+
 ```python
 self.buy(size=0.1)
 ```
-此代码表示每次买入使用可用资金的 10%。
 
-#### 示例
-以下是一个使用资金比例的完整示例：
+此代码表示每次买入时，使用可用资金的 10%。
+
+以下是一个基于资金比例的完整示例：
+
 ```python
-if crossover(self.lower_bound, self.daily_RSI):
-    self.buy(size=0.1)
-```
-在上述示例中，每次 RSI 低于下限时，将使用当前可用资金的 10% 进行买入。
+class SMACrossStrategy(Strategy):
+    def init(self):
+        self.short_sma = self.data.Close.rolling(window=50).mean()
+        self.long_sma = self.data.Close.rolling(window=200).mean()
 
-**注意事项**：
-- 默认情况下，Backtesting.py 不支持部分股票买卖，仅支持整数股。因此，交易规模可能会向下取整。
+    def next(self):
+        if self.short_sma[-1] > self.long_sma[-1]:
+            self.buy(size=0.1)  # 使用资金的10%买入
+        elif self.short_sma[-1] < self.long_sma[-1]:
+            self.sell(size=0.1)  # 使用资金的10%卖出
+```
 
 ### 使用固定数量
 
-除了使用资金比例，还可以直接指定买入或卖出的数量。例如：
+除了资金比例，你还可以直接指定每次交易的数量：
+
 ```python
 self.buy(size=1)
 ```
+
 此代码表示每次买入 1 股。
 
-#### 示例
 以下是一个按固定数量交易的完整示例：
+
 ```python
-if crossover(self.lower_bound, self.daily_RSI):
-    self.buy(size=1)
+class SMACrossStrategy(Strategy):
+    def init(self):
+        self.short_sma = self.data.Close.rolling(window=50).mean()
+        self.long_sma = self.data.Close.rolling(window=200).mean()
+
+    def next(self):
+        if self.short_sma[-1] > self.long_sma[-1]:
+            self.buy(size=1)  # 每次买入1股
+        elif self.short_sma[-1] < self.long_sma[-1]:
+            self.sell(size=1)  # 每次卖出1股
 ```
-每次 RSI 低于下限时，将买入 1 股。
 
 ### 动态调整订单大小
 
-订单大小可以基于策略动态调整。例如，可以在策略初始化时设置一个变量，并在交易逻辑中引用：
+在一些情况下，我们希望根据市场情况动态调整订单大小。可以在策略初始化时设置一个变量，并在交易逻辑中引用：
+
 ```python
 class DynamicSizeStrategy(Strategy):
     def init(self):
-        self.position_size = 1
+        self.position_size = 1  # 初始化订单大小
 
     def next(self):
-        if crossover(self.lower_bound, self.daily_RSI):
+        if self.short_sma[-1] > self.long_sma[-1]:
             self.buy(size=self.position_size)
+        elif self.short_sma[-1] < self.long_sma[-1]:
+            self.sell(size=self.position_size)
 ```
+
 还可以使用优化器来测试不同的订单大小：
 
 ```python
@@ -104,28 +143,34 @@ bt.optimize(position_size=range(1, 10))
 
 ### 与其他条件结合
 
-订单大小可以与其他条件结合，例如动态计算当前价格低于指定阈值的天数：
+订单大小也可以根据其他条件进行调整。例如，可以在价格突破某个重要水平时调整订单大小：
+
 ```python
-if bars_since(self.daily_RSI > self.upper_bound) >= 5:
-    self.buy(size=2)
+class DynamicSizeStrategy(Strategy):
+    def init(self):
+        self.position_size = 1  # 初始化订单大小
+
+    def next(self):
+        if self.short_sma[-1] > self.long_sma[-1] and self.data.Close[-1] > 100:
+            self.buy(size=2)  # 当价格大于100时，买入2股
+        elif self.short_sma[-1] < self.long_sma[-1]:
+            self.sell(size=1)  # 否则，买入1股
 ```
-此逻辑表示如果 RSI 超过上限已经过去了至少 5 天，则买入 2 股。
 
 ### 应用场景
 
-- **资金管理**：通过比例买入控制资金利用率，降低单笔交易的风险。
-- **网格交易**：在特定价格区间内分批买入或卖出。
-- **优化策略**：通过优化订单大小，找到最优交易规模。
-
-通过灵活设置订单大小，可以更好地满足策略的需求，同时提高资金的利用效率和交易的灵活性。
+- **资金管理**：通过资金比例控制每笔交易的规模，有效降低单笔交易的风险。
+- **网格交易**：在特定的价格区间内分批买入或卖出。
+- **策略优化**：通过优化订单大小，找到最适合的交易规模。
 
 ## 交易记录导出
 
-在策略回测完成后，我们通常希望能够导出交易记录，便于进一步分析或保存。
+回测完成后，我们通常希望能够导出交易记录，便于进一步分析或保存。Backtesting.py 提供了简单的接口来提取和保存交易记录。
 
 ### 提取交易记录
 
-Backtesting.py 会在回测结果中生成一个包含所有交易详情的 Pandas 数据框，可以通过以下方式提取：
+Backtesting.py 会在回测结果中生成一个包含所有交易的详细数据。可以通过以下代码提取并查看这些记录：
+
 ```python
 trades = stats['_trades']
 print(trades.to_string())
@@ -137,26 +182,27 @@ print(trades.to_string())
 
 - **Entry/Exit**：交易的开仓和平仓时间。
 - **Size**：交易的头寸大小。
-- **P/L**：交易的利润或亏损。
+- **P/L**：交易的盈亏。
 - **Duration**：交易的持续时间。
-
-这些数据可以方便地用于后续分析，例如计算平均持仓时间、每笔交易的盈亏比等。
 
 ### 导出到文件
 
-如果需要保存交易记录，可以将其导出为 CSV 文件：
+如果需要保存交易记录，可以将其导出为 CSV 或 Excel 文件：
 
 ```python
 trades.to_csv('trades.csv')
 ```
-或者保存为 Excel 文件：
+
+或保存为 Excel 文件：
+
 ```python
 trades.to_excel('trades.xlsx')
 ```
 
 ### 可视化交易记录
 
-导出的交易记录可以使用工具（如 Excel 或 Python 的可视化库）进行分析。例如，使用 Matplotlib 绘制每笔交易的盈亏分布：
+导出的交易记录可以使用工具（如 Excel 或 Python 的可视化库）进行分析。以下是一个简单的使用 Matplotlib 可视化交易盈亏的示例：
+
 ```python
 import matplotlib.pyplot as plt
 
@@ -166,8 +212,10 @@ plt.xlabel('Profit/Loss')
 plt.ylabel('Frequency')
 plt.show()
 ```
-此代码生成一个柱状图，展示交易盈亏的分布情况。
 
-通过灵活导出和处理交易记录，可以更全面地分析策略表现并进行优化。
+这段代码将展示一个柱状图，显示每笔交易的盈亏分布。
 
+---
+
+通过 Backtesting.py，我们可以轻松地实现做空、止损止盈、订单管理以及资金管理等功能，为量化交易策略的开发提供强大的支持。灵活的订单管理和交易记录导出功能，能够帮助我们更好地优化策略，提升交易效率。
 
