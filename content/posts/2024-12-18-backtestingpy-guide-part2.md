@@ -6,6 +6,8 @@ comment: true
 description: "本文介绍 Backtesting.py 的参数优化，快速上手 **Backtesting.py** 参数优化。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-18-backtestingpy-guide-part2-00.jpeg)
+
 上篇文章介绍了如何使用 **Backetsting.py** 快速上手。今天继续介绍另一个策略回测时非常重要的点，参数优化。参数优化是提升策略表现的重要步骤，而 **Backtesting.py** 内置了参数优化功能，使用起来还是很方便的。
 
 本文将用上篇的案例 `SMACrossStrategy` 策略演示 **Backtesting.py** 参数优化。
@@ -48,7 +50,7 @@ slow_ma_window 20
 
 ## 参数约束
 
-上面的优化代码有个明显的不合理，可能出现 `fast_ma_window` 小于 `slow_ma_window` 的情况，如 `fast_ma_window=20`，但 `slow_ma_window=10` 的组合，这不仅会增加优化耗时，也不符合策略的逻辑，。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
+上面的优化代码有个明显的不合理，可能出现 `fast_ma_window` 大于 `slow_ma_window` 的情况，如 `fast_ma_window=20`，但 `slow_ma_window=10` 的组合，这不仅会增加优化耗时，也不符合策略的逻辑，。`backtestingpy` 的优化器提供了参数约束能力，我们可以限制 `fast_ma_window` 必须小于 `slow_ma_window`。
 
 示例代码：
 
@@ -132,7 +134,9 @@ def equity_per_exposure(r):
     return final_equity / exposure_time
 ```
 
-目标函数是通过最终净值除以仓位持有时间计算得到，将其传递给 `bt.optimize`。
+目标函数是通过最终净值除以持仓时间比率计算得到，将其传递给 `bt.optimize`。
+
+注：如要准确计算 "持仓时间" 要用 **持仓时间占比 * 总时间**，这省略了，因为它不影响策略的评估结果。
 
 ```python
 stats = bt.optimize(
@@ -143,7 +147,7 @@ stats = bt.optimize(
 )
 ```
 
-如果用这个指标优化策略，可能拿到的时候交易次数很少的参数组合，因为这样持有时间最短，而且可能某段时间的收益非常高。
+如果用这个指标优化策略，得到的参数组合可能交易次数很少，因为这样容易出现持有时间短，收益高的情况。这不是我想要的。
 
 如何解决这个问题？
 

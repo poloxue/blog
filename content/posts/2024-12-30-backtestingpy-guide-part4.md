@@ -3,8 +3,10 @@ title: "Backtesting.py 教程：由浅入深"
 date: 2024-12-12T15:15:18+08:00
 draft: true
 comment: true
-description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的交易回测框架。"
+description: "本文继续介绍 **Backtesting.py**，重点是关于它提供的一些交易相关的能力，如做空、止盈止损、订单、资金管理和交易记录等。"
 ---
+
+本文继续介绍 **Backtesting.py**，重点是关于它提供的一些交易相关的能力，如做空、止盈止损、订单、资金管理和交易记录等。
 
 ## 做空、止损和止盈
 
@@ -95,6 +97,7 @@ class DynamicSizeStrategy(Strategy):
             self.buy(size=self.position_size)
 ```
 还可以使用优化器来测试不同的订单大小：
+
 ```python
 bt.optimize(position_size=range(1, 10))
 ```
