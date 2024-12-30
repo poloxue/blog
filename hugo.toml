@@ -36,7 +36,7 @@ copyright = "Polo Xue All rights reserved"
     weight = 2
   [[menu.main]]
     identifier = "crypto"
-    name = "每日币圈"
+    name = "每日资讯"
     url = "https://crypto.poloxue.com/"
     weight = 4
   [[menu.main]]
