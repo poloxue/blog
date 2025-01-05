@@ -6,15 +6,11 @@ comment: true
 description: "本文继续介绍 **Backtesting.py**，重点是关于它提供的一些交易相关的能力，如做空、止盈止损、订单。"
 ---
 
-本文继续探索 **Backtesting.py** 的使用，重点介绍它的交易，包括下单、手续费、仓位、平仓、做空、止盈止损以及对冲等。
-
-- 下单，介绍 buy、sell
+本文继续探索 **Backtesting.py** 的使用，重点介绍它的交易方法，包括下单、手续费、仓位、平仓、做空、止盈止损以及对冲等。
 
 ## 做空
 
 之前的文章只演示了 `SMACrossStrategy` 的多头交易，**Backtesting.py** 实际也支持空头策略，实现起来也很简单。
-
-示例：
 
 ```python
 import talib
