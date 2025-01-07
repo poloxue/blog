@@ -35,15 +35,10 @@ copyright = "Polo Xue All rights reserved"
     url = "/tags"
     weight = 2
   [[menu.main]]
-    identifier = "crypto"
-    name = "每日资讯"
-    url = "https://crypto.poloxue.com/"
-    weight = 4
-  [[menu.main]]
     identifier = "about"
     name = "关于我"
     url = "/about/about"
-    weight = 5
+    weight = 3
 
 [[params.social]]
 name = "Github"
