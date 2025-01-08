@@ -1,13 +1,14 @@
 ---
-title: "永续合约资金费率数据的搜集"
+title: "永续合约资金费率数据搜集"
 date: 2024-07-01T03:57:08+08:00
 draft: false
 comment: true
 description: "在上一篇博文中，我介绍了永续合约资金费率套利的原理。任何一个交易策略如果想要长期使用，必须挖掘和分析它在不同行情下的表现，而这一过程离不开获取历史数据。"
 ---
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-06/2024-06-27-collect-the-funding-rate-data-00.png)
 
-在上一篇博文中，我介绍了永续合约资金费率套利的原理。任何一个交易策略如果想要长期使用，必须挖掘和分析它在不同行情下的表现，而这一过程离不开历史数据的收集。
+在上一篇博文中，介绍了永续合约资金费率套利的原理。任何一个交易策略如果想要长期使用，必须挖掘和分析它在不同行情下的表现，而这一过程离不开历史数据的收集。
 
 本文将重点介绍如何收集资金费率的历史数据。
 
@@ -27,7 +28,7 @@ description: "在上一篇博文中，我介绍了永续合约资金费率套利
 
 以Binance为例，它提供了一个可以查看和下载全量资金费率历史数据的页面，访问 [Funding Rate History](https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history)。
 
-如下图所示，我们只需点击右上角的 "Save as CSV" 即可下载所有数据：
+如下图所示，只需点击右上角的 "Save as CSV" 即可下载所有数据：
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-06/2024-06-27-collect-the-funding-rate-data-03-v1.png)
 
@@ -57,7 +58,7 @@ Binance的正向合约和反向合约需要分别调用不同的API，这是对�
 pip install ccxt
 ```
 
-我们只需通过ccxt提供的`fetch_funding_rate_history`方法调用上述API文档中的接口。以下是使用API从Binance下载资金费率数据，以永续合约BTCUSDT为例。
+只需通过ccxt提供的`fetch_funding_rate_history`方法调用上述API文档中的接口。以下是使用API从Binance下载资金费率数据，以永续合约BTCUSDT为例。
 
 ```python
 import ccxt
@@ -89,7 +90,7 @@ print(funding_rates)
 ]
 ```
 
-`info`字段是API返回的原始信息，其他字段是ccxt整合不同交易所后生成的通用字段。
+`info` 字段是API返回的原始信息，其他字段是ccxt整合不同交易所后生成的通用字段。
 
 仔细观察程序打印结果，你会发现API返回的并非全量数据。由于API每次返回的数据量有限，需要多次循环才能获取全量数据。
 
@@ -179,7 +180,7 @@ print(funding_rate)
 }
 ```
 
-有了这些基础数据，我们就可以进入下一步，分析资金费率的套利空间。
+有了这些基础数据，就可以进入下一步，分析资金费率的套利空间。
 
 ## 第三方平台
 
