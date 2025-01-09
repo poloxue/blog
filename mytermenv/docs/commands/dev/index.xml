@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>开发调试 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/</link><description>Recent content in 开发调试 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/commands/dev/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>entr - 实现语言无关热重启 # 在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>开发调试 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/</link><description>Recent content in 开发调试 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/commands/dev/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>entr - 实现语言无关热重启 # hi
+在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
 本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 entry。
 特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。
 什么 entry # 简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。
 $ ls text.txt | entr echo &amp;#34;file changed&amp;#34; 我们通过 ls text.txt 告诉 entry 监听的文件。当编辑并保存文件后，它通过指定命令 echo 打印提示 file changed。
 我们只要对它稍做修改，就可以实现在监听到文件变化后，自动执行 停止服务 -&amp;gt; 重新编译 -&amp;gt; 启动服务 等一系列动作。
 安装 # # mac 安装命令 brew install entr 实现热重启 # 首先，开发一个简单 Go server 服务，文件是 main.go，代码如下：
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(w http.ResponseWriter, req *http.Request) { _, _ = w.</description></item><item><title>httpie - 人性化 HTTP Client</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。
-httpie 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。
-安装 # brew install httpie 快手上手 # 最简单的使用案例，快速发起 GET 和 POST 请求。
-GET 请求：
-http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
-http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
-http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 &amp;lt;space&amp;gt; 便可直接使用：
-例如，GET 方法请求 http://httpbin.org/get，如下所示：
-http ://httpbin.org/get 演示效果：
-另外，METHOD 默认也可省略的，省略规则是：</description></item></channel></rss>
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(w http.ResponseWriter, req *http.</description></item><item><title>HTTPie - 人性化 HTTP 客户端</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 作为程序员，如果你要快速调试 HTTP 接口，首先想到的工具是什么？GUI 版 HTTP 客户端 Postman？命令行 curl？还是使用浏览器？不知道你是否抱怨过，如 curl 的很多传统命令基本都存在一个问题：虽然功能强大，但用户体验极差，基本不考虑使用者的感受。
+本文介绍一款意外丢失 54k star，不到两年重获 34k 的 HTTP 客户端命令 - HTTPie ，它比 curl 更易于使用，是一款注重用户体验的 HTTP 客户端命令。
+一个趣事 # 先说关于 HTTPie 的 star 数的一个趣事：
+2022 年，由于 HTTPie 的作者出现了一次误操作，将仓位设为私有，导致 HTTPie 的 star 直接清零。经历了两年时间，如今重新恢复到 36k star。
+当时，HTTPie 官方还写了一篇博客，专门反思了这次的事故，查看博客： How We Lost 54k stars。
+为什么推荐 HTTPie # HTTPie 的哲学是使 API 测试和调试变得直观友好，相比传统命令行工具（如 curl 和 wget），它提供了更丰富的功能和更易读的输出。
+来自官方的示例：
+首先是，它的命令行语法直观易懂，如发送 GET 请求只需 http GET &amp;lt;URL&amp;gt;，而 POST 请求则是 http POST &amp;lt;URL&amp;gt; &amp;lt;body&amp;gt;，这比 curl 的命令行参数更易于理解和记忆。</description></item></channel></rss>

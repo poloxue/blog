@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>高效终端 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/</link><description>Recent content in 高效终端 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>entr - 实现语言无关热重启 # 在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>高效终端 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/</link><description>Recent content in 高效终端 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>entr - 实现语言无关热重启 # hi
+在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
 本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 entry。
 特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。
 什么 entry # 简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。
 $ ls text.txt | entr echo &amp;#34;file changed&amp;#34; 我们通过 ls text.txt 告诉 entry 监听的文件。当编辑并保存文件后，它通过指定命令 echo 打印提示 file changed。
 我们只要对它稍做修改，就可以实现在监听到文件变化后，自动执行 停止服务 -&amp;gt; 重新编译 -&amp;gt; 启动服务 等一系列动作。
 安装 # # mac 安装命令 brew install entr 实现热重启 # 首先，开发一个简单 Go server 服务，文件是 main.go，代码如下：
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(w http.ResponseWriter, req *http.Request) { _, _ = w.</description></item><item><title>exa</title><link>https://www.poloxue.com/mytermenv/docs/commands/filesystem/exa/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/filesystem/exa/</guid><description>exa # 首先是 exa，一款可用于替换系统默认 ls 的命令，在平时工作中 ls 几乎使用最多的命令，而 exa 在支持 ls 的基本能力基础上，提供了更丰富的特性。
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(w http.ResponseWriter, req *http.</description></item><item><title>exa</title><link>https://www.poloxue.com/mytermenv/docs/commands/filesystem/exa/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/filesystem/exa/</guid><description>exa # 首先是 exa，一款可用于替换系统默认 ls 的命令，在平时工作中 ls 几乎使用最多的命令，而 exa 在支持 ls 的基本能力基础上，提供了更丰富的特性。
 快速安装 # brew install exa # 其他系统请查看 GithHub README.md 默认配色 # 首先，exa 默认提供了配色效果，无需 ls 要追加 --color 参数，省去了 alias 别名的设置。
 显示图标 # 其次，exa 支持显示文件图片，通过指明 --icons 实现，显示文件类型图标；
 详情与 GIT # 更复杂的命令，支持 ls -l 显示文件列表详情，添加头部说明 header，如果是 git 仓库，可显示文件的 Git 信息。
@@ -23,7 +24,7 @@ ZSH_THEME=&amp;#34;agnoster&amp;#34;` # 默认为 robbyrussell 执行 source ~/.
 ZSH_THEME=&amp;#34;random&amp;#34; 演示效果，如下所示：
 说实话，我觉得没人会这么用吧。这明显很鸡肋的功能啊。</description></item><item><title>简要介绍</title><link>https://www.poloxue.com/mytermenv/docs/terminal/hello/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/terminal/hello/</guid><description>简要介绍 # iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。
 iTerm2 vs 默认 Terminal # 为什么要用 iTerm2 替换默认终端？相较于 Terminal，iTerm2 的几点优势：
-首先，它美观大方，相对于默认终端，它支持真彩。且它的功能上更加丰富，如灵活地分屏、主题配置；搜索功能，支持的搜索规则丰富；快捷键，快捷键的定制性更强；支持静态图片和 GIF 的展示；编程控制，支持如 python 编程控制，可实现自动背景，布局管理等。</description></item><item><title>fd</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</guid><description>fd # fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。
+首先，它美观大方，相对于默认终端，它支持真彩。且它的功能上更加丰富，如灵活地分屏、主题配置；搜索功能，支持的搜索规则丰富；快捷键，快捷键的定制性更强；支持静态图片和 GIF 的展示；编程控制，支持如 python 编程控制，可实现自动背景，布局管理等。</description></item><item><title>fd - 更易用的文件查找命令</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fd/</guid><description>fd # fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。
 如何使用呢？
 安装 # brew install fd 递归 # 文件系统下搜索文件名，最常见的场景是递归搜索文件名包含 pattern 的文件，不知道有你是否能立刻想起来 find 如何写呢？
 示例：遍历查找。
@@ -35,16 +36,14 @@ $ fd pattern 正则 # 如果要正则查询，pattern 默认即支持正则表�
 文件类型 # 前面的查找 go 文件，其实也是查找类型是 Go 源码。但正则和通配符，都比较繁琐，可直接通过 fd -e go pattern 的模式直接寻找指定扩展的文件。
 示例：查找 python 源码文件。
 如果无需 patern，则表明查找所有的 .py 的文件。
-隐藏文件和 .gitinogre # fd 搜索效率高的一个原因是它默认不查找隐藏文件和 gitignore 文件。</description></item><item><title>httpie - 人性化 HTTP Client</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。
-httpie 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。
-安装 # brew install httpie 快手上手 # 最简单的使用案例，快速发起 GET 和 POST 请求。
-GET 请求：
-http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
-http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
-http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 &amp;lt;space&amp;gt; 便可直接使用：
-例如，GET 方法请求 http://httpbin.org/get，如下所示：
-http ://httpbin.org/get 演示效果：
-另外，METHOD 默认也可省略的，省略规则是：</description></item><item><title>ripgrep</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</guid><description>ripgrep # ripgrep 是一款文本搜索命令，功能与 grep 类似。和 fd 之于 find 一样，ripgrep 在体验和性能上同样完胜 grep。
+隐藏文件和 .gitinogre # fd 搜索效率高的一个原因是它默认不查找隐藏文件和 gitignore 文件。</description></item><item><title>HTTPie - 人性化 HTTP 客户端</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 作为程序员，如果你要快速调试 HTTP 接口，首先想到的工具是什么？GUI 版 HTTP 客户端 Postman？命令行 curl？还是使用浏览器？不知道你是否抱怨过，如 curl 的很多传统命令基本都存在一个问题：虽然功能强大，但用户体验极差，基本不考虑使用者的感受。
+本文介绍一款意外丢失 54k star，不到两年重获 34k 的 HTTP 客户端命令 - HTTPie ，它比 curl 更易于使用，是一款注重用户体验的 HTTP 客户端命令。
+一个趣事 # 先说关于 HTTPie 的 star 数的一个趣事：
+2022 年，由于 HTTPie 的作者出现了一次误操作，将仓位设为私有，导致 HTTPie 的 star 直接清零。经历了两年时间，如今重新恢复到 36k star。
+当时，HTTPie 官方还写了一篇博客，专门反思了这次的事故，查看博客： How We Lost 54k stars。
+为什么推荐 HTTPie # HTTPie 的哲学是使 API 测试和调试变得直观友好，相比传统命令行工具（如 curl 和 wget），它提供了更丰富的功能和更易读的输出。
+来自官方的示例：
+首先是，它的命令行语法直观易懂，如发送 GET 请求只需 http GET &amp;lt;URL&amp;gt;，而 POST 请求则是 http POST &amp;lt;URL&amp;gt; &amp;lt;body&amp;gt;，这比 curl 的命令行参数更易于理解和记忆。</description></item><item><title>ripgrep - 更高效的文件搜索</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/ripgrep/</guid><description>ripgrep # ripgrep 是一款文本搜索命令，功能与 grep 类似。和 fd 之于 find 一样，ripgrep 在体验和性能上同样完胜 grep。
 安装 # brew install ripgrep 递归 # ripgrep 的默认行为也是递归搜索，命令为 rg pattern，且默认高亮显示，与 grep --color main . -nR 对比，明显更加简洁易用，体验更好。
 示例效果：
 指定目录 # ripgrep 最后的参数即可指定搜索的目录。
@@ -102,7 +101,16 @@ bat 相比于 cat 的第一个优势，就是它支持语法高亮效果与行�
 而且，bat 还集成 Git。如下我们修改了 logger.go 文件，通过 bat 即可查看它的修改点；
 默认情况下，bat 采用分页输出，这对于读取大文件非常有帮助，不用担心失误导致产生一大片控制台输出。但如果你希望 bat 和 cat 一样，一次性无分页输出文本，可通过 --pager=never 或 --no-pager 选项实现。
 bat --pager=never logger.go bat --no-pager logger.go 如果你习惯使用 cat 的模式，希望默认不启用分页能力，可直接在配置文件配置默认行为，在其中增加 --pager=never。
-接下来说说如何通过 bat 的配置改变它的默认行为吧。</description></item><item><title>基础插件 2</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</guid><description>本文是基础篇插件的第二篇，继续介绍 4 个常用的 zsh 插件。我将涉及的插件，如下所示：
+接下来说说如何通过 bat 的配置改变它的默认行为吧。</description></item><item><title>fzf - 交互式命令行查找器</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</guid><description>fzf - 交互式查找器 # fzf 全名 fuzzy finder，一款通用的命令行模糊查找工具。它可与其他命令结合，提升其他命令的使用体验。
+安装 # brew install fzf 目录搜索 # fzf 的默认行为是在当前目录搜索。当然它的搜索和 fd 的搜索不同，它会进入交互式模式搜索文件或目录路径。
+它支持通过 CTRL+P/N 上下选择，确认搜索结果后，输入 Enter 确认后，它会将输出直接作为输出打印到标准输出。由于它输出为标准输出，我们就有了更多可能性，通过管道将它与其他命令结合。
+命令组合 # fzf 最大的魅力在于，我们可将其与其他命令组合，如
+将其他命令的输出作为 fzf 的输入，基于它进行搜索； 或将 fzf 的搜索内容作为其他命令的输入，更智能使用其他命令。 我们具体介绍下吧。
+首先，我们示例将 one、two、three、four 作为输入，通过 fzf 搜索选择。
+echo &amp;#34;one\ntwo\nthree\nfour&amp;#34; | fzf 更多可能就诞生了，我们可以讲 ls 的输出作为 fzf 的输入。
+ls | fzf 将 fd 查找结果作为 fzf 的输入。
+fd --type file | fzf 接下来，我们尝试将搜索结果作为其他命令的输入。毕竟，如果 fzf 的搜索结果只是输出到终端，那就太可惜了，可将其作为其它命令的输入。
+如将 fzf 搜索结果作为 vim 的输入，助力 vim 快速打开文件。</description></item><item><title>基础插件 2</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</guid><description>本文是基础篇插件的第二篇，继续介绍 4 个常用的 zsh 插件。我将涉及的插件，如下所示：
 name description copypath 拷贝路径到剪贴版； copyfile 拷贝文件内容到剪贴板； copybuffer 拷贝命令行内容到剪贴板； sudo 命令行开头快速添加 sudo； 让我们正式开始。
 推荐插件 # 先说 oh-my-zsh 的内置插件。
 打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
@@ -153,13 +161,4 @@ MacOS 的话，可直接通过 Homebrew 快速安装：
 brew tap homebrew/cask-fonts brew install font-hack-nerd-font 安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。
 现在，我们终端就支持 NerdFont 字体了。
 如何测试？
-接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。</description></item><item><title/><link>https://www.poloxue.com/mytermenv/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/readme/</guid><description>Fyne 中文文档 # Fyne 是一款 GO 实现 GUI 框架，本文档是基于 Fyne v2.4 的官方文档中文翻译版。英文原版，请异步 docs.fyne.io。</description></item><item><title>fzf</title><link>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/search/fzf/</guid><description>fzf # fzf 全名 fuzzy finder，一款通用的命令行模糊查找工具。它可与其他命令结合，提升其他命令的使用体验。
-安装 # brew install fzf 目录搜索 # fzf 的默认行为是在当前目录搜索。当然它的搜索和 fd 的搜索不同，它会进入交互式模式搜索文件或目录路径。
-它支持通过 CTRL+P/N 上下选择，确认搜索结果后，输入 Enter 确认后，它会将输出直接作为输出打印到标准输出。由于它输出为标准输出，我们就有了更多可能性，通过管道将它与其他命令结合。
-命令组合 # fzf 最大的魅力在于，我们可将其与其他命令组合，如
-将其他命令的输出作为 fzf 的输入，基于它进行搜索； 或将 fzf 的搜索内容作为其他命令的输入，更智能使用其他命令。 我们具体介绍下吧。
-首先，我们示例将 one、two、three、four 作为输入，通过 fzf 搜索选择。
-echo &amp;#34;one\ntwo\nthree\nfour&amp;#34; | fzf 更多可能就诞生了，我们可以讲 ls 的输出作为 fzf 的输入。
-ls | fzf 将 fd 查找结果作为 fzf 的输入。
-fd --type file | fzf 接下来，我们尝试将搜索结果作为其他命令的输入。毕竟，如果 fzf 的搜索结果只是输出到终端，那就太可惜了，可将其作为其它命令的输入。
-如将 fzf 搜索结果作为 vim 的输入，助力 vim 快速打开文件。</description></item></channel></rss>
+接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。</description></item><item><title/><link>https://www.poloxue.com/mytermenv/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/readme/</guid><description>Fyne 中文文档 # Fyne 是一款 GO 实现 GUI 框架，本文档是基于 Fyne v2.4 的官方文档中文翻译版。英文原版，请异步 docs.fyne.io。</description></item></channel></rss>
