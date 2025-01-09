@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>过滤器 Filters on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/</link><description>Recent content in 过滤器 Filters on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/index.xml" rel="self" type="application/rss+xml"/><item><title>过滤器 Filters</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/</guid><description>过滤器 Filters # 该功能是较晚加入到 Backtrader 中的，且为了适应已有的内部结构进行了一些调整。因此，它在灵活性和功能完备性上可能不如预期，但在许多情况下仍然能达到目的。
+尽管实现时尝试支持即插即用的过滤器链，但由于原有内部结构的限制，始终无法保证每次都能实现。因此，有些过滤器可以链式使用，而有些则不能。
+目的 # 将数据源提供的值转换为不同的数据流。
+该实现最初是为了简化两个明显的过滤器的实现，这两个过滤器可以通过cerebro API直接使用，分别是 重采样 和 重放。
+重采样（cerebro.resampledata）：这个过滤器会改变传入数据流的时间框架和压缩比例，如：(秒，1) -&amp;gt; (天，1)。这意味着原始数据流是以1秒为周期的数据条。重采样过滤器会拦截数据并进行缓冲，直到能够提供1天的条形数据。这发生在看到第二天的1秒条形数据时。
+重放（cerebro.replaydata），在上面相同的时间框架下，过滤器会利用1秒的分辨率条形数据重建1天的条形数据。也就是说，1天的条形数据会被反复传递，直到显示出所有1秒的条形数据，并且数据内容会更新。这种方法模拟了实际交易日的发展。
+注意，在日期没有变化的情况下，数据的长度（len(data)）以及策略的长度保持不变。
+工作原理 # 给定一个已有的数据源，你可以使用addfilter方法来添加过滤器：
+data = MyDataFeed(dataname=myname) data.addfilter(filter, *args, **kwargs) cerebro.adddata(data) 即使它与重采样或重放过滤器兼容，你也可以做如下操作：
+data = MyDataFeed(dataname=myname) data.addfilter(filter, *args, **kwargs) cerebro.replaydata(data) 过滤器接口 # 过滤器必须符合以下接口要求。首先，要是一个可调用的对象，接受如下签名：
+callable(data, *args, **kwargs) 或一个可以实例化并被调用的类，在实例化时其__init__方法必须支持以下签名：
+def __init__(self, data, *args, **kwargs) __call__方法的签名为：
+def __call__(self, data, *args, **kwargs) 每当新的数据流值到来时，实例都会被调用。*args和**kwargs与__init__方法传递的参数相同。
+返回值 描述 True 表示数据流的内部数据获取循环需要重新尝试从数据源中获取数据，因为数据流的长度被修改了。 False 即使数据可能已经被编辑（例如：修改了close价格），数据流的长度保持不变。 如果是基于类的过滤器，还可以实现两个额外的方法：
+last，其签名为：
+def last(self, data, *args, **kwargs) 当数据流结束时，这个方法会被调用，允许过滤器推送它可能缓冲的数据。例如在重采样的情况下，一个条形数据会被缓冲，直到看到下一个时间段的数据。如果数据流结束，就没有新的数据可以推动缓冲的数据，last方法提供了推送缓冲数据的机会。</description></item><item><title>参考文档</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/</guid><description>Filters 参考文档 # SessionFilter # class backtrader.filters.SessionFilter(data)
+此类可作为过滤器应用于数据源，将过滤掉落在常规交易时间之外的日内数据（即盘前/盘后数据）。
+这是一个“非简单”过滤器，必须管理数据栈（在初始化和调用期间传递）。 它不需要“last”方法，因为没有需要传递的内容。 SessionFilterSimple # class backtrader.filters.SessionFilterSimple(data)
+此类可作为过滤器应用于数据源，将过滤掉落在常规交易时间之外的日内数据（即盘前/盘后数据）。
+这是一个“简单”过滤器，不需要管理数据栈（在初始化和调用期间传递）。 它不需要“last”方法，因为没有需要传递的内容。 Bar 管理将由 SimpleFilterWrapper 类处理，该类在 DataBase.addfilter_simple 调用期间添加。 SessionFiller # class backtrader.filters.SessionFiller(data)
+为声明的会话开始/结束时间内的数据源填充条。
+参数：
+fill_price (默认: None): 如果传递了 None，将使用前一个条的收盘价。为了得到一个不显示在图表中的条，可以使用 float(&amp;lsquo;NaN&amp;rsquo;)。 fill_vol (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失交易量的值。 fill_oi (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失未平仓合约的值。 skip_first_fill (默认: True): 在看到第一个有效条时，不从会话开始填充到该条。 CalendarDays # class backtrader.filters.CalendarDays(data)
+填充缺失日历日到交易日。
+参数：
+fill_price (默认: None): 0: 用给定值填充。 None: 使用上一个已知收盘价。 -1: 使用上一个条的中点（高低平均值）。 fill_vol (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失交易量的值。 fill_oi (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失未平仓合约的值。 BarReplayer_Open # class backtrader.</description></item></channel></rss>

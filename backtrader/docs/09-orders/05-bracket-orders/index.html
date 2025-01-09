@@ -1,0 +1,385 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Bracket Orders # 1.9.37.116版本增加了Bracket订单，为回测经纪商提供了广泛的订单支持（Market、Limit、Close、Stop、StopLimit、StopTrail、StopTrailLimit、OCO）。
+注意，这是为回测和 Interactive Brokers 实现的。
+Bracket订单不是单个订单，而是由3个订单组成。
+以做多为例：
+一个主要的买单，通常设置为 Limit 或 StopLimit 订单。 一个低价卖单，通常设置为 Stop 订单以限制损失。 一个高价卖单，通常设置为 Limit 订单以获取利润。 做空也有对应的卖单和 2 个买单。
+低价/高价卖单实际上形成了一个围绕主要订单的 Bracket。
+为了使其合理，以下规则适用：
+3个订单一起提交，以避免其中任何一个独立触发。 低价/高价卖单被标记为主要订单的子订单。 子订单在主要订单执行之前不活跃。 取消主要订单会取消低价和高价卖单。 执行主要订单会激活低价和高价卖单。 一旦活跃，低价/高价卖单的执行或取消会自动取消另一个订单。 使用模式 # 有两种方式创建 Bracket 订单组：
+单次发布3个订单。 手动发布3个订单。 单次发布Bracket # backtrader在Strategy中提供了两个新方法来控制Bracket订单：buy_bracket和sell_bracket。
+注意
+签名和信息见下文或Strategy参考部分。
+通过单个语句完成3个订单的设置。示例如下：
+brackets = self.buy_bracket(limitprice=14.00, price=13.50, stopprice=13.00) 注意，stopprice和limitprice围绕price设定。这应该足够了。
+实际的目标数据将是 data0，大小将由默认的sizer自动确定。当然，可以指定其他参数来精细控制执行。
+返回值是一个包含3个订单的列表：[主要订单，stop订单，limit订单]。
+因为在发布 sell_bracket 订单时，低价和高价将翻转，所以参数命名遵循约定：stop 用于止损（在做多操作中是低价，在做空操作中是高价），limit 用于获取利润（在做多操作中是高价，在做空操作中是低价）。
+手动发布Bracket # 这涉及生成3个订单，并处理transmit和parent参数。规则如下：
+必须首先创建主要订单并设置transmit=False。 低价/高价订单必须有parent=main_side_order。 第一个创建的低价/高价订单必须设置transmit=False。 最后一个创建的订单（无论是低价还是高价）设置transmit=True。 以下示例实现了与上述单次命令相同的效果：
+mainside = self."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:title" content="Bracket Orders"><meta property="og:description" content="Bracket Orders # 1.9.37.116版本增加了Bracket订单，为回测经纪商提供了广泛的订单支持（Market、Limit、Close、Stop、StopLimit、StopTrail、StopTrailLimit、OCO）。
+注意，这是为回测和 Interactive Brokers 实现的。
+Bracket订单不是单个订单，而是由3个订单组成。
+以做多为例：
+一个主要的买单，通常设置为 Limit 或 StopLimit 订单。 一个低价卖单，通常设置为 Stop 订单以限制损失。 一个高价卖单，通常设置为 Limit 订单以获取利润。 做空也有对应的卖单和 2 个买单。
+低价/高价卖单实际上形成了一个围绕主要订单的 Bracket。
+为了使其合理，以下规则适用：
+3个订单一起提交，以避免其中任何一个独立触发。 低价/高价卖单被标记为主要订单的子订单。 子订单在主要订单执行之前不活跃。 取消主要订单会取消低价和高价卖单。 执行主要订单会激活低价和高价卖单。 一旦活跃，低价/高价卖单的执行或取消会自动取消另一个订单。 使用模式 # 有两种方式创建 Bracket 订单组：
+单次发布3个订单。 手动发布3个订单。 单次发布Bracket # backtrader在Strategy中提供了两个新方法来控制Bracket订单：buy_bracket和sell_bracket。
+注意
+签名和信息见下文或Strategy参考部分。
+通过单个语句完成3个订单的设置。示例如下：
+brackets = self.buy_bracket(limitprice=14.00, price=13.50, stopprice=13.00) 注意，stopprice和limitprice围绕price设定。这应该足够了。
+实际的目标数据将是 data0，大小将由默认的sizer自动确定。当然，可以指定其他参数来精细控制执行。
+返回值是一个包含3个订单的列表：[主要订单，stop订单，limit订单]。
+因为在发布 sell_bracket 订单时，低价和高价将翻转，所以参数命名遵循约定：stop 用于止损（在做多操作中是低价，在做空操作中是高价），limit 用于获取利润（在做多操作中是高价，在做空操作中是低价）。
+手动发布Bracket # 这涉及生成3个订单，并处理transmit和parent参数。规则如下：
+必须首先创建主要订单并设置transmit=False。 低价/高价订单必须有parent=main_side_order。 第一个创建的低价/高价订单必须设置transmit=False。 最后一个创建的订单（无论是低价还是高价）设置transmit=True。 以下示例实现了与上述单次命令相同的效果：
+mainside = self."><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-01-03T18:28:35+08:00"><title>Bracket Orders | Backtrader 中文</title><link rel=manifest href=/backtrader/manifest.json><link rel=icon href=/backtrader/favicon.png><link rel=canonical href=https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/><link rel=stylesheet href=/backtrader/book.min.76e6146e9e8f93e877ba51d0a79fef85faf41d4eae91f7d6e526426b06e3b129.css integrity="sha256-duYUbp6Pk+h3ulHQp5/vhfr0HU6ukffW5SZCawbjsSk=" crossorigin=anonymous><script defer src=/backtrader/flexsearch.min.js></script>
+<script defer src=/backtrader/en.search.min.3915da9a91c6b4ff6edc12a99d69d853ec999a339663fcdbb1fa832ddcf582b8.js integrity="sha256-ORXampHGtP9u3BKpnWnYU+yZmjOWY/zbsfqDLdz1grg=" crossorigin=anonymous></script>
+<script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script>
+<script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/backtrader/><img src=/backtrader/logo.png alt=Logo><span>Backtrader 中文</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=/backtrader/docs/01-introduction/>介绍</a><ul></ul></li><li><a href=/backtrader/docs/02-installation/>安装指南</a><ul></ul></li><li><input type=checkbox id=section-95668ec101c39e63e3d5df6c80dde0f6 class=toggle>
+<label for=section-95668ec101c39e63e3d5df6c80dde0f6 class="flex justify-between"><a href=/backtrader/docs/03-quickstart/>快速开始</a></label><ul><li><a href=/backtrader/docs/03-quickstart/01-setup/>环境设置</a></li><li><a href=/backtrader/docs/03-quickstart/02-cash/>账户资金</a></li><li><a href=/backtrader/docs/03-quickstart/03-datafeed/>配置数据</a></li><li><a href=/backtrader/docs/03-quickstart/04-first-strategy/>第一个策略</a></li><li><a href=/backtrader/docs/03-quickstart/05-strategy-logic/>开始交易</a></li><li><a href=/backtrader/docs/03-quickstart/06-sell/>卖出操作</a></li><li><a href=/backtrader/docs/03-quickstart/07-commission/>交易监控</a></li><li><a href=/backtrader/docs/03-quickstart/08-parameters/>参数定义</a></li><li><a href=/backtrader/docs/03-quickstart/09-indicators/>技术指标</a></li><li><a href=/backtrader/docs/03-quickstart/10-plotting/>可视化</a></li><li><a href=/backtrader/docs/03-quickstart/11-optimization/>策略优化</a></li></ul></li><li><input type=checkbox id=section-bb9677043509e3b068956c8c9ed9898b class=toggle>
+<label for=section-bb9677043509e3b068956c8c9ed9898b class="flex justify-between"><a href=/backtrader/docs/04-concepts/>核心概念</a></label><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/>平台概念</a><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/01-datafeed/>数据源 DataFeed</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/02-params/>策略参数</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/03-line/>线 Line 类</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/04-index/>索引和切片</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/05-operator/>运算符</a></li></ul></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/>平台操作</a><ul><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/>Line 迭代器</a></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/>启动运行</a></li></ul></li></ul></li><li><input type=checkbox id=section-2dbf38c024ccf07a4139869f080cac43 class=toggle>
+<label for=section-2dbf38c024ccf07a4139869f080cac43 class="flex justify-between"><a href=/backtrader/docs/05-cerebro/>Cerebro</a></label><ul><li><a href=/backtrader/docs/05-cerebro/01-cerebro/>Cerebro</a></li><li><a href=/backtrader/docs/05-cerebro/02-reference/>参数说明</a></li><li><a href=/backtrader/docs/05-cerebro/03-saving-memory/>节省内存</a></li><li><a href=/backtrader/docs/05-cerebro/04-optimization-improvements/>优化改进</a></li><li><a href=/backtrader/docs/05-cerebro/05-exceptions/>异常 Exceptions</a></li><li><a href=/backtrader/docs/05-cerebro/06-logging-writer/>日志 Logging - Writter</a></li></ul></li><li><input type=checkbox id=section-843b6ed139743e2982aebf2306cbe4ce class=toggle>
+<label for=section-843b6ed139743e2982aebf2306cbe4ce class="flex justify-between"><a role=button>DataFeed</a></label><ul><li><a href=/backtrader/docs/06-datafeed/01-datafeeds/>Data Feeds</a></li><li><a href=/backtrader/docs/06-datafeed/02-datafeed-extending/>扩展数据源</a></li><li><a href=/backtrader/docs/06-datafeed/03-datafeed-development-csv/>开发 CSV 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/04-datafeed-development-general/>开发 Binary 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/05-datafeed-multiple-timeframes/>多时间框架</a></li><li><a href=/backtrader/docs/06-datafeed/06-datafeed-resampling/>重采样</a></li><li><a href=/backtrader/docs/06-datafeed/07-datafeed-replay/>数据回放</a></li><li><a href=/backtrader/docs/06-datafeed/08-datafeed-rollover/>数据滚动</a></li><li><span>过滤器 Filters</span><ul><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/>过滤器 Filters</a></li><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/>参考文档</a></li></ul></li><li><a href=/backtrader/docs/06-datafeed/10-datafeed-yahoo/>Yahoo 数据源说明</a></li><li><a href=/backtrader/docs/06-datafeed/11-datafeed-pandas/>Pandas 数据源示例</a></li><li><a href=/backtrader/docs/06-datafeed/12-datafeed-reference/>数据源参考</a></li></ul></li><li><input type=checkbox id=section-bcbccbe8e26b18858f97ca31830953b1 class=toggle>
+<label for=section-bcbccbe8e26b18858f97ca31830953b1 class="flex justify-between"><a role=button>Strategy</a></label><ul><li><a href=/backtrader/docs/07-strategy/01-strategy/>Strategy</a></li><li><a href=/backtrader/docs/07-strategy/02-strategy-with-signals/>信号策略</a></li><li><a href=/backtrader/docs/07-strategy/03-strategy-references/>策略参考</a></li></ul></li><li><input type=checkbox id=section-9740d452082ecac05becbac5e45e18d6 class=toggle>
+<label for=section-9740d452082ecac05becbac5e45e18d6 class="flex justify-between"><a role=button>Indicator</a></label><ul><li><a href=/backtrader/docs/08-indicators/01-using-indicators/>使用指标</a></li><li><a href=/backtrader/docs/08-indicators/02-indicators-development/>指标开发</a></li><li><a href=/backtrader/docs/08-indicators/03-timeframe-mixing/>周期混合</a></li><li><a href=/backtrader/docs/08-indicators/04-talib/>TA-Lib</a></li></ul></li><li><input type=checkbox id=section-59e40579f5dd90c6bfa3a78686223f8d class=toggle checked>
+<label for=section-59e40579f5dd90c6bfa3a78686223f8d class="flex justify-between"><a role=button>Order</a></label><ul><li><a href=/backtrader/docs/09-orders/01-general/>订单</a></li><li><a href=/backtrader/docs/09-orders/02-creation-execution/>创建/执行</a></li><li><a href=/backtrader/docs/09-orders/03-target-orders/>目标订单</a></li><li><a href=/backtrader/docs/09-orders/04-oco-orders/>OCO 订单</a></li><li><a href=/backtrader/docs/09-orders/05-bracket-orders/ class=active>Bracket Orders</a></li><li><a href=/backtrader/docs/09-orders/06-future-spot-compensation/>期货和现货补偿</a></li><li><a href=/backtrader/docs/09-orders/07-stop-trails/>跟踪止损（限价）</a></li></ul></li><li><input type=checkbox id=section-a2ec82415885a0ff6263ba256d3c484b class=toggle>
+<label for=section-a2ec82415885a0ff6263ba256d3c484b class="flex justify-between"><a role=button>Broker</a></label><ul><li><a href=/backtrader/docs/10-broker/01-broker/>Broker</a></li><li><a href=/backtrader/docs/10-broker/02-slippage/>滑点</a></li><li><a href=/backtrader/docs/10-broker/03-cheat-on-open/>开盘作弊</a></li><li><a href=/backtrader/docs/10-broker/04-volume-filling-filler/>填充器</a></li><li><a href=/backtrader/docs/10-broker/05-position/>Position</a></li><li><a href=/backtrader/docs/10-broker/06-trade/>Trade</a></li></ul></li><li><input type=checkbox id=section-93412194d6a690077dd9b0fce5dc50b8 class=toggle>
+<label for=section-93412194d6a690077dd9b0fce5dc50b8 class="flex justify-between"><a role=button>Commission</a></label><ul><li><a href=/backtrader/docs/11-commission-schemes/01-commission-schemes/>佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/02-commission-schemes-extending/>扩展</a></li><li><a href=/backtrader/docs/11-commission-schemes/03-customization/>自定义佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/04-credit-interests/>利息</a></li></ul></li><li><input type=checkbox id=section-7ee30e1f85261a5ddc0f8b492d792a0e class=toggle>
+<label for=section-7ee30e1f85261a5ddc0f8b492d792a0e class="flex justify-between"><a role=button>Analyzer</a></label><ul><li><a href=/backtrader/docs/12-analyzers/01-analyzers/>Analyzers</a></li><li><a href=/backtrader/docs/12-analyzers/02-pyfolio/>Pyfolio</a></li><li><a href=/backtrader/docs/12-analyzers/03-pyfolio-integration/>Pyfolio 集成</a></li><li><a href=/backtrader/docs/12-analyzers/04-reference/>Reference</a></li></ul></li><li><input type=checkbox id=section-c3d8936c432abd68dd8d40624a1e9ecd class=toggle>
+<label for=section-c3d8936c432abd68dd8d40624a1e9ecd class="flex justify-between"><a role=button>Observer</a></label><ul><li><a href=/backtrader/docs/13-observers/01-statistics/>统计</a></li><li><a href=/backtrader/docs/13-observers/02-benchmarking/>基准测试</a></li><li><a href=/backtrader/docs/13-observers/03-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-bf5851d3ea7d78f072d49c32fbc0116a class=toggle>
+<label for=section-bf5851d3ea7d78f072d49c32fbc0116a class="flex justify-between"><a role=button>Sizer</a></label><ul><li><a href=/backtrader/docs/14-sizers/01-sizers/>sizers</a></li><li><a href=/backtrader/docs/14-sizers/02-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-d914bc0b766cee7bc235dc30c39c783c class=toggle>
+<label for=section-d914bc0b766cee7bc235dc30c39c783c class="flex justify-between"><a href=/backtrader/docs/15-livetrading/>实盘</a></label><ul><li><a href=/backtrader/docs/15-livetrading/01-interactive-brokers/>Interactive Brokers</a></li><li><a href=/backtrader/docs/15-livetrading/02-qanda-v1-0/>Qanda</a></li><li><a href=/backtrader/docs/15-livetrading/03-visual-chart/>Visual Chart</a></li></ul></li><li><input type=checkbox id=section-b0ac2f58c2fd8f0b64f94dbeb60a370a class=toggle>
+<label for=section-b0ac2f58c2fd8f0b64f94dbeb60a370a class="flex justify-between"><a role=button>绘图</a></label><ul><li><a href=/backtrader/docs/16-plotting/01-plotting/>Plotting</a></li><li><a href=/backtrader/docs/16-plotting/02-ploting-date-ranges/>绘制日期范围</a></li><li><a href=/backtrader/docs/16-plotting/03-plotting-same-axis/>同轴绘图</a></li></ul></li><li><input type=checkbox id=section-696d63c91cb92679438b7f84ef95709e class=toggle>
+<label for=section-696d63c91cb92679438b7f84ef95709e class="flex justify-between"><a role=button>日期时间</a></label><ul><li><a href=/backtrader/docs/17-datetime/01-management/>管理</a></li><li><a href=/backtrader/docs/17-datetime/02-timer/>定时器</a></li><li><a href=/backtrader/docs/17-datetime/03-trading-calendars/>交易日历</a></li></ul></li><li><a href=/backtrader/docs/18-automated-running/>自动运行</a><ul></ul></li><li><span>官方文章</span><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Bracket Orders</strong>
+<label for=toc-control><img src=/backtrader/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#使用模式>使用模式</a><ul><li><a href=#单次发布bracket>单次发布Bracket</a></li><li><a href=#手动发布bracket>手动发布Bracket</a></li></ul></li><li><a href=#示例>示例</a></li><li><a href=#参考>参考</a></li><li><a href=#示例用法>示例用法</a></li><li><a href=#示例代码>示例代码</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=bracket-orders>Bracket Orders
+<a class=anchor href=#bracket-orders>#</a></h1><p>1.9.37.116版本增加了Bracket订单，为回测经纪商提供了广泛的订单支持（Market、Limit、Close、Stop、StopLimit、StopTrail、StopTrailLimit、OCO）。</p><p><strong>注意</strong>，这是为回测和 Interactive Brokers 实现的。</p><p>Bracket订单不是单个订单，而是由3个订单组成。</p><p>以做多为例：</p><ol><li>一个主要的买单，通常设置为 Limit 或 StopLimit 订单。</li><li>一个低价卖单，通常设置为 Stop 订单以限制损失。</li><li>一个高价卖单，通常设置为 Limit 订单以获取利润。</li></ol><p>做空也有对应的卖单和 2 个买单。</p><p>低价/高价卖单实际上形成了一个围绕主要订单的 Bracket。</p><p>为了使其合理，以下规则适用：</p><ul><li>3个订单一起提交，以避免其中任何一个独立触发。</li><li>低价/高价卖单被标记为主要订单的子订单。</li><li>子订单在主要订单执行之前不活跃。</li><li>取消主要订单会取消低价和高价卖单。</li><li>执行主要订单会激活低价和高价卖单。</li><li>一旦活跃，低价/高价卖单的执行或取消会自动取消另一个订单。</li></ul><h2 id=使用模式>使用模式
+<a class=anchor href=#%e4%bd%bf%e7%94%a8%e6%a8%a1%e5%bc%8f>#</a></h2><p>有两种方式创建 Bracket 订单组：</p><ol><li>单次发布3个订单。</li><li>手动发布3个订单。</li></ol><h3 id=单次发布bracket>单次发布Bracket
+<a class=anchor href=#%e5%8d%95%e6%ac%a1%e5%8f%91%e5%b8%83bracket>#</a></h3><p>backtrader在Strategy中提供了两个新方法来控制Bracket订单：<code>buy_bracket</code>和<code>sell_bracket</code>。</p><p><strong>注意</strong></p><p>签名和信息见下文或Strategy参考部分。</p><p>通过单个语句完成3个订单的设置。示例如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>brackets <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>buy_bracket(limitprice<span style=color:#f92672>=</span><span style=color:#ae81ff>14.00</span>, price<span style=color:#f92672>=</span><span style=color:#ae81ff>13.50</span>, stopprice<span style=color:#f92672>=</span><span style=color:#ae81ff>13.00</span>)
+</span></span></code></pre></div><p>注意，<code>stopprice</code>和<code>limitprice</code>围绕<code>price</code>设定。这应该足够了。</p><p>实际的目标数据将是 data0，大小将由默认的sizer自动确定。当然，可以指定其他参数来精细控制执行。</p><p>返回值是一个包含3个订单的列表：[主要订单，stop订单，limit订单]。</p><p>因为在发布 <code>sell_bracket</code> 订单时，低价和高价将翻转，所以参数命名遵循约定：<code>stop</code> 用于止损（在做多操作中是低价，在做空操作中是高价），<code>limit</code> 用于获取利润（在做多操作中是高价，在做空操作中是低价）。</p><h3 id=手动发布bracket>手动发布Bracket
+<a class=anchor href=#%e6%89%8b%e5%8a%a8%e5%8f%91%e5%b8%83bracket>#</a></h3><p>这涉及生成3个订单，并处理<code>transmit</code>和<code>parent</code>参数。规则如下：</p><ol><li>必须首先创建主要订单并设置<code>transmit=False</code>。</li><li>低价/高价订单必须有<code>parent=main_side_order</code>。</li><li>第一个创建的低价/高价订单必须设置<code>transmit=False</code>。</li><li>最后一个创建的订单（无论是低价还是高价）设置<code>transmit=True</code>。</li></ol><p>以下示例实现了与上述单次命令相同的效果：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>mainside <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>buy(price<span style=color:#f92672>=</span><span style=color:#ae81ff>13.50</span>, exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, transmit<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
+</span></span><span style=display:flex><span>lowside  <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>sell(price<span style=color:#f92672>=</span><span style=color:#ae81ff>13.00</span>, size<span style=color:#f92672>=</span>mainside<span style=color:#f92672>.</span>size, exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Stop, transmit<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, parent<span style=color:#f92672>=</span>mainside)
+</span></span><span style=display:flex><span>highside <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>sell(price<span style=color:#f92672>=</span><span style=color:#ae81ff>14.00</span>, size<span style=color:#f92672>=</span>mainside<span style=color:#f92672>.</span>size, exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, transmit<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>, parent<span style=color:#f92672>=</span>mainside)
+</span></span></code></pre></div><p>需要做更多的事情：</p><ul><li>跟踪主要订单，指示它是其他订单的父订单。</li><li>控制<code>transmit</code>以确保只有最后一个订单触发联合传输。</li><li>指定执行类型。</li><li>为低价和高价订单指定大小。</li></ul><p>因为大小必须相同。如果未手动指定大小且用户引入了sizer，sizer可能会为订单指示不同的值。因此，需要在调用时手动添加大小。</p><h2 id=示例>示例
+<a class=anchor href=#%e7%a4%ba%e4%be%8b>#</a></h2><p>运行下面的示例生成如下输出（为简洁起见进行了截断）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./bracket.py --plot
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>2005-01-28: Oref <span style=color:#ae81ff>1</span> / Buy at 2941.11055
+</span></span><span style=display:flex><span>2005-01-28: Oref <span style=color:#ae81ff>2</span> / Sell Stop at 2881.99275
+</span></span><span style=display:flex><span>2005-01-28: Oref <span style=color:#ae81ff>3</span> / Sell Limit at 3000.22835
+</span></span><span style=display:flex><span>2005-01-31: Order ref: <span style=color:#ae81ff>1</span> / Type Buy / Status Submitted
+</span></span><span style=display:flex><span>2005-01-31: Order ref: <span style=color:#ae81ff>2</span> / Type Sell / Status Submitted
+</span></span><span style=display:flex><span>2005-01-31: Order ref: <span style=color:#ae81ff>3</span> / Type Sell / Status Submitted
+</span></span><span style=display:flex><span>2005-01-31: Order ref: <span style=color:#ae81ff>1</span> / Type Buy / Status Accepted
+</span></span><span style=display:flex><span>2005-01-31: Order ref: <span style=color:#ae81ff>2</span> / Type Sell / Status Accepted
+</span></span><span style=display:flex><span>2005-01-31: Order ref: <span style=color:#ae81ff>3</span> / Type Sell / Status Accepted
+</span></span><span style=display:flex><span>2005-02-01: Order ref: <span style=color:#ae81ff>1</span> / Type Buy / Status Expired
+</span></span><span style=display:flex><span>2005-02-01: Order ref: <span style=color:#ae81ff>2</span> / Type Sell / Status Canceled
+</span></span><span style=display:flex><span>2005-02-01: Order ref: <span style=color:#ae81ff>3</span> / Type Sell / Status Canceled
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>2005-08-11: Oref <span style=color:#ae81ff>16</span> / Buy at 3337.3892
+</span></span><span style=display:flex><span>2005-08-11: Oref <span style=color:#ae81ff>17</span> / Sell Stop at 3270.306
+</span></span><span style=display:flex><span>2005-08-11: Oref <span style=color:#ae81ff>18</span> / Sell Limit at 3404.4724
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>16</span> / Type Buy / Status Submitted
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>17</span> / Type Sell / Status Submitted
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>18</span> / Type Sell / Status Submitted
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>16</span> / Type Buy / Status Accepted
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>17</span> / Type Sell / Status Accepted
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>18</span> / Type Sell / Status Accepted
+</span></span><span style=display:flex><span>2005-08-12: Order ref: <span style=color:#ae81ff>16</span> / Type Buy / Status Completed
+</span></span><span style=display:flex><span>2005-08-18: Order ref: <span style=color:#ae81ff>17</span> / Type Sell / Status Completed
+</span></span><span style=display:flex><span>2005-08-18: Order ref: <span style=color:#ae81ff>18</span> / Type Sell / Status Canceled
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>2005-09-26: Oref <span style=color:#ae81ff>22</span> / Buy at 3383.92535
+</span></span><span style=display:flex><span>2005-09-26: Oref <span style=color:#ae81ff>23</span> / Sell Stop at 3315.90675
+</span></span><span style=display:flex><span>2005-09-26: Oref <span style=color:#ae81ff>24</span> / Sell Limit at 3451.94395
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>22</span> / Type Buy / Status Submitted
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>23</span> / Type Sell / Status Submitted
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>24</span> / Type Sell / Status Submitted
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>22</span> / Type Buy / Status Accepted
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>23</span> / Type Sell / Status Accepted
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>24</span> / Type Sell / Status Accepted
+</span></span><span style=display:flex><span>2005-09-27: Order ref: <span style=color:#ae81ff>22</span> / Type Buy / Status Completed
+</span></span><span style=display:flex><span>2005-10-04: Order ref: <span style=color:#ae81ff>24</span> / Type Sell / Status Completed
+</span></span><span style=display:flex><span>2005-10-04: Order ref: <span style=color:#ae81ff>23</span> / Type Sell / Status Canceled
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>显示了 3 种不同的结果：</p><ol><li>第一种情况下，主要订单过期，自动取消了其他两个订单。</li><li>第二种情况下，主要订单完成，低价订单（买入情况下的止损）执行，限制了损失。</li><li>第三种情况下，主要订单完成，高价订单（限价）执行。</li></ol><p>可以注意到，已完成的订单id是22和24，高价订单最后发布，未执行的低价订单id是23。</p><p><strong>图示</strong></p><p>可以立即看到，亏损交易集中在相同的值附近，而盈利交易也是如此，这是 Bracket 的目的。控制两侧。</p><p>运行的示例手动发布3个订单，但可以使用<code>buy_bracket</code>。输出如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./bracket.py --strat usebracket<span style=color:#f92672>=</span>True
+</span></span></code></pre></div><p>结果相同。</p><h2 id=参考>参考
+<a class=anchor href=#%e5%8f%82%e8%80%83>#</a></h2><p>请参阅新的<code>buy_bracket</code>和<code>sell_bracket</code>方法</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>buy_bracket</span>(self, data<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, size<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, price<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, plimit<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>                exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, valid<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, tradeid<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>                trailamount<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, trailpercent<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, oargs<span style=color:#f92672>=</span>{},
+</span></span><span style=display:flex><span>                stopprice<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, stopexec<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Stop, stopargs<span style=color:#f92672>=</span>{},
+</span></span><span style=display:flex><span>                limitprice<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, limitexec<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, limitargs<span style=color:#f92672>=</span>{},
+</span></span><span style=display:flex><span>                <span style=color:#f92672>**</span>kwargs):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    创建一个Bracket订单组（低侧 - 买单 - 高侧）。默认行为如下：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 发出执行类型为“Limit”的**买单**
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 发出执行类型为“Stop”的*低侧*Bracket**卖单**
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 发出执行类型为“Limit”的*高侧*Bracket**卖单**。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    参见下文以了解不同参数的含义
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``data``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        订单针对的数据。如果为``None``，则使用系统中的第一个数据，即``self.datas[0
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>]或self.data0``（即``self.data``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``size``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        订单的数据单位大小（正数）。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        如果为``None``，则使用通过``getsizer``检索到的``sizer``实例来确定大小。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        **注意**：相同的大小适用于Bracket的所有3个订单
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``price``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        使用的价格（实时经纪商可能会对实际格式施加限制，如果不符合最小价格单位要求）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        ``None``对于``Market``和``Close``订单是有效的（市场决定价格）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        对于``Limit``、``Stop``和``StopLimit``订单，此值确定触发点（在``Limit``的情况下，触发点显然是订单应匹配的价格）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``plimit``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        仅适用于``StopLimit``订单。这是设置隐含限价订单的价格，一旦触发了``Stop``（使用``price``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``trailamount``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        如果订单类型为StopTrail或StopTrailLimit，这是一个绝对金额，确定价格的距离（卖单下方和买单上方），以保持追踪止损
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``trailpercent``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        如果订单类型为StopTrail或StopTrailLimit，这是一个百分比金额，确定价格的距离（卖单下方和买单上方），以保持追踪止损（如果也指定了``trailamount``，将使用它）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``exectype``（默认：``bt.Order.Limit``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        可能的值：（参见``buy``方法的文档）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``valid``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        可能的值：（参见``buy``方法的文档）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``tradeid``（默认：``0``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        可能的值：（参见``buy``方法的文档）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``oargs``（默认：``</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        要传递给主要订单的特定关键字参数（在``dict``中）。默认``**kwargs``中的参数将应用于此。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``**kwargs``：其他经纪商实现可能支持的额外参数。``backtrader``将*kwargs*传递给创建的订单对象
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        可能的值：（参见``buy``方法的文档）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        **注意**：此``kwargs``将应用于Bracket的所有3个订单。参见下文以了解低侧和高侧订单的特定关键字参数
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``stopprice``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        *低侧*止损订单的特定价格
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``stopexec``（默认：``bt.Order.Stop``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        *低侧*订单的特定执行类型
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``stopargs``（默认：``</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        要传递给低侧订单的特定关键字参数（在``dict``中）。默认``**kwargs``中的参数将应用于此。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``limitprice``（默认：``None``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        *高侧*止损订单的特定价格
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``stopexec``（默认：``bt.Order.Limit``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        *高侧*订单的特定执行类型
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - ``limitargs``（默认：``</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>``）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        要传递给高侧订单的特定关键字参数（在``dict``中）。默认``**kwargs``中的参数将应用于此。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    返回：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 一个包含3个Bracket订单的列表[订单，低侧，高侧]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#39;&#39;&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>sell_bracket</span>(self, data<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>                 size<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, price<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, plimit<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>                 exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, valid<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, tradeid<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>                 trailamount<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, trailpercent<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>                 oargs<span style=color:#f92672>=</span>{},
+</span></span><span style=display:flex><span>                 stopprice<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, stopexec<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Stop, stopargs<span style=color:#f92672>=</span>{},
+</span></span><span style=display:flex><span>                 limitprice<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, limitexec<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, limitargs<span style=color:#f92672>=</span>{},
+</span></span><span style=display:flex><span>                 <span style=color:#f92672>**</span>kwargs):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    创建一个Bracket订单组（低侧 - 卖单 - 高侧）。默认行为如下：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 发出执行类型为“Limit”的**卖单**
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 发出执行类型为“Stop”的*高侧*Bracket**买单**
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 发出执行类型为“Limit”的*低侧*Bracket**买单**。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    参见``bracket_buy``以了解参数的含义
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    返回：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - 一个包含3个Bracket订单的列表[订单，低侧，限价侧]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#39;&#39;&#39;</span>
+</span></span></code></pre></div><h2 id=示例用法>示例用法
+<a class=anchor href=#%e7%a4%ba%e4%be%8b%e7%94%a8%e6%b3%95>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./bracket.py --help
+</span></span><span style=display:flex><span>usage: bracket.py <span style=color:#f92672>[</span>-h<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--data0 DATA0<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--fromdate FROMDATE<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--todate TODATE<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>[</span>--cerebro kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--broker kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--sizer kwargs<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>[</span>--strat kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--plot <span style=color:#f92672>[</span>kwargs<span style=color:#f92672>]]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Sample Skeleton
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>optional arguments:
+</span></span><span style=display:flex><span>  -h, --help           show this help message and exit
+</span></span><span style=display:flex><span>  --data0 DATA0        Data to read in <span style=color:#f92672>(</span>default:
+</span></span><span style=display:flex><span>                       ../../datas/2005-2006-day-001.txt<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --fromdate FROMDATE  Date<span style=color:#f92672>[</span>time<span style=color:#f92672>]</span> in YYYY-MM-DD<span style=color:#f92672>[</span>THH:MM:SS<span style=color:#f92672>]</span> format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --todate TODATE      Date<span style=color:#f92672>[</span>time<span style=color:#f92672>]</span> in YYYY-MM-DD<span style=color:#f92672>[</span>THH:MM:SS<span style=color:#f92672>]</span> format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --cerebro kwargs     kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --broker kwargs      kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --sizer kwargs       kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --strat kwargs       kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --plot <span style=color:#f92672>[</span>kwargs<span style=color:#f92672>]</span>      kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span></code></pre></div><h2 id=示例代码>示例代码
+<a class=anchor href=#%e7%a4%ba%e4%be%8b%e4%bb%a3%e7%a0%81>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> __future__ <span style=color:#f92672>import</span> (absolute_import, division, print_function, unicode_literals)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> argparse
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> datetime
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> backtrader <span style=color:#66d9ef>as</span> bt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>St</span>(bt<span style=color:#f92672>.</span>Strategy):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict(
+</span></span><span style=display:flex><span>        ma<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>ind<span style=color:#f92672>.</span>SMA,
+</span></span><span style=display:flex><span>        p1<span style=color:#f92672>=</span><span style=color:#ae81ff>5</span>,
+</span></span><span style=display:flex><span>        p2<span style=color:#f92672>=</span><span style=color:#ae81ff>15</span>,
+</span></span><span style=display:flex><span>        limit<span style=color:#f92672>=</span><span style=color:#ae81ff>0.005</span>,
+</span></span><span style=display:flex><span>        limdays<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>,
+</span></span><span style=display:flex><span>        limdays2<span style=color:#f92672>=</span><span style=color:#ae81ff>1000</span>,
+</span></span><span style=display:flex><span>        hold<span style=color:#f92672>=</span><span style=color:#ae81ff>10</span>,
+</span></span><span style=display:flex><span>        usebracket<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>,  <span style=color:#75715e># use order_target_size</span>
+</span></span><span style=display:flex><span>        switchp1p2<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>,  <span style=color:#75715e># switch prices of order1 and order2</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>notify_order</span>(self, order):
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>: Order ref: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> / Type </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> / Status </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>0</span>),
+</span></span><span style=display:flex><span>            order<span style=color:#f92672>.</span>ref, <span style=color:#e6db74>&#39;Buy&#39;</span> <span style=color:#f92672>*</span> order<span style=color:#f92672>.</span>isbuy() <span style=color:#f92672>or</span> <span style=color:#e6db74>&#39;Sell&#39;</span>,
+</span></span><span style=display:flex><span>            order<span style=color:#f92672>.</span>getstatusname()))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> order<span style=color:#f92672>.</span>status <span style=color:#f92672>==</span> order<span style=color:#f92672>.</span>Completed:
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>holdstart <span style=color:#f92672>=</span> len(self)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> order<span style=color:#f92672>.</span>alive() <span style=color:#f92672>and</span> order<span style=color:#f92672>.</span>ref <span style=color:#f92672>in</span> self<span style=color:#f92672>.</span>orefs:
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>orefs<span style=color:#f92672>.</span>remove(order<span style=color:#f92672>.</span>ref)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> __init__(self):
+</span></span><span style=display:flex><span>        ma1, ma2 <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>ma(period<span style=color:#f92672>=</span>self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>p1), self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>ma(period<span style=color:#f92672>=</span>self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>p2)
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>cross <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>ind<span style=color:#f92672>.</span>CrossOver(ma1, ma2)
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>orefs <span style=color:#f92672>=</span> list()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>usebracket:
+</span></span><span style=display:flex><span>            print(<span style=color:#e6db74>&#39;-&#39;</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>5</span>, <span style=color:#e6db74>&#39;Using buy_bracket&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> self<span style=color:#f92672>.</span>orefs:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span>  <span style=color:#75715e># pending orders do nothing</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> self<span style=color:#f92672>.</span>position:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> self<span style=color:#f92672>.</span>cross <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0.0</span>:  <span style=color:#75715e># crossing up</span>
+</span></span><span style=display:flex><span>                close <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>close[<span style=color:#ae81ff>0</span>]
+</span></span><span style=display:flex><span>                p1 <span style=color:#f92672>=</span> close <span style=color:#f92672>*</span> (<span style=color:#ae81ff>1.0</span> <span style=color:#f92672>-</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>limit)
+</span></span><span style=display:flex><span>                p2 <span style=color:#f92672>=</span> p1 <span style=color:#f92672>-</span> <span style=color:#ae81ff>0.02</span> <span style=color:#f92672>*</span> close
+</span></span><span style=display:flex><span>                p3 <span style=color:#f92672>=</span> p1 <span style=color:#f92672>+</span> <span style=color:#ae81ff>0.02</span> <span style=color:#f92672>*</span> close
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                valid1 <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>timedelta(self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>limdays)
+</span></span><span style=display:flex><span>                valid2 <span style=color:#f92672>=</span> valid3 <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>timedelta(self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>limdays2)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>switchp1p2:
+</span></span><span style=display:flex><span>                    p1, p2 <span style=color:#f92672>=</span> p2, p1
+</span></span><span style=display:flex><span>                    valid1, valid2 <span style=color:#f92672>=</span> valid2, valid1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>usebracket:
+</span></span><span style=display:flex><span>                    o1 <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>buy(exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, price<span style=color:#f92672>=</span>p1, valid<span style=color:#f92672>=</span>valid1, transmit<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
+</span></span><span style=display:flex><span>                    print(<span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>: Oref </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> / Buy at </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(self<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date(), o1<span style=color:#f92672>.</span>ref, p1))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    o2 <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>sell(exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Stop, price<span style=color:#f92672>=</span>p2, valid<span style=color:#f92672>=</span>valid2, parent<span style=color:#f92672>=</span>o1, transmit<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
+</span></span><span style=display:flex><span>                    print(<span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>: Oref </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> / Sell Stop at </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(self<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date(), o2<span style=color:#f92672>.</span>ref, p2))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    o3 <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>sell(exectype<span style=color:#f92672>=</span>bt<span style=color:#f92672>.</span>Order<span style=color:#f92672>.</span>Limit, price<span style=color:#f92672>=</span>p3, valid<span style=color:#f92672>=</span>valid3, parent<span style=color:#f92672>=</span>o1, transmit<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>                    print(<span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>: Oref </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> / Sell Limit at </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(self<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date(), o3<span style=color:#f92672>.</span>ref, p3))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                    self<span style=color:#f92672>.</span>orefs <span style=color:#f92672>=</span> [o1<span style=color:#f92672>.</span>ref, o2<span style=color:#f92672>.</span>ref, o3<span style=color:#f92672>.</span>ref]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>                    os <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>buy_bracket(price<span style=color:#f92672>=</span>p1, valid<span style=color:#f92672>=</span>valid1, stopprice<span style=color:#f92672>=</span>p2, stopargs<span style=color:#f92672>=</span>dict(valid<span style=color:#f92672>=</span>valid2),
+</span></span><span style=display:flex><span>                                          limitprice<span style=color:#f92672>=</span>p3, limitargs<span style=color:#f92672>=</span>dict(valid<span style=color:#f92672>=</span>valid3),)
+</span></span><span style=display:flex><span>                    self<span style=color:#f92672>.</span>orefs <span style=color:#f92672>=</span> [o<span style=color:#f92672>.</span>ref <span style=color:#66d9ef>for</span> o <span style=color:#f92672>in</span> os]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:  <span style=color:#75715e># in the market</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> (len(self) <span style=color:#f92672>-</span> self<span style=color:#f92672>.</span>holdstart) <span style=color:#f92672>&gt;=</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>hold:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>pass</span>  <span style=color:#75715e># do nothing in this case</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>runstrat</span>(args<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>):
+</span></span><span style=display:flex><span>    args <span style=color:#f92672>=</span> parse_args(args)
+</span></span><span style=display:flex><span>    cerebro <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>Cerebro()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Data feed kwargs</span>
+</span></span><span style=display:flex><span>    kwargs <span style=color:#f92672>=</span> dict()
+</span></span><span style=display:flex><span>    dtfmt, tmfmt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#39;</span>, <span style=color:#e6db74>&#39;T%H:%M:%S&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> a, d <span style=color:#f92672>in</span> ((getattr(args, x), x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> [<span style=color:#e6db74>&#39;fromdate&#39;</span>, <span style=color:#e6db74>&#39;todate&#39;</span>]):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> a:
+</span></span><span style=display:flex><span>            strpfmt <span style=color:#f92672>=</span> dtfmt <span style=color:#f92672>+</span> tmfmt <span style=color:#f92672>*</span> (<span style=color:#e6db74>&#39;T&#39;</span> <span style=color:#f92672>in</span> a)
+</span></span><span style=display:flex><span>            kwargs[d] <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(a, strpfmt)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    data0 <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>BacktraderCSVData(dataname<span style=color:#f92672>=</span>args<span style=color:#f92672>.</span>data0, <span style=color:#f92672>**</span>kwargs)
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>adddata(data0)
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>brokers<span style=color:#f92672>.</span>BackBroker(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>broker <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addsizer(bt<span style=color:#f92672>.</span>sizers<span style=color:#f92672>.</span>FixedSize, <span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>sizer <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addstrategy(St, <span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>strat <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>run()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>plot:
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>plot(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>plot <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_args</span>(pargs<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>):
+</span></span><span style=display:flex><span>    parser <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser(
+</span></span><span style=display:flex><span>        formatter_class<span style=color:#f92672>=</span>argparse<span style=color:#f92672>.</span>ArgumentDefaultsHelpFormatter,
+</span></span><span style=display:flex><span>        description<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Sample Skeleton&#39;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--data0&#39;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;../../datas/2005-2006-day-001.txt&#39;</span>,
+</span></span><span style=display:flex><span>                        required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Data to read in&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--fromdate&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Date[time] in YYYY-MM-DD[THH:MM:SS] format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--todate&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Date[time] in YYYY-MM-DD[THH:MM:SS] format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--cerebro&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--broker&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--sizer&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--strat&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--plot&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>,
+</span></span><span style=display:flex><span>                        nargs<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;?&#39;</span>, const<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span>,
+</span></span><span style=display:flex><span>                        metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> parser<span style=color:#f92672>.</span>parse_args(pargs)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+</span></span><span style=display:flex><span>    runstrat()
+</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/poloxue/docs.backtrader/commit/021cd32ab1da9a7977b58538540e5f5e2e063e06 title='Last modified by poloxue.xue | Jan 3, 2025' target=_blank rel=noopener><img src=/backtrader/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Jan 3, 2025</span></a></div><div><a class="flex align-center" href=https://github.com/poloxue/docs.backtrader/blob/master/content/docs/09-orders/05-bracket-orders.md target=_blank rel=noopener><img src=/backtrader/svg/edit.svg class=book-icon alt=Edit>
+<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#使用模式>使用模式</a><ul><li><a href=#单次发布bracket>单次发布Bracket</a></li><li><a href=#手动发布bracket>手动发布Bracket</a></li></ul></li><li><a href=#示例>示例</a></li><li><a href=#参考>参考</a></li><li><a href=#示例用法>示例用法</a></li><li><a href=#示例代码>示例代码</a></li></ul></nav></div></aside></main></body></html>

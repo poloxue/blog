@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>实盘 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/15-livetrading/</link><description>Recent content in 实盘 on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/15-livetrading/index.xml" rel="self" type="application/rss+xml"/><item><title>Interactive Brokers</title><link>https://www.poloxue.com/backtrader/docs/15-livetrading/01-interactive-brokers/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/15-livetrading/01-interactive-brokers/</guid><description>盈透（Interactive Brokers） # 与盈透（Interactive Brokers）的集成支持以下功能：
+实时数据馈送 实时交易 注意：尽管已经尽力测试了尽可能多的错误条件和情况，但代码（像任何其他软件一样）可能包含错误。在进入生产环境之前，请使用纸面交易账户或 TWS 演示帐户彻底测试任何策略。
+注意：与互动经纪商的交互是通过使用 IbPy 模块进行的，该模块在使用前必须安装。目前在 Pypi 中没有该模块的包（撰写本文时），但可以使用以下命令通过 pip 安装：
+pip install git+https://github.com/blampe/IbPy.git 如果您的系统中没有 git（例如在 Windows 上安装），以下命令也可以正常工作：
+pip install https://github.com/blampe/IbPy/archive/master.zip 示例代码 # 源码包含一个完整的示例，位于：
+samples/ibtest/ibtest.py
+该示例无法涵盖所有可能的用例，但它试图提供广泛的见解，并应强调在使用回测模块或实时数据模块时没有实际差异。
+需要注意的一点是：
+示例在任何交易活动开始之前，都会等待 data.LIVE 数据状态通知。这可能是任何实时策略中都需要考虑的事项。
+存储模型与直接模型 # 与互动经纪商的交互支持两种模型：
+存储模型（推荐） 直接与数据馈送类和经纪商类交互 存储模型提供了一种明确的分离模式，用于创建经纪商和数据。以下两个代码片段应更好地作为示例。
+首先是存储模型：
+import backtrader as bt ibstore = bt.stores.IBStore(host=&amp;#39;127.0.0.1&amp;#39;, port=7496, clientId=35) data = ibstore.getdata(dataname=&amp;#39;EUR.USD-CASH-IDEALPRO&amp;#39;) 这里的参数：
+host，port 和 clientId 传递到 IBStore 中，用于打开连接。 然后使用 getdata 创建数据馈送，并使用 backtrader 中所有数据馈送中常见的参数 dataname 请求 EUR/USD 外汇对。 直接使用模型：</description></item><item><title>Qanda</title><link>https://www.poloxue.com/backtrader/docs/15-livetrading/02-qanda-v1-0/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/15-livetrading/02-qanda-v1-0/</guid><description>Oanda # Oanda的集成支持以下功能：
+实时数据馈送 实时交易 要求 # oandapy：可以通过以下命令安装：pip install git+https://github.com/oanda/oandapy.git pytz（可选，不推荐）：由于外汇市场的全球性和24x7的特点，选择使用UTC时间。如果愿意，仍然可以使用所需的输出时区。 示例代码 # 源代码中包含完整示例：
+samples/oandatest/oandatest.py
+Oanda - 存储 # 存储是实时数据馈送和交易支持的核心，提供了Oanda API和数据馈送及经纪代理之间的适配层。
+可以通过以下方法获取经纪商实例：
+OandaStore.getbroker(*args, **kwargs) 可以通过以下方法获取数据馈送实例：
+OandaStore.getdata(*args, **kwargs) 在这种情况下，许多**kwargs是数据馈送的常见参数，如dataname、fromdate、todate、sessionstart、sessionend、timeframe、compression。
+数据可能提供其他参数。请参阅下面的参考。
+必要参数 # 为了成功连接到Oanda，以下参数是必要的：
+token（默认：无）：API访问令牌 account（默认：无）：账户ID 这些由Oanda提供。
+无论是连接到模拟服务器还是真实服务器，请使用：
+practice（默认：False）：使用测试环境 账户需要定期检查以获取现金和价值。周期性可以通过以下方式控制：
+account_tmout（默认：10.0）：刷新账户价值/现金刷新周期 Oanda数据馈送 # 实例化数据时：
+按照Oanda指南传递符号。例如，EUR/USD根据Oanda的指南需要指定为EUR_USD。实例化如下：
+data = oandastore.getdata(dataname=&amp;#39;EUR_USD&amp;#39;, ...) 时间管理 # 除非传递了tz参数（一个pytz兼容对象）给数据馈送，否则所有时间输出都以UTC格式表示，如上所述。
+回填 # backtrader不会向Oanda发出特殊请求。对于小时间框架，Oanda在模拟服务器上返回的回填数据长度为500个柱。
+OandaBroker - 实时交易 # 使用经纪商 # 要使用OandaBroker，需要替换cerebro创建的标准经纪商模拟实例。
+使用存储模型（推荐）：
+import backtrader as bt cerebro = bt.Cerebro() oandastore = bt.</description></item><item><title>Visual Chart</title><link>https://www.poloxue.com/backtrader/docs/15-livetrading/03-visual-chart/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/15-livetrading/03-visual-chart/</guid><description>Visual Chart # Visual Chart 的集成支持以下功能：
+实时数据馈送 实时交易 Visual Chart 是一个完整的交易解决方案：
+集成图表、数据馈送和经纪功能于单一平台 有关更多信息，请访问： www.visualchart.com
+要求 # VisualChart 6（运行在 Windows 上） comtypes fork： https://github.com/mementum/comtypes 可以通过以下命令安装：
+pip install https://github.com/mementum/comtypes/archive/master.zip Visual Chart 的 API 基于 COM。目前 comtypes 主分支不支持解包 VT_ARRAYS of VT_RECORD。这是 Visual Chart 所使用的。Pull Request #104 已提交，但尚未集成。一旦集成，可以使用主分支。
+pytz（可选但强烈推荐）：确保每个数据都在市场时间返回。这对于大多数市场来说都是正确的，但有些市场确实是例外（全球指数就是一个很好的例子）。 示例代码 # 源代码中包含完整示例：samples/vctest/vctest.py。
+VCStore - 存储 # 存储是实时数据馈送/交易支持的核心，提供了 COM API 和数据馈送及经纪代理之间的适配层。
+可以通过以下方法获取经纪商实例：
+VCStore.getbroker(*args, **kwargs) 可以通过以下方法获取数据馈送实例：
+VCStore.getdata(*args, **kwargs) 在这种情况下，许多 **kwargs 是数据馈送的常见参数，如 dataname、fromdate、todate、sessionstart、sessionend、timeframe、compression。
+VCStore 将尝试：
+使用 Windows 注册表自动定位 VisualChart 在系统中的位置。 如果找到，将扫描安装目录中的 COM DLLs 以创建 COM typelibs 并实例化适当的对象。 如果未找到，将尝试使用已知和硬编码的 CLSIDs 进行相同操作。 注意：即使通过扫描文件系统找到 DLLs，Visual Chart 本身也必须在运行。backtrader 不会启动 Visual Chart。</description></item></channel></rss>

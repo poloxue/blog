@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Observer on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/13-observers/</link><description>Recent content in Observer on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/13-observers/index.xml" rel="self" type="application/rss+xml"/><item><title>统计</title><link>https://www.poloxue.com/backtrader/docs/13-observers/01-statistics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/01-statistics/</guid><description>统计 # 在 backtrader 中运行的策略主要处理数据源和指标。数据源添加到 Cerebro 实例中，并最终成为策略的输入（解析并作为实例的属性提供），而指标由策略本身声明和管理。
+到目前为止，所有 backtrader 示例图表都绘制了三件看似理所当然的东西，因为它们在任何地方都没有声明：
+现金和价值（经纪人中的资金情况） 交易（即操作） 买/卖订单 它们是观察器，存在于子模块 backtrader.observers 中。因为 Cerebro 支持一个参数来自动将它们（或不将它们）添加到策略中：stdstats（默认：True）。
+如果遵循默认设置，Cerebro 将执行以下等效用户代码：
+import backtrader as bt cerebro = bt.Cerebro() # 默认参数：stdstats=True cerebro.addobserver(bt.observers.Broker) cerebro.addobserver(bt.observers.Trades) cerebro.addobserver(bt.observers.BuySell) 让我们看看通常带有这三个默认观察器的图表（即使没有发出订单，因此没有交易发生，现金和投资组合价值没有变化）：
+from __future__ import (absolute_import, division, print_function, unicode_literals) import backtrader as bt import backtrader.feeds as btfeeds if __name__ == &amp;#39;__main__&amp;#39;: cerebro = bt.Cerebro(stdstats=False) cerebro.addstrategy(bt.Strategy) data = bt.feeds.BacktraderCSVData(dataname=&amp;#39;../../datas/2006-day-001.txt&amp;#39;) cerebro.adddata(data) cerebro.run() cerebro.plot() 现在让我们在创建 Cerebro 实例时将 stdstats 的值更改为 False（也可以在调用 run 时完成）：</description></item><item><title>基准测试</title><link>https://www.poloxue.com/backtrader/docs/13-observers/02-benchmarking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/02-benchmarking/</guid><description>基准测试 # Ticket #89 是关于添加基准测试以对比一个资产的表现。这个功能非常实用，因为有些策略即使盈利也可能低于单纯追踪资产的收益。
+backtrader 包含两种不同类型的对象可以帮助进行追踪：
+观察器 分析器 在分析器领域，已经有一个 TimeReturn 对象，用于跟踪整个投资组合价值的回报演变（包括现金）。
+这显然也可以是一个观察器，所以在添加一些基准测试时，也对如何将观察器和分析器组合在一起进行了工作，这两者旨在跟踪相同的内容。
+注意
+观察器和分析器之间的主要区别在于观察器的线条特性，观察器记录每个值，这使得它们适合绘图和实时查询。当然，这会消耗内存。
+另一方面，分析器通过 get_analysis 返回一组结果，并且实现可能直到运行结束时才会提供任何结果。
+分析器 - 基准测试 # 标准的 TimeReturn 分析器已扩展为支持跟踪数据源。涉及的两个主要参数：
+timeframe（默认：无） 如果为 None，将报告整个回测期间的总回报。 data（默认：无） 要跟踪的参考资产，而不是投资组合价值。 注意
+此数据必须已通过 adddata、resampledata 或 replaydata 添加到 cerebro 实例中。
+更多详细信息和参数请参阅：分析器参考。
+因此，可以像这样按年度跟踪投资组合的回报：
+import backtrader as bt cerebro = bt.Cerebro() cerebro.addanalyzer(bt.analyzers.TimeReturn, timeframe=bt.TimeFrame.Years) # 添加数据、策略等... results = cerebro.run() strat0 = results[0] # 如果没有指定名称，则名称为类名的小写形式 tret_analyzer = strat0.analyzers.getbyname(&amp;#39;timereturn&amp;#39;) print(tret_analyzer.get_analysis()) 如果我们想跟踪一个数据的回报：
+import backtrader as bt cerebro = bt.</description></item><item><title>参考</title><link>https://www.poloxue.com/backtrader/docs/13-observers/03-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/03-reference/</guid><description>参考 # Benchmark # class backtrader.observers.Benchmark() 该观察器存储策略的回报和作为参考资产的回报，这个参考资产是传递给系统的一个数据。
+参数：
+timeframe（默认：无）：如果为 None，则报告整个回测期间的总回报。 compression（默认：无）：仅用于子日时间框架，例如通过指定 “TimeFrame.Minutes” 和 60 作为压缩在每小时时间框架上工作。 data（默认：无）：跟踪的参考资产以便进行比较。 注意：此数据必须已通过 adddata、resampledata 或 replaydata 添加到 cerebro 实例中。
+_doprenext（默认：False）：基准测试将在策略开始运行时进行（即策略的最小周期已达到时）。将其设置为 True 将从数据源的起点记录基准值。 firstopen（默认：False）：保持为 False 确保价值和基准之间的首次比较点从 0% 开始，因为基准不会使用其开盘价。参见 TimeReturn 分析器参考以获得参数的完整解释。 fund（默认：无）：如果为 None，将自动检测经纪人的实际模式（fundmode - True/False）来决定回报率是基于总净资产价值还是基金价值。见经纪人文档中的 set_fundmode。设置为 True 或 False 以获得特定行为。 记住，在运行的任何时刻都可以通过查看索引 0 处的线条名称来检查当前值。
+Broker # class backtrader.observers.Broker(*args, **kwargs) 该观察器跟踪经纪人中的当前现金金额和投资组合价值（包括现金）。
+参数：无
+Broker - Cash # class backtrader.observers.Cash(*args, **kwargs) 该观察器跟踪经纪人中的当前现金金额。
+参数：无
+Broker - Value # class backtrader.observers.Value(*args, **kwargs) 该观察器跟踪经纪人中的当前投资组合价值，包括现金。</description></item></channel></rss>

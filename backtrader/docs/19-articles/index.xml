@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>官方文章 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/19-articles/</link><description>Recent content in 官方文章 on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/19-articles/index.xml" rel="self" type="application/rss+xml"/><item><title>超大内存</title><link>https://www.poloxue.com/backtrader/docs/19-articles/01-out-of-memory/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/19-articles/01-out-of-memory/</guid><description>关于回测性能和超大内存执行 # 最近在 Reddit 上有两个相关的帖子，启发了本文的写作：
+一个声称 backtrader 无法处理 160 万根 K线的帖子：reddit/r/algotrading - A performant backtesting system? 另一个要求一个能回测 8000 支股票的工具：reddit/r/algotrading - Backtesting libs that supports 1000+ stocks? 其中有一位作者询问如何使用一个可以回测“超大内存”的框架，“因为显然不能将所有这些数据加载到内存中。”
+我们将会在本文中讨论这些概念，结合 backtrader 来解决。
+2M K线 # 为了验证这一点，首先需要生成这么多的 K线。考虑到第一个发帖者提到 77 支股票和 160 万根 K线，这意味着每支股票大约有 20,779 根 K线，因此我们将进行以下操作来使数据更加简洁：
+为 100 支股票生成 K线数据 每支股票生成 20,000 根 K线 即：生成 100 个文件，总共 200 万根 K线。 生成数据的脚本如下：
+import numpy as np import pandas as pd COLUMNS = [&amp;#39;open&amp;#39;, &amp;#39;high&amp;#39;, &amp;#39;low&amp;#39;, &amp;#39;close&amp;#39;, &amp;#39;volume&amp;#39;, &amp;#39;openinterest&amp;#39;] CANDLES = 20000 STOCKS = 100 dateindex = pd.</description></item><item><title>跨平台回测的陷进</title><link>https://www.poloxue.com/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/</guid><description>跨平台回测的陷阱 # 在 Backtrader 社区中，经常有用户希望将 TradingView 等流行的回测平台上的回测结果进行复制。TradingView 使用的脚本语言是 Pinescript，而用户往往并不了解该语言的具体实现，也未接触过回测引擎的内部机制。因此，即使用户有意复制回测结果，也必须明白跨平台编程有其局限性。
+指标：并不总是忠实于原始定义 # 当在 Backtrader 中实现新指标时，开发者会特别强调尊重指标的原始定义。例如，RSI 指标就是一个典型的例子。
+Welles Wilder 设计 RSI 时使用了修改过的移动平均（即平滑移动平均，参见 Wikipedia - Modified Moving Average）。然而，许多平台提供的 RSI 指标，实际上使用的是经典的指数移动平均（EMA），而非书中的定义。
+尽管两者的差别并不算巨大，但这并不是 Wilder 原始定义的 RSI。它可能仍然有用，甚至可能更好，但它并不等同于 Wilder 所定义的 RSI。而且，大多数文档（如果有的话）并未提到这一点。
+在 Backtrader 中，RSI 的默认配置使用 MMA，以保持忠实于原始定义。不过，开发者可以通过子类化或者在运行时实例化时，选择使用 EMA 或者简单移动平均（SMA）来替代。
+例子：唐奇安通道 # Wikipedia 中的定义是这样的：Wikipedia - Donchian Channel。但是，它只是一些文字，未提到如何使用通道突破作为交易信号。
+另外，以下两个定义明确说明，计算通道时数据不包括当前的柱线，因为如果包括了，突破就无法被反映出来：
+StockCharts - School - Price Channels IncredibleCharts - Donchian Channels 这些来源明确指出，计算通道时不包含当前的价格柱线，这样突破才会被正确显示。以下是来自 StockCharts 的示例图表：
+StockCharts - Donchian Channels - Breakouts
+然后，我们看看 TradingView。首先是链接： TradingView - Wiki - Donchian Channels</description></item><item><title>加密货币中的分位仓位</title><link>https://www.poloxue.com/backtrader/docs/19-articles/03-fractional-sizes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/19-articles/03-fractional-sizes/</guid><description>在 backtrader 中交易加密货币的分数仓位
+首先，让我们用两句话总结一下 backtrader 的工作方式：
+它像一个构建工具包，包含一个基本构建模块（Cerebro），可以将许多不同的模块插入其中。
+基本分发版包含许多模块，如指标、分析器、观察者、仓位大小计算器、过滤器、数据源、经纪商、佣金/资产信息方案等&amp;hellip;
+可以轻松地从头开始构建新的模块，或者基于现有模块进行构建。
+基本模块（Cerebro）已经实现了一些自动“插拔”，使得用户可以更轻松地使用框架，而不需要关注所有细节。
+因此，该框架已预配置以提供默认行为，例如：
+使用单一的主数据源 1天的时间框架/压缩组合 10,000 单位的货币 股票交易 这些设置可能并不适合每个人，但重要的是：它可以根据每个交易者/程序员的需求进行定制。
+交易股票：整数
+如上所述，默认配置是用于股票交易，当交易股票时，买入/卖出的是完整的股票份额（即：1、2、50、1000 等，而不是像 1.5 或 1001.7589 这样的数量）。
+这意味着，当用户在默认配置下执行以下代码时：
+def next(self): # 将投资组合的 50% 用于购买主资产 self.order_target_percent(target=0.5) 发生的情况是：
+系统会计算出需要多少股票份额，以便该资产在投资组合中的价值尽可能接近 50%。
+但是，由于默认配置是与股票交易配合使用，结果股票的数量将是一个整数。
+注意
+请注意，默认配置是使用单一的主数据源，因此在调用 order_target_percent 时，实际的数据并未指定。当使用多个数据源时，必须指定获取/卖出哪个数据（除非是主数据源）。
+交易加密货币：分数
+显然，在交易加密货币时，即使是小数点后有 20 位数字，也可以购买“半个比特币”。
+好消息是，你可以更改与资产相关的信息。这是通过 CommissionInfo 家族的可插拔模块实现的。
+一些文档： Docs - Commission Schemes
+注意
+不得不承认，名字不太合适，因为这些方案不仅仅包含佣金信息，还包含其他内容。
+在分数方案中，关注的是该方案的 getsize(price, cash) 方法，它有如下文档字符串：
+返回在给定价格下执行现金操作所需的仓位大小 这些方案与经纪商密切相关，并且可以通过经纪商 API 将这些方案添加到系统中。
+经纪商文档在这里： Docs - Broker
+相关方法是：addcommissioninfo(comminfo, name=None)。当 name 为 None 时，方案会应用到所有资产；如果指定了名称，则方案仅应用于具有特定名称的资产。</description></item><item><title>打败随机入场</title><link>https://www.poloxue.com/backtrader/docs/19-articles/04-beating-the-random-entry/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/19-articles/04-beating-the-random-entry/</guid><description>打败随机入场
+最近，reddit/r/algotrading 上有一些讨论，关于是否能够成功复制已发布的算法交易策略。首先，我复现了130多篇关于“预测股市”的研究论文，从头开始编写了代码，并记录了结果。以下是我学到的一些东西：
+因为之前的帖子已被删除，下面是快速总结：
+策略无效
+如果作者声称某个策略因阿尔法衰退而失效，那么这些测试都是在过去的数据上运行的，但它们仍然无效。 结论：这些策略要么是过拟合，要么是 p-hacking，或者只是微小的阿尔法，但这些阿尔法由于交易佣金的存在，已经被摧毁。 Artem Kaznatcheev 在《算法交易中的复现危机寓言》中写了对复现问题的描述，接着写了关于过拟合的文章。
+前两篇文章主要是理论性的（即使第一篇提到实现了130个策略），而《过拟合》则提供了实际的代码。
+在这么多讨论中，如何尝试复现一些已发布的策略而不是论文，采用像《过拟合》那样的实际方法呢？例如，出版在一本知名书籍中的策略。
+目标：“打败随机入场”。这是这本书第三部分第八章中的一节：
+《Amazon - 交易你的财务自由之路》
+Van Tharp Institute - 《交易你的财务自由之路》
+该书提供了一个结构化的算法交易方法，特别强调了：仓位大小和仓位管理（即：何时退出交易）。这些要远比大多数人认为最重要的入场设置更为关键。
+在第八章中，Van K. Tharp 与 Tom Basso 交谈时提到：“从你说的来看，听起来只要你有好的退出方式，并且聪明地调整仓位大小，似乎你可以通过随机入场来持续赚钱。” Tom Basso 回应说，他可能确实可以做到。
+规则：
+基于硬币投掷的入场 始终在市场中——多头或空头 一旦退出信号给出，立即重新进入 市场波动性由10天的平均真实波幅指数（EMA ATR）决定 跟踪止损，距离收盘价3倍波动性 止损只能朝着交易方向移动 固定仓位（1个合约）或1%风险模型（见书第12章） 结果：
+测试10个市场 固定仓位：80%的时间获利 1%风险模型：100%的时间获利 可靠性：38%（获胜交易的百分比） 缺失部分：
+测试的市场 测试的时间段 如果“始终在市场中”意味着“今天”关闭交易并在“明天”重新进入，或者意味着同时发出关闭/重新开仓的订单，这一点实际上最容易克服。
+对于最后两项，书中提到谈话发生在1991年，并且使用的是期货。为了公平起见，将使用1991年前的期货数据。也假设使用1天的价格条形图，考虑到提到的10天指数平滑移动平均（EMA）。
+最明显的问题似乎是如何正确实现算法，但在这种情况下，书籍很好地描述了简单算法及其结果。接下来，我们总结一下第12章中的“百分比风险模型”（书中称为“模型3”）。
+最大亏损：限制为账户总值的x%（即：百分比风险）
+每合约风险：根据给定的算法，风险为初始止损距离（波动性的3倍）乘以期货的乘数
+合约数量：最大亏损 / 每合约风险
+复现细节 # 数据
+将使用1985至1990年的CL（原油）期货数据（即：6年完整数据）。该合约的规格如下：
+每点的最小变动：0.01（即：每点100个tick） 每个tick的费用：10美元 因此，乘数为1000美元/点（100 ticks/点 x 10美元/tick = 1000美元） 佣金</description></item><item><title>保守型公式的再平衡</title><link>https://www.poloxue.com/backtrader/docs/19-articles/05-rebalancing-conserative/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/19-articles/05-rebalancing-conserative/</guid><description>保守型公式的再平衡 # 本文提出了保守型公式的方法：Python中的保守型公式：简化的量化投资
+这只是众多可能的再平衡方法中的一种，但它相对易于理解。方法概要如下：
+从Y个股票（比如1000个中的100个）中选出x只股票 选股标准为： 低波动性 高净派息收益率（Net Payout Yield，NPY） 高动量 每月再平衡一次 了解了这些概念后，接下来我们将展示如何在Backtrader中实现这一策略。
+数据 # 即使有一个获胜的策略，如果没有可用的数据，那么一切都不会成真。因此，需要考虑数据的格式和如何加载它。
+假设有一组CSV文件（“逗号分隔值”），每个文件包含以下特征：
+每月的OHLCV数据 额外的列包含净派息收益率（NPY），以形成一个ohlcvn数据集。 CSV数据格式如下：
+date, open, high, low, close, volume, npy 2001-12-31, 1.0, 1.0, 1.0, 1.0, 0.5, 3.0 2002-01-31, 2.0, 2.5, 1.1, 1.2, 3.0, 5.0 ... 即每行表示一个月的数据。接下来，可以通过Backtrader的CSV数据加载引擎创建一个简单的扩展类。
+class NetPayOutData(bt.feeds.GenericCSVData): lines = (&amp;#39;npy&amp;#39;,) # 增加一行，用于存储净派息收益率 params = dict( npy=6, # npy字段位于第6列（基于0的索引） dtformat=&amp;#39;%Y-%m-%d&amp;#39;, # 设置日期格式为yyyy-mm-dd timeframe=bt.TimeFrame.Months, # 设置时间框架为按月 openinterest=-1, # -1表示没有openinterest字段 ) 这样就完成了对数据源的扩展。注意，通过lines=('npy',)，已经将净派息收益率（NPY）数据添加到了OHLCV数据流中。其他常见的字段（如open、high等）已经是GenericCSVData的一部分。通过在params中指定位置，我们能够告诉Backtrader净派息收益率所在的列。
+策略 # 接下来，我们将逻辑封装到Backtrader的标准策略中。为了使其尽可能通用和可自定义，我们将采用与数据源相同的params方法。</description></item><item><title>MFI 通用版</title><link>https://www.poloxue.com/backtrader/docs/19-articles/06-mfi-generic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/19-articles/06-mfi-generic/</guid><description>MFI 通用版 # 在之前的《Canonical 与 Non-Canonical》一文中，介绍了 MFI（即 Money Flow Indicator，资金流动指标）的实现。
+虽然这个实现是按照传统的方式开发的，但它依然有改进的空间，并且可以做得更通用。
+让我们关注一下实现的前几行代码，即计算典型价格的部分。
+Canonical MFI - 典型价格和原始资金流 # class MFI_Canonical(bt.Indicator): lines = (&amp;#39;mfi&amp;#39;,) params = dict(period=14) def __init__(self): tprice = (self.data.close + self.data.low + self.data.high) / 3.0 mfraw = tprice * self.data.volume ... 典型的实例化方式如下所示：
+MFI 典型实例化 # class MyMFIStrategy(bt.Strategy): def __init__(self): mfi = bt.MFI_Canonical(self.data) 这里的问题应该很明显： “需要为指标提供包含收盘价、最低价、最高价和成交量的输入（即在 backtrader 生态系统中的lines）”。
+当然，也可能有人希望使用来自不同数据源的组件来创建资金流动指标（例如来自数据源或其他指标的线）。例如，想要给收盘价赋予更多权重，而不需要开发一个特定的指标。考虑到行业标准的 OHLCV 数据字段顺序，支持多个输入并给收盘价加权的实例化可以是这样的：
+MFI 多输入实例化 # class MyMFIStrategy2(bt.Strategy): def __init__(self): wclose = self.</description></item></channel></rss>

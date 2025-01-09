@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Commission on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/11-commission-schemes/</link><description>Recent content in Commission on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/11-commission-schemes/index.xml" rel="self" type="application/rss+xml"/><item><title>佣金</title><link>https://www.poloxue.com/backtrader/docs/11-commission-schemes/01-commission-schemes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/11-commission-schemes/01-commission-schemes/</guid><description>佣金 # 中立性 # 在开始之前，让我们记住 backtrader 尝试保持数据代表内容的中立性。不同的佣金方案可以应用于相同的数据集。让我们看看如何做到这一点。
+经纪商快捷方式 # 这使得最终用户远离 CommissionInfo 对象，因为可以通过一次函数调用创建/设置佣金方案。在常规的 cerebro 创建/设置过程中，只需在经纪商成员属性上添加一个调用 setcommission 的调用即可。
+以下调用设置了使用 Interactive Brokers 操作 Eurostoxx50 期货的常规佣金方案：
+cerebro.broker.setcommission(commission=2.0, margin=2000.0, mult=10.0) 由于大多数用户通常只测试单一工具，这已经足够。
+如果你为你的数据馈送命名，因为在图表上同时考虑了多个工具，这个调用可以稍微扩展如下：
+cerebro.broker.setcommission(commission=2.0, margin=2000.0, mult=10.0, name=&amp;#39;Eurostoxxx50&amp;#39;) 在这种情况下，此即时佣金方案将仅应用于名称匹配 Eurostoxx50 的工具。
+setcommission 参数的含义 # commission（默认值：0.0）
+每次操作的货币单位，绝对值或百分比。在上述示例中，每份合约的买入和卖出费用分别为 2.0 欧元。 重要的是何时使用绝对值或百分比值。
+如果 margin 为 False（例如，它是 False、0 或 None），则将视为佣金表示为价格乘以操作数量的百分比。
+如果 margin 是其他值，则视为操作发生在类似期货的工具上，佣金是每张合约的固定价格。
+margin（默认值：None）
+操作期货类工具时需要的保证金。如上所述：
+如果没有设置 margin，则佣金将被视为百分比，并应用于买卖操作的价格 * 数量。
+如果设置了 margin，则佣金将被视为固定值，并乘以买卖操作的数量。
+mult（默认值：1.0）
+对于期货类工具，这决定了应用于损益计算的乘数。这使得期货同时具有吸引力和风险。
+name（默认值：None）
+将佣金方案应用于名称匹配的工具。可以在创建数据馈送时设置此值。如果未设置，则方案将适用于系统中的任何数据。
+两个示例：股票 vs 期货 # 期货的示例：</description></item><item><title>扩展</title><link>https://www.poloxue.com/backtrader/docs/11-commission-schemes/02-commission-schemes-extending/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/11-commission-schemes/02-commission-schemes-extending/</guid><description>扩展佣金 # 佣金及相关功能由一个单一的类 CommissionInfo 管理，通常通过调用 broker.setcommission 实例化。
+这个概念限于带有保证金和每合同固定佣金的期货和基于价格/数量百分比佣金的股票。这不是最灵活的方案，但它已经发挥了它的作用。
+GitHub 上的一个增强请求（#29）导致了一些重构，以便：
+保持 CommissionInfo 和 broker.setcommission 与原始行为兼容 对代码进行一些清理 使佣金方案灵活，以支持增强请求和进一步的可能性 在进入示例之前的实际工作：
+class CommInfoBase(with_metaclass(MetaParams)): COMM_PERC, COMM_FIXED = range(2) params = ( (&amp;#39;commission&amp;#39;, 0.0), (&amp;#39;mult&amp;#39;, 1.0), (&amp;#39;margin&amp;#39;, None), (&amp;#39;commtype&amp;#39;, None), (&amp;#39;stocklike&amp;#39;, False), (&amp;#39;percabs&amp;#39;, False), ) 引入了一个 CommissionInfo 的基类，该类添加了新的参数：
+commtype（默认值：None）
+这是兼容性的关键。如果值为 None，CommissionInfo 对象和 broker.setcommission 的行为将与以前相同。具体如下：
+如果设置了 margin，则佣金方案是期货，每合同有固定佣金 如果未设置 margin，则佣金方案是股票，采用百分比方法 如果值是 COMM_PERC 或 COMM_FIXED（或派生类中的任何其他值），则显然决定了佣金是固定的还是基于百分比的 stocklike（默认值：False）
+如上所述，旧 CommissionInfo 对象中的实际行为由 margin 参数决定。
+如果 commtype 设置为其他值，则此值指示资产是类似期货的资产（将使用保证金并进行基于条形图的现金调整）还是类似股票的资产。
+percabs（默认值：False）
+如果为 False，则百分比必须以相对术语传递（xx%）</description></item><item><title>自定义佣金</title><link>https://www.poloxue.com/backtrader/docs/11-commission-schemes/03-customization/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/11-commission-schemes/03-customization/</guid><description>自定义佣金 # 重新设计 CommInfo 对象以实现当前版本的最重要部分包括：
+保留原始 CommissionInfo 类和行为 为轻松创建用户定义的佣金打开大门 将格式 xx% 作为新佣金方案的默认值，而不是 0.xx（这只是个口味问题），同时保持行为可配置 定义佣金方案 # 这涉及 1 到 2 个步骤：
+子类化 CommInfoBase # 仅更改默认参数可能就足够了。backtrader 已经在模块 backtrader.commissions 中使用一些定义进行了此操作。期货的常规行业标准是每合同和每轮固定金额。定义可以这样做：
+class CommInfo_Futures_Fixed(CommInfoBase): params = ( (&amp;#39;stocklike&amp;#39;, False), (&amp;#39;commtype&amp;#39;, CommInfoBase.COMM_FIXED), ) 对于股票和按百分比计算的佣金：
+class CommInfo_Stocks_Perc(CommInfoBase): params = ( (&amp;#39;stocklike&amp;#39;, True), (&amp;#39;commtype&amp;#39;, CommInfoBase.COMM_PERC), ) 如上所述，此处解释百分比的默认值（作为参数 commission 传递）为：xx%。如果需要旧的/其他行为 0.xx，可以轻松实现：
+class CommInfo_Stocks_PercAbs(CommInfoBase): params = ( (&amp;#39;stocklike&amp;#39;, True), (&amp;#39;commtype&amp;#39;, CommInfoBase.COMM_PERC), (&amp;#39;percabs&amp;#39;, True), ) 重写 _getcommission 方法（如有必要） # 定义如下：</description></item><item><title>利息</title><link>https://www.poloxue.com/backtrader/docs/11-commission-schemes/04-credit-interests/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/11-commission-schemes/04-credit-interests/</guid><description>利息 # 在某些情况下，由于资产操作包含利率，实际经纪商的现金金额可能会减少。例如：
+股票的卖空 ETF 的多头和空头操作 该费用直接从经纪账户的现金余额中扣除。但它仍然可以看作是佣金方案的一部分。因此，它已在 backtrader 中进行了建模。
+CommInfoBase 类（以及主要的 CommissionInfo 接口对象）已扩展了：
+两个新参数，用于设置利率并确定是否仅应用于空头还是同时应用于多头和空头 参数 # interest（默认值：0.0）
+如果非零，这是持有卖空头寸时收取的年度利息。这主要用于股票卖空。
+应用的默认公式：days * price * size * (interest / 365)
+必须以绝对值指定：0.05 -&amp;gt; 5%
+注意：可以通过重写方法 get_credit_interest 来更改行为
+interest_long（默认值：False）
+一些产品如 ETF，在多头和空头头寸上都收取利息。如果为 True 并且 interest 非零，则多头和空头方向都将收取利息。
+公式 # 默认实现将使用以下公式：
+days * abs(size) * price * (interest / 365) 其中：
+days：自头寸开立或上次利息计算以来经过的天数 重写公式 # 要更改公式，需要子类化 CommissionInfo。需要重写的方法是：
+def _get_credit_interest(self, size, price, days, dt0, dt1): &amp;#39;&amp;#39;&amp;#39; 此方法返回经纪商收取的利息成本。 对于 ``size &amp;gt; 0`` 的情况，仅在类参数 ``interest_long`` 为 ``True`` 时调用此方法。 计算利率的公式为： 公式：``days * price * abs(size) * (interest / 365)`` 参数： - ``data``：收取利息的数据源 - ``size``：当前头寸大小。&amp;gt; 0 表示多头头寸，&amp;lt; 0 表示空头头寸（此参数不会为 ``0``） - ``price``：当前头寸价格 - ``days``：自上次利息计算以来经过的天数（这是（dt0 - dt1）.</description></item></channel></rss>

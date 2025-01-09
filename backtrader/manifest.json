@@ -1,0 +1,15 @@
+{
+  "name": "Backtrader 中文",
+  "short_name": "Backtrader 中文",
+  "start_url": "/backtrader/",
+  "scope": "/backtrader/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/backtrader/favicon.svg",
+      "sizes": "512x512"
+    }
+  ]
+}

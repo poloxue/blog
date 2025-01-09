@@ -1,0 +1,1 @@
+navigator.serviceWorker&&navigator.serviceWorker.register("/backtrader/sw.js",{scope:"/backtrader/"})

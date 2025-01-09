@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Order on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/09-orders/</link><description>Recent content in Order on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/09-orders/index.xml" rel="self" type="application/rss+xml"/><item><title>订单</title><link>https://www.poloxue.com/backtrader/docs/09-orders/01-general/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/01-general/</guid><description>订单 # Cerebro 是 backtrader 中的关键控制系统，而 Strategy（一个子类）是终端用户的关键控制点。后者需要一个连接系统其他部分的方法，这就是订单发挥关键作用的地方。
+订单将策略中的逻辑决策转化为适合 Broker 执行操作的消息。这是通过以下方式完成的：
+创建 # 通过 Strategy 的方法：buy、sell 和 close（Strategy），这些方法返回一个订单实例作为参考。
+取消 # 通过 Strategy 的方法：cancel（Strategy），该方法需要一个订单实例来操作。
+订单也作为一种通信方式反馈给用户，通知 Broker 中的执行情况。
+通知 # 通过 Strategy 的方法：notify_order（Strategy），该方法报告一个订单实例。
+订单创建 # 调用 buy、sell 和 close 时，以下参数适用于创建：
+参数名 默认值 描述 data None 为哪个数据创建订单。如果为 None，则使用系统中的第一个数据，self.datas[0] 或 self.data0（又名 self.data）。 size None 使用的单位数量。如果为 None，则使用通过 getsizer 获取的 sizer 实例来确定大小。 price None 使用的价格（实时 Broker 可能会对格式有实际限制，如果不符合最小刻度要求）。对于 Market 和 Close 订单，None 是有效的（市场决定价格）。对于 Limit、Stop 和 StopLimit 订单，该值决定触发点（在 Limit 的情况下，触发点显然是订单匹配的价格）。 plimit None 仅适用于 StopLimit 订单。这是在 Stop 触发后设置隐含 Limit 订单的价格。 exectype None 可能的值：- Order.</description></item><item><title>创建/执行</title><link>https://www.poloxue.com/backtrader/docs/09-orders/02-creation-execution/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/02-creation-execution/</guid><description>订单管理和执行 # 对于订单管理，Backtrader 提供了3种基本操作：
+buy sell cancel 注意：：一个更新操作显然是合乎逻辑的，但常识告诉我们，这种方法主要用于使用判断性交易方法的手动操作员。
+对于订单执行逻辑，提供以下执行类型：
+市价订单（Market） 收盘价订单（Close） 限价订单（Limit） 止损订单（Stop） 止损限价订单（StopLimit） 订单管理 # 一些示例：
+# 购买主数据，使用sizer的默认股份，市价订单 order = self.buy() # 市价订单 - 有效期将被 &amp;#34;忽略&amp;#34; order = self.buy(valid=datetime.datetime.now() + datetime.timedelta(days=3)) # 市价订单 - 价格将被忽略 order = self.buy(price=self.data.close[0] * 1.02) # 市价订单 - 手动股份 order = self.buy(size=25) # 限价订单 - 想要设置价格并可以设置有效期 order = self.buy(exectype=Order.Limit, price=self.data.close[0] * 1.02, valid=datetime.datetime.now() + datetime.timedelta(days=3)) # 止损限价订单 - 想要设置价格，价格限制 order = self.buy(exectype=Order.StopLimit, price=self.data.close[0] * 1.</description></item><item><title>目标订单</title><link>https://www.poloxue.com/backtrader/docs/09-orders/03-target-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/03-target-orders/</guid><description>目标订单 # 在 1.8.10.96 版本之前，策略方法 buy 和 sell 可通过 sizer 实现智能持仓，sizer 负责确定持仓的大小。然而，Sizer 不能决定操作是买入还是卖出。这就需要一个新的概念，在决策中加入一个小的智能层。这就是策略中的order_target_xxx方法家族。
+受 zipline 的启发，这些方法提供了简单指定最终目标的机会，无论目标是：
+size -&amp;gt; 特定资产的股份或合约数量 value -&amp;gt; 资产在投资组合中的货币单位价值 percent -&amp;gt; 当前投资组合中资产的百分比值 注意：这些方法的在 Strategy 类的参考文档中可以找到。简言之，这些方法使用与 buy 和 sell 相同的参数签名，只是将 size 参数替换为 target 参数。
+这些方法的核心在于指定最终目标，然后方法决定操作是买入还是卖出。所有三种方法的逻辑相同。以下是order_target_size的工作方式：
+如果目标大于当前仓位，则发出买入指令，买入的数量为target - position_size。例如：
+仓位：0，目标：7 -&amp;gt; buy(size=7 - 0) -&amp;gt; buy(size=7) 仓位：3，目标：7 -&amp;gt; buy(size=7 - 3) -&amp;gt; buy(size=4) 仓位：-3，目标：7 -&amp;gt; buy(size=7 - -3) -&amp;gt; buy(size=10) 仓位：-3，目标：-2 -&amp;gt; buy(size=-2 - -3) -&amp;gt; buy(size=1) 如果目标小于当前仓位，则发出卖出指令，卖出的数量为position_size - target。例如：</description></item><item><title>OCO 订单</title><link>https://www.poloxue.com/backtrader/docs/09-orders/04-oco-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/04-oco-orders/</guid><description>OCO订单 # 使用模式尽量保持简单。因此，如果策略中的逻辑决定是时候发布订单，可以像这样使用 OCO：
+def next(self): ... o1 = self.buy(...) ... o2 = self.buy(..., oco=o1) ... o3 = self.buy(..., oco=o1) # 甚至可以是oco=o2，o2已经在o1组中 很简单，第一个订单 o1 将成为组长。通过指定 oco 命名参数，o2 和 o3 成为 OCO 组的一部分。请注意，代码注释指出 o3 也可以通过指定 o2 成为组的一部分（o2已经是组的一部分）。
+一旦成功组成组后，如果组中的任何订单被执行、取消或过期，其他订单将被取消。
+下面的示例展示了OCO概念。一个标准执行并绘图：
+$ ./oco.py --broker cash=50000 --plot 注意
+现金增加到50000，因为资产价值达到4000，3个订单的1个项目至少需要12000货币单位（经纪商默认值为10000）。
+以下图表实际上没有提供太多信息（这是一个标准的SMA交叉策略）。
+示例执行，当快速SMA上穿慢速SMA时，发布3个订单。
+order1是一个限价订单，在limdays天后到期，限价为收盘价减少一个百分比。 order2是一个期限更长、限价更低的限价订单。 order3是一个限价更低的限价订单。 因此，order2 和 order3 不会执行，因为：
+order1将首先执行，这将触发其他订单的取消。 或者order1将过期，这将触发其他订单的取消。 系统保存了3个订单的ref标识符，并且只有在notify_order中看到三个ref标识符分别为Completed、Cancelled、Margin或Expired时，才会发布新买单。
+退出是在持有一段时间后后简单完成的。
+为了跟踪实际执行，生成文本输出。部分内容如下：
+2005-01-28: Oref 1 / Buy at 2941.11055 2005-01-28: Oref 2 / Buy at 2896.</description></item><item><title>Bracket Orders</title><link>https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/</guid><description>Bracket Orders # 1.9.37.116版本增加了Bracket订单，为回测经纪商提供了广泛的订单支持（Market、Limit、Close、Stop、StopLimit、StopTrail、StopTrailLimit、OCO）。
+注意，这是为回测和 Interactive Brokers 实现的。
+Bracket订单不是单个订单，而是由3个订单组成。
+以做多为例：
+一个主要的买单，通常设置为 Limit 或 StopLimit 订单。 一个低价卖单，通常设置为 Stop 订单以限制损失。 一个高价卖单，通常设置为 Limit 订单以获取利润。 做空也有对应的卖单和 2 个买单。
+低价/高价卖单实际上形成了一个围绕主要订单的 Bracket。
+为了使其合理，以下规则适用：
+3个订单一起提交，以避免其中任何一个独立触发。 低价/高价卖单被标记为主要订单的子订单。 子订单在主要订单执行之前不活跃。 取消主要订单会取消低价和高价卖单。 执行主要订单会激活低价和高价卖单。 一旦活跃，低价/高价卖单的执行或取消会自动取消另一个订单。 使用模式 # 有两种方式创建 Bracket 订单组：
+单次发布3个订单。 手动发布3个订单。 单次发布Bracket # backtrader在Strategy中提供了两个新方法来控制Bracket订单：buy_bracket和sell_bracket。
+注意
+签名和信息见下文或Strategy参考部分。
+通过单个语句完成3个订单的设置。示例如下：
+brackets = self.buy_bracket(limitprice=14.00, price=13.50, stopprice=13.00) 注意，stopprice和limitprice围绕price设定。这应该足够了。
+实际的目标数据将是 data0，大小将由默认的sizer自动确定。当然，可以指定其他参数来精细控制执行。
+返回值是一个包含3个订单的列表：[主要订单，stop订单，limit订单]。
+因为在发布 sell_bracket 订单时，低价和高价将翻转，所以参数命名遵循约定：stop 用于止损（在做多操作中是低价，在做空操作中是高价），limit 用于获取利润（在做多操作中是高价，在做空操作中是低价）。
+手动发布Bracket # 这涉及生成3个订单，并处理transmit和parent参数。规则如下：
+必须首先创建主要订单并设置transmit=False。 低价/高价订单必须有parent=main_side_order。 第一个创建的低价/高价订单必须设置transmit=False。 最后一个创建的订单（无论是低价还是高价）设置transmit=True。 以下示例实现了与上述单次命令相同的效果：
+mainside = self.</description></item><item><title>期货和现货补偿</title><link>https://www.poloxue.com/backtrader/docs/09-orders/06-future-spot-compensation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/06-future-spot-compensation/</guid><description>期货和现货补偿 # 版本 1.9.32.116 增加了对社区提出的一个有趣用例的支持：
+用期货启动交易，包括实物交割； 使用指标进行分析； 如有必要，通过操作现货价格来平仓，从而有效地取消实物交割，无论是收货还是交货（希望能获利） 期货在操作现货价格的当天到期 这意味着：
+平台接收来自两个不同资产的数据点 平台必须以某种方式理解这些资产是相关的，并且现货价格的操作将关闭在期货上开启的头寸 实际上，期货并未平仓，只是实物交割被补偿了 利用这种补偿概念，backtrader 增加了一种方式，让用户告知平台一个数据流上的操作将对另一个数据流产生补偿效果。使用模式如下：
+import backtrader as bt cerebro = bt.Cerebro() data0 = bt.feeds.MyFavouriteDataFeed(dataname=&amp;#39;futurename&amp;#39;) cerebro.adddata(data0) data1 = bt.feeds.MyFavouriteDataFeed(dataname=&amp;#39;spotname&amp;#39;) data1.compensate(data0) # 告诉系统 data1 的操作会影响 data0 cerebro.adddata(data1) ... cerebro.run() 综合示例 # 一个示例胜过千言万语，所以让我们把所有的部分结合起来。
+使用 backtrader 源代码中的一个标准示例数据源。这将是期货数据 通过重新使用相同的数据源并添加一个随机移动价格的过滤器来模拟一个类似但不同的价格，从而创建价差。如下简单地实现： # 更改收盘价的过滤器 def close_changer(data, *args, **kwargs): data.close[0] += 50.0 * random.randint(-1, 1) return False # 数据流长度未变 在同一轴上绘图会混淆默认包含的 BuyObserver 标记，因此将禁用标准观察者并手动重新添加以使用不同的数据标记。
+头寸将随机进入并在 10 天后退出。
+这并不匹配期货到期期限，但这只是为了实现功能，而不是检查交易日历。
+注意：</description></item><item><title>跟踪止损（限价）</title><link>https://www.poloxue.com/backtrader/docs/09-orders/07-stop-trails/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/07-stop-trails/</guid><description>跟踪止损（限价） # 版本 1.9.35.116 增加了跟踪止损和跟踪止损限价订单执行类型到回测工具中。
+注意，这只在回测中实现，尚未在实时经纪商中实现
+注意，更新至版本 1.9.36.116。Interactive Brokers 支持跟踪止损、跟踪止损限价和 OCO。
+OCO 始终将组中的第一个订单指定为参数 oco
+跟踪止损限价：经纪商模拟和 IB 经纪商具有相同的行为。指定：price 作为初始止损触发价格（也指定 trailamount），然后 plimit 作为初始限价。两者之间的差值将决定 limitoffset（限价与止损触发价格之间的距离）
+使用模式完全集成到策略实例的标准买、卖和平仓市场操作方法中。需要注意：
+指明所需的执行类型，如 exectype=bt.Order.StopTrail
+以及跟踪价格是否需要用固定距离或百分比距离计算
+固定距离：trailamount=10
+百分比距离：trailpercent=0.02（即：2%）
+如果通过发出买单进入市场多头，那么带有 StopTrail 和 trailamount 的卖单会这样做：
+如果未指定价格，则使用最新的收盘价
+从价格中减去 trailamount 以找到止损（或触发）价格
+经纪商的下一次迭代检查是否触及触发价格
+如果是：订单将以市场执行类型的方式执行
+如果否，使用最新的收盘价重新计算止损价格，并减去 trailamount 距离
+如果新价格上涨，则更新
+如果新价格下跌（或不变），则忽略
+也就是说：跟踪止损价格随着价格上涨而跟随，但如果价格开始下跌则保持不变，以潜在地确保利润。
+如果进入市场时发出的是卖单，那么发出带 StopTrail 的买单会执行相反的操作，即：价格会向下跟随。
+一些使用模式
+# 对于向下的跟踪止损 # 将使用最后价格作为参考 self.buy(size=1, exectype=bt.Order.StopTrail, trailamount=0.25) # 或 self.buy(size=1, exectype=bt.Order.StopTrail, price=10.50, trailamount=0.25) # 对于向上的跟踪止损 # 将使用最后价格作为参考 self.sell(size=1, exectype=bt.Order.StopTrail, trailamount=0.25) # 或 self.</description></item></channel></rss>

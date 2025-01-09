@@ -1,0 +1,503 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="交易日历 # 版本 1.9.42.116 增加了对交易日历的支持。这在以下场景中的重采样时非常有用：
+从每日到每周的重采样现在可以将每周的K线与本周的最后一根K线一起交付。 这是因为交易日历可以识别下一个交易日，并且可以提前识别出本周的最后一个交易日。 当交易会话的结束时间不是常规时间（可以通过数据源来指定）时，从子日内到每日的重采样。 交易日历接口 # 有一个基类 TradingCalendarBase 用作任何交易日历的基类。它定义了两个必须被重写的方法：
+class TradingCalendarBase(with_metaclass(MetaParams, object)): def _nextday(self, day): ''' 返回在 `day`（datetime/date 实例）之后的下一个交易日（datetime/date 实例）以及 isocalendar 组件。 返回值是一个包含两个组件的元组：(nextday, (y, w, d))，其中 (y, w, d)。 ''' raise NotImplementedError def schedule(self, day): ''' 返回给定日期（datetime/date 实例）的开盘和收盘时间（`datetime.time`）。 ''' raise NotImplementedError 实现 # PandasMarketCalendar # 这个实现基于一个不错的包，这是从 Quantopian 的初始功能衍生出来的。包位于 pandas_market_calendars，可以很容易地安装：
+pip install pandas_market_calendars 实现的接口如下：
+class PandasMarketCalendar(TradingCalendarBase): ''' `pandas_market_calendars` 的交易日历包装器。必须安装 `pandas_market_calendar` 包。 参数： - `calendar` (默认 `None`) 参数 `calendar` 接受以下内容： - 字符串：支持的日历名称，例如 `NYSE`。包装器会尝试获取一个日历实例。 - 日历实例：由 `get_calendar('NYSE')` 返回。 - `cachesize` (默认 `365`) 缓存查找提前天数。 参见： - https://github."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:title" content="交易日历"><meta property="og:description" content="交易日历 # 版本 1.9.42.116 增加了对交易日历的支持。这在以下场景中的重采样时非常有用：
+从每日到每周的重采样现在可以将每周的K线与本周的最后一根K线一起交付。 这是因为交易日历可以识别下一个交易日，并且可以提前识别出本周的最后一个交易日。 当交易会话的结束时间不是常规时间（可以通过数据源来指定）时，从子日内到每日的重采样。 交易日历接口 # 有一个基类 TradingCalendarBase 用作任何交易日历的基类。它定义了两个必须被重写的方法：
+class TradingCalendarBase(with_metaclass(MetaParams, object)): def _nextday(self, day): ''' 返回在 `day`（datetime/date 实例）之后的下一个交易日（datetime/date 实例）以及 isocalendar 组件。 返回值是一个包含两个组件的元组：(nextday, (y, w, d))，其中 (y, w, d)。 ''' raise NotImplementedError def schedule(self, day): ''' 返回给定日期（datetime/date 实例）的开盘和收盘时间（`datetime.time`）。 ''' raise NotImplementedError 实现 # PandasMarketCalendar # 这个实现基于一个不错的包，这是从 Quantopian 的初始功能衍生出来的。包位于 pandas_market_calendars，可以很容易地安装：
+pip install pandas_market_calendars 实现的接口如下：
+class PandasMarketCalendar(TradingCalendarBase): ''' `pandas_market_calendars` 的交易日历包装器。必须安装 `pandas_market_calendar` 包。 参数： - `calendar` (默认 `None`) 参数 `calendar` 接受以下内容： - 字符串：支持的日历名称，例如 `NYSE`。包装器会尝试获取一个日历实例。 - 日历实例：由 `get_calendar('NYSE')` 返回。 - `cachesize` (默认 `365`) 缓存查找提前天数。 参见： - https://github."><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/17-datetime/03-trading-calendars/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-01-03T18:28:35+08:00"><title>交易日历 | Backtrader 中文</title><link rel=manifest href=/backtrader/manifest.json><link rel=icon href=/backtrader/favicon.png><link rel=canonical href=https://www.poloxue.com/backtrader/docs/17-datetime/03-trading-calendars/><link rel=stylesheet href=/backtrader/book.min.76e6146e9e8f93e877ba51d0a79fef85faf41d4eae91f7d6e526426b06e3b129.css integrity="sha256-duYUbp6Pk+h3ulHQp5/vhfr0HU6ukffW5SZCawbjsSk=" crossorigin=anonymous><script defer src=/backtrader/flexsearch.min.js></script>
+<script defer src=/backtrader/en.search.min.3915da9a91c6b4ff6edc12a99d69d853ec999a339663fcdbb1fa832ddcf582b8.js integrity="sha256-ORXampHGtP9u3BKpnWnYU+yZmjOWY/zbsfqDLdz1grg=" crossorigin=anonymous></script>
+<script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script>
+<script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/backtrader/><img src=/backtrader/logo.png alt=Logo><span>Backtrader 中文</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=/backtrader/docs/01-introduction/>介绍</a><ul></ul></li><li><a href=/backtrader/docs/02-installation/>安装指南</a><ul></ul></li><li><input type=checkbox id=section-95668ec101c39e63e3d5df6c80dde0f6 class=toggle>
+<label for=section-95668ec101c39e63e3d5df6c80dde0f6 class="flex justify-between"><a href=/backtrader/docs/03-quickstart/>快速开始</a></label><ul><li><a href=/backtrader/docs/03-quickstart/01-setup/>环境设置</a></li><li><a href=/backtrader/docs/03-quickstart/02-cash/>账户资金</a></li><li><a href=/backtrader/docs/03-quickstart/03-datafeed/>配置数据</a></li><li><a href=/backtrader/docs/03-quickstart/04-first-strategy/>第一个策略</a></li><li><a href=/backtrader/docs/03-quickstart/05-strategy-logic/>开始交易</a></li><li><a href=/backtrader/docs/03-quickstart/06-sell/>卖出操作</a></li><li><a href=/backtrader/docs/03-quickstart/07-commission/>交易监控</a></li><li><a href=/backtrader/docs/03-quickstart/08-parameters/>参数定义</a></li><li><a href=/backtrader/docs/03-quickstart/09-indicators/>技术指标</a></li><li><a href=/backtrader/docs/03-quickstart/10-plotting/>可视化</a></li><li><a href=/backtrader/docs/03-quickstart/11-optimization/>策略优化</a></li></ul></li><li><input type=checkbox id=section-bb9677043509e3b068956c8c9ed9898b class=toggle>
+<label for=section-bb9677043509e3b068956c8c9ed9898b class="flex justify-between"><a href=/backtrader/docs/04-concepts/>核心概念</a></label><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/>平台概念</a><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/01-datafeed/>数据源 DataFeed</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/02-params/>策略参数</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/03-line/>线 Line 类</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/04-index/>索引和切片</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/05-operator/>运算符</a></li></ul></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/>平台操作</a><ul><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/>Line 迭代器</a></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/>启动运行</a></li></ul></li></ul></li><li><input type=checkbox id=section-2dbf38c024ccf07a4139869f080cac43 class=toggle>
+<label for=section-2dbf38c024ccf07a4139869f080cac43 class="flex justify-between"><a href=/backtrader/docs/05-cerebro/>Cerebro</a></label><ul><li><a href=/backtrader/docs/05-cerebro/01-cerebro/>Cerebro</a></li><li><a href=/backtrader/docs/05-cerebro/02-reference/>参数说明</a></li><li><a href=/backtrader/docs/05-cerebro/03-saving-memory/>节省内存</a></li><li><a href=/backtrader/docs/05-cerebro/04-optimization-improvements/>优化改进</a></li><li><a href=/backtrader/docs/05-cerebro/05-exceptions/>异常 Exceptions</a></li><li><a href=/backtrader/docs/05-cerebro/06-logging-writer/>日志 Logging - Writter</a></li></ul></li><li><input type=checkbox id=section-843b6ed139743e2982aebf2306cbe4ce class=toggle>
+<label for=section-843b6ed139743e2982aebf2306cbe4ce class="flex justify-between"><a role=button>DataFeed</a></label><ul><li><a href=/backtrader/docs/06-datafeed/01-datafeeds/>Data Feeds</a></li><li><a href=/backtrader/docs/06-datafeed/02-datafeed-extending/>扩展数据源</a></li><li><a href=/backtrader/docs/06-datafeed/03-datafeed-development-csv/>开发 CSV 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/04-datafeed-development-general/>开发 Binary 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/05-datafeed-multiple-timeframes/>多时间框架</a></li><li><a href=/backtrader/docs/06-datafeed/06-datafeed-resampling/>重采样</a></li><li><a href=/backtrader/docs/06-datafeed/07-datafeed-replay/>数据回放</a></li><li><a href=/backtrader/docs/06-datafeed/08-datafeed-rollover/>数据滚动</a></li><li><span>过滤器 Filters</span><ul><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/>过滤器 Filters</a></li><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/>参考文档</a></li></ul></li><li><a href=/backtrader/docs/06-datafeed/10-datafeed-yahoo/>Yahoo 数据源说明</a></li><li><a href=/backtrader/docs/06-datafeed/11-datafeed-pandas/>Pandas 数据源示例</a></li><li><a href=/backtrader/docs/06-datafeed/12-datafeed-reference/>数据源参考</a></li></ul></li><li><input type=checkbox id=section-bcbccbe8e26b18858f97ca31830953b1 class=toggle>
+<label for=section-bcbccbe8e26b18858f97ca31830953b1 class="flex justify-between"><a role=button>Strategy</a></label><ul><li><a href=/backtrader/docs/07-strategy/01-strategy/>Strategy</a></li><li><a href=/backtrader/docs/07-strategy/02-strategy-with-signals/>信号策略</a></li><li><a href=/backtrader/docs/07-strategy/03-strategy-references/>策略参考</a></li></ul></li><li><input type=checkbox id=section-9740d452082ecac05becbac5e45e18d6 class=toggle>
+<label for=section-9740d452082ecac05becbac5e45e18d6 class="flex justify-between"><a role=button>Indicator</a></label><ul><li><a href=/backtrader/docs/08-indicators/01-using-indicators/>使用指标</a></li><li><a href=/backtrader/docs/08-indicators/02-indicators-development/>指标开发</a></li><li><a href=/backtrader/docs/08-indicators/03-timeframe-mixing/>周期混合</a></li><li><a href=/backtrader/docs/08-indicators/04-talib/>TA-Lib</a></li></ul></li><li><input type=checkbox id=section-59e40579f5dd90c6bfa3a78686223f8d class=toggle>
+<label for=section-59e40579f5dd90c6bfa3a78686223f8d class="flex justify-between"><a role=button>Order</a></label><ul><li><a href=/backtrader/docs/09-orders/01-general/>订单</a></li><li><a href=/backtrader/docs/09-orders/02-creation-execution/>创建/执行</a></li><li><a href=/backtrader/docs/09-orders/03-target-orders/>目标订单</a></li><li><a href=/backtrader/docs/09-orders/04-oco-orders/>OCO 订单</a></li><li><a href=/backtrader/docs/09-orders/05-bracket-orders/>Bracket Orders</a></li><li><a href=/backtrader/docs/09-orders/06-future-spot-compensation/>期货和现货补偿</a></li><li><a href=/backtrader/docs/09-orders/07-stop-trails/>跟踪止损（限价）</a></li></ul></li><li><input type=checkbox id=section-a2ec82415885a0ff6263ba256d3c484b class=toggle>
+<label for=section-a2ec82415885a0ff6263ba256d3c484b class="flex justify-between"><a role=button>Broker</a></label><ul><li><a href=/backtrader/docs/10-broker/01-broker/>Broker</a></li><li><a href=/backtrader/docs/10-broker/02-slippage/>滑点</a></li><li><a href=/backtrader/docs/10-broker/03-cheat-on-open/>开盘作弊</a></li><li><a href=/backtrader/docs/10-broker/04-volume-filling-filler/>填充器</a></li><li><a href=/backtrader/docs/10-broker/05-position/>Position</a></li><li><a href=/backtrader/docs/10-broker/06-trade/>Trade</a></li></ul></li><li><input type=checkbox id=section-93412194d6a690077dd9b0fce5dc50b8 class=toggle>
+<label for=section-93412194d6a690077dd9b0fce5dc50b8 class="flex justify-between"><a role=button>Commission</a></label><ul><li><a href=/backtrader/docs/11-commission-schemes/01-commission-schemes/>佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/02-commission-schemes-extending/>扩展</a></li><li><a href=/backtrader/docs/11-commission-schemes/03-customization/>自定义佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/04-credit-interests/>利息</a></li></ul></li><li><input type=checkbox id=section-7ee30e1f85261a5ddc0f8b492d792a0e class=toggle>
+<label for=section-7ee30e1f85261a5ddc0f8b492d792a0e class="flex justify-between"><a role=button>Analyzer</a></label><ul><li><a href=/backtrader/docs/12-analyzers/01-analyzers/>Analyzers</a></li><li><a href=/backtrader/docs/12-analyzers/02-pyfolio/>Pyfolio</a></li><li><a href=/backtrader/docs/12-analyzers/03-pyfolio-integration/>Pyfolio 集成</a></li><li><a href=/backtrader/docs/12-analyzers/04-reference/>Reference</a></li></ul></li><li><input type=checkbox id=section-c3d8936c432abd68dd8d40624a1e9ecd class=toggle>
+<label for=section-c3d8936c432abd68dd8d40624a1e9ecd class="flex justify-between"><a role=button>Observer</a></label><ul><li><a href=/backtrader/docs/13-observers/01-statistics/>统计</a></li><li><a href=/backtrader/docs/13-observers/02-benchmarking/>基准测试</a></li><li><a href=/backtrader/docs/13-observers/03-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-bf5851d3ea7d78f072d49c32fbc0116a class=toggle>
+<label for=section-bf5851d3ea7d78f072d49c32fbc0116a class="flex justify-between"><a role=button>Sizer</a></label><ul><li><a href=/backtrader/docs/14-sizers/01-sizers/>sizers</a></li><li><a href=/backtrader/docs/14-sizers/02-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-d914bc0b766cee7bc235dc30c39c783c class=toggle>
+<label for=section-d914bc0b766cee7bc235dc30c39c783c class="flex justify-between"><a href=/backtrader/docs/15-livetrading/>实盘</a></label><ul><li><a href=/backtrader/docs/15-livetrading/01-interactive-brokers/>Interactive Brokers</a></li><li><a href=/backtrader/docs/15-livetrading/02-qanda-v1-0/>Qanda</a></li><li><a href=/backtrader/docs/15-livetrading/03-visual-chart/>Visual Chart</a></li></ul></li><li><input type=checkbox id=section-b0ac2f58c2fd8f0b64f94dbeb60a370a class=toggle>
+<label for=section-b0ac2f58c2fd8f0b64f94dbeb60a370a class="flex justify-between"><a role=button>绘图</a></label><ul><li><a href=/backtrader/docs/16-plotting/01-plotting/>Plotting</a></li><li><a href=/backtrader/docs/16-plotting/02-ploting-date-ranges/>绘制日期范围</a></li><li><a href=/backtrader/docs/16-plotting/03-plotting-same-axis/>同轴绘图</a></li></ul></li><li><input type=checkbox id=section-696d63c91cb92679438b7f84ef95709e class=toggle checked>
+<label for=section-696d63c91cb92679438b7f84ef95709e class="flex justify-between"><a role=button>日期时间</a></label><ul><li><a href=/backtrader/docs/17-datetime/01-management/>管理</a></li><li><a href=/backtrader/docs/17-datetime/02-timer/>定时器</a></li><li><a href=/backtrader/docs/17-datetime/03-trading-calendars/ class=active>交易日历</a></li></ul></li><li><a href=/backtrader/docs/18-automated-running/>自动运行</a><ul></ul></li><li><span>官方文章</span><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>交易日历</strong>
+<label for=toc-control><img src=/backtrader/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#交易日历接口>交易日历接口</a></li><li><a href=#实现>实现</a><ul><li><a href=#pandasmarketcalendar>PandasMarketCalendar</a></li><li><a href=#tradingcalendar>TradingCalendar</a></li></ul></li><li><a href=#使用模式>使用模式</a><ul><li><a href=#全局交易日历>全局交易日历</a></li><li><a href=#每个数据源>每个数据源</a></li></ul></li><li><a href=#示例>示例</a><ul><li><a href=#从每日到每周>从每日到每周</a></li><li><a href=#从分钟到每日>从分钟到每日</a></li></ul></li><li><a href=#策略的额外奖励>策略的额外奖励</a></li><li><a href=#示例使用tcalpy>示例使用（tcal.py）</a></li><li><a href=#示例使用tcal-intrapy>示例使用（tcal-intra.py）</a></li><li><a href=#示例代码tcalpy>示例代码（tcal.py）</a></li><li><a href=#示例代码tcal-intrapy>示例代码（tcal-intra.py）</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=交易日历>交易日历
+<a class=anchor href=#%e4%ba%a4%e6%98%93%e6%97%a5%e5%8e%86>#</a></h1><p>版本 1.9.42.116 增加了对交易日历的支持。这在以下场景中的重采样时非常有用：</p><ul><li>从每日到每周的重采样现在可以将每周的K线与本周的最后一根K线一起交付。</li><li>这是因为交易日历可以识别下一个交易日，并且可以提前识别出本周的最后一个交易日。</li><li>当交易会话的结束时间不是常规时间（可以通过数据源来指定）时，从子日内到每日的重采样。</li></ul><h2 id=交易日历接口>交易日历接口
+<a class=anchor href=#%e4%ba%a4%e6%98%93%e6%97%a5%e5%8e%86%e6%8e%a5%e5%8f%a3>#</a></h2><p>有一个基类 <code>TradingCalendarBase</code> 用作任何交易日历的基类。它定义了两个必须被重写的方法：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TradingCalendarBase</span>(with_metaclass(MetaParams, object)):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>_nextday</span>(self, day):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        返回在 `day`（datetime/date 实例）之后的下一个交易日（datetime/date 实例）以及 isocalendar 组件。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        返回值是一个包含两个组件的元组：(nextday, (y, w, d))，其中 (y, w, d)。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;&#39;&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>raise</span> <span style=color:#a6e22e>NotImplementedError</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>schedule</span>(self, day):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        返回给定日期（datetime/date 实例）的开盘和收盘时间（`datetime.time`）。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;&#39;&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>raise</span> <span style=color:#a6e22e>NotImplementedError</span>
+</span></span></code></pre></div><h2 id=实现>实现
+<a class=anchor href=#%e5%ae%9e%e7%8e%b0>#</a></h2><h3 id=pandasmarketcalendar>PandasMarketCalendar
+<a class=anchor href=#pandasmarketcalendar>#</a></h3><p>这个实现基于一个不错的包，这是从 Quantopian 的初始功能衍生出来的。包位于 <code>pandas_market_calendars</code>，可以很容易地安装：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>pip install pandas_market_calendars
+</span></span></code></pre></div><p>实现的接口如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PandasMarketCalendar</span>(TradingCalendarBase):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    `pandas_market_calendars` 的交易日历包装器。必须安装 `pandas_market_calendar` 包。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    参数：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `calendar` (默认 `None`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        参数 `calendar` 接受以下内容：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        - 字符串：支持的日历名称，例如 `NYSE`。包装器会尝试获取一个日历实例。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        - 日历实例：由 `get_calendar(&#39;NYSE&#39;)` 返回。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `cachesize` (默认 `365`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        缓存查找提前天数。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    参见：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - https://github.com/rsheftel/pandas_market_calendars
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - http://pandas-market-calendars.readthedocs.io/
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#39;&#39;&#39;</span>
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;calendar&#39;</span>, <span style=color:#66d9ef>None</span>),  <span style=color:#75715e># 一个 pandas_market_calendars 实例或交易所名称</span>
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;cachesize&#39;</span>, <span style=color:#ae81ff>365</span>),  <span style=color:#75715e># 缓存查找提前天数</span>
+</span></span><span style=display:flex><span>    )
+</span></span></code></pre></div><h3 id=tradingcalendar>TradingCalendar
+<a class=anchor href=#tradingcalendar>#</a></h3><p>这个实现允许通过指定假期、早市天数、非交易工作日以及开盘和收盘时间来构建一个日历：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>TradingCalendar</span>(TradingCalendarBase):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    交易日历的包装器。必须安装 `pandas_market_calendars` 包。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    参数：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `open` (默认 `time.min`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        常规开盘时间。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `close` (默认 `time.max`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        常规收盘时间。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `holidays` (默认 `[]`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        非交易日列表（`datetime.datetime` 实例）。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `earlydays` (默认 `[]`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        确定日期和开盘/收盘时间的不符合常规交易时间的天数列表，每个元组包含 (`datetime.datetime`, `datetime.time`, `datetime.time`)。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `offdays` (默认 `ISOWEEKEND`)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        一周中市场不交易的工作日的 ISO 格式列表（周一：1 -&gt; 周日：7）。这通常是周六和周日，因此为默认值。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#39;&#39;&#39;</span>
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;open&#39;</span>, time<span style=color:#f92672>.</span>min),
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;close&#39;</span>, _time_max),
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;holidays&#39;</span>, []),  <span style=color:#75715e># 非交易日列表（日期）</span>
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;earlydays&#39;</span>, []),  <span style=color:#75715e># 元组列表（日期，开盘时间，收盘时间）</span>
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#39;offdays&#39;</span>, ISOWEEKEND),  <span style=color:#75715e># 非交易日列表（ISO 工作日）</span>
+</span></span><span style=display:flex><span>    )
+</span></span></code></pre></div><h2 id=使用模式>使用模式
+<a class=anchor href=#%e4%bd%bf%e7%94%a8%e6%a8%a1%e5%bc%8f>#</a></h2><h3 id=全局交易日历>全局交易日历
+<a class=anchor href=#%e5%85%a8%e5%b1%80%e4%ba%a4%e6%98%93%e6%97%a5%e5%8e%86>#</a></h3><p>通过 <code>Cerebro</code>，可以添加一个全局日历，作为所有数据源的默认日历，除非为数据源指定了一个日历：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>addcalendar</span>(self, cal):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;&#39;&#39;向系统添加全局交易日历。个别数据源可以有单独的日历覆盖全局日历。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    `cal` 可以是 `TradingCalendar` 的一个实例、一个字符串或一个 `pandas_market_calendars` 的实例。字符串将被实例化为 `PandasMarketCalendar`（需要在系统中安装 `pandas_market_calendar` 模块）。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    如果传递的是 `TradingCalendarBase` 的子类（而不是实例），则会被实例化。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#39;&#39;&#39;</span>
+</span></span></code></pre></div><h3 id=每个数据源>每个数据源
+<a class=anchor href=#%e6%af%8f%e4%b8%aa%e6%95%b0%e6%8d%ae%e6%ba%90>#</a></h3><p>通过指定一个 <code>calendar</code> 参数，遵循与上面描述的 <code>addcalendar</code> 相同的约定。例如：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>...</span>
+</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>YahooFinanceData(dataname<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;YHOO&#39;</span>, calendar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;NYSE&#39;</span>, <span style=color:#f92672>...</span>)
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>adddata(data)
+</span></span><span style=display:flex><span><span style=color:#f92672>...</span>
+</span></span></code></pre></div><h2 id=示例>示例
+<a class=anchor href=#%e7%a4%ba%e4%be%8b>#</a></h2><h3 id=从每日到每周>从每日到每周
+<a class=anchor href=#%e4%bb%8e%e6%af%8f%e6%97%a5%e5%88%b0%e6%af%8f%e5%91%a8>#</a></h3><p>让我们看一个示例代码的运行结果。2016 年的复活节星期五（2016-03-25）也是纽约证券交易所的假期。如果运行没有交易日历的示例代码，让我们看看该日期前后的情况。</p><p>在这种情况下，重采样是从每日到每周（使用 YHOO 和 2016 年的每日数据）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal.py
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>56</span> datetime 2016-03-23 Data0 len <span style=color:#ae81ff>56</span> datetime 2016-03-23 Data1 len <span style=color:#ae81ff>11</span> datetime 2016-03-18
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>57</span> datetime 2016-03-24 Data0 len <span style=color:#ae81ff>57</span> datetime 2016-03-24 Data1 len <span style=color:#ae81ff>11</span> datetime 2016-03-18
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>58</span> datetime 2016-03-28 Data0 len <span style=color:#ae81ff>58</span> datetime 2016-03-28 Data1 len <span style=color:#ae81ff>12</span> datetime 2016-03-24
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>在这个输出中，第一个日期是由策略计算的日期。第二个日期是每日数据的日期。</p><p>如预期的那样，周在 2016-03-24（星期四）结束，但是由于没有交易日历，重采样代码无法知道这一点，并且会在 2016-03-18（前一周）的日期交付重采样条形图。当交易移至 2016-03-28（星期一）时，重采样器检测到周变化，并在 2016-03-24 交付一个重采样条形图。</p><p>如果使用 NYSE 的 PandasMarketCalendar 并添加一个绘图，再次运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal.py --plot --pandascal NYSE
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>56</span> datetime 2016-03-23 Data0 len <span style=color:#ae81ff>56</span> datetime 2016-03-23 Data1 len <span style=color:#ae81ff>11</span> datetime 2016-03-18
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>57</span> datetime 2016-03-24 Data0 len <span style=color:#ae81ff>57</span> datetime 2016-03-24 Data1 len <span style=color:#ae81ff>12</span> datetime 2016-03-24
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>58</span> datetime 2016-03-28 Data0 len <span style=color:#ae81ff>58</span> datetime 2016-03-28 Data1 len <span style=color:#ae81ff>12</span> datetime 2016-03-24
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>有所变化！由于有日历，重采样器知道周在 2016-03-24 结束，并在同一天交付相应的每周重采样条形图。</p><p>绘图结果如下。</p><p>image</p><p>由于某些信息可能并不总是可用，可以手动编写日历。对于 NYSE 和 2016 年，日历定义如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>NYSE_2016</span>(bt<span style=color:#f92672>.</span>TradingCalendar):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict(
+</span></span><span style=display:flex><span>        holidays<span style=color:#f92672>=</span>[
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>18</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>15</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>25</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>30</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>7</span>, <span style=color:#ae81ff>4</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>5</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>24</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>12</span>, <span style=color:#ae81ff>26</span>),
+</span></span><span style=display:flex><span>        ]
+</span></span><span style=display:flex><span>    )
+</span></span></code></pre></div><p>复活节星期五（2016-03-25）被列为假期之一。现在运行示例代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal.py --plot --owncal
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>56</span> datetime 2016-03-23 Data0 len <span style=color:#ae81ff>56</span> datetime 2016-03-23 Data1 len <span style=color:#ae81ff>11</span> datetime 2016-03-18
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>57</span> datetime 2016-03-24 Data0 len <span style=color:#ae81ff>57</span> datetime 2016-03-24 Data1 len <span style=color:#ae81ff>12</span> datetime 2016-03-24
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>58</span> datetime 2016-03-28 Data0 len <span style=color:#ae81ff>58</span> datetime 2016-03-28 Data1 len <span style=color:#ae81ff>12</span> datetime <span style=color:#ae81ff>201</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>6-03-24
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>使用手动编写的日历定义得到了相同的结果。</p><h3 id=从分钟到每日>从分钟到每日
+<a class=anchor href=#%e4%bb%8e%e5%88%86%e9%92%9f%e5%88%b0%e6%af%8f%e6%97%a5>#</a></h3><p>使用一些私有的日内数据，并且知道市场在 2016-11-25 提前收盘（感恩节后的第二天市场在美国东部时间 13:00 收盘），再进行一个测试运行，这次使用第二个示例。</p><p>注意</p><p>源数据直接来自显示数据，并且在 CET 时区，即使标的资产 YHOO 在美国交易。代码中使用了 <code>tzinput='CET'</code> 和 <code>tz='US/Eastern'</code> 来让平台适当地转换输入并显示输出。</p><p>首先，不使用交易日历：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal-intra.py
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 18:00:00 Data0 len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 13:00:00 Data1 len <span style=color:#ae81ff>21</span> datetime 2016-11-23 16:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 18:01:00 Data0 len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 13:01:00 Data1 len <span style=color:#ae81ff>21</span> datetime <span style=color:#ae81ff>20</span> 16-11-23 16:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 14:31:00 Data0 len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 09:31:00 Data1 len <span style=color:#ae81ff>22</span> datetime 2016-11-25 16:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 14:32:00 Data0 len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 09:32:00 Data1 len <span style=color:#ae81ff>22</span> datetime 2016-11-25 16:00:00
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>如预期的那样，这一天在 13:00 提前结束，但重采样器不知道这一点（官方会话在 16:00 结束），并继续交付前一天（2016-11-23）的重采样日线图，新重采样日线图首次在下一个交易日（2016-11-28）交付，日期为 2016-11-25。</p><p>注意</p><p>数据在 13:01 有一个额外的分钟条，这可能是由于拍卖过程中在市场关闭时间后提供的最后价格。</p><p>我们可以向流中添加一个过滤器，以过滤掉会话时间之外的条形图（过滤器将从交易日历中找出时间）。</p><p>但这不是此示例的重点。</p><p>使用 PandasMarketCalendar 实例再次运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal-intra.py --pandascal NYSE
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 18:00:00 Data0 len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 13:00:00 Data1 len <span style=color:#ae81ff>15</span> datetime 2016-11-25 13:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 18:01:00 Data0 len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 13:01:00 Data1 len <span style=color:#ae81ff>15</span> datetime 2016-11-25 13:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 14:31:00 Data0 len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 09:31:00 Data1 len <span style=color:#ae81ff>15</span> datetime 2016-11-25 13:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 14:32:00 Data0 len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 09:32:00 Data1 len <span style=color:#ae81ff>15</span> datetime 2016-11-25 13:00:00
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>现在，当日线条在 2016-11-25 的 13:00 交付时（忽略 13:01 的条形图），重采样代码通过交易日历知道这一天结束了。</p><p>让我们添加一个手动编写的定义。与前面的相同，但扩展了一些早市天数：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>NYSE_2016</span>(bt<span style=color:#f92672>.</span>TradingCalendar):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict(
+</span></span><span style=display:flex><span>        holidays<span style=color:#f92672>=</span>[
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>18</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>15</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>25</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>30</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>7</span>, <span style=color:#ae81ff>4</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>5</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>24</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>12</span>, <span style=color:#ae81ff>26</span>),
+</span></span><span style=display:flex><span>        ],
+</span></span><span style=display:flex><span>        earlydays<span style=color:#f92672>=</span>[
+</span></span><span style=display:flex><span>            (datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>25</span>),
+</span></span><span style=display:flex><span>             datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>30</span>), datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>13</span>, <span style=color:#ae81ff>1</span>))
+</span></span><span style=display:flex><span>        ],
+</span></span><span style=display:flex><span>        open<span style=color:#f92672>=</span>datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>30</span>),
+</span></span><span style=display:flex><span>        close<span style=color:#f92672>=</span>datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>16</span>, <span style=color:#ae81ff>0</span>),
+</span></span><span style=display:flex><span>    )
+</span></span></code></pre></div><p>运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal-intra.py --owncal
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 18:00:00 Data0 len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 13:00:00 Data1 len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 18:01:00 Data0 len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 13:01:00 Data1 len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 14:31:00 Data0 len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 09:31:00 Data1 len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 14:32:00 Data0 len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 09:32:00 Data1 len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>细心的读者会注意到手动编写的定义将 2016-11-25 的结束时间定义为 13:01（使用 <code>datetime.time(13, 1)</code>）。这只是为了展示手动编写的 <code>TradingCalendar</code> 如何帮助适应。</p><p>现在 2016-11-25 的重采样日线条在 13:01 与 1 分钟条一起交付。</p><h2 id=策略的额外奖励>策略的额外奖励
+<a class=anchor href=#%e7%ad%96%e7%95%a5%e7%9a%84%e9%a2%9d%e5%a4%96%e5%a5%96%e5%8a%b1>#</a></h2><p>第一个日期时间，属于策略的，总是在不同的时区，实际上是 UTC。使用这个版本 1.9.42.116，这也可以同步。以下参数已添加到 <code>Cerebro</code>（在实例化期间使用或与 <code>cerebro.run</code> 一起使用：</p><ul><li><p><code>tz</code>（默认：<code>None</code>）</p><p>添加策略的全局时区。参数 <code>tz</code> 可以是：</p><ul><li><code>None</code>：在这种情况下，策略显示的日期时间将是 UTC，这一直是标准行为。</li><li><code>pytz</code> 实例。它将用于将 UTC 时间转换为所选时区。</li><li><code>string</code>。尝试实例化一个 <code>pytz</code> 实例。</li><li><code>integer</code>。使用相应数据在 <code>self.datas</code> 可迭代对象中的相同时区（<code>0</code> 将使用 <code>data0</code> 的时区）。</li></ul></li></ul><p>也可以通过 <code>cerebro.addtz</code> 方法支持：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>addtz</span>(self, tz):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    这也可以通过参数 `tz` 完成。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    添加策略的全局时区。参数 `tz` 可以是：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `None`：在这种情况下，策略显示的日期时间将是 UTC，这一直是标准行为。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `pytz` 实例。它将用于将 UTC 时间转换为所选时区。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `string`。尝试实例化一个 `pytz` 实例。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - `integer`。使用相应数据在 `self.datas` 可迭代对象中的相同时区（`0` 将使用 `data0` 的时区）。
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#39;&#39;&#39;</span>
+</span></span></code></pre></div><p>重复上一次的日内示例运行，并使用 0 作为 tz（与 data0 的时区同步），输出如下，关注与上面相同的日期和时间：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal-intra.py --owncal --cerebro tz<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 13:00:00 Data0 len <span style=color:#ae81ff>6838</span> datetime 2016-11-25 13:00:00 Data1 len <span style=color:#ae81ff>15</span> datetime 2016-11-23 16:00:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 13:01:00 Data0 len <span style=color:#ae81ff>6839</span> datetime 2016-11-25 13:01:00 Data1 len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 09:31:00 Data0 len <span style=color:#ae81ff>6840</span> datetime 2016-11-28 09:31:00 Data
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span> len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>Strategy len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 09:32:00 Data0 len <span style=color:#ae81ff>6841</span> datetime 2016-11-28 09:32:00 Data1 len <span style=color:#ae81ff>16</span> datetime 2016-11-25 13:01:00
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>时间戳现在与时区对齐。</p><h2 id=示例使用tcalpy>示例使用（tcal.py）
+<a class=anchor href=#%e7%a4%ba%e4%be%8b%e4%bd%bf%e7%94%a8tcalpy>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal.py --help
+</span></span><span style=display:flex><span>usage: tcal.py <span style=color:#f92672>[</span>-h<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--data0 DATA0<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--offline<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--fromdate FROMDATE<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>               <span style=color:#f92672>[</span>--todate TODATE<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--cerebro kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--broker kwargs<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>               <span style=color:#f92672>[</span>--sizer kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--strat kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--plot <span style=color:#f92672>[</span>kwargs<span style=color:#f92672>]]</span>
+</span></span><span style=display:flex><span>               <span style=color:#f92672>[</span>--pandascal PANDASCAL | --owncal<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>               <span style=color:#f92672>[</span>--timeframe <span style=color:#f92672>{</span>Weeks,Months,Years<span style=color:#f92672>}]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Trading Calendar Sample
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>optional arguments:
+</span></span><span style=display:flex><span>  -h, --help            show this help message and exit
+</span></span><span style=display:flex><span>  --data0 DATA0         Data to read in <span style=color:#f92672>(</span>default: YHOO<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --offline             Read from disk with same name as ticker <span style=color:#f92672>(</span>default: False<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --fromdate FROMDATE   Date<span style=color:#f92672>[</span>time<span style=color:#f92672>]</span> in YYYY-MM-DD<span style=color:#f92672>[</span>THH:MM:SS<span style=color:#f92672>]</span> format <span style=color:#f92672>(</span>default: 2016-01-01<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --todate TODATE       Date<span style=color:#f92672>[</span>time<span style=color:#f92672>]</span> in YYYY-MM-DD<span style=color:#f92672>[</span>THH:MM:SS<span style=color:#f92672>]</span> format <span style=color:#f92672>(</span>default: 2016-12-31<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --cerebro kwargs      kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --broker kwargs       kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --sizer kwargs        kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --strat kwargs        kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --plot <span style=color:#f92672>[</span>kwargs<span style=color:#f92672>]</span>       kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --pandascal PANDASCAL Name of trading calendar to use <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --owncal              Apply custom NYSE <span style=color:#ae81ff>2016</span> calendar <span style=color:#f92672>(</span>default: False<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --timeframe <span style=color:#f92672>{</span>Weeks,Months,Years<span style=color:#f92672>}</span> Timeframe to resample to <span style=color:#f92672>(</span>default: Weeks<span style=color:#f92672>)</span>
+</span></span></code></pre></div><h2 id=示例使用tcal-intrapy>示例使用（tcal-intra.py）
+<a class=anchor href=#%e7%a4%ba%e4%be%8b%e4%bd%bf%e7%94%a8tcal-intrapy>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./tcal-intra.py --help
+</span></span><span style=display:flex><span>usage: tcal-intra.py <span style=color:#f92672>[</span>-h<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--data0 DATA0<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--fromdate FROMDATE<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>                     <span style=color:#f92672>[</span>--todate TODATE<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--cerebro kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--broker kwargs<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>                     <span style=color:#f92672>[</span>--sizer kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--strat kwargs<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--plot <span style=color:#f92672>[</span>kwargs<span style=color:#f92672>]]</span>
+</span></span><span style=display:flex><span>                     <span style=color:#f92672>[</span>--pandascal PANDASCAL | --owncal<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>--timeframe <span style=color:#f92672>{</span>Days<span style=color:#f92672>}]</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Trading Calendar Sample
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>optional arguments:
+</span></span><span style=display:flex><span>  -h, --help            show this help message and exit
+</span></span><span style=display:flex><span>  --data0 DATA0         Data to read in <span style=color:#f92672>(</span>default: yhoo-2016-11.csv<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --fromdate FROMDATE   Date<span style=color:#f92672>[</span>time<span style=color:#f92672>]</span> in YYYY-MM-DD<span style=color:#f92672>[</span>THH:MM:SS<span style=color:#f92672>]</span> format <span style=color:#f92672>(</span>default: 2016-01-01<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --todate TODATE       Date<span style=color:#f92672>[</span>time<span style=color:#f92672>]</span> in YYYY-MM-DD<span style=color:#f92672>[</span>THH:MM:SS<span style=color:#f92672>]</span> format <span style=color:#f92672>(</span>default: 2016-12-31<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --cerebro kwargs      kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --broker kwargs       kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --sizer kwargs        kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --strat kwargs        kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --plot <span style=color:#f92672>[</span>kwargs<span style=color:#f92672>]</span>       kwargs in key<span style=color:#f92672>=</span>value format <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --pandascal PANDASCAL Name of trading calendar to use <span style=color:#f92672>(</span>default: <span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --owncal              Apply custom NYSE <span style=color:#ae81ff>2016</span> calendar <span style=color:#f92672>(</span>default: False<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>  --timeframe <span style=color:#f92672>{</span>Days<span style=color:#f92672>}</span>    Timeframe to resample to <span style=color:#f92672>(</span>default: Days<span style=color:#f92672>)</span>
+</span></span></code></pre></div><h2 id=示例代码tcalpy>示例代码（tcal.py）
+<a class=anchor href=#%e7%a4%ba%e4%be%8b%e4%bb%a3%e7%a0%81tcalpy>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> __future__ <span style=color:#f92672>import</span> (absolute_import, division, print_function, unicode_literals)
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> argparse
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> datetime
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> backtrader <span style=color:#66d9ef>as</span> bt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>NYSE_2016</span>(bt<span style=color:#f92672>.</span>TradingCalendar):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict(
+</span></span><span style=display:flex><span>        holidays<span style=color:#f92672>=</span>[
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>18</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>15</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>25</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>30</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>7</span>, <span style=color:#ae81ff>4</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>5</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>24</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>12</span>, <span style=color:#ae81ff>26</span>),
+</span></span><span style=display:flex><span>        ]
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>St</span>(bt<span style=color:#f92672>.</span>Strategy):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> __init__(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>start</span>(self):
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>t0 <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>utcnow()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>stop</span>(self):
+</span></span><span style=display:flex><span>        t1 <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>utcnow()
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#39;Duration:&#39;</span>, t1 <span style=color:#f92672>-</span> self<span style=color:#f92672>.</span>t0)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>prenext</span>(self):
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>next()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#39;Strategy len </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> datetime </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(len(self), self<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date()), end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39; &#39;</span>)
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#39;Data0 len </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> datetime </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(len(self<span style=color:#f92672>.</span>data0), self<span style=color:#f92672>.</span>data0<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date()), end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39; &#39;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> len(self<span style=color:#f92672>.</span>data1):
+</span></span><span style=display:flex><span>            print(<span style=color:#e6db74>&#39;Data1 len </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> datetime </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(len(self<span style=color:#f92672>.</span>data1), self<span style=color:#f92672>.</span>data1<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date()))
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            print()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>runstrat</span>(args<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>):
+</span></span><span style=display:flex><span>    args <span style=color:#f92672>=</span> parse_args(args)
+</span></span><span style=display:flex><span>    cerebro <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>Cerebro()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 数据源参数</span>
+</span></span><span style=display:flex><span>    kwargs <span style=color:#f92672>=</span> dict()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 解析 from/to 日期</span>
+</span></span><span style=display:flex><span>    dtfmt, tmfmt <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#39;</span>, <span style=color:#e6db74>&#39;T%H:%M:%S&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> a, d <span style=color:#f92672>in</span> ((getattr(args, x), x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> [<span style=color:#e6db74>&#39;fromdate&#39;</span>, <span style=color:#e6db74>&#39;todate&#39;</span>]):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> a:
+</span></span><span style=display:flex><span>            strpfmt <span style=color:#f92672>=</span> dtfmt <span style=color:#f92672>+</span> tmfmt <span style=color:#f92672>*</span> (<span style=color:#e6db74>&#39;T&#39;</span> <span style=color:#f92672>in</span> a)
+</span></span><span style=display:flex><span>            kwargs[d] <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(a, strpfmt)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    YahooData <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>YahooFinanceData
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>offline:
+</span></span><span style=display:flex><span>        YahooData <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>YahooFinanceCSVData  <span style=color:#75715e># 切换为从文件读取</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 数据源</span>
+</span></span><span style=display:flex><span>    data0 <span style=color:#f92672>=</span> YahooData(dataname<span style=color:#f92672>=</span>args<span style=color:#f92672>.</span>data0, <span style=color:#f92672>**</span>kwargs)
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>adddata(data0)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    d1 <span style=color:#f92672>=</span> cerebro<span style=color:#f92672>.</span>resampledata(data0, timeframe<span style=color:#f92672>=</span>getattr(bt<span style=color:#f92672>.</span>TimeFrame, args<span style=color:#f92672>.</span>timeframe))
+</span></span><span style=display:flex><span>    d1<span style=color:#f92672>.</span>plotinfo<span style=color:#f92672>.</span>plotmaster <span style=color:#f92672>=</span> data0
+</span></span><span style=display:flex><span>    d1<span style=color:#f92672>.</span>plotinfo<span style=color:#f92672>.</span>sameaxis <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>pandascal:
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>addcalendar(args<span style=color:#f92672>.</span>pandascal)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> args<span style=color:#f92672>.</span>owncal:
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>addcalendar(NYSE_2016)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 经纪商</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>brokers<span style=color:#f92672>.</span>BackBroker(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>broker <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 大小调整器</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addsizer(bt<span style=color:#f92672>.</span>sizers<span style=color:#f92672>.</span>FixedSize, <span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>sizer <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 策略</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addstrategy(St, <span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>strat <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 执行</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>run(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>cerebro <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>plot:  <span style=color:#75715e># 如果请求则绘图</span>
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>plot(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>plot <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_args</span>(pargs<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>):
+</span></span><span style=display:flex><span>    parser <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser(
+</span></span><span style=display:flex><span>        formatter_class<span style=color:#f92672>=</span>argparse<span style=color:#f92672>.</span>ArgumentDefaultsHelpFormatter,
+</span></span><span style=display:flex><span>        description<span style=color:#f92672>=</span>(
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#39;Trading Calendar Sample&#39;</span>
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--data0&#39;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;YHOO&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Data to read in&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--offline&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, action<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;store_true&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Read from disk with same name as ticker&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 日期默认值</span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--fromdate&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;2016-01-01&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Date[time] in YYYY-MM-DD[THH:MM:SS] format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--todate&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;2016-12-31&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Date[time] in YYYY-MM-DD[THH:MM:SS] format&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--cerebro&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>, metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--broker&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>, metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--sizer&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>, metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--strat&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>, metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--plot&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>, nargs<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;?&#39;</span>, const<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span>, metavar<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;kwargs in key=value format&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    pgroup <span style=color:#f92672>=</span> parser<span style=color:#f92672>.</span>add_mutually_exclusive_group(required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
+</span></span><span style=display:flex><span>    pgroup<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--pandascal&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, action<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;store&#39;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Name of trading calendar to use&#39;</span>)
+</span></span><span style=display:flex><span>    pgroup<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--owncal&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, action<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;store_true&#39;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Apply custom NYSE 2016 calendar&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--timeframe&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, action<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;store&#39;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Weeks&#39;</span>, choices<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#39;Weeks&#39;</span>, <span style=color:#e6db74>&#39;Months&#39;</span>, <span style=color:#e6db74>&#39;Years&#39;</span>], help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Timeframe to resample to&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> parser<span style=color:#f92672>.</span>parse_args(pargs)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+</span></span><span style=display:flex><span>    runstrat()
+</span></span></code></pre></div><h2 id=示例代码tcal-intrapy>示例代码（tcal-intra.py）
+<a class=anchor href=#%e7%a4%ba%e4%be%8b%e4%bb%a3%e7%a0%81tcal-intrapy>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> __future__ <span style=color:#f92672>import</span> (absolute_import, division, print_function, unicode_literals)
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> argparse
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> datetime
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> backtrader <span style=color:#66d9ef>as</span> bt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>NYSE_2016</span>(bt<span style=color:#f92672>.</span>TradingCalendar
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict(
+</span></span><span style=display:flex><span>        holidays<span style=color:#f92672>=</span>[
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>18</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>15</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>3</span>, <span style=color:#ae81ff>25</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>5</span>, <span style=color:#ae81ff>30</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>7</span>, <span style=color:#ae81ff>4</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>5</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>24</span>),
+</span></span><span style=display:flex><span>            datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>12</span>, <span style=color:#ae81ff>26</span>),
+</span></span><span style=display:flex><span>        ],
+</span></span><span style=display:flex><span>        earlydays<span style=color:#f92672>=</span>[
+</span></span><span style=display:flex><span>            (datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>2016</span>, <span style=color:#ae81ff>11</span>, <span style=color:#ae81ff>25</span>), datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>30</span>), datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>13</span>, <span style=color:#ae81ff>1</span>))
+</span></span><span style=display:flex><span>        ],
+</span></span><span style=display:flex><span>        open<span style=color:#f92672>=</span>datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>9</span>, <span style=color:#ae81ff>30</span>),
+</span></span><span style=display:flex><span>        close<span style=color:#f92672>=</span>datetime<span style=color:#f92672>.</span>time(<span style=color:#ae81ff>16</span>, <span style=color:#ae81ff>0</span>),
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>St</span>(bt<span style=color:#f92672>.</span>Strategy):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> dict()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> __init__(self):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>pass</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>prenext</span>(self):
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>next()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#39;Strategy len </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> datetime </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(len(self), self<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>datetime()), end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39; &#39;</span>)
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#39;Data0 len </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> datetime </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(len(self<span style=color:#f92672>.</span>data0), self<span style=color:#f92672>.</span>data0<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>datetime()), end<span style=color:#f92672>=</span><span style=color:#e6db74>&#39; &#39;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> len(self<span style=color:#f92672>.</span>data1):
+</span></span><span style=display:flex><span>            print(<span style=color:#e6db74>&#39;Data1 len </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> datetime </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span><span style=color:#f92672>.</span>format(len(self<span style=color:#f92672>.</span>data1), self<span style=color:#f92672>.</span>data1<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>datetime()))
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            print()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>runstrat</span>(args<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>):
+</span></span><span style=display:flex><span>    args <span style=color:#f92672>=</span> parse_args(args)
+</span></span><span style=display:flex><span>    cerebro <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>Cerebro()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 数据源参数</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># kwargs = dict(tz=&#39;US/Eastern&#39;)</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># import pytz</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># tz = tzinput = pytz.timezone(&#39;Europe/Berlin&#39;)</span>
+</span></span><span style=display:flex><span>    tzinput <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;Europe/Berlin&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># tz = tzinput</span>
+</span></span><span style=display:flex><span>    tz <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;US/Eastern&#39;</span>
+</span></span><span style=display:flex><span>    kwargs <span style=color:#f92672>=</span> dict(tzinput<span style=color:#f92672>=</span>tzinput, tz<span style=color:#f92672>=</span>tz)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 解析 from/to 日期</span>
+</span></span><span style=display:flex><span>    dtfmt, tmfmt <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#39;</span>, <span style=color:#e6db74>&#39;T%H:%M:%S&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> a, d <span style=color:#f92672>in</span> ((getattr(args, x), x) <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> [<span style=color:#e6db74>&#39;fromdate&#39;</span>, <span style=color:#e6db74>&#39;todate&#39;</span>]):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> a:
+</span></span><span style=display:flex><span>            strpfmt <span style=color:#f92672>=</span> dtfmt <span style=color:#f92672>+</span> tmfmt <span style=color:#f92672>*</span> (<span style=color:#e6db74>&#39;T&#39;</span> <span style=color:#f92672>in</span> a)
+</span></span><span style=display:flex><span>            kwargs[d] <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(a, strpfmt)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 数据源</span>
+</span></span><span style=display:flex><span>    data0 <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>BacktraderCSVData(dataname<span style=color:#f92672>=</span>args<span style=color:#f92672>.</span>data0, <span style=color:#f92672>**</span>kwargs)
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>adddata(data0)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    d1 <span style=color:#f92672>=</span> cerebro<span style=color:#f92672>.</span>resampledata(data0, timeframe<span style=color:#f92672>=</span>getattr(bt<span style=color:#f92672>.</span>TimeFrame, args<span style=color:#f92672>.</span>timeframe))
+</span></span><span style=display:flex><span>    <span style=color:#75715e># d1.plotinfo.plotmaster = data0</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># d1.plotinfo.sameaxis = False</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>pandascal:
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>addcalendar(args<span style=color:#f92672>.</span>pandascal)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> args<span style=color:#f92672>.</span>owncal:
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>addcalendar(NYSE_2016())  <span style=color:#75715e># 或者 NYSE_2016() 传递一个实例</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 经纪商</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>brokers<span style=color:#f92672>.</span>BackBroker(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>broker <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 大小调整器</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addsizer(bt<span style=color:#f92672>.</span>sizers<span style=color:#f92672>.</span>FixedSize, <span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>sizer <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 策略</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addstrategy(St, <span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>strat <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 执行</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>run(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>cerebro <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>plot:  <span style=color:#75715e># 如果请求则绘图</span>
+</span></span><span style=display:flex><span>        cerebro<span style=color:#f92672>.</span>plot(<span style=color:#f92672>**</span>eval(<span style=color:#e6db74>&#39;dict(&#39;</span> <span style=color:#f92672>+</span> args<span style=color:#f92672>.</span>plot <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;)&#39;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>parse_args</span>(pargs<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>):
+</span></span><span style=display:flex><span>    parser <span style=color:#f92672>=</span> argparse<span style=color:#f92672>.</span>ArgumentParser(
+</span></span><span style=display:flex><span>        formatter_class<span style=color:#f92672>=</span>argparse<span style=color:#f92672>.</span>ArgumentDefaultsHelpFormatter,
+</span></span><span style=display:flex><span>        description<span style=color:#f92672>=</span>(
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#39;Trading Calendar Sample&#39;</span>
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add_argument(<span style=color:#e6db74>&#39;--data0&#39;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;yhoo-2016-11.csv&#39;</span>, required<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;Data to read in&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 日期默认值</span>
+</span></span><span style=display:flex><span>    parser<span style=color:#f92672>.</span>add
+</span></span></code></pre></div></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/poloxue/docs.backtrader/commit/021cd32ab1da9a7977b58538540e5f5e2e063e06 title='Last modified by poloxue.xue | Jan 3, 2025' target=_blank rel=noopener><img src=/backtrader/svg/calendar.svg class=book-icon alt=Calendar>
+<span>Jan 3, 2025</span></a></div><div><a class="flex align-center" href=https://github.com/poloxue/docs.backtrader/blob/master/content/docs/17-datetime/03-trading-calendars.md target=_blank rel=noopener><img src=/backtrader/svg/edit.svg class=book-icon alt=Edit>
+<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#交易日历接口>交易日历接口</a></li><li><a href=#实现>实现</a><ul><li><a href=#pandasmarketcalendar>PandasMarketCalendar</a></li><li><a href=#tradingcalendar>TradingCalendar</a></li></ul></li><li><a href=#使用模式>使用模式</a><ul><li><a href=#全局交易日历>全局交易日历</a></li><li><a href=#每个数据源>每个数据源</a></li></ul></li><li><a href=#示例>示例</a><ul><li><a href=#从每日到每周>从每日到每周</a></li><li><a href=#从分钟到每日>从分钟到每日</a></li></ul></li><li><a href=#策略的额外奖励>策略的额外奖励</a></li><li><a href=#示例使用tcalpy>示例使用（tcal.py）</a></li><li><a href=#示例使用tcal-intrapy>示例使用（tcal-intra.py）</a></li><li><a href=#示例代码tcalpy>示例代码（tcal.py）</a></li><li><a href=#示例代码tcal-intrapy>示例代码（tcal-intra.py）</a></li></ul></nav></div></aside></main></body></html>

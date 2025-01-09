@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DataFeed on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/</link><description>Recent content in DataFeed on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/06-datafeed/index.xml" rel="self" type="application/rss+xml"/><item><title>Data Feeds</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/01-datafeeds/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/01-datafeeds/</guid><description>数据源 # Backtrader 提供了一组数据源解析器（在撰写本文时都是基于 CSV 的）以便从不同来源加载数据。
+Yahoo（在线或已保存到文件） VisualChart（参见 www.visualchart.com） Backtrader CSV（自定义格式用于测试） 通用 CSV 支持 从快速入门指南中可以清楚地看到，您可以将数据源添加到 Cerebro 实例中。这些数据源稍后将在策略中可用：
+self.datas 数组（按插入顺序） 数组对象的别名： self.data 和 self.data0 指向第一个元素 self.dataX 指向数组中索引为 X 的元素 以下是插入方式的快速提醒：
+import backtrader as bt import backtrader.feeds as btfeeds data = btfeeds.YahooFinanceCSVData(dataname=&amp;#39;wheremydatacsvis.csv&amp;#39;) cerebro = bt.Cerebro() cerebro.adddata(data) # 可以传递一个 &amp;#39;name&amp;#39; 参数用于绘图 数据源通用参数 # 这个数据源可以直接从 Yahoo 下载数据并将其输入系统。
+Backtrader 数据源常用参数：
+参数名 默认值 描述 dataname None 必须提供。其含义因数据源类型而异，例如文件路径、股票代码等。 name '' 用于绘图时的装饰性名称。如果未指定，可能会从 dataname 派生（例如：文件路径的最后一部分）。 fromdate mindate Python datetime 对象，表示应忽略此日期之前的任何数据。 todate maxdate Python datetime 对象，表示应忽略此日期之后的任何数据。 timeframe TimeFrame.</description></item><item><title>扩展数据源</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/02-datafeed-extending/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/02-datafeed-extending/</guid><description>扩展数据源 # 用户是否可以轻松扩展现有机制，以添加额外的信息，将其与现有的价格信息（如开盘价、高价等）一起传递？
+据我了解，答案是：可以。
+一个数据源，正在解析为 CSV 格式 使用 GenericCSVData 加载信息 这种通用 CSV 支持是为了响应 Issue #6 开发的 一个额外的字段，显然包含 P/E 信息，需要与解析的 CSV 数据一起传递 让我们基于 CSV 数据源开发和 GenericCSVData 示例帖子构建。
+步骤： # 假设 P/E 信息已设置在被解析的 CSV 数据中 使用 GenericCSVData 作为基类 使用 pe 扩展现有的行（开盘价/最高价/最低价/收盘价/成交量/持仓兴趣） 添加一个参数，让调用者确定 P/E 信息的列位置 结果如下：
+from backtrader.feeds import GenericCSVData class GenericCSV_PE(GenericCSVData): # 添加 &amp;#39;pe&amp;#39; 行到从基类继承的行中 lines = (&amp;#39;pe&amp;#39;,) # GenericCSVData 中的 openinterest 索引为 7 ... 添加 1 # 将参数添加到从基类继承的参数中 params = ((&amp;#39;pe&amp;#39;, 8),) 这样工作就完成了&amp;hellip;</description></item><item><title>开发 CSV 数据源</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/03-datafeed-development-csv/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/03-datafeed-development-csv/</guid><description>CSV 数据源开发 # Backtrader 已经提供了一些通用 CSV 数据源和特定的 CSV 数据源。
+GenericCSVData VisualChartCSVData YahooFinanceData（用于在线下载） YahooFinanceCSVData（用于已下载的数据） BacktraderCSVData（内部使用&amp;hellip;用于测试目的，但也可以使用） 即使如此，最终用户可能仍希望开发对特定 CSV 数据源的支持。
+通常的格言是：“说起来容易做起来难”。实际上，结构旨在使其变得简单。
+步骤 # 从 backtrader.CSVDataBase 继承 根据需要定义任何参数 在 start 方法中进行任何初始化 在 stop 方法中进行任何清理 定义一个 _loadline 方法，其中实际工作发生。此方法接收一个参数：linetokens。 顾名思义，这包含根据分隔符参数（从基类继承）拆分当前行后的标记。
+如果在完成其工作后有新数据……填充相应的行并返回 True。
+如果没有可用的数据，因此解析已结束：返回 False。
+如果后台代码发现没有更多行需要解析，则可能不需要返回 False。
+已考虑的事项：
+打开文件（或接收类似文件的对象） 跳过标头行（如果指示存在） 读取行 标记行 预加载支持（将整个数据源一次性加载到内存中） 通常一个示例胜过千言万语。让我们使用 BacktraderCSVData 中定义的内部 CSV 解析代码的简化版本。这个版本不需要初始化或清理（例如，这可能是打开一个套接字并稍后关闭它）。
+注意：
+backtrader 数据源包含通常的行业标准源，这些源是要填充的。即：
+datetime open high low close volume openinterest 如果您的策略/算法或简单数据浏览只需要，例如收盘价，您可以不触碰其他字段（每次迭代会自动用 float('NaN') 值填充它们，然后用户代码有机会进行任何操作）。
+在此示例中，仅支持每日格式：
+import itertools import backtrader as bt class MyCSVData(bt.</description></item><item><title>开发 Binary 数据源</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/04-datafeed-development-general/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/04-datafeed-development-general/</guid><description>开发 Binary 据源 # 注意：示例中使用的 Binary 文件 goog.fd 属于 VisualChart，不能与 backtrader 一起分发。
+对于那些有兴趣直接使用 Binary 文件的人，可以免费下载 VisualChart。
+CSV 数据源开发展示了如何添加新的基于 CSV 的数据源。现有的基类 CSVDataBase 提供了框架，减轻了子类的大部分工作，在大多数情况下，它们可以简单地执行：
+def _loadline(self, linetokens): # 在这里解析 linetokens 并将它们放入 self.lines.close, self.lines.high 等中 return True # 如果数据已解析，否则返回 False 基类负责参数、初始化、打开文件、读取行、将行拆分为标记以及其他事项，例如跳过不符合日期范围（fromdate，todate）的行，这些行可能由最终用户定义。
+开发非 CSV 数据源遵循相同的模式，而无需深入到已拆分的行标记。
+需要做的事情： # 从 backtrader.feed.DataBase 派生 添加任何需要的参数 如果需要初始化，重写 __init__(self) 和/或 start(self) 如果需要清理代码，重写 stop(self) 工作发生在必须始终重写的方法 _load(self) 内 让我们看看 backtrader.feed.DataBase 已经提供的参数：
+from backtrader.utils.py3 import with_metaclass ... ... class DataBase(with_metaclass(MetaDataBase, dataseries.OHLCDateTime)): params = ((&amp;#39;dataname&amp;#39;, None), (&amp;#39;fromdate&amp;#39;, datetime.</description></item><item><title>多时间框架</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/05-datafeed-multiple-timeframes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/05-datafeed-multiple-timeframes/</guid><description>多时间框架策略 # 在实际的交易中，我们常需要结合多个时间框架来制定投资决策，如在周级别评估趋势，而在日级别执行入场，或是基于 5 分钟与 60 分钟数据的对比执行交易。在 Backtrader 中要实现这个目标，需要将不同时间框架的数据组合在一起。
+本节将介绍如何在 Backtrader 实现多周期交易策略。
+基本规则 # Backtrader 原生支持多时间框架的数据组合，只需遵循几个简单的规则。
+第一步，最小时间框架的数据必须首先加载。较小时间框架（条数最多的数据）应当首先加载到Cerebro实例中。
+第二步，数据必须按日期时间对齐。为了让平台能够正确解析数据并执行策略，必须保证各时间框架的数据时间对齐。
+第三步，使用 resampledata 实现较大时间框架的重采样。cerebro.resample 函数能轻松地将较大的时间框架数据添加到策略中。
+在这个基础上，就可以在较短和较长时间框架上使用不同的技术指标。要注意，应用于大时间框架的指标产生的信号较少，还有，Backtrader 会考虑大时间框架的最小周期，以确保数据的准确性。
+示例：如何使用多个时间框架 # 如何在 Backtrader 实现多时间周期呢？大概演示这个步骤吧。
+加载数据 # 首先，加载较小时间框架的数据。
+data = btfeeds.BacktraderCSVData(dataname=datapath) 将数据添加到Cerebro # 将较小时间框架数据都添加到 Cerebro 实例中。
+cerebro.adddata(data) 重采样数据 # 使用 cerebro.resampledata 将数据重采样到较大的时间框架。
+cerebro.resampledata(data, timeframe=tframes[args.timeframe], compression=args.compression) 运行策略 # 执行策略并生成结果。
+cerebro.run() 示例 # 首先，演示每日和每周时间框架。假设我们希望在一个策略中同时使用每日和每周的时间框架。通过命令行指定时间框架为每周，并进行数据重采样：
+$ ./multitimeframe-example.py --timeframe weekly --compression 1 此时，程序会加载每日数据，并将其重采样为每周数据。最终输出将包括每周和每日数据的合成图表。
+继续用每日时间框架压缩。如果我们希望将每日数据压缩为每两天一条数据，可以使用以下命令：
+$ ./multitimeframe-example.py --timeframe daily --compression 2 此时，Backtrader会将每日数据压缩为每两天一条数据，并生成合成图表。</description></item><item><title>重采样</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/06-datafeed-resampling/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/06-datafeed-resampling/</guid><description>重采样 # 当数据只有单一时间框架可用，而分析要在不同时间框架上进行，就需要进行数据重采样。&amp;ldquo;重采样&amp;rdquo; 实际应称为 &amp;ldquo;上采样&amp;rdquo;，因为它是从源时间框架到更大的时间框架（如：从天到周）。
+Backtrader 内置了通过过滤器对象进行重采样的支持。有几种方法可以实现这一点，但有一个简单的接口可以实现，它代替通过 cerebro.adddata(data) 将数据放入系统中，使用 resampledata。
+cerebro.resampledata(data, **kwargs) 有两个主要选项可以控制：
+更改时间框架 压缩条数 要实现这些功能，请在调用resampledata时使用以下参数：
+timeframe（默认值：bt.TimeFrame.Days）：目标时间框架，必须等于或大于源时间框架。 compression（默认值：1）：将选定的值“n”压缩为1个条。 让我们来看一个从每日到每周的示例，通过手工编写的脚本：
+$ ./resampling-example.py --timeframe weekly --compression 1 我们可以将其与原始每日数据进行比较：
+$ ./resampling-example.py --timeframe daily --compression 1 实现这些功能的步骤有：
+先用 cerebro.adddata 加载原始数据； 使用带参数的resampledata 传递数据给cerebro：timeframe 和 compression； 示例代码：
+# 加载数据 datapath = args.dataname or &amp;#39;../../datas/2006-day-001.txt&amp;#39; data = btfeeds.BacktraderCSVData(dataname=datapath) # 方便的字典用于时间框架参数转换 tframes = dict( daily=bt.TimeFrame.Days, weekly=bt.TimeFrame.Weeks, monthly=bt.TimeFrame.Months) # 添加重采样数据而不是原始数据 cerebro.resampledata(data, timeframe=tframes[args.timeframe], compression=args.compression) 假设，将时间框架从每日更改为每周，然后将 3 条压缩为 1 条。</description></item><item><title>数据回放</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/07-datafeed-replay/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/07-datafeed-replay/</guid><description>数据回放 # 随着时间的推移，单纯对已经完成关闭的 Bar 进行策略测试已不再足够，数据回放应运而生。假设，策略在时间框架X上操作（例如：每日），数据在更小的时间框架Y（例如：1分钟）可用。
+数据回放的作用正如其名，使用1分钟数据回放每日条。虽然，这并不能完全再现市场发展，但比单独观察每日完成关闭的 Bar 要好得多。如果策略在每日 Bar 形成期间实时操作，那么近似 Bar 形成过程模拟策略在实际条件下的表现。
+要实现数据回放，只按常规使用 backtrader 即可。
+加载数据源； 使用 replaydata 将数据传递给cerebro； 添加策略； 注意： 数据回放不支持预加载，因为每个 Bar 实际上是实时构建的，任何 Cerebro 实例中都会自动禁用预加载。
+可传递给replaydata的参数：
+参数 默认值 描述 timeframe bt.TimeFrame.Days 目标时间框架，必须等于或大于源时间框架 compression 1 将选定值“n”压缩为1条 扩展参数（若无特别需要请勿修改）：
+参数 默认值 描述 bar2edge True 使用时间边界作为闭合条的目标。例如，使用“ticks -&amp;gt; 5 seconds”时，生成的5秒条将对齐到xx:00、xx:05、xx:10…… adjbartime False 使用边界的时间调整传递的重采样条的时间，而不是最后看到的时间戳。 rightedge True 使用时间边界的右边缘设置时间。 举例说明，标准的 2006 年每日数据在每周基础上进行回放。
+最终会有 52 个 Bar，即每周一个； Cerebro 将调用 prenext 和 next 共计255次，这是原始数量每日 Bar； 诀窍在于：
+在每周 Bar 形成时，策略的长度（len(self)）保持不变。 每过一周，长度增加1。 以下是示例，但首先是测试脚本的主要部分，其中加载数据并将其传递给cerebro进行回放，然后运行。</description></item><item><title>数据滚动</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/08-datafeed-rollover/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/08-datafeed-rollover/</guid><description>滚动 # 并非所有提供商都提供连续期货合约数据。有时提供的数据是仍在交易的到期合约的有效数据。这种情况下，进行回测会变得很不方便，因为数据分散在多个不同的合约上，并且这些合约还会在时间上重叠。
+如果能够正确地将这些过去的合约数据连接成一个连续的数据流，可以缓解这种痛苦。问题在于：
+没有一种最佳方法将不同到期日期的数据连接成一个连续的期货数据 有些文献，如 SierraChart的文章 滚动数据源 # 从backtrader 1.8.10.99开始，增加了将不同到期日期的期货数据连接成连续期货的功能：
+import backtrader as bt cerebro = bt.Cerebro() data0 = bt.feeds.MyFeed(dataname=&amp;#39;Expiry0&amp;#39;) data1 = bt.feeds.MyFeed(dataname=&amp;#39;Expiry1&amp;#39;) ... dataN = bt.feeds.MyFeed(dataname=&amp;#39;ExpiryN&amp;#39;) drollover = cerebro.rolloverdata(data0, data1, ..., dataN, name=&amp;#39;MyRoll&amp;#39;, **kwargs) cerebro.run() 注意：
+**kwargs将在下文解释 也可以直接访问RollOver数据源（如果需要子类化，这是很有帮助的）： import backtrader as bt cerebro = bt.Cerebro() data0 = bt.feeds.MyFeed(dataname=&amp;#39;Expiry0&amp;#39;) data1 = bt.feeds.MyFeed(dataname=&amp;#39;Expiry1&amp;#39;) ... dataN = bt.feeds.MyFeed(dataname=&amp;#39;ExpiryN&amp;#39;) drollover = bt.feeds.RollOver(data0, data1, ..., dataN, dataname=&amp;#39;MyRoll&amp;#39;, **kwargs) cerebro.adddata(drollover) cerebro.run() 注意：
+使用RollOver时，使用dataname参数分配名称，这是所有数据源用于传递名称/代码的标准参数。在这种情况下，它被重用以给整个滚动的期货集分配一个通用名称。 对于cerebro.</description></item><item><title>Yahoo 数据源说明</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/10-datafeed-yahoo/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/10-datafeed-yahoo/</guid><description>Yahoo 数据源说明 # 在 2017 年 5 月，Yahoo 停用了现有的 CSV 格式的历史数据下载 API。
+很快，新 API（这里称为 v7）被标准化并已实现。
+这也带来了实际 CSV 下载格式的变化。
+使用 v7 API/格式 # 从版本 1.9.49.116 开始，这是默认行为。可以简单地选择：
+YahooFinanceData 用于在线下载 YahooFinanceCSVData 用于离线下载的文件 使用旧的 API/格式 # 要使用旧的 API/格式，可以：
+在线 Yahoo 数据源实例化如下：
+data = bt.feeds.YahooFinanceData( ... version=&amp;#39;&amp;#39;, ... ) 离线 Yahoo 数据源实例化如下：
+data = bt.feeds.YahooFinanceCSVData( ... version=&amp;#39;&amp;#39;, ... ) 可能在线服务会恢复（服务在没有任何公告的情况下被停用……它也可能会恢复）
+或者
+仅用于在变更前下载的离线文件，也可以这样做：
+data = bt.feeds.YahooLegacyCSV( ... ... ) 新的 YahooLegacyCSV 简化了使用 version='' 的操作。</description></item><item><title>Pandas 数据源示例</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/11-datafeed-pandas/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/11-datafeed-pandas/</guid><description>Pandas 数据源示例 # 注意，需要安装 pandas 及其依赖项。支持 Pandas Dataframe 对很多人来说很重要，他们依赖于 Pandas 提供的不同数据源（包括 CSV）的解析代码及其他功能。
+数据源的重要声明 # 注意
+这些只是声明。不要盲目复制此代码。请参见下面的实际用法示例：
+class PandasData(feed.DataBase): &amp;#39;&amp;#39;&amp;#39; ``dataname`` 参数继承自 ``feed.DataBase`` 是 pandas DataFrame &amp;#39;&amp;#39;&amp;#39; params = ( # datetime 的可能值（必须始终存在） # None : datetime 是 Pandas Dataframe 中的 &amp;#34;index&amp;#34; # -1 : 自动检测位置或大小写相同的名称 # &amp;gt;= 0 : pandas dataframe 中列的数值索引 # string : pandas dataframe 中的列名（作为索引） (&amp;#39;datetime&amp;#39;, None), # 下面是可能的值： # None : 列不存在 # -1 : 自动检测位置或大小写相同的名称 # &amp;gt;= 0 : pandas dataframe 中列的数值索引 # string : pandas dataframe 中的列名（作为索引） (&amp;#39;open&amp;#39;, -1), (&amp;#39;high&amp;#39;, -1), (&amp;#39;low&amp;#39;, -1), (&amp;#39;close&amp;#39;, -1), (&amp;#39;volume&amp;#39;, -1), (&amp;#39;openinterest&amp;#39;, -1), ) 上述 PandasData 类的片段展示了关键点：</description></item><item><title>数据源参考</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/12-datafeed-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/12-datafeed-reference/</guid><description>数据源参考 # AbstractDataBase # 数据行（Lines）:
+close low high open volume openinterest datetime 参数（Params）:
+dataname (None) name () compression (1) timeframe (5) fromdate (None) todate (None) sessionstart (None) sessionend (None) filters ([]) tz (None) tzinput (None) qcheck (0.0) calendar (None) BacktraderCSVData # 解析用于测试的自定义 CSV 数据。
+特定参数：
+dataname: 要解析的文件名或类文件对象 数据行：
+close low high open volume openinterest datetime 参数：
+dataname (None) name () compression (1) timeframe (5) fromdate (None) todate (None) sessionstart (None) sessionend (None) filters ([]) tz (None) tzinput (None) qcheck (0.</description></item></channel></rss>

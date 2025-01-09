@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>平台操作 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/</link><description>Recent content in 平台操作 on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/index.xml" rel="self" type="application/rss+xml"/><item><title>Line 迭代器</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/</guid><description>Line 迭代器 # Backtrader 引入了一个独特的概念，叫做 Line 迭代器（Line Iterator）。它的核心思想是，通过迭代数据来驱动策略和指标的运作。这一点和 Python 的普通迭代器在表面上看有些相似，但实际上它们是为金融数据处理量身定制的。
+在 Backtrader 中，策略 和 指标 都是基于 Line 迭代器构建的。下面，我们会逐步拆解这个概念，让它变得简单易懂。
+什么是 Line 迭代器？ # Line 迭代器是一个控制 &amp;ldquo;数据处理节奏&amp;rdquo; 的工具，它的主要职责是：
+驱动数据流动：Line 迭代器像是一个“指挥者”，它会触发从属 Line 迭代器（如指标或策略）依次处理数据。 逐步更新数据：Line 迭代器按照声明的规则迭代数据，并在每一步设置对应的结果。 Line 迭代器如何工作？ # 三大关键方法 # prenext
+在数据不足以完成计算时被调用。 用于初始化阶段的数据处理，比如累计数据。 nextstart
+当累积到足够多的数据点，达到“最小周期”时被调用，仅触发一次。 默认会调用 next 方法。 next
+在每次迭代时调用，用于正式处理当前索引上的数据。 为什么需要这些方法？ # 为了生成有效的计算结果，某些指标需要一个“缓冲期”。如 25 周期的简单移动平均线 (SMA) 需要累积 25 个数据点才能生成第一个值。在这之前，我们需要用 prenext 来处理空白期。
+一旦累积到足够的数据点，进入“正式运行”阶段后，next 方法会被不断调用，每次处理新到达的数据。
+示例：如何实现一个简单的 SMA # 以下是一个 SimpleMovingAverage（简单移动平均线）的实现示例：
+class SimpleMovingAverage(Indicator): lines = (&amp;#39;sma&amp;#39;,) params = dict(period=25) def prenext(self): print(f&amp;#39;prenext:: 当前周期: {len(self)}&amp;#39;) def nextstart(self): print(f&amp;#39;nextstart:: 当前周期: {len(self)}&amp;#39;) self.</description></item><item><title>启动运行</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/</guid><description>启动和运行 # Backtrader 的启动和运行过程主要依赖于三个核心组件：
+数据源：提供市场数据，用于回测或实时交易。 策略：定义交易逻辑（基于类继承实现）。 Cerebro：核心管理器，负责整合数据源、策略，并启动回测或实时交易。 数据源 # 数据源是回测和策略运行的基础，它为策略提供价格数据（如开盘价、高价、低价、收盘价）及其他市场信息。
+支持的数据源 # 本地数据文件：
+支持多种 CSV 格式（如 Yahoo Finance 数据）。 支持从 Pandas DataFrame 加载数据。 在线数据提取：
+提供内置的 Yahoo Finance 在线数据提取功能。 实时数据源：
+支持 Interactive Brokers (IB)、Visual Chart 和 Oanda 等实时数据源。 平台支持通过 时间框架（如日线、5分钟线）和 压缩级别（如1天、5分钟）自定义数据，以适配不同交易策略。
+数据源设置示例 # 加载 Yahoo Finance 格式的 CSV 数据 # 以下是一个基本的 CSV 数据加载示例：
+import backtrader as bt import datetime datapath = &amp;#39;path/to/your/yahoo/data.csv&amp;#39; data = bt.feeds.YahooFinanceCSVData( dataname=datapath, reversed=True # 如果数据是从最新日期到最早日期排列，需要设置为 True ) 如果数据跨越时间范围较长，可限制按时间限制加载的数据：</description></item></channel></rss>
