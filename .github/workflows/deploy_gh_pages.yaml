@@ -54,10 +54,17 @@ jobs:
           hugo --minify
           cd ..
 
+      - name: Build backtrader
+        run: |
+          cd backtrader
+          hugo --minify
+          cd ..
+
       - name: Merge Sites
         run: |
           rm -rf public/gofyne && mv gofyne/public public/gofyne
           rm -rf public/mytermenv && mv mytermenv/public public/mytermenv
+          rm -rf public/backtrader && mv backtrader/public public/backtrader
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
