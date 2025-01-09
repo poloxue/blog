@@ -4,3 +4,6 @@
 [submodule "mytermenv"]
 	path = mytermenv
 	url = https://github.com/poloxue/docs.mytermenv.git
+[submodule "backtrader"]
+	path = backtrader
+	url = https://github.com/poloxue/docs.backtrader.git
