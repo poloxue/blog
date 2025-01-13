@@ -1,23 +1,27 @@
 ---
 title: "使用 Streamlit 打造一个股票筛选分析工具"
 date: 2025-01-13T16:20:35+08:00
-draft: true
+draft: false
 comment: true
 description: "本文将通过 Python、Streamlit 和 Tushare，搭建一个简单易用的股票筛选器，它不仅可以筛选股票，还能查看详细数据并生成动态 K 线图，让你对股票市场有更全面的了解。"
 ---
 
- Python、Streamlit 和 Tushare，搭建一个简单易用的股票筛选器，它不仅可以筛选股票，还能查看详细数据并生成动态 K 线图，让你对股票市场有更全面的了解。
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-01/2025-01-13-create-a-stock-screener-using-streamlit-00.png)
+
+Python、Streamlit 和 Tushare，搭建一个简单易用的股票筛选器，它不仅可以筛选股票，还能查看详细数据并生成动态 K 线图，让你对股票市场有更全面的了解。
 
 ## **概述**
 
-这两天在油管上看到一个视频，用 python 的 streamlit 实现了一个股票筛选器，挺有意思。我就想着试试 A 股市场。这个股票筛选器提供将提供几个筛选能力，包括市值范围、行业、地域条件。还支持股票的 K 线图，帮助用户直观分析价格走势。
+这个股票筛选器提供将提供几个筛选能力，包括市值范围、行业、地域条件。还支持股票的 K 线图，帮助用户直观分析价格走势。
 
 效果如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-01/2025-01-13-create-a-stock-screener-using-streamlit-01.gif)
 
 这个小工具的实现离不开一个关键的 Python 开源库 - **Streamlit**。它可以快速构建交互式 Web 应用实现数据共享，只需几行代码。对 streamlit 有兴趣可以深入了解下，这里不展开介绍。
 
 
-如果不想看下面的详细步骤可直接从 github gist 拿到代码运行。
+如果不想看下面的详细步骤可直接从 [github gist](https://gist.github.com/poloxue/b45324e478d97110e8f9969225e33e1a) 拿到代码，完成第一部分的准备即可运行。
 
 ---
 
