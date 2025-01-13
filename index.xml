@@ -1,4 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 24 Dec 2024 12:15:18 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Backtesting.py 参数优化入门</title><link>https://www.poloxue.com/posts/2024-12-18-backtestingpy-guide-part2/</link><pubDate>Tue, 24 Dec 2024 12:15:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-18-backtestingpy-guide-part2/</guid><description>上篇文章介绍了如何使用 Backetsting.py 快速上手。今天继续介绍另一个策略回测时非常重要的点，参数优化。参数优化是提升策略表现的重要步骤，而 Backtesting.py 内置了参数优化功能，使用起来还是很方便的。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 13 Jan 2025 16:20:35 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Streamlit 打造一个股票筛选分析工具</title><link>https://www.poloxue.com/posts/2025-01-13-create-a-stock-screener-using-streamlit/</link><pubDate>Mon, 13 Jan 2025 16:20:35 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-01-13-create-a-stock-screener-using-streamlit/</guid><description>本文将介绍如何通过 Python、Streamlit 和 Tushare，搭建一个简单易用的股票筛选器，它不仅可以筛选股票，还能查看某个股票的详细数据生成动态 K 线图，让你对股票市场有更全面的了解。
+概述 这个股票筛选器提供将提供几个筛选能力，包括市值范围、行业、地域条件。还支持股票的 K 线图，帮助用户直观分析价格走势。
+效果如下：
+这个小工具的实现离不开一个关键的 Python 开源库 - Streamlit。它可以快速构建交互式 Web 应用，只需几行代码，即可分享你的数据。对 streamlit 有兴趣可以深入了解下，这里不展开介绍。
+如果不想看下面的详细步骤可直接从 github gist 拿到代码，完成第一部分的准备即可运行。
+想进一步扩展的话，还可以添加技术指标（如均线、RSI）、多只股票价格走势对比、实时数据更新、模拟投资组合功能甚至是按筛选分析结果生成股票分析报告等功能。
+接下来，快速逐步讲解代码的实现过程，尽量每一步都清晰易懂。
+准备开始 安装要用到 python 库：
+1 pip install tushare ploty streamlit 并提前导入依赖包：
+1 2 3 4 import streamlit as st import tushare as ts import pandas as pd import plotly.graph_objects as go 通过 pro = ts.pro\_api() 配置了 Tushare 接口，为数据获取做好准备。
+1 2 ts.set_token(&amp;#34;Your API Token&amp;#34;) pro = ts.</description></item><item><title>Backtesting.py 参数优化入门</title><link>https://www.poloxue.com/posts/2024-12-18-backtestingpy-guide-part2/</link><pubDate>Tue, 24 Dec 2024 12:15:18 +0800</pubDate><guid>https://www.poloxue.com/posts/2024-12-18-backtestingpy-guide-part2/</guid><description>上篇文章介绍了如何使用 Backetsting.py 快速上手。今天继续介绍另一个策略回测时非常重要的点，参数优化。参数优化是提升策略表现的重要步骤，而 Backtesting.py 内置了参数优化功能，使用起来还是很方便的。
 本文将用上篇的案例 SMACrossStrategy 策略演示 Backtesting.py 参数优化。
 优化示例 Backtesting.py 默认优化方式是将是将所有的参数组合穷举遍历一遍，这种方式也被称为-网格搜索。
 以下是优化 SMACross 策略的示例代码：
