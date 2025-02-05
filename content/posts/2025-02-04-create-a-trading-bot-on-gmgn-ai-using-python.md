@@ -1,7 +1,7 @@
 ---
 title: "基于 Python 开发 GMGN.AI 抢币机器人"
 date: 2025-02-04T11:51:45+08:00
-draft: true
+draft: false
 comment: true
 description: "本文介绍如何使用 Python 开发一个 gmgn.ai 的抢币机器人，它可以用来从链上抢币，如 Trump 等 meme 币。"
 ---
