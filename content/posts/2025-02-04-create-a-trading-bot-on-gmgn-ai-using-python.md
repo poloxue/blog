@@ -10,7 +10,7 @@ description: "本文介绍如何使用 Python 开发一个 gmgn.ai 的抢币机�
 
 **风险提示：** GMGN.AI 的币波动极大，有大量的空气币，务必谨慎操作，切勿在不了解的情况下投入过多资金。本文是我学习过程中的记录，请仔细甄别，防止资金损失。
 
-完整的实例代码请查看：[]
+完整的实例代码请查看：[sniper_new.py](https://gist.github.com/poloxue/0777e9808747981ff935aaaa1140a73b)。
 
 ## 什么是 GMGN.AI?
 
