@@ -243,9 +243,9 @@ async def on_sniper_new(event):
 
 ## 通过 Sniper Bot 执行交易
 
-GMGN.AI 提供了在 Telegram 通过发送命令执行交易的机器人，如实现自动化交易。
+GMGN.AI 提供了在 Telegram 通过发送命令执行交易的机器人，如实现自动化交易。 SOL 连上的抢币机器人，请查看官方文档：[TG Solana 狙击机器人](https://docs.gmgn.ai/cn/tg-solana-ju-ji-ji-qi-ren)。
 
-命令实例：
+快速学习几个简单的使用机器人的命令案吧。
 
 - 立刻买入某合约 0.1 SOL：
 ```bash
