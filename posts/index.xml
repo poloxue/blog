@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 04 Feb 2025 11:51:45 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>基于 Python 开发 GMGN.AI 抢币机器人</title><link>https://www.poloxue.com/posts/2025-02-04-create-a-trading-bot-on-gmgn-ai-using-python/</link><pubDate>Tue, 04 Feb 2025 11:51:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-04-create-a-trading-bot-on-gmgn-ai-using-python/</guid><description>本文介绍如何使用 Python 开发一个 gmgn.ai 的抢币机器人，它可以用来从链上抢币，如 Trump 等 meme 币。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 10 Feb 2025 15:08:29 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>如何通过 Python 获取加密货币的历史实时行情</title><link>https://www.poloxue.com/posts/2025-02-10-crypto-currency-market-data-using-ccxt/</link><pubDate>Mon, 10 Feb 2025 15:08:29 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-10-crypto-currency-market-data-using-ccxt/</guid><description>如果你想参与加密货币市场，获取实时、准确的市场数据就是重要的第一步。
+不同于传统金融市场，加密货币市场上的交易所有两类，分别 DEX 和 CEX，即中心化交易所和去中心化交易所。两者的区别这里就不展开了，我们大部分人接触的一般都是中心化交易所。和传统金融市场一样，加密货币市场上的数据，我们也可找专业的数据提供商，但基本都是付费的。
+本文将介绍如何通过 Python 从中心化交易所拿到行情数据，包括历史和实时数据，包括直接从 websocket 监控数据，可用来实时监听不对交易对间的价差数据。
+概要说明 从去中心化交易所拿到交易所数据，可直接通过访问它的 HTTP 和 Websocket 接口，如欧易 OKX 的接口，查看它的官方文档：欧易 API 文档，其他每个交易所也都有这类文档，可查看其支持的 API 接口。
+不过市面上的中心化交易所很多，而且如果要获取账户级别的信息，还有经过认证流程。本文为了简化流程，覆盖更多的去中心化交易所，我会使用一个非常流行的 Python 库 ccxt 演示，从而把重点集中在数据的获取方法上。
+什么是 ccxt ccxt，全称 CryptoCurrency eXchange Trading，这个开源库能让你用统一的代码访问全球上百家数字货币交易所。它支持多个编程语言，如 Javascript、Python 和 PHP。
+ccxt，除了可用来获取数据，还可以支持直接下单、订单管理、访问仓位、账户等，用来实现一个自动化交易人。
+接下来开始正文吧！
+本文将从最简单的价格获取到复杂的订单簿处理，带你一步步深入。
+安装 ccxt 打开终端，输入如下命令，安装 ccxt 库：
+1 pip install ccxt 初始化交易所 以币安为例，先创建一个交易所对象：
+1 2 3 4 5 6 import ccxt exchange = ccxt.binance({ &amp;#39;enableRateLimit&amp;#39;: True, # 必须开启！防止被交易所封IP &amp;#39;timeout&amp;#39;: 15000 # 超时设为15秒 }) 交易所的API都有严格的调用频率限制，enableRateLimit 会启用频率限制能力，防止触发交易所的 API 调用频率。</description></item><item><title>基于 Python 开发 GMGN.AI 抢币机器人</title><link>https://www.poloxue.com/posts/2025-02-04-create-a-trading-bot-on-gmgn-ai-using-python/</link><pubDate>Tue, 04 Feb 2025 11:51:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-04-create-a-trading-bot-on-gmgn-ai-using-python/</guid><description>本文介绍如何使用 Python 开发一个 gmgn.ai 的抢币机器人，它可以用来从链上抢币，如 Trump 等 meme 币。
 风险提示： GMGN.AI 的币波动极大，有大量的空气币，务必谨慎操作，切勿在不了解的情况下投入过多资金。本文是我学习过程中的记录，请仔细甄别，防止资金损失。
 完整的实例代码请查看：sniper_new.py。
 什么是 GMGN.AI? GMGN.AI 是一个代币追踪和分析平台，提供了实时市场信号和自动交易机器人，我们可以监听它提供的实时信号，跟单聪明钱包，快速抓住赚钱机会。
