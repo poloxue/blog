@@ -65,8 +65,13 @@ exchange = ccxt.binance(
 def download(symbol: str, start=None, end=None, timeframe="1d", save_dir="."):
     if end is None:
         end = datetime.datetime.now(pytz.UTC)
+    else:
+        end = end.replace(tzinfo=pytz.UTC)
+
     if start is None:
         start = end - relativedelta(years=3)
+    else:
+        start = start.replace(tzinfo=pytz.UTC)
 
     max_limit = 1000
     since = start.timestamp()
@@ -119,9 +124,9 @@ if __name__ == "__main__":
     main()
 ```
 
----
+注意：脚本统一用的 UTC 时区的时间。
 
-## 功能介绍  
+---
 
 这个脚本通过 Binance 的 API 获取指定交易对的历史数据。默认下载最近 3 年的数据，当然你也可以通过命令行参数指定时间范围。  
 
