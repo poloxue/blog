@@ -6,7 +6,7 @@ comment: true
 description: "今天，分享一个简短的脚本，从 binance 下载全量的行情数据，包括分钟级别的 OHLCV 行情。"
 ---
 
-前面写了一篇关于 [python 获取加密货币行情](https://www.poloxue.com/posts/2025-02-10-crypto-currency-market-data-using-ccxt/) 的数据文章，但如果要获取数据，还要亲自写代码，用起来不方便。
+前面写了一篇关于 [python 获取加密货币行情](https://www.poloxue.com/posts/2025-02-10-crypto-currency-market-data-using-ccxt/) 的文章，但如果要获取数据，还要亲自写代码，用起来不方便。
 
 今天，分享一个简短的脚本，从 binance 下载全量的行情数据，包括分钟级别的 OHLCV 行情。
 
