@@ -1,5 +1,5 @@
 ---
-title: "2025 02 12 Download Cryptocurrency Minute Candlestick"
+title: "分享一个全量下载数字货币分钟行情的代码片段"
 date: 2025-02-12T12:01:03+08:00
 draft: false
 comment: true
