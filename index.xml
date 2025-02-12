@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 12 Feb 2025 12:01:03 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>分享一个全量下载数字货币分钟行情的代码片段</title><link>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</link><pubDate>Wed, 12 Feb 2025 12:01:03 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</guid><description>前面写了一篇关于 python 获取加密货币行情 的文章，但如果要获取数据，还要亲自写代码，用起来不方便。
 今天，分享一个简短的脚本，从 binance 下载全量的行情数据，包括分钟级别的 OHLCV 行情。
-如下载 2024-01-01 到 2025-01-01 的全量分钟数据，指定如下命令即可。
-1 python data.py --symbol BTC/USDT --start 2021-01-01 --end 2023-01-01 --timeframe 1d --save-dir ./data 它会将下载的数据保存为 CSV 文件，适合自己平时分析研究的时候使用。
+如下载 BTC/USDT 的 2021-01-01 到 2023-01-01 的全量分钟数据，指定如下命令即可。
+1 python data.py --symbol BTC/USDT --start 2021-01-01 --end 2023-01-01 --timeframe 1m --save-dir ./data 它会将下载的数据保存为 CSV 文件，适合自己平时分析研究的时候使用。
 下面把代码和过程分享一下。
 首先，需要安装以下 Python 库：
 1 pip install ccxt pandas click python-dateutil pytz 其中：
