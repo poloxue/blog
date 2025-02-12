@@ -10,10 +10,10 @@ description: "今天，分享一个简短的脚本，从 binance 下载全量的
 
 今天，分享一个简短的脚本，从 binance 下载全量的行情数据，包括分钟级别的 OHLCV 行情。
 
-如下载 2024-01-01 到 2025-01-01 的全量分钟数据，指定如下命令即可。
+如下载 BTC/USDT 的 2021-01-01 到 2023-01-01 的全量分钟数据，指定如下命令即可。
 
 ```bash
-python data.py --symbol BTC/USDT --start 2021-01-01 --end 2023-01-01 --timeframe 1d --save-dir ./data
+python data.py --symbol BTC/USDT --start 2021-01-01 --end 2023-01-01 --timeframe 1m --save-dir ./data
 ```
 
 它会将下载的数据保存为 CSV 文件，适合自己平时分析研究的时候使用。
