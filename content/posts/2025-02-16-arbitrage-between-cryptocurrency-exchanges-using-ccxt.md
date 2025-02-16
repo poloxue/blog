@@ -150,7 +150,7 @@ def detect_abnormal_pairs(exchange_a, exchange_b, pairs, threshold = 0.05):
         'symbol_b': 交易所B交易对,
         'price_a': 原始价格A,
         'price_b': 原始价格B,
-        'spread_ratio': 价差比例,
+        'spread_pct': 价差比例,
         'is_abnormal': 是否异常
     }
     """
@@ -173,15 +173,15 @@ def detect_abnormal_pairs(exchange_a, exchange_b, pairs, threshold = 0.05):
 
             # 计算价差比例（基于较小价格）
             min_price = min(price_a, price_b)
-            spread_ratio = abs(price_a - price_b) / min_price
+            spread_pct = abs(price_a - price_b) / min_price
  
             # 构建结果对象
             result = {
                 **pair,
                 'price_a': price_a,
                 'price_b': price_b,
-                'spread_ratio': spread_ratio,
-                'is_abnormal': spread_ratio > threshold
+                'spread_pct': spread_pct,
+                'is_abnormal': spread_pct > threshold
             }
 
             if result['is_abnormal']:
@@ -316,7 +316,7 @@ class Monitor:
             if data['price_a'] and data['price_b']:
                 min_price = min(data['price_a'], data['price_b'])
                 spread_pct = abs(data['price_a'] - data['price_b']) / min_price
-                data['spread_pct'] = spread
+                data['spread_pct'] = spread_pct
 
                 # 触发报警的价差阈值
                 if spread > 0.01:  
