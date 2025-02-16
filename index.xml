@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 16 Feb 2025 17:18:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>实时监控加密货币跨交易所的套利机会</title><link>https://www.poloxue.com/posts/2025-02-16-arbitrage-between-cryptocurrency-exchanges-using-ccxt/</link><pubDate>Sun, 16 Feb 2025 17:18:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-16-arbitrage-between-cryptocurrency-exchanges-using-ccxt/</guid><description>前面写了一篇关于如何用 Python 获取数字货币行情的博文，有评论希望我展开来说说跨交易所的套利机会。一直觉得随着参与这类策略的人多了，机会很少了，就没有深入研究过。这次借这个机会尝试一下。
 本文是我的一次尝试，将介绍如何实现一个跨交易所套利机会的监控工具。
-免责声明：本文内容仅供学习研究使用，不构成任何投资或交易建议。实际应用前请自行评估风险，作者不对由此产生的损失承担责任。
 是什么？ 什么是跨交易所的价差套利？跨交易所套利是通过捕捉同一资产在不同交易所的价格差异实现低风险收益的策略。
 例如，当 BTC 在 Binance 价格为 90000，而在 OKX 为 90200 时，就可以在 Binance 低价买入并在 OKX 高价卖出。当它们的价格重新回归到相等时，平掉仓位，即可得到价差带来的收益。
 价差套利的分类有很多，如期现套利、跨期套利、跨品种套利，价差套利其实就是将相关性的品种进行对冲交易。这些套利策略中，有些是低风险套利，而有些可能存在较大风险，不同品种间的相关性有可能失效，或者短期出现超越风险承受力的大幅度波动。
