@@ -14,7 +14,7 @@
 CEX 的品种类型，有主类型和子类型的区别，主类型可能就是现货 spot、永续合约 swap、交割合约 future、期权 option，而子类型如对合约，无论是永续还是交割，都有正向合约（U本位）、反向合约（币币本位）。这块我们不用考虑 option，它和其他交易品种差异比较大。
 如果没接触这部分内容，可能难以理解的，其实画一张关系图画，就容易理解了。但是我有点懒。
 我希望这个匹配的函数的定义如下：
-1 2 3 4 5 6 7 8 def load_pairs( exchange_a, # 交易所 a 实例 exchange_b, # 交易所 b 实例 type_a = &amp;#34;spot&amp;#34;, # 品种 a 注类型 subtype_a = None, # 品种 a 子类型 type_b = &amp;#34;spot&amp;#34;, # 品种 b 注类型 subtype_b = None, # 品种 b 子类型 ) 详细的实现代码，如下所示：</description></item><item><title>分享一个全量下载数字货币分钟行情的代码片段</title><link>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</link><pubDate>Wed, 12 Feb 2025 12:01:03 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</guid><description>前面写了一篇关于 python 获取加密货币行情 的文章，但如果要获取数据，还要亲自写代码，用起来不方便。
+1 2 3 4 5 6 7 8 def load_pairs( exchange_a, # 交易所 a 实例 exchange_b, # 交易所 b 实例 type_a = &amp;#34;spot&amp;#34;, # 品种 a 主类型 subtype_a = None, # 品种 a 子类型 type_b = &amp;#34;spot&amp;#34;, # 品种 b 主类型 subtype_b = None, # 品种 b 子类型 ) 详细的实现代码，如下所示：</description></item><item><title>分享一个全量下载数字货币分钟行情的代码片段</title><link>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</link><pubDate>Wed, 12 Feb 2025 12:01:03 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</guid><description>前面写了一篇关于 python 获取加密货币行情 的文章，但如果要获取数据，还要亲自写代码，用起来不方便。
 今天，分享一个简短的脚本，从 binance 下载全量的行情数据，包括分钟级别的 OHLCV 行情。
 如下载 BTC/USDT 的 2021-01-01 到 2023-01-01 的全量分钟数据，指定如下命令即可。
 1 python data.py --symbol BTC/USDT --start 2021-01-01 --end 2023-01-01 --timeframe 1m --save-dir ./data 它会将下载的数据保存为 CSV 文件，适合自己平时分析研究的时候使用。
