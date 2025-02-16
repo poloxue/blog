@@ -54,9 +54,9 @@ CEX 的品种类型，有主类型和子类型的区别，主类型可能就是�
 def load_pairs(
     exchange_a, # 交易所 a 实例
     exchange_b, # 交易所 b 实例
-    type_a = "spot", # 品种 a 注类型
+    type_a = "spot", # 品种 a 主类型
     subtype_a = None, # 品种 a 子类型
-    type_b = "spot", # 品种 b 注类型
+    type_b = "spot", # 品种 b 主类型
     subtype_b = None, # 品种 b 子类型
 )
 ```
