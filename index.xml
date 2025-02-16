@@ -1,4 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 12 Feb 2025 12:01:03 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>分享一个全量下载数字货币分钟行情的代码片段</title><link>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</link><pubDate>Wed, 12 Feb 2025 12:01:03 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</guid><description>前面写了一篇关于 python 获取加密货币行情 的文章，但如果要获取数据，还要亲自写代码，用起来不方便。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 16 Feb 2025 17:18:36 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>实时监控加密货币跨交易所的套利机会</title><link>https://www.poloxue.com/posts/2025-02-16-arbitrage-between-cryptocurrency-exchanges-using-ccxt/</link><pubDate>Sun, 16 Feb 2025 17:18:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-16-arbitrage-between-cryptocurrency-exchanges-using-ccxt/</guid><description>前面写了一篇关于如何用 Python 获取数字货币行情的博文，有评论希望我展开来说说跨交易所的套利机会。一直觉得随着参与这类策略的人多了，这类套利机会很少了，就没有深入研究过。这次借这个机会尝试一下。
+本文是我的一次尝试，将介绍如何实现一个跨交易所套利机会的监控工具。
+免责声明：本文内容仅供学习研究使用，不构成任何投资或交易建议。实际应用前请自行评估风险，作者不对由此产生的损失承担责任。
+是什么？ 什么是跨交易所的价差套利？跨交易所套利是通过捕捉同一资产在不同交易所的价格差异实现低风险收益的策略。
+例如，当 BTC 在 Binance 价格为 90000，而在 OKX 为 90200 时，就可以在 Binance 低价买入并在 OKX 高价卖出。当它们的价格重新回归到相等时，平掉仓位，即可得到价差带来的收益。
+价差套利的分类有很多，如期现套利、跨期套利、跨品种套利，价差套利其实就是将相关性的品种进行对冲交易。这些套利策略中，有些是低风险套利，而有些可能存在较大风险，不同品种间的相关性有可能失效，或者短期出现超越风险承受力的大幅度波动。
+本文介绍是加密货币跨交易所套利，尝试开发一个工具监控不同交易所间的相同币种的实时价格发现潜在的套利机会。
+再次提示：这是我的一次尝试而已，和金融交易相关的内容还是要小心。
+实现路径 在开发这个工具前，我要先明确工具实现的流程，大概分几个步骤。
+筛选出跨交易所间可配对品种，且要过滤或修正一些错配； 监听筛选出的品种的最近价格，计算其配对价差； 从应用角度分析，如何将这个监控结果运用于实际交易中； 开始上手实操吧！
+配对品种 开始第一步部分，写如何将不同交易所的交易对匹配起来。
+如何识别呢？
+我将通过代码拉取两个交易所的交易对，按计价和基准币种配对，如 BTC/USDT，计价货币是 USDT、基准货币是 BTC。
+还有，配对时要明确品种类型，避免不符合预期的配对，如希望配对交易所 A 和 B 的永续合约 ，但配对的却是 A 交易所的现货和 B 交易所的永续合约。
+CEX 的品种类型，有主类型和子类型的区别，主类型可能就是现货 spot、永续合约 swap、交割合约 future、期权 option，而子类型如对合约，无论是永续还是交割，都有正向合约（U本位）、反向合约（币币本位）。这块我们不用考虑 option，它和其他交易品种差异比较大。
+如果没接触这部分内容，可能难以理解的，其实画一张关系图画，就容易理解了。但是我有点懒。
+我希望这个匹配的函数的定义如下：
+1 2 3 4 5 6 7 8 def load_pairs( exchange_a, # 交易所 a 实例 exchange_b, # 交易所 b 实例 type_a = &amp;#34;spot&amp;#34;, # 品种 a 注类型 subtype_a = None, # 品种 a 子类型 type_b = &amp;#34;spot&amp;#34;, # 品种 b 注类型 subtype_b = None, # 品种 b 子类型 ) 详细的实现代码，如下所示：</description></item><item><title>分享一个全量下载数字货币分钟行情的代码片段</title><link>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</link><pubDate>Wed, 12 Feb 2025 12:01:03 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-02-12-download-cryptocurrency-minute-candlestick/</guid><description>前面写了一篇关于 python 获取加密货币行情 的文章，但如果要获取数据，还要亲自写代码，用起来不方便。
 今天，分享一个简短的脚本，从 binance 下载全量的行情数据，包括分钟级别的 OHLCV 行情。
 如下载 BTC/USDT 的 2021-01-01 到 2023-01-01 的全量分钟数据，指定如下命令即可。
 1 python data.py --symbol BTC/USDT --start 2021-01-01 --end 2023-01-01 --timeframe 1m --save-dir ./data 它会将下载的数据保存为 CSV 文件，适合自己平时分析研究的时候使用。

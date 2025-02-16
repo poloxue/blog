@@ -1,0 +1,556 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>实时监控加密货币跨交易所的套利机会 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="实时监控加密货币跨交易所的套利机会"><meta itemprop=description content="有评论希望我展开来说说跨交易所的套利机会。一直觉得随着参与这类策略的人多了，这类套利机会很少了，就没有深入研究过。这次借这个机会尝试一下。"><meta itemprop=datePublished content="2025-02-16T17:18:36+08:00"><meta itemprop=dateModified content="2025-02-16T17:18:36+08:00"><meta itemprop=wordCount content="1114"><meta itemprop=keywords content><meta property="og:title" content="实时监控加密货币跨交易所的套利机会"><meta property="og:description" content="有评论希望我展开来说说跨交易所的套利机会。一直觉得随着参与这类策略的人多了，这类套利机会很少了，就没有深入研究过。这次借这个机会尝试一下。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2025-02-16-arbitrage-between-cryptocurrency-exchanges-using-ccxt/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-02-16T17:18:36+08:00"><meta property="article:modified_time" content="2025-02-16T17:18:36+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="实时监控加密货币跨交易所的套利机会"><meta name=twitter:description content="有评论希望我展开来说说跨交易所的套利机会。一直觉得随着参与这类策略的人多了，这类套利机会很少了，就没有深入研究过。这次借这个机会尝试一下。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script>
+<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script>
+<script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>16</span>
+<span class=rest>Feb 2025</span></div></div><div class=matter><h1 class=title>实时监控加密货币跨交易所的套利机会</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#是什么>是什么？</a></li><li><a href=#实现路径>实现路径</a></li><li><a href=#配对品种>配对品种</a></li><li><a href=#实时监控价差>实时监控价差</a></li><li><a href=#如何应用>如何应用？</a></li></ol></nav></aside><p>前面写了一篇关于<a href=https://www.poloxue.com/posts/2025-02-10-crypto-currency-market-data-using-ccxt/>如何用 Python 获取数字货币行情</a>的博文，有评论希望我展开来说说跨交易所的套利机会。一直觉得随着参与这类策略的人多了，这类套利机会很少了，就没有深入研究过。这次借这个机会尝试一下。</p><p>本文是我的一次尝试，将介绍如何实现一个跨交易所套利机会的监控工具。</p><p>免责声明：本文内容仅供学习研究使用，不构成任何投资或交易建议。实际应用前请自行评估风险，作者不对由此产生的损失承担责任。</p><h2 id=是什么>是什么？</h2><p>什么是跨交易所的价差套利？跨交易所套利是通过捕捉同一资产在不同交易所的价格差异实现低风险收益的策略。</p><p>例如，当 BTC 在 Binance 价格为 90000，而在 OKX 为 90200 时，就可以在 Binance 低价买入并在 OKX 高价卖出。当它们的价格重新回归到相等时，平掉仓位，即可得到价差带来的收益。</p><p>价差套利的分类有很多，如期现套利、跨期套利、跨品种套利，价差套利其实就是将相关性的品种进行对冲交易。这些套利策略中，有些是低风险套利，而有些可能存在较大风险，不同品种间的相关性有可能失效，或者短期出现超越风险承受力的大幅度波动。</p><p>本文介绍是加密货币跨交易所套利，尝试开发一个工具监控不同交易所间的相同币种的实时价格发现潜在的套利机会。</p><p>再次提示：这是我的一次尝试而已，和金融交易相关的内容还是要小心。</p><h2 id=实现路径>实现路径</h2><p>在开发这个工具前，我要先明确工具实现的流程，大概分几个步骤。</p><ul><li>筛选出跨交易所间可配对品种，且要过滤或修正一些错配；</li><li>监听筛选出的品种的最近价格，计算其配对价差；</li><li>从应用角度分析，如何将这个监控结果运用于实际交易中；</li></ul><p>开始上手实操吧！</p><h2 id=配对品种>配对品种</h2><p>开始第一步部分，写如何将不同交易所的交易对匹配起来。</p><p>如何识别呢？</p><p>我将通过代码拉取两个交易所的交易对，按计价和基准币种配对，如 BTC/USDT，计价货币是 USDT、基准货币是 BTC。</p><p>还有，配对时要明确品种类型，避免不符合预期的配对，如希望配对交易所 A 和 B 的永续合约 ，但配对的却是 A 交易所的现货和 B 交易所的永续合约。</p><p>CEX 的品种类型，有主类型和子类型的区别，主类型可能就是现货 spot、永续合约 swap、交割合约 future、期权 option，而子类型如对合约，无论是永续还是交割，都有正向合约（U本位）、反向合约（币币本位）。这块我们不用考虑 option，它和其他交易品种差异比较大。</p><p>如果没接触这部分内容，可能难以理解的，其实画一张关系图画，就容易理解了。但是我有点懒。</p><p>我希望这个匹配的函数的定义如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>load_pairs</span>(
+</span></span><span style=display:flex><span>    exchange_a, <span style=color:#75715e># 交易所 a 实例</span>
+</span></span><span style=display:flex><span>    exchange_b, <span style=color:#75715e># 交易所 b 实例</span>
+</span></span><span style=display:flex><span>    type_a <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;spot&#34;</span>, <span style=color:#75715e># 品种 a 注类型</span>
+</span></span><span style=display:flex><span>    subtype_a <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>, <span style=color:#75715e># 品种 a 子类型</span>
+</span></span><span style=display:flex><span>    type_b <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;spot&#34;</span>, <span style=color:#75715e># 品种 b 注类型</span>
+</span></span><span style=display:flex><span>    subtype_b <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>, <span style=color:#75715e># 品种 b 子类型</span>
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></td></tr></table></div></div><p>详细的实现代码，如下所示：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> os
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> ccxt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>params <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;enableRateLimit&#39;</span>: <span style=color:#66d9ef>True</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>load_pairs</span>(
+</span></span><span style=display:flex><span>    exchange_a,
+</span></span><span style=display:flex><span>    exchange_b,
+</span></span><span style=display:flex><span>    type_a <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;spot&#34;</span>,
+</span></span><span style=display:flex><span>    subtype_a <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>    type_b <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;spot&#34;</span>,
+</span></span><span style=display:flex><span>    subtype_b <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>):
+</span></span><span style=display:flex><span>    exchange_a<span style=color:#f92672>.</span>load_markets()
+</span></span><span style=display:flex><span>    exchange_b<span style=color:#f92672>.</span>load_markets()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    markets_a <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>        (m[<span style=color:#e6db74>&#39;base&#39;</span>], m[<span style=color:#e6db74>&#39;quote&#39;</span>]): m[<span style=color:#e6db74>&#39;symbol&#39;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> m <span style=color:#f92672>in</span> exchange_a<span style=color:#f92672>.</span>markets<span style=color:#f92672>.</span>values() 
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> m[<span style=color:#e6db74>&#39;type&#39;</span>] <span style=color:#f92672>==</span> type_a <span style=color:#f92672>and</span> (subtype_a <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>or</span> m[subtype_a])
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    markets_b <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>        (m[<span style=color:#e6db74>&#39;base&#39;</span>], m[<span style=color:#e6db74>&#39;quote&#39;</span>]): m[<span style=color:#e6db74>&#39;symbol&#39;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> m <span style=color:#f92672>in</span> exchange_b<span style=color:#f92672>.</span>markets<span style=color:#f92672>.</span>values()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> m[<span style=color:#e6db74>&#39;type&#39;</span>] <span style=color:#f92672>==</span> type_b <span style=color:#f92672>and</span> (subtype_b <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>or</span> [subtype_b])
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    pair_keys <span style=color:#f92672>=</span> set(markets_a<span style=color:#f92672>.</span>keys())<span style=color:#f92672>.</span>intersection(set(markets_b<span style=color:#f92672>.</span>keys()))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#39;base&#39;</span>: base,
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#39;quote&#39;</span>: quote,
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#39;symbol_a&#39;</span>: markets_a[(base, quote)],
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>&#39;symbol_b&#39;</span>: markets_b[(base, quote)],
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> base, quote <span style=color:#f92672>in</span> pair_keys
+</span></span><span style=display:flex><span>    ]
+</span></span></code></pre></td></tr></table></div></div><p>如下示例代码，将不同交易所的交易对关联起来的。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>binance <span style=color:#f92672>=</span> ccxt<span style=color:#f92672>.</span>binance(params)
+</span></span><span style=display:flex><span>okx <span style=color:#f92672>=</span> ccxt<span style=color:#f92672>.</span>okx(params)
+</span></span><span style=display:flex><span><span style=color:#75715e># Binance 现货对 OKX 现货</span>
+</span></span><span style=display:flex><span>pairs <span style=color:#f92672>=</span> load_pairs(binance, okx, type_a<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;spot&#39;</span>, type_b<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;spot&#39;</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e># Binance 现货对 OKX 正向永续合约</span>
+</span></span><span style=display:flex><span>pairs <span style=color:#f92672>=</span> load_pairs(binance, okx, type_a<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;spot&#39;</span>, type_b<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;swap&#39;</span>, subtype_b<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;linear&#39;</span>)
+</span></span></code></pre></td></tr></table></div></div><p>同一个交易所的不同类型品种当然也是可以配对的。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 初始化交易所对象</span>
+</span></span><span style=display:flex><span>okx <span style=color:#f92672>=</span> ccxt<span style=color:#f92672>.</span>okx(params)
+</span></span><span style=display:flex><span><span style=color:#75715e># OKX 现货对 OKX 正向永续合约</span>
+</span></span><span style=display:flex><span>pairs <span style=color:#f92672>=</span> load_pairs(okx, okx, type_a<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;spot&#39;</span>, type_b<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;swap&#39;</span>, subtype_b<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;linear&#39;</span>)
+</span></span></code></pre></td></tr></table></div></div><p>不过即使按照上述的规则，依然会出现错配。为什么？</p><p>因为不同交易所可能出现同名不同币的情况，如 NEIRO 在 OKX 和 Bybit 就是不同币种，OKX 上有两个 NEIRO，其中和 Bybit 配对的是 NEIROETHUSDT 合约。具体原因就不介绍了。</p><p>为了防止这类情况，可以将价差异常的配对找出，人工确认原因。</p><p>尝试实现这个代码：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">58
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>detect_abnormal_pairs</span>(exchange_a, exchange_b, pairs, threshold <span style=color:#f92672>=</span> <span style=color:#ae81ff>0.05</span>):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    用于检测价差异常的函数
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    参数说明：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    :param matched_pairs: load_pairs函数返回的匹配交易对列表
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    :param threshold: 视为异常的价格差异比例（0.05表示5%）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    返回结构：
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;base&#39;: 基准货币,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;quote&#39;: 计价货币,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;symbol_a&#39;: 交易所A交易对,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;symbol_b&#39;: 交易所B交易对,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;price_a&#39;: 原始价格A,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;price_b&#39;: 原始价格B,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;spread_ratio&#39;: 价差比例,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;is_abnormal&#39;: 是否异常
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    normal_pairs <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>    abonormal_pairs <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> pair <span style=color:#f92672>in</span> pairs:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 获取最新行情数据（单次尝试）</span>
+</span></span><span style=display:flex><span>            ticker_a <span style=color:#f92672>=</span> exchange_a<span style=color:#f92672>.</span>fetch_ticker(pair[<span style=color:#e6db74>&#39;symbol_a&#39;</span>])
+</span></span><span style=display:flex><span>            ticker_b <span style=color:#f92672>=</span> exchange_b<span style=color:#f92672>.</span>fetch_ticker(pair[<span style=color:#e6db74>&#39;symbol_b&#39;</span>])
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 获取最后成交价</span>
+</span></span><span style=display:flex><span>            price_a <span style=color:#f92672>=</span> ticker_a<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;last&#39;</span>)
+</span></span><span style=display:flex><span>            price_b <span style=color:#f92672>=</span> ticker_b<span style=color:#f92672>.</span>get(<span style=color:#e6db74>&#39;last&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 跳过无效价格</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>None</span> <span style=color:#f92672>in</span> [price_a, price_b]:
+</span></span><span style=display:flex><span>                print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;价格缺失: </span><span style=color:#e6db74>{</span>pair[<span style=color:#e6db74>&#39;symbol_a&#39;</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>/</span><span style=color:#e6db74>{</span>pair[<span style=color:#e6db74>&#39;symbol_b&#39;</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 计算价差比例（基于较小价格）</span>
+</span></span><span style=display:flex><span>            min_price <span style=color:#f92672>=</span> min(price_a, price_b)
+</span></span><span style=display:flex><span>            spread_ratio <span style=color:#f92672>=</span> abs(price_a <span style=color:#f92672>-</span> price_b) <span style=color:#f92672>/</span> min_price
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 构建结果对象</span>
+</span></span><span style=display:flex><span>            result <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>                <span style=color:#f92672>**</span>pair,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;price_a&#39;</span>: price_a,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;price_b&#39;</span>: price_b,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;spread_ratio&#39;</span>: spread_ratio,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;is_abnormal&#39;</span>: spread_ratio <span style=color:#f92672>&gt;</span> threshold
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> result[<span style=color:#e6db74>&#39;is_abnormal&#39;</span>]:
+</span></span><span style=display:flex><span>                abonormal_pairs<span style=color:#f92672>.</span>append(result)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>                normal_pairs<span style=color:#f92672>.</span>append(pair)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>Exception</span> <span style=color:#66d9ef>as</span> e:
+</span></span><span style=display:flex><span>            print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;处理交易对 </span><span style=color:#e6db74>{</span>pair<span style=color:#e6db74>}</span><span style=color:#e6db74> 时发生错误: </span><span style=color:#e6db74>{</span>str(e)<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> abonormal_pairs, normal_pairs
+</span></span></code></pre></td></tr></table></div></div><p>为了以防万一，异常的阈值可设置的小一些，如 0.05 即可。不过，期现的价差是有可能大于这个值的。</p><p>如下代码将匹配交易对保存到 csv 文件。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>binance <span style=color:#f92672>=</span> ccxt<span style=color:#f92672>.</span>binance(params)
+</span></span><span style=display:flex><span>okx <span style=color:#f92672>=</span> ccxt<span style=color:#f92672>.</span>okx(params)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pairs <span style=color:#f92672>=</span> load_pairs(binance, okx, <span style=color:#e6db74>&#39;spot&#39;</span>, <span style=color:#e6db74>&#39;future&#39;</span>)
+</span></span><span style=display:flex><span>abnormal_pairs, normal_pairs <span style=color:#f92672>=</span> detect_abnormal_pairs(binance, okx, pairs, <span style=color:#ae81ff>0.05</span>)
+</span></span><span style=display:flex><span>pd<span style=color:#f92672>.</span>DataFrame(normal_pairs)<span style=color:#f92672>.</span>to_csv(<span style=color:#e6db74>&#34;normal_pairs.csv&#34;</span>)
+</span></span><span style=display:flex><span>pd<span style=color:#f92672>.</span>DataFrame(abnormal_pairs)<span style=color:#f92672>.</span>to_csv(<span style=color:#e6db74>&#34;abnormal_pairs.csv&#34;</span>)
+</span></span></code></pre></td></tr></table></div></div><p>得到这两个 csv 文件后，建议手动接入检查文件中的配对情况，确认无误。</p><p>还有一个坑，就算是相同币种，这个脚本也可能漏掉它们，如 PEPE 永续合约，在 OKX 的价格和 Binance 是不同的，因为 Binance 对 PEPE 放大了 1000 倍，名为 1000PEPEUSDT，基准货币是 1000PEPE，而不是 PEPE。这个特殊逻辑我就不实现了，有兴趣自行研究。通常都是一些 meme 币会出现这种情况。</p><p>当然，如果你不是想全量监控，而是清楚想监控的是什么配对交易对，就无需全量匹配了。</p><h2 id=实时监控价差>实时监控价差</h2><p>接下来就是要监控它们的价差了。为了实时监控，还是通过 ccxt.pro 的 <code>watch_ticker</code> 方法实时监听最新成交价计算价差。</p><p>最简单的方式就是顺序监控。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>ticker_a <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> exchange_a<span style=color:#f92672>.</span>watch_ticker(symbol_a)
+</span></span><span style=display:flex><span>ticker_b <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> exchange_b<span style=color:#f92672>.</span>watch_ticker(symbol_b)
+</span></span><span style=display:flex><span>spread_pct <span style=color:#f92672>=</span> abs(ticker_a[<span style=color:#e6db74>&#39;last&#39;</span>] <span style=color:#f92672>-</span> ticker[<span style=color:#e6db74>&#39;last&#39;</span>])<span style=color:#f92672>/</span>min(ticker_b[<span style=color:#e6db74>&#39;last&#39;</span>])
+</span></span></code></pre></td></tr></table></div></div><p>不过为了更加实时，去掉两者等待的依赖，我用 <code>watch_tickers</code> 分别监听交易所 a 和 b 的所有 symbol，监听到新的价格就立刻计算价差。</p><p>稍微有点复杂，不想展开了说明，直接看代码吧。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">100
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">101
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">102
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">103
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">104
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">105
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">106
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">107
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">108
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">109
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">110
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">111
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">112
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">113
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">114
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">115
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">116
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">117
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">118
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">119
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">120
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">121
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">122
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">123
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">124
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">125
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">126
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">127
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">128
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">129
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">130
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">131
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">132
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">133
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">134
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">135
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">136
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">137
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">138
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">139
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">140
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">141
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">142
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">143
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">144
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">145
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">146
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">147
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">148
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">149
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">150
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> os
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> asyncio
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> ccxt.pro <span style=color:#66d9ef>as</span> ccxtpro
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> traceback
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> typing <span style=color:#f92672>import</span> Dict, Tuple
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> collections <span style=color:#f92672>import</span> defaultdict
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>params <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;enableRateLimit&#39;</span>: <span style=color:#66d9ef>True</span>,
+</span></span><span style=display:flex><span>    <span style=color:#75715e># &#39;proxies&#39;: {</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#     &#39;http&#39;: os.getenv(&#39;http_proxy&#39;),</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#     &#39;https&#39;: os.getenv(&#39;https_proxy&#39;),</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># },</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># &#39;aiohttp_proxy&#39;: os.getenv(&#39;http_proxy&#39;),</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># &#39;ws_proxy&#39;: os.getenv(&#39;http_proxy&#39;)</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Monitor</span>:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> __init__(self, exchange_a, exchange_b, pairs):
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>exchange_a <span style=color:#f92672>=</span> exchange_a
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>exchange_b <span style=color:#f92672>=</span> exchange_b
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 构建symbol映射关系</span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>symbol_map <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>_build_symbol_map(pairs)
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>pair_data: Dict[Tuple[str, str], dict] <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>monitor_tasks <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>running <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>_build_symbol_map</span>(self, pairs):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;构建symbol到配对关系的快速映射&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        symbol_map <span style=color:#f92672>=</span> defaultdict(dict)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> pair <span style=color:#f92672>in</span> pairs:
+</span></span><span style=display:flex><span>            key <span style=color:#f92672>=</span> (pair[<span style=color:#e6db74>&#39;base&#39;</span>], pair[<span style=color:#e6db74>&#39;quote&#39;</span>])
+</span></span><span style=display:flex><span>            symbol_map[<span style=color:#e6db74>&#39;a&#39;</span>][pair[<span style=color:#e6db74>&#39;symbol_a&#39;</span>]] <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;index&#39;</span>: <span style=color:#e6db74>&#39;a&#39;</span>, <span style=color:#e6db74>&#39;pair_key&#39;</span>: key}
+</span></span><span style=display:flex><span>            symbol_map[<span style=color:#e6db74>&#39;b&#39;</span>][pair[<span style=color:#e6db74>&#39;symbol_b&#39;</span>]] <span style=color:#f92672>=</span> {<span style=color:#e6db74>&#39;index&#39;</span>: <span style=color:#e6db74>&#39;b&#39;</span>, <span style=color:#e6db74>&#39;pair_key&#39;</span>: key}
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> symbol_map
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>monitor</span>(self, exchange, index: str):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        统一监控方法
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        :param exchange: 交易所实例
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        :param index: 来源索引 (&#39;a&#39;或&#39;b&#39;)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        symbols <span style=color:#f92672>=</span> [s <span style=color:#66d9ef>for</span> s <span style=color:#f92672>in</span> self<span style=color:#f92672>.</span>symbol_map[index]]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>while</span> self<span style=color:#f92672>.</span>running:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>                tickers <span style=color:#f92672>=</span> <span style=color:#66d9ef>await</span> exchange<span style=color:#f92672>.</span>watch_tickers(symbols)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>await</span> self<span style=color:#f92672>.</span>process_tickers(tickers, index)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>Exception</span> <span style=color:#66d9ef>as</span> e:
+</span></span><span style=display:flex><span>                traceback<span style=color:#f92672>.</span>print_exc()
+</span></span><span style=display:flex><span>                print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;监控异常(</span><span style=color:#e6db74>{</span>index<span style=color:#e6db74>}</span><span style=color:#e6db74>): </span><span style=color:#e6db74>{</span>str(e)<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>await</span> asyncio<span style=color:#f92672>.</span>sleep(<span style=color:#ae81ff>5</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>process_tickers</span>(self, tickers, index):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;处理批量ticker数据&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> symbol, ticker <span style=color:#f92672>in</span> tickers<span style=color:#f92672>.</span>items():
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> symbol <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> self<span style=color:#f92672>.</span>symbol_map[index]:
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            pair_map <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>symbol_map[index][symbol]
+</span></span><span style=display:flex><span>            pair_key <span style=color:#f92672>=</span> pair_map[<span style=color:#e6db74>&#39;pair_key&#39;</span>]
+</span></span><span style=display:flex><span>            
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 初始化数据结构</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> pair_key <span style=color:#f92672>not</span> <span style=color:#f92672>in</span> self<span style=color:#f92672>.</span>pair_data:
+</span></span><span style=display:flex><span>                self<span style=color:#f92672>.</span>pair_data[pair_key] <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>                    <span style=color:#e6db74>&#39;price_a&#39;</span>: <span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>                    <span style=color:#e6db74>&#39;price_b&#39;</span>: <span style=color:#66d9ef>None</span>,
+</span></span><span style=display:flex><span>                    <span style=color:#e6db74>&#39;spread&#39;</span>: <span style=color:#66d9ef>None</span>
+</span></span><span style=display:flex><span>                } 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>            price_field <span style=color:#f92672>=</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#39;price_</span><span style=color:#e6db74>{</span>index<span style=color:#e6db74>}</span><span style=color:#e6db74>&#39;</span>
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>pair_data[pair_key][price_field] <span style=color:#f92672>=</span> ticker[<span style=color:#e6db74>&#39;last&#39;</span>]
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 立即计算价差</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>await</span> self<span style=color:#f92672>.</span>calculate_spread(pair_key)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>calculate_spread</span>(self, pair_key):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;带校验的价差计算&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        data <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>pair_data[pair_key]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> data[<span style=color:#e6db74>&#39;price_a&#39;</span>] <span style=color:#f92672>and</span> data[<span style=color:#e6db74>&#39;price_b&#39;</span>]:
+</span></span><span style=display:flex><span>                min_price <span style=color:#f92672>=</span> min(data[<span style=color:#e6db74>&#39;price_a&#39;</span>], data[<span style=color:#e6db74>&#39;price_b&#39;</span>])
+</span></span><span style=display:flex><span>                spread <span style=color:#f92672>=</span> abs(data[<span style=color:#e6db74>&#39;price_a&#39;</span>] <span style=color:#f92672>-</span> data[<span style=color:#e6db74>&#39;price_b&#39;</span>]) <span style=color:#f92672>/</span> min_price
+</span></span><span style=display:flex><span>                data[<span style=color:#e6db74>&#39;spread&#39;</span>] <span style=color:#f92672>=</span> spread
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>                <span style=color:#75715e># 触发报警的价差阈值</span>
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> spread <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0.01</span>:  
+</span></span><span style=display:flex><span>                    <span style=color:#66d9ef>await</span> self<span style=color:#f92672>.</span>trigger_arbitrage(pair_key)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>except</span> (<span style=color:#a6e22e>TypeError</span>, <span style=color:#a6e22e>ZeroDivisionError</span>) <span style=color:#66d9ef>as</span> e:
+</span></span><span style=display:flex><span>            print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;价差计算错误 </span><span style=color:#e6db74>{</span>pair_key<span style=color:#e6db74>}</span><span style=color:#e6db74>: </span><span style=color:#e6db74>{</span>str(e)<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>trigger_arbitrage</span>(self, pair_key):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;触发套利逻辑&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        data <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>pair_data[pair_key]
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;套利机会! </span><span style=color:#e6db74>{</span>pair_key<span style=color:#e6db74>}</span><span style=color:#e6db74> 价差: </span><span style=color:#e6db74>{</span>data[<span style=color:#e6db74>&#39;spread&#39;</span>]<span style=color:#e6db74>:</span><span style=color:#e6db74>.2%</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 此处添加实际交易逻辑</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>start</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;启动监控任务&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>running <span style=color:#f92672>=</span> <span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>monitor_tasks <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>            asyncio<span style=color:#f92672>.</span>create_task(self<span style=color:#f92672>.</span>monitor(self<span style=color:#f92672>.</span>exchange_a, <span style=color:#e6db74>&#39;a&#39;</span>)),
+</span></span><span style=display:flex><span>            asyncio<span style=color:#f92672>.</span>create_task(self<span style=color:#f92672>.</span>monitor(self<span style=color:#f92672>.</span>exchange_b, <span style=color:#e6db74>&#39;b&#39;</span>))
+</span></span><span style=display:flex><span>        ]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>async</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>stop</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;&#34;&#34;优雅关闭&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>running <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>await</span> asyncio<span style=color:#f92672>.</span>gather(<span style=color:#f92672>*</span>self<span style=color:#f92672>.</span>monitor_tasks, return_exceptions<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>await</span> self<span style=color:#f92672>.</span>exchange_a<span style=color:#f92672>.</span>cloase()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>await</span> self<span style=color:#f92672>.</span>exchange_b<span style=color:#f92672>.</span>cloase()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>async</span> <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>(exchange_a, exchange_b, pairs):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>await</span> exchange_a<span style=color:#f92672>.</span>load_markets()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>await</span> exchange_b<span style=color:#f92672>.</span>load_markets()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    monitor <span style=color:#f92672>=</span> Monitor(exchange_a, exchange_b, pairs)
+</span></span><span style=display:flex><span>    monitor<span style=color:#f92672>.</span>start()
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>await</span> asyncio<span style=color:#f92672>.</span>sleep(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>            <span style=color:#75715e># 可在此处添加定期任务：</span>
+</span></span><span style=display:flex><span>            <span style=color:#75715e># - 数据持久化</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>KeyboardInterrupt</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>await</span> monitor<span style=color:#f92672>.</span>stop()
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;监控已停止&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>        pairs_df <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>read_csv(<span style=color:#e6db74>&#34;pairs.csv&#34;</span>)
+</span></span><span style=display:flex><span>        pairs_dif <span style=color:#f92672>=</span> pairs_df[pairs_df[<span style=color:#e6db74>&#39;quote&#39;</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;USDT&#34;</span>]
+</span></span><span style=display:flex><span>        required_cols <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#39;base&#39;</span>, <span style=color:#e6db74>&#39;quote&#39;</span>, <span style=color:#e6db74>&#39;symbol_a&#39;</span>, <span style=color:#e6db74>&#39;symbol_b&#39;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> all(col <span style=color:#f92672>in</span> pairs_df<span style=color:#f92672>.</span>columns <span style=color:#66d9ef>for</span> col <span style=color:#f92672>in</span> required_cols):
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>raise</span> <span style=color:#a6e22e>ValueError</span>(<span style=color:#e6db74>&#34;CSV文件缺少必要列&#34;</span>)
+</span></span><span style=display:flex><span>        pairs <span style=color:#f92672>=</span> pairs_df[required_cols]<span style=color:#f92672>.</span>to_dict(<span style=color:#e6db74>&#39;records&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>Exception</span> <span style=color:#66d9ef>as</span> e:
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;配置加载失败: </span><span style=color:#e6db74>{</span>str(e)<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        exit(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 交易所初始化</span>
+</span></span><span style=display:flex><span>    exchange_a <span style=color:#f92672>=</span> ccxtpro<span style=color:#f92672>.</span>binance(params)
+</span></span><span style=display:flex><span>    exchange_b <span style=color:#f92672>=</span> ccxtpro<span style=color:#f92672>.</span>okx(params)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>try</span>:
+</span></span><span style=display:flex><span>        asyncio<span style=color:#f92672>.</span>run(main(exchange_a, exchange_b, pairs))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>except</span> <span style=color:#a6e22e>KeyboardInterrupt</span>:
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;程序已终止&#34;</span>)
+</span></span></code></pre></td></tr></table></div></div><p>只要监听一个新的价格，都会重新计算 spread 价差，评估是否触发报警或者进入到是否交易的验证中。</p><h2 id=如何应用>如何应用？</h2><p>监控得到价差数据后，怎么用呢？</p><p>没有成熟的自动化交易策略的话，可以先做个报警消息观察观察，或者基于它做个实时排序，通过页面实时监控这些品种的价差信息。</p><p>用于自动化交易的话肯定有风险的，实盘要考虑问题比较多，价差和实际的交易是有区别的，真实交易肯定要看 order book 的买卖价，对于流动性不足的品种，最近成交价和实际能交易的价格可能会相差很大，滑点很大。</p><p>价差监控最好是用 orderbook 的买卖价和深度。我这里用最新价是因为监听 ticker 的数据量会小很多，order book 实时数据频率非常高，监控太多品种的负载太高。</p><p>真实交易，除了滑点，还有交易费用，对于保证金交易可能还有如借贷利息、资金费率等成本，都是要考虑的。如果不解决这些问题，得到的可能就是不断亏损的套利。</p><p>再次声明，这是我的一次研究常识，如要在真实场景下使用，请自行研究风险。</p><div>本文来源于 <a href=https://www.poloxue.com>POLOXUE's BLOG</a>，地址： <a href=https://www.poloxue.com/posts/2025-02-16-arbitrage-between-cryptocurrency-exchanges-using-ccxt/>实时监控加密货币跨交易所的套利机会</a></div></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#是什么>是什么？</a></li><li><a href=#实现路径>实现路径</a></li><li><a href=#配对品种>配对品种</a></li><li><a href=#实时监控价差>实时监控价差</a></li><li><a href=#如何应用>如何应用？</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post><img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2025 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>
