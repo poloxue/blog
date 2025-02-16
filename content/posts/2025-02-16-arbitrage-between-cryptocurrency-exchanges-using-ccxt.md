@@ -226,7 +226,7 @@ ticker_b = await exchange_b.watch_ticker(symbol_b)
 spread_pct = abs(ticker_a['last'] - ticker['last'])/min(ticker_b['last'])
 ```
 
-不过为了更加实时，去掉两者等待的依赖，我用 `watch_tickers` 分别监听交易所 a 和 b 的所有 symbol，监听到新的价格就立刻计算价差。
+不过为了更加实时，去掉两者等待的依赖，我用 `watch_tickers` 批量监听交易所 a 和 b 的所有 symbol，监听到新的价格就立刻计算价差，提高监听的性能。
 
 稍微有点复杂，不想展开了说明，直接看代码吧。
 
@@ -348,7 +348,7 @@ class Monitor:
 
 上面实现了一个 `Monitor` 类，只要监听一个新的价格，都会重新计算 spread 价差，评估是否触发报警或者进入到是否交易的验证中。
 
-如下代码使用这个类监控价差：
+如下代码，导入前面准备的 `normal_pairs.csv` 中的交易对，监控价差：
 
 ```python
 async def main(exchange_a, exchange_b, pairs):
@@ -368,7 +368,7 @@ async def main(exchange_a, exchange_b, pairs):
 
 if __name__ == "__main__":
     try:
-        pairs_df = pd.read_csv("pairs.csv")
+        pairs_df = pd.read_csv("normal_pairs.csv")
         pairs_dif = pairs_df[pairs_df['quote'] == "USDT"]
         required_cols = ['base', 'quote', 'symbol_a', 'symbol_b']
         if not all(col in pairs_df.columns for col in required_cols):
