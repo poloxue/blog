@@ -315,8 +315,8 @@ class Monitor:
         try:
             if data['price_a'] and data['price_b']:
                 min_price = min(data['price_a'], data['price_b'])
-                spread = abs(data['price_a'] - data['price_b']) / min_price
-                data['spread'] = spread
+                spread_pct = abs(data['price_a'] - data['price_b']) / min_price
+                data['spread_pct'] = spread
 
                 # 触发报警的价差阈值
                 if spread > 0.01:  
@@ -344,7 +344,13 @@ class Monitor:
         await asyncio.gather(*self.monitor_tasks, return_exceptions=True)
         await self.exchange_a.cloase()
         await self.exchange_b.cloase()
+```
 
+上面实现了一个 `Monitor` 类，只要监听一个新的价格，都会重新计算 spread 价差，评估是否触发报警或者进入到是否交易的验证中。
+
+如下代码使用这个类监控价差：
+
+```python
 async def main(exchange_a, exchange_b, pairs):
     await exchange_a.load_markets()
     await exchange_b.load_markets()
@@ -355,8 +361,7 @@ async def main(exchange_a, exchange_b, pairs):
     try:
         while True:
             await asyncio.sleep(1)
-            # 可在此处添加定期任务：
-            # - 数据持久化
+            # 可在此处可添加其他逻辑：
     except KeyboardInterrupt:
         await monitor.stop()
         print("监控已停止")
@@ -383,7 +388,6 @@ if __name__ == "__main__":
         print("程序已终止")
 ```
 
-只要监听一个新的价格，都会重新计算 spread 价差，评估是否触发报警或者进入到是否交易的验证中。
 
 ## 如何应用？
 
@@ -397,5 +401,8 @@ if __name__ == "__main__":
 
 真实交易，除了滑点，还有交易费用，对于保证金交易可能还有如借贷利息、资金费率等成本，都是要考虑的。如果不解决这些问题，得到的可能就是不断亏损的套利。
 
-再次声明，这是我的一次研究常识，如要在真实场景下使用，请自行研究风险。
+在成熟的市场，我觉得普通人是很难有这种套利机会的，不过加密货币市场，猜测小币的套利机会应该还是有的。还有就是，这个市场每隔个一两月就会有一次异常的暴跌，这或许是价差套利的最佳时机，当然也可能会爆仓。
 
+再次声明，这是我的一次研究尝试，如要在真实场景下使用，请自行研究风险。
+
+最后，希望本文对你有用。
