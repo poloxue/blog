@@ -342,8 +342,8 @@ class Monitor:
         """优雅关闭"""
         self.running = False
         await asyncio.gather(*self.monitor_tasks, return_exceptions=True)
-        await self.exchange_a.cloase()
-        await self.exchange_b.cloase()
+        await self.exchange_a.close()
+        await self.exchange_b.close()
 ```
 
 上面实现了一个 `Monitor` 类，只要监听一个新的价格，都会重新计算 spread 价差，评估是否触发报警或者进入到是否交易的验证中。
@@ -388,6 +388,18 @@ if __name__ == "__main__":
         print("程序已终止")
 ```
 
+输出：
+
+```bash
+套利机会! ('GLM', 'USDT') 价差: 2.14%
+套利机会! ('GLM', 'USDT') 价差: 1.99%
+套利机会! ('GLM', 'USDT') 价差: 1.99%
+套利机会! ('GLM', 'USDT') 价差: 1.99%
+套利机会! ('GLM', 'USDT') 价差: 2.02%
+套利机会! ('GLM', 'USDT') 价差: 2.11%
+套利机会! ('GLM', 'USDT') 价差: 2.11%
+套利机会! ('GLM', 'USDT') 价差: 1.93%
+```
 
 ## 如何应用？
 
