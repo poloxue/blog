@@ -191,7 +191,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;symbol_b&#39;: 交易所B交易对,
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;price_a&#39;: 原始价格A,
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;price_b&#39;: 原始价格B,
-</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;spread_ratio&#39;: 价差比例,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;spread_pct&#39;: 价差比例,
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#39;is_abnormal&#39;: 是否异常
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>    }
 </span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
@@ -214,15 +214,15 @@
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>            <span style=color:#75715e># 计算价差比例（基于较小价格）</span>
 </span></span><span style=display:flex><span>            min_price <span style=color:#f92672>=</span> min(price_a, price_b)
-</span></span><span style=display:flex><span>            spread_ratio <span style=color:#f92672>=</span> abs(price_a <span style=color:#f92672>-</span> price_b) <span style=color:#f92672>/</span> min_price
+</span></span><span style=display:flex><span>            spread_pct <span style=color:#f92672>=</span> abs(price_a <span style=color:#f92672>-</span> price_b) <span style=color:#f92672>/</span> min_price
 </span></span><span style=display:flex><span> 
 </span></span><span style=display:flex><span>            <span style=color:#75715e># 构建结果对象</span>
 </span></span><span style=display:flex><span>            result <span style=color:#f92672>=</span> {
 </span></span><span style=display:flex><span>                <span style=color:#f92672>**</span>pair,
 </span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;price_a&#39;</span>: price_a,
 </span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;price_b&#39;</span>: price_b,
-</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;spread_ratio&#39;</span>: spread_ratio,
-</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;is_abnormal&#39;</span>: spread_ratio <span style=color:#f92672>&gt;</span> threshold
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;spread_pct&#39;</span>: spread_pct,
+</span></span><span style=display:flex><span>                <span style=color:#e6db74>&#39;is_abnormal&#39;</span>: spread_pct <span style=color:#f92672>&gt;</span> threshold
 </span></span><span style=display:flex><span>            }
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> result[<span style=color:#e6db74>&#39;is_abnormal&#39;</span>]:
@@ -451,7 +451,7 @@
 </span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> data[<span style=color:#e6db74>&#39;price_a&#39;</span>] <span style=color:#f92672>and</span> data[<span style=color:#e6db74>&#39;price_b&#39;</span>]:
 </span></span><span style=display:flex><span>                min_price <span style=color:#f92672>=</span> min(data[<span style=color:#e6db74>&#39;price_a&#39;</span>], data[<span style=color:#e6db74>&#39;price_b&#39;</span>])
 </span></span><span style=display:flex><span>                spread_pct <span style=color:#f92672>=</span> abs(data[<span style=color:#e6db74>&#39;price_a&#39;</span>] <span style=color:#f92672>-</span> data[<span style=color:#e6db74>&#39;price_b&#39;</span>]) <span style=color:#f92672>/</span> min_price
-</span></span><span style=display:flex><span>                data[<span style=color:#e6db74>&#39;spread_pct&#39;</span>] <span style=color:#f92672>=</span> spread
+</span></span><span style=display:flex><span>                data[<span style=color:#e6db74>&#39;spread_pct&#39;</span>] <span style=color:#f92672>=</span> spread_pct
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>                <span style=color:#75715e># 触发报警的价差阈值</span>
 </span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> spread <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0.01</span>:  
