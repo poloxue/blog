@@ -1,0 +1,274 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>通过 Hummingbot 运行一个做市机器人 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="通过 Hummingbot 运行一个做市机器人"><meta itemprop=description content="最近在研究了下一个叫 Hummingbot 的 Python 加密货币机器人，它其中提供了高频做市、跨市场套利和资金费率套利等策略。"><meta itemprop=datePublished content="2025-02-22T16:21:45+08:00"><meta itemprop=dateModified content="2025-02-22T16:21:45+08:00"><meta itemprop=wordCount content="1016"><meta itemprop=keywords content><meta property="og:title" content="通过 Hummingbot 运行一个做市机器人"><meta property="og:description" content="最近在研究了下一个叫 Hummingbot 的 Python 加密货币机器人，它其中提供了高频做市、跨市场套利和资金费率套利等策略。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2025-02-22-cross-exchange-arbitrage-using-humming/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-02-22T16:21:45+08:00"><meta property="article:modified_time" content="2025-02-22T16:21:45+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="通过 Hummingbot 运行一个做市机器人"><meta name=twitter:description content="最近在研究了下一个叫 Hummingbot 的 Python 加密货币机器人，它其中提供了高频做市、跨市场套利和资金费率套利等策略。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script>
+<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script>
+<script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>22</span>
+<span class=rest>Feb 2025</span></div></div><div class=matter><h1 class=title>通过 Hummingbot 运行一个做市机器人</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#交互模式>交互模式</a></li><li><a href=#安装启动>安装启动</a><ol><li><a href=#下载代码仓库>下载代码仓库</a></li><li><a href=#启动应用>启动应用</a></li><li><a href=#查看帮助信息>查看帮助信息</a></li></ol></li><li><a href=#实现步骤>实现步骤</a></li><li><a href=#连接交易所>连接交易所</a><ol><li><a href=#选择交易所>选择交易所</a></li><li><a href=#配置交易所>配置交易所</a></li><li><a href=#查询余额>查询余额</a></li></ol></li><li><a href=#配置运行策略>配置运行策略</a><ol><li><a href=#策略模版>策略模版</a></li><li><a href=#配置策略>配置策略</a></li><li><a href=#启动策略>启动策略</a></li><li><a href=#策略表现>策略表现</a></li><li><a href=#其他一些命令>其他一些命令</a></li></ol></li><li><a href=#总结>总结</a></li></ol></nav></aside><p>最近研究了一个叫 Hummingbot 的 Python 加密货币机器人，它提供了一些常见的高频策略，如高频做市、跨市场套利和资金费率套利等。我很早就知道 Hummingbot，但一直没有测试它，主要是它用起来不舒服，代码不是很清晰。</p><p>Hummingbot 是一款高频量化机器人，里面有大量 C++ 代码，还有基本都是 asyncio 异步操作。我决定搞 Hummingbot 也是因为它内置了一些高频做市、跨市场套利、资金费率套利和 cex/dex 套利交易等策略，作为高频交易的学习材料，还是不错的。还有，最近发现它还支持 CEX/DEX 套利，那无论如何也要搞下它了。</p><p>事件机制的话，Hummingbot 中的 <code>on_tick</code> 不是由成交 tick 触发的，而是定时的 clock tick，如配置 1 秒、1分钟定时触发。更细粒度的时间控制，最小可设置到 0.1s。这个和 vnpy 不同，我好像记得之前有人吐槽 vn.py 不支持定时触发的能力，因此更喜欢 backtrader。</p><p>Hummingbot 的数据源基本都是 ws 实时监听得到，频繁的的获取数据，如价格、订单簿（OrderBook），不会触发交易所的频率限制。当然，下单是例外，这是主动触发的操作。</p><p>本文尝试走一遍流程，跑一个它的内置做市机器人试试。</p><h2 id=交互模式>交互模式</h2><p>Hummingbot 提供了两种交互模式 Tui 终端和 Web 端的 Dashboard。早期版本只提供了 TUI 的终端交互模式，完全是通过命令行管理的机器人。</p><p>2023 年上线 Web 端的 Dashboard，提供了 Web 端管理机器人的能力。Dashboard 是基于 streamlit 实现的。前段时间，我还用 streamlit 做了个简单的 A 股股票筛选器 demo，有兴趣移步到 <a href=https://www.poloxue.com/posts/2025-01-13-create-a-stock-screener-using-streamlit/>使用 Streamlit 打造一个股票筛选分析工具</a>。</p><p>本文，我将重点通过 Tui 终端模式演示如何运行 Hummingbot 的机器人。</p><h2 id=安装启动>安装启动</h2><p>Hummingbot 的安装可通过源码或是 docker。如果不是要阅读源码或调试问题，建议是用 docker 安装，毕竟简单省力，把更多精力到核心功能上。当然，源码安装也不复杂，但要有好的网络。</p><blockquote><p>注：开始前，请确保你已经安装 Docker 了。</p></blockquote><h3 id=下载代码仓库>下载代码仓库</h3><p>使用 git 下载 Hummingbot 的代码仓库。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone https://github.com/hummingbot/hummingbot.git
+</span></span></code></pre></td></tr></table></div></div><p>我在下载的时候常遇到网络 Timeout，可通过 &ndash;depth=1 只下载最新的文件，提升下载速度。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>git clone --depth<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> https://github.com/hummingbot/hummingbot.git
+</span></span></code></pre></td></tr></table></div></div><h3 id=启动应用>启动应用</h3><p>进入 <code>hummingbot</code> 目录通过 <code>docker</code> 启动服务：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker compose up -d
+</span></span></code></pre></td></tr></table></div></div><p>现在，用 <code>docker attach</code> 命令就能进到应用入口：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker attach hummingbot
+</span></span></code></pre></td></tr></table></div></div><p>你会看到如下画面。</p><p><img src=https://hummingbot.org/assets/img/welcome.png alt></p><p>第一次启动，会要求你设置登陆密码，以后的每次进入 Hummingbot 终端都离不开这个密码。</p><p>补充一点，<code>exit</code> 退出交互模式时，整个服务都会停止，要重新 <code>docker-compose up -d</code> 启动，<code>docker attach</code> 重新登陆。如果想退出但保持运行状态，可通过 <code>Ctrl+p</code> + <code>Ctrl+q</code> 快捷键组合（保持 <code>Ctrl</code> 按住状态）即可退出。</p><h3 id=查看帮助信息>查看帮助信息</h3><p>成功登陆后，你将会进入到一个 Hummingbot 的终端，如果想查看它支持什么命令，输入 <code>help</code> 查看它支持的命令，这些命令提供了在终端管理机器人的能力。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; help
+</span></span><span style=display:flex><span> usage: <span style=color:#f92672>{</span>connect,create,import,help,balance,config,start,stop,status,history,gateway
+</span></span><span style=display:flex><span>  ,exit,export,ticker,previous,mqtt,spreads,rate,order_book,tab_example<span style=color:#f92672>}</span> ...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  positional arguments:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>{</span>connect,create,import,help,balance,config,start,stop,status,history,gateway,exit
+</span></span><span style=display:flex><span>  ,export,ticker,previous,mqtt,spreads,rate,order_book,tab_example<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>      connect             List available exchanges and add API keys to them
+</span></span><span style=display:flex><span>      create              Create a new bot
+</span></span><span style=display:flex><span>      import              Import an existing bot by loading the configuration file
+</span></span><span style=display:flex><span>      help                List available commands
+</span></span><span style=display:flex><span>      balance             Display your asset balances across all connected exchanges
+</span></span><span style=display:flex><span>      config              Display the current bot<span style=color:#960050;background-color:#1e0010>&#39;</span>s configuration
+</span></span><span style=display:flex><span>      start               Start the current bot
+</span></span><span style=display:flex><span>      stop                Stop the current bot
+</span></span><span style=display:flex><span>      status              Get the market status of the current bot
+</span></span><span style=display:flex><span>      history             See the past performance of the current bot
+</span></span><span style=display:flex><span>      gateway             Helper comands <span style=color:#66d9ef>for</span> Gateway server.
+</span></span><span style=display:flex><span>      exit                Exit and cancel all outstanding orders
+</span></span><span style=display:flex><span>      export              Export secure information
+</span></span><span style=display:flex><span>      ticker              Show market ticker of current order book
+</span></span><span style=display:flex><span>      previous            Imports the last strategy used
+</span></span><span style=display:flex><span>      mqtt                Manage MQTT Bridge to Message brokers
+</span></span><span style=display:flex><span>      spreads             Set bid and ask spread
+</span></span><span style=display:flex><span>      rate                Show rate of a given trading pair
+</span></span><span style=display:flex><span>      order_book          Display current order book
+</span></span><span style=display:flex><span>      tab_example         Display hello world
+</span></span></code></pre></td></tr></table></div></div><p>我将重点用到几个命令：</p><ul><li><code>connect</code>，用于配置交易所连接器；</li><li><code>balance</code>，查询账户余额；</li><li><code>create</code>，创建机器人配置；</li><li><code>start</code>，运行机器人；</li><li><code>stop</code>，停止当前的机器人；</li><li><code>status</code>，监控机器人运行状态；</li><li><code>history</code>，查看机器人的历史表现；</li><li><code>config</code>，配置全局参数；</li></ul><p>到此，就完成了 Hummingbot 基础安装。</p><h2 id=实现步骤>实现步骤</h2><p>正式开始前，先介绍下大概的实现流程，主要分为如下的四个步骤。</p><ol><li>连接交易所，介绍如何配置和连接交易所，查看账号的信息，如当前的账户余额；</li><li>配置启动策略，介绍配置并成功一个 Hummingbot 内置的简单做市的策略机器人；</li><li>监控运行状态，介绍如何监控运行中机器人的状态，如订单、成交、盈亏和行情等；</li></ol><p>接下来，开始正式行动吧！</p><h2 id=连接交易所>连接交易所</h2><p>这部分会涉及两个执行步骤。首先要确认用什么交易所，其次是配置交易所的认证信息和连接。</p><h3 id=选择交易所>选择交易所</h3><p>选择交易所前，先看下 Hummingbot 支持的交易所列表吧。输入 <code>connect</code>，列出可用的交易所，输出如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; connect
+</span></span><span style=display:flex><span>Testing connections, please wait...
+</span></span><span style=display:flex><span>+---------------------------+------------+-----------------+
+</span></span><span style=display:flex><span>| Exchange                  | Keys Added |  Keys Confirmed |
+</span></span><span style=display:flex><span>|---------------------------+------------+-----------------|
+</span></span><span style=display:flex><span>| binance                   | No         | No              |
+</span></span><span style=display:flex><span>| binance_perpetual         | No         | No              |
+</span></span><span style=display:flex><span>| binance_perpetual_testnet | Yes        | Yes             |
+</span></span><span style=display:flex><span>| binance_us                | No         | No              |
+</span></span><span style=display:flex><span>| bitget_perpetual          | No         | No              |
+</span></span><span style=display:flex><span>| bybit                     | No         | No              |
+</span></span><span style=display:flex><span>| bybit_perpetual           | No         | No              |
+</span></span><span style=display:flex><span>| bybit_perpetual_testnet   | No         | No              |
+</span></span><span style=display:flex><span>| bybit_testnet             | No         | No              |
+</span></span><span style=display:flex><span>| dydx_v4_perpetual         | No         | No              |
+</span></span><span style=display:flex><span>| okx                       | No         | No              |
+</span></span><span style=display:flex><span>| okx_perpetual             | No         | No              |
+</span></span><span style=display:flex><span>+---------------------------+------------+-----------------+
+</span></span></code></pre></td></tr></table></div></div><p>这里我只保留了一些常用的交易所，你如果执行命令会看到更多的选项。</p><p>从上面可知，我已经设置了 Binance 合约的 testnet 环境，所以 <code>binance_perpetual_testnet</code> 的 <code>Key Added</code> 和 <code>Keys Confirmed</code> 都是 <code>Yes</code>。其他如常用的 <code>okx</code> 和 <code>binance</code> 是都是支持的，那就是它们了。</p><p>连接器名称上 <code>exchange</code> 和 <code>exchange_perpetual</code> 的区别就是现货和合约模式的区别。如果希望支持做空，就用支持合约的交易连接器，OKX 就是 <code>okx_perpetual</code>，而 Binance 就是 <code>binance_perpetual</code>。否则就是 <code>okx</code> 和 <code>binance</code>。</p><h3 id=配置交易所>配置交易所</h3><p>接下来开始配置这两个连接器，要拿到 API 的认证信息，如 <code>API_KEY</code> <code>API_SECRET</code>，OKX 还配置 <code>PASSPHRASE</code>。拿到 API 认证信息后，通过 <code>connect exchange</code> 即可将认证信息配置到系统。</p><p>如下命令：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; connect okx
+</span></span><span style=display:flex><span>&gt; connect okx_perpetual
+</span></span><span style=display:flex><span>&gt; connect binance_perpetual
+</span></span></code></pre></td></tr></table></div></div><p>按照 Hummingbot 终端的的交互提示配置就行了，一点也不复杂。</p><p>这里吐槽两句，我本来想用 bybit 来测试的，在添加认证信息时，一直提示错误，查看 Hummingbot 的官方 issue，发现似乎修复代码还在 <code>development</code> 分支。</p><p>特别提醒，Hummingbot 支持的是基础账户模式，如果升级了统一账户，有可能就不支持了。Binance 可通过开子账号解决这个问题的，OKX 的话， 将账户模式切换回基础模式下的 &ldquo;现货合约模式&rdquo; 即可。</p><h3 id=查询余额>查询余额</h3><p>连接成功后，可以查下账户的余额信息，看看是不是真的可用状态。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; balance
+</span></span><span style=display:flex><span>  Updating balances, please wait...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  binance_perpetual:
+</span></span><span style=display:flex><span>      Asset   Total Total <span style=color:#f92672>(</span>$<span style=color:#f92672>)</span> Allocated
+</span></span><span style=display:flex><span>       USDT 27.1375     27.13        0%
+</span></span><span style=display:flex><span>    Total: $ 27.13
+</span></span><span style=display:flex><span>  Allocated: 0.00%
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  okx:
+</span></span><span style=display:flex><span>      Asset   Total Total <span style=color:#f92672>(</span>$<span style=color:#f92672>)</span> Allocated
+</span></span><span style=display:flex><span>       USDT 29.9658     29.96        0%
+</span></span><span style=display:flex><span>    Total: $ 29.96
+</span></span><span style=display:flex><span>  Allocated: 0.00%
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  okx_perpetual:
+</span></span><span style=display:flex><span>      Asset   Total Total <span style=color:#f92672>(</span>$<span style=color:#f92672>)</span> Allocated
+</span></span><span style=display:flex><span>       USDT 29.9658     29.96        0%
+</span></span><span style=display:flex><span>    Total: $ 29.96
+</span></span><span style=display:flex><span>  Allocated: 0.00%
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Exchanges Total: $ <span style=color:#ae81ff>87</span>
+</span></span></code></pre></td></tr></table></div></div><p>接下来开始启动一个真正的交易机器人了。</p><h2 id=配置运行策略>配置运行策略</h2><p>配置和运行策略这部分的花了我不少时间，有些问题还是要阅读代码才能确认问题所在。</p><p>这里虽然只跑了一个策略，但其实为了把它的架构搞清楚，测试了好几个策略，包括之前的 v1 版本机器人。哦，对了，现在我要介绍的策略是 v2 版本，下面介绍的都是 v2 版本策略的配置方式</p><h3 id=策略模版>策略模版</h3><p>Hummingbot 默认提供了一些策略模版，执行 <code>create --script-config</code> 会显示可用模版。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">9
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>create --script-config <span style=color:#f92672>[</span>如下是输入补全提示<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>                        simple_pmm
+</span></span><span style=display:flex><span>                        simple_vwap
+</span></span><span style=display:flex><span>                        simple_xemm
+</span></span><span style=display:flex><span>                        v2_directional_rsi
+</span></span><span style=display:flex><span>                        v2_funding_rate_arb
+</span></span><span style=display:flex><span>                        v2_twap_multiple_pairs
+</span></span><span style=display:flex><span>                        v2_with_controllers
+</span></span><span style=display:flex><span>                        v2_xemm
+</span></span></code></pre></td></tr></table></div></div><p>如下这几个常见策略的简单说明:</p><ul><li><strong>基础做市（simple_pmm）</strong>：通过持续挂单捕捉买卖价差，适用于主流交易对的流动性维护。</li><li><strong>跨交易所做市（simple_xemm/v2_xemm）</strong>：在一家交易所挂单，另一家对冲风险，利用交易所间价差获利。</li><li><strong>时间加权（v2_twap_multiple_pairs）</strong>：将大额订单拆分为多笔小额订单，按时间均匀执行以减少市场冲击，支持多交易对。</li><li><strong>成交量加权（simple_vwap）</strong>：根据市场实时成交量动态调整订单规模，降低交易滑点。</li><li><strong>方向性 RSI（v2_directional_rsi）</strong>：基于 RSI 指标判断超买超卖信号，触发趋势跟踪交易。</li><li><strong>资金费率套利（v2_funding_rate_arb）</strong>：通过永续合约与现货间的资金费率差异进行对冲套利。</li><li><strong>控制器增强（v2_with_controllers）</strong>：这个比较复杂，可理解为总控管理多个子策略，总控负责风险控制、组合管理等。</li></ul><p>我就那个 <code>simple_pmm</code> 先演示如何在 Hummingbot 中创建一个机器人吧！</p><h3 id=配置策略>配置策略</h3><p>在 <code>simple_pmm</code> 配置时，有两个注意点：</p><p>首先，我在 <code>okx_perpetual</code> 上测试 <code>simple_pmm</code> 这个做市策略，发现它只适用于现货，不支持合约。</p><p>还有，<code>simple_pmm</code> 是在订单簿上下挂单，而现货不同于合约，保证交易对两个币种钱包都有钱才能成功挂单。</p><p>有了这些前提，开始尝试具体的配置吧！</p><p>首先，通过 <code>create --script-config</code> 命令配置脚本参数，按交互式提示输入你的参数即可。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt;&gt;&gt;  create --script-config simple_pmm
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Exchange where the bot will trade &gt;&gt;&gt; okx
+</span></span><span style=display:flex><span>  Trading pair in which the bot will place orders &gt;&gt;&gt; SOL-USDT
+</span></span><span style=display:flex><span>  Order amount <span style=color:#f92672>(</span>denominated in base asset<span style=color:#f92672>)</span> &gt;&gt;&gt; 0.01
+</span></span><span style=display:flex><span>  Bid order spread <span style=color:#f92672>(</span>in percent<span style=color:#f92672>)</span> &gt;&gt;&gt; 0.003
+</span></span><span style=display:flex><span>  Ask order spread <span style=color:#f92672>(</span>in percent<span style=color:#f92672>)</span> &gt;&gt;&gt; 0.003
+</span></span><span style=display:flex><span>  Order refresh time <span style=color:#f92672>(</span>in seconds<span style=color:#f92672>)</span> &gt;&gt;&gt; <span style=color:#ae81ff>100</span>
+</span></span><span style=display:flex><span>  Price type to use <span style=color:#f92672>(</span>mid or last<span style=color:#f92672>)</span> &gt;&gt;&gt; mid
+</span></span><span style=display:flex><span>  Enter a new file name <span style=color:#66d9ef>for</span> your configuration &gt;&gt;&gt; conf_simple_pmm_sol.yml
+</span></span><span style=display:flex><span>  A new config file has been created: conf_simple_pmm_sol.yml
+</span></span></code></pre></td></tr></table></div></div><p>这个配置的意思是，在 order book 中间价上下 0.3% 的位置分别挂上 0.01 SOL 的买卖订单，每 60 秒会刷新重新下单。</p><p>最后，将这个参数保存到命名为 <code>conf_simple_pmm_sol.yml</code> 的配置文件中。</p><p>补充一点，如果在配置参数时，遇到配置错误，希望重新配置，可通过 <code>Ctrl+x</code> 退出参数配置模式，重新进入。</p><h3 id=启动策略>启动策略</h3><p>通过 <code>start</code> 启动这个策略机器人，格式是 <code>start --script 策略脚本 --conf 策略配置文件</code>，即用什么参数运行什么策略。</p><p>命令如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; start --script simple_pmm.py --conf conf_simple_pmm_sol.yml
+</span></span></code></pre></td></tr></table></div></div><p>如果一切配置正常，查看你的活跃订单，就能看到成功下了两个订单了。</p><p>或者执行 <code>status</code> 命令，查看机器人当前的运行状态：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">9
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; status
+</span></span><span style=display:flex><span>    Balances:
+</span></span><span style=display:flex><span>      Exchange Asset  Total Balance  Available Balance                                    
+</span></span><span style=display:flex><span>           okx   SOL       0.079768           0.079768                                    
+</span></span><span style=display:flex><span>           okx  USDT    18.86025163        17.49605163
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    Orders:
+</span></span><span style=display:flex><span>      Exchange   Market Side     Price  Amount      Age
+</span></span><span style=display:flex><span>           okx SOL-USDT  buy 136.42161    0.01 00:00:38
+</span></span></code></pre></td></tr></table></div></div><p>如果加上 <code>--live</code> 选项，可实时监控机器人。</p><h3 id=策略表现>策略表现</h3><p>如果想查看策略的表现，执行 <code>history</code> 查看，输出如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">30
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>&gt; history
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Start Time: 2025-02-25 14:26:14
+</span></span><span style=display:flex><span>Current Time: 2025-02-25 15:24:17
+</span></span><span style=display:flex><span>Duration: <span style=color:#ae81ff>0</span> days 00:58:02
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>okx / SOL-USDT
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Trades:
+</span></span><span style=display:flex><span>                                   buy    sell   total
+</span></span><span style=display:flex><span>    Number of trades                <span style=color:#ae81ff>13</span>      <span style=color:#ae81ff>19</span>      <span style=color:#ae81ff>32</span> 
+</span></span><span style=display:flex><span>    Total trade volume <span style=color:#f92672>(</span>SOL<span style=color:#f92672>)</span>    0.1300 -0.1900 -0.0600
+</span></span><span style=display:flex><span>    Total trade volume <span style=color:#f92672>(</span>USDT<span style=color:#f92672>)</span>   -17.80   26.06    8.26
+</span></span><span style=display:flex><span>    Avg price                    136.9   137.1   137.0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Assets:
+</span></span><span style=display:flex><span>                       start current  change 
+</span></span><span style=display:flex><span>    SOL               0.0997  0.0397 -0.0600
+</span></span><span style=display:flex><span>    USDT               16.09   24.35    8.26
+</span></span><span style=display:flex><span>    SOL-USDT price     138.4   136.3   -2.07
+</span></span><span style=display:flex><span>    Base asset %      46.19%  18.20% -27.98%
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Performance: 
+</span></span><span style=display:flex><span>    Hold portfolio value      29.69 USDT
+</span></span><span style=display:flex><span>    Current portfolio value   29.77 USDT
+</span></span><span style=display:flex><span>    Trade P&amp;L                0.0774 USDT
+</span></span><span style=display:flex><span>    Fees paid                0.0208 USDT
+</span></span><span style=display:flex><span>    Fees paid                0.00010 SOL
+</span></span><span style=display:flex><span>    Total P&amp;L                0.0423 USDT
+</span></span><span style=display:flex><span>    Return %                       0.14%
+</span></span></code></pre></td></tr></table></div></div><p>我在一边写文章，一边测试这个策略，正好赶上 SOL 的大波动，跑了 1 小时还赚了一点。</p><h3 id=其他一些命令>其他一些命令</h3><ul><li><code>stop</code>，停止这个机器人；</li><li><code>order_book</code>，查看当前的 <code>order_book</code>（右侧 Pane）,可加上 <code>--live</code> 实时监控；</li><li><code>ticker</code>，查看当前的价格，也支持 <code>--live</code> 选项；</li><li><code>import</code>，导入策略配置，看起来是用于导入老版的策略配置；</li></ul><h2 id=总结>总结</h2><p>我的感受，Hummingbot 相对其它的框架，会复杂一点，特别是开发一个新策略时。它也在不断迭代，基本每一两个月就有一个新版本发布。这篇文章只是简单演示了下它的使用。</p><p>Hummingbot 还有很多内置策略，除了演示的这个 <code>simple_pmm</code> 简单做市外，还有如跨交易所做市套利、资金费率套利、CEX/DEX 套利、网格、DCA等等。如果要做 DEX/CEX 的套利，配置的内容也挺多的。</p><p>这篇文章也没有介绍如何自己开发一个 Hummingbot 机器人，还有它的新版模块化架构，如何管理子策略。本来想多整理点的，但不想文章太长了。就到先到这里，后续慢慢来吧。</p><p>最后，希望本文对你有用！</p><div>本文来源于 <a href=https://www.poloxue.com>POLOXUE's BLOG</a>，地址： <a href=https://www.poloxue.com/posts/2025-02-22-cross-exchange-arbitrage-using-humming/>通过 Hummingbot 运行一个做市机器人</a></div></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents><ol><li><a href=#交互模式>交互模式</a></li><li><a href=#安装启动>安装启动</a><ol><li><a href=#下载代码仓库>下载代码仓库</a></li><li><a href=#启动应用>启动应用</a></li><li><a href=#查看帮助信息>查看帮助信息</a></li></ol></li><li><a href=#实现步骤>实现步骤</a></li><li><a href=#连接交易所>连接交易所</a><ol><li><a href=#选择交易所>选择交易所</a></li><li><a href=#配置交易所>配置交易所</a></li><li><a href=#查询余额>查询余额</a></li></ol></li><li><a href=#配置运行策略>配置运行策略</a><ol><li><a href=#策略模版>策略模版</a></li><li><a href=#配置策略>配置策略</a></li><li><a href=#启动策略>启动策略</a></li><li><a href=#策略表现>策略表现</a></li><li><a href=#其他一些命令>其他一些命令</a></li></ol></li><li><a href=#总结>总结</a></li></ol></nav></nav></div><div class=post><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post><img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2025 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>
