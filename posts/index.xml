@@ -2,7 +2,7 @@
 上周我将示例代码重新整合，开发了一个终端监控工具，也修复了之前示例中的一些 bug，。如果还不是了解的，查看前文 实时监控加密货币跨交易所的套利机会。
 使用示例 接下来，演示下在不同市场间的监控案例。提示：可使用 Ctrl+q 退出监控终端。
 基于最新成交（Binance 现货和 OKX 正向永续合约的全量监控)：
-1 2 3 $ python main.py --monitor-panel ticker \ --market-a binance.spot \ --market-b okx.swap.linear 如上所示，默认展示的 USDT 合约，如果要切换成 USDC，可通过选项 --quote-currency USDT 实现。
+1 2 3 $ python main.py --monitor-panel ticker \ --market-a binance.spot \ --market-b okx.swap.linear 如上所示，默认展示的 USDT 合约，如果要切换成 USDC，可通过选项 --quote-currency USDC 实现。
 而排序规则上，固定按价差百分比从大到小排序。
 1 2 3 4 $ python main.py --monitor-panel ticker \ --market-a binance.spot \ --market-b okx.swap.linear \ --quote-currency USDC 如果是反向合约，如 binance.swap.invese，计价币种要切换成 USD，配置选项 --quote-currency USD。
 当前版本的这个工具虽然是通过 asyncio 异步 IO 实现，但单进程的工具。全量监控时，计算速度慢，实时性影响较大。如上图所示，延迟在秒级别。建议加上 &amp;ndash;symbols 来明确监控范围，如 --symbols BTC-USDT,ETH-USDT,XRP-USDT,TRUMP-USDT。
