@@ -24,7 +24,7 @@ $ python main.py --monitor-panel ticker \
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-03-cypto-spread-monitor-using-python-02.gif)
 
-如上所示，默认展示的 USDT 合约，如果要切换成 USDC，可通过选项 `--quote-currency USDT` 实现。
+如上所示，默认展示的 USDT 合约，如果要切换成 USDC，可通过选项 `--quote-currency USDC` 实现。
 
 而排序规则上，固定按价差百分比从大到小排序。
 
