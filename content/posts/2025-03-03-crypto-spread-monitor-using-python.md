@@ -37,7 +37,7 @@ $ python main.py --monitor-panel ticker \
 
 如果是反向合约，如 `binance.swap.invese`，计价币种要切换成 USD，配置选项 `--quote-currency USD`。
 
-当前版本的这个工具虽然是通过 asyncio 异步 IO 实现，但单进程的工具。全量监控时，，计算速度慢，实时性影响较大。如上图所示，延迟在秒级别。建议加上 --symbols 来明确监控范围，如 `--symbols BTC-USDT,ETH-USDT,XRP-USDT,TRUMP-USDT`。
+当前版本的这个工具虽然是通过 asyncio 异步 IO 实现，但单进程的工具。全量监控时，计算速度慢，实时性影响较大。如上图所示，延迟在秒级别。建议加上 --symbols 来明确监控范围，如 `--symbols BTC-USDT,ETH-USDT,XRP-USDT,TRUMP-USDT`。
 
 ```bash
 $ python main.py --monitor-panel ticker \
@@ -46,7 +46,7 @@ $ python main.py --monitor-panel ticker \
                  --symbols BTC-USDT,ETH-USDT
 ```
 
-除了 ticker 价差监控，这个工具还是先了订单簿的价差监控，如下所示：
+除了 ticker 价差监控，这个工具还实现了订单簿的价差监控，如下所示：
 
 ```bash
 $ python main.py --monitor-panel orderbook \
@@ -86,7 +86,7 @@ $ pip install -r requirements.txt
 ```bash
 $ textual serve "python main.py \
                                 --market-a binance.swap.linear \
-                                --market-b --bybit.swap.linear"
+                                --market-b bybit.swap.linear"
 ___ ____ _  _ ___ _  _ ____ _       ____ ____ ____ _  _ ____
  |  |___  \/   |  |  | |__| |    __ [__  |___ |__/ |  | |___
  |  |___ _/\_  |  |__| |  | |___    ___] |___ |  \  \/  |___ v1.1.1
@@ -128,7 +128,7 @@ exchagne.future.inverse -> 交割反向合约
 
 关于这个监控工具上的实时性数值，是在计算价差时的时间减去消息上的时间戳得到。
 
-这里有个问题，本地时钟和服务器时钟可能是不一样的。为了解决这个问题，程序会定时同步交易所的 servertime，计算与本地时间的偏差保持两边的同步，但获取服务器时间也有网络延迟，虽然说有粗略的方法计算这个延迟，但如果网络不好，有可能看到实时的数据是负数。
+这里有个问题，本地时钟和服务器时钟可能是不一样的。为了解决这个问题，程序会定时同步交易所的 servertime，计算与本地时间的偏差保持两边的同步，但获取服务器时间也有网络延迟，虽然说有粗略的方法计算这个延迟，但如果网络不好，有可能看到延迟时间是负数。
 
 另外的方案，或许可以设置机器同步的 ntp server，保持和交易所时钟同步。这个或许可以尝试下。不过我没找到交易所用的是什么 ntp 服务器。
 
