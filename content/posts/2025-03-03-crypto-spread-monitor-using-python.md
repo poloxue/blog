@@ -97,6 +97,8 @@ on http://localhost:8000
 Press Ctrl+C to quit
 ```
 
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-03-cypto-spread-monitor-using-python-03.png)
+
 不过有个问题，这种方式提供的 web 服务，如果是多人使用，好像不是共享同一个监控脚本，这会导致资源的重复占用。
 
 ## 适用市场
@@ -106,12 +108,12 @@ Press Ctrl+C to quit
 参数 market 格式是 `exchange.type.subtype`，支持类型如下所示：
 
 ```bash
-exchange.spot
-exchange.spot.margin
-exchange.swap.linear
-exchange.swap.inverse
-exchagne.future.linear
-exchagne.future.inverse
+exchange.spot -> 现货
+exchange.spot.margin -> 保证金杠杆
+exchange.swap.linear -> 永续正向合约
+exchange.swap.inverse -> 永续反向合约
+exchagne.future.linear -> 交割正向合约 
+exchagne.future.inverse -> 交割反向合约
 ```
 
 使用时，请把 exchange 替换为具体的交易所名称。
