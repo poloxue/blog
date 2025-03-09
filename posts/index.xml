@@ -18,13 +18,8 @@
 1 python main.py --ts-code LH.DCE --method pre_close/pre_close --plot 绘制价格图如下：
 希望能助新手避坑。
 如果不想看完整文章，直接看文件代码地址：download_future_adj_data.py。这个代码是完整版，文章重点是介绍实现逻辑。
-如果没有 Tushare 数据，文中也提供了关于如何自定义切换规则的一些思路和代码。或者通过联系 Tushare 权限，有 20% 的折扣。我可以免费提供一个品种的复权数据。
-正式进入主题，本文我将介绍如何基于 tushare 计算主连合约的复权数据。
-核心有两部分：
-一是拿到主连合约与实际合约的映射； 二是计算复权因子； 准备工作 下载安装将用到的几个 Python 库。
-1 pip install tushare pandas matplotlib click tqdm 这里用到了一个不常用的库 - tqdm，它是用来展示数据下载进度的，特别当下载数量非常大时，这个小技巧能提升你的体验甚至效率。
-简单示例：
-1 2 3 4 5 import time from tqdm import tqdm for _ in tqdm(range(100)): time.</description></item><item><title>开发了一个加密货币跨市场价差监控工具</title><link>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</link><pubDate>Mon, 03 Mar 2025 11:16:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</guid><description>前两周发了一篇关于如何监控加密货币跨市场套利监控的文章，介绍了基础的实现思路和示例代码。有不少朋友对这个内容表现出了浓厚的兴趣，也有人想要这样一个监控工具。
+如下是这个命令的帮助信息：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 Usage: main.py [OPTIONS] Options: --ts-code TEXT 期货合约代码（例如：LH.DCE 表示生猪期货） [必填] --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101） --method 换月调整方法（默认：pre_close/pre_close）: pre_close/pre_close: 使用前收盘价复权 open/pre_close: 使用开盘价/前收盘价复权 pre_settle/pre_settle: 使用前结算价复权 open/pre_settle: 使用开盘价复权 --plot 是否显示价格曲线图（默认不显示） --help Show this message and exit.</description></item><item><title>开发了一个加密货币跨市场价差监控工具</title><link>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</link><pubDate>Mon, 03 Mar 2025 11:16:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</guid><description>前两周发了一篇关于如何监控加密货币跨市场套利监控的文章，介绍了基础的实现思路和示例代码。有不少朋友对这个内容表现出了浓厚的兴趣，也有人想要这样一个监控工具。
 上周我将示例代码重新整合，开发了一个终端监控工具，也修复了之前示例中的一些 bug，。如果还不是了解的，查看前文 实时监控加密货币跨交易所的套利机会。
 使用示例 接下来，演示下在不同市场间的监控案例。提示：可使用 Ctrl+q 退出监控终端。
 基于最新成交（Binance 现货和 OKX 正向永续合约的全量监控)：
