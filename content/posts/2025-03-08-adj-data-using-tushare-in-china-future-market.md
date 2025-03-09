@@ -56,7 +56,7 @@ python main.py --ts-code LH.DCE --method pre_close/pre_close --plot
 
 希望能助新手避坑。
 
-如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
+上面使用的命令是我开发的一个脚本，可以直接将复权数据下载到本地。如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
 
 如下是这个命令的帮助信息：
 
