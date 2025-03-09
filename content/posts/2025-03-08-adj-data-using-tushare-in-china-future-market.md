@@ -102,8 +102,8 @@ import tushare as ts
 import pandas as pd
 from tqdm import tqdm
 
-ts.set_token("Your Token")
-pro = ts.pro_api()
+ts.set_token("")
+pro = ts.pro_api("Your Tushare Pro Token")
 ```
 
 ## 映射数据
