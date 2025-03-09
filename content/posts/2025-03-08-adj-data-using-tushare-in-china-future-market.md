@@ -58,6 +58,25 @@ python main.py --ts-code LH.DCE --method pre_close/pre_close --plot
 
 如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
 
+如下是这个命令的帮助信息：
+
+```bash
+Usage: main.py [OPTIONS]
+
+Options:
+  --ts-code TEXT    期货合约代码（例如：LH.DCE 表示生猪期货）  [必填]
+  --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101）
+
+  --method          换月调整方法（默认：pre_close/pre_close）:
+                    pre_close/pre_close: 使用前收盘价复权
+                    open/pre_close: 使用开盘价/前收盘价复权
+                    pre_settle/pre_settle: 使用前结算价复权
+                    open/pre_settle: 使用开盘价复权
+
+  --plot            是否显示价格曲线图（默认不显示）
+  --help            Show this message and exit.
+```
+
 如果没有 Tushare 数据，文中也提供了关于如何自定义切换规则的一些思路和代码。或者通过联系 Tushare 权限，有 20% 的折扣。我可以免费提供一个品种的复权数据。
 
 ---
