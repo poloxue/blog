@@ -1,5 +1,5 @@
 ---
-title: "计算期货的复权数据"
+title: "回测避坑-如何计算期货的复权数据？"
 date: 2025-03-08T17:16:49+08:00
 draft: false
 comment: true
