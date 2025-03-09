@@ -72,6 +72,8 @@ url = "/"
     startLevel = 2 
 
   [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true # Allow HTML in md files
     [markup.goldmark.extensions]
       [markup.goldmark.extensions.passthrough]
         enable = true
