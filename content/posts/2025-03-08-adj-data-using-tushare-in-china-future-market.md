@@ -374,7 +374,9 @@ print(data[["ts_code", "trade_date", "open", "pre_close_before"]])
 766  LH.DCE   20250307  13100.0    13090.0
 ```
 
-复权因子的计算是将 open/pre_close 即可，但这里还有有个小问题，默认的 `pre_close` 是当前映射合约上个交易日的收盘价，不是上个映射合约的上个交易日的收盘价。
+复权因子的计算是 open/pre_close 即可，如果是后复权的话，要取倒数，即 pre_close/open。
+
+这里还有有个小问题，默认的 `pre_close` 是当前映射合约上个交易日的收盘价，不是上个映射合约的上个交易日的收盘价。
 
 一行代码解决：
 
@@ -382,7 +384,7 @@ print(data[["ts_code", "trade_date", "open", "pre_close_before"]])
 data["pre_close_before"] = data["close"].shift(1)
 ```
 
-计算复权因子，我以后复权为例。
+计算复权因子，以后复权为例。
 
 ```python
 # 换仓时的数据
@@ -391,6 +393,8 @@ rollover_data = data[data["rollover"]]
 data["rollover_factor"] = rollover_data["open"] / rollover_data["pre_close_before"]
 data["adj_factor"] = (1/data["rollover_factor"]).fillna(1).cumprod()
 ```
+
+后复权的 adj_factor 是复权因子的倒数，这里要处理下。
 
 计算复权价格并绘制收盘价：
 
@@ -422,7 +426,7 @@ pre_close/pre_close：
 
 ```python
 data["rollover_factor"] = rollover_data["prev_close"] / rollover_data["pre_close_before"]
-data["adj_factor"] = data["rollover_factor"].fillna(1).cumprod()
+data["adj_factor"] = (1/data["rollover_factor"]).fillna(1).cumprod()
 ```
 
 pre_settle/pre_settle：
