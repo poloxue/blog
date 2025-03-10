@@ -1,16 +1,16 @@
 ---
-title: "回测避坑-如何计算期货的复权数据？"
+title: "期货回测大坑-基于 tushare 下载和计算期货的复权数据"
 date: 2025-03-08T17:16:49+08:00
 draft: false
 comment: true
 description: "本文介绍如何计算期货的复权数据，以 Tushare 作为数据源。"
 ---
 
-本周写点国内期货的内容，介绍如何通过 Python 计算期货主力连续合约的复权数据。
+本周写点国内期货的内容，介绍如何通过 Python 计算期货主连合约的复权数据。为什么要处理这个数据？因为它会直接影响策略（如 CTA 策略）的回测结果，
 
 ## 背景概述
 
-我最近想测试下统计套利策略。因为希望合理分配资金、对冲风险，就计划测试下国内市场的表现，但 A 股不支持做空机制，于是转而选择了国内期货。
+最近希望合理分配资金、对冲风险，就计划测试些适用于国内市场的策略，如套利、CTA 策略，但 A 股不支持做空机制，于是转而选择了期货市场。
 
 但问题是，期货不同于股票，不是一个品种一个可交易标的，而是由连续的交割合约组成，即每个合约都有到期日，而同一品种的不同月合约都是有价差的。
 
@@ -24,9 +24,11 @@ description: "本文介绍如何计算期货的复权数据，以 Tushare 作为
 
 你会发现，这其中存在一些明显的跳空。这些跳空基本就是主连合约切换合约时产生的。
 
-如果是短线交易或者跨期套利，这个问题或许不是那么重要。但我还有计划测试期货的 CTA 策略，还是要解决下这个问题。
+如果是短线交易或者跨期套利，这个问题或许不是那么重要。但我还计划测试期货的 CTA 策略。如果用这个数据回测策略，和实盘将有会很大差异，因为那些跳空是不同合约的价差，是实际交易无法拿到的收益。
 
-如何解决？答案就是计算复权数据，通过复权计算买入持有的收益曲线。
+如何解决？
+
+答案就是计算复权数据，通过复权计算买入持有的收益曲线，将换仓时的价差尽可能的考虑在内。
 
 熟悉股票交易的人都知道，交易软件或数据平台会提供股票的复权价格（如分红、拆股后的调整数据），以消除公司行为导致的历史价格断裂，确保长期收益计算的准确性。
 
@@ -42,7 +44,9 @@ description: "本文介绍如何计算期货的复权数据，以 Tushare 作为
 
 当然是自己计算了。走独立自主的发展道路，还可以根据策略目标制定不同的换仓时间和复权计算的方法。
 
-开始前，先给大家看看，长持主连合约的收益与软件上主连合约价格曲线的差异。
+## 期货复权数据下载工具
+
+我开发了一个基于 tushare 下载期货复权数据的小工具，它支持了常见的主连合约的复权方法，先给大家效果，直观看看考虑复权和不复权价格数据的差异。
 
 以生猪为例：
 
@@ -50,13 +54,22 @@ description: "本文介绍如何计算期货的复权数据，以 Tushare 作为
 python main.py --ts-code LH.DCE --method pre_close/pre_close --plot
 ```
 
-绘制价格图如下：
+后复权价格图如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-04-v1.png)
 
-希望能助新手避坑。
+如果你想做期货的量化策略，特别是 CTA 策略，用主连价格回测，与实盘交易差异将会很大。
 
-上面使用的命令是我开发的一个脚本，可以直接将复权数据下载到本地。如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
+希望这能助新手避坑。
+
+这个脚本还会直接将复权数据下载到本地，便于后续回测使用。
+
+```bash
+$ ls
+LH.DCE_backward_pre_close-pre_close.csv
+```
+
+如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
 
 如下是这个命令的帮助信息：
 
@@ -67,6 +80,9 @@ Options:
   --ts-code TEXT    期货合约代码（例如：LH.DCE 表示生猪期货）  [必填]
   --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101）
 
+  --adjust          复权方式（默认：forward）: 
+                    forward: 前复权（以当前价格为基准调整历史数据）
+                    backward: 后复权（保持历史价格不变调整未来数据）
   --method          换月调整方法（默认：pre_close/pre_close）:
                     pre_close/pre_close: 使用前收盘价复权
                     open/pre_close: 使用开盘价/前收盘价复权
@@ -76,6 +92,16 @@ Options:
   --plot            是否显示价格曲线图（默认不显示）
   --help            Show this message and exit.
 ```
+
+前复权也支持。
+
+```python
+python main.py --ts-code LH.DCE --adjust forward --method open/pre_close --plot 
+```
+
+价格图如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-06.png)
 
 如果没有 Tushare 数据，文中也提供了关于如何自定义切换规则的一些思路和代码。或者联系我拿 Tushare 权限，有 20% 的折扣。如果是临时需要，我可以免费提供一个品种的复权数据。
 
@@ -276,7 +302,7 @@ open/pre_close 是最简单的复权因子计算方法，因为在矩阵计算�
 
 计算复权因子，要先拿到价格数据。
 
-如果你用的 tushare 的映射关系，可以直接调用 `fut_daily` 拿到日线数据，通过 `open/pre_close` 即可。不过为了接下来其他计算方式的统一，我还是将实际合约的价格重新合并进来。
+如果你用的 tushare 作为数据源，直接调用 `fut_daily` 就能拿到主连的日线数据，通过 `open/pre_close` 即可。不过为了与接下来其他计算方式的统一，我还是通过调取实际合约的价格，将它们与主连合约重新拼接得到主连的价格。
 
 为了拿到实际合约的价格，我要知道每个合约在主连合约上出现的开始和结束时间。
 
@@ -353,14 +379,14 @@ print(data[["ts_code", "trade_date", "open", "pre_close_before"]])
 data["pre_close_before"] = data["close"].shift(1)
 ```
 
-计算复权因子：
+计算复权因子，我以后复权为例。
 
 ```python
 # 换仓时的数据
 rollover_data = data[data["rollover"]]
 # 计算复权因子
 data["rollover_factor"] = rollover_data["open"] / rollover_data["pre_close_before"]
-data["adj_factor"] = data["rollover_factor"].fillna(1).cumprod()
+data["adj_factor"] = (1/data["rollover_factor"]).fillna(1).cumprod()
 ```
 
 计算复权价格并绘制收盘价：
@@ -368,12 +394,20 @@ data["adj_factor"] = data["rollover_factor"].fillna(1).cumprod()
 ```python
 data["adj_close"] = data["close"] * data["adj_factor"]
 data[["adj_close", "close"]].plot()
+```
+
+绘制价格图表：
+
+```python
+data['trade_date'] = pd.datetime(data['trade_date'])
+data.set_index("trade_date", inplace=True)
+data.index.name = "date"
 plt.show()
 ```
 
 绘图如下：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-01-v1.png)
 
 复权价格和实际的价格差异还是很大。
 
@@ -393,7 +427,7 @@ pre_settle/pre_settle：
 ```python
 data["pre_settle_before"] = data["settle"].shift(1)
 data["rollover_factor"] = rollover_data["prev_settle"] / rollover_data["pre_settle_before"]
-data["adj_factor"] = data["rollover_factor"].fillna(1).cumprod()
+data["adj_factor"] = (1/data["rollover_factor"]).fillna(1).cumprod()
 ```
 
 有了复权因子，就可以将价格数据与其相乘就能拿到复权价格了。
