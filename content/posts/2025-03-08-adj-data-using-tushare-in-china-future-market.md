@@ -1,5 +1,5 @@
 ---
-title: "期货回测避坑-基于 tushare 下载计算期货复权数据"
+title: "期货回测避坑-基于 tushare 计算期货复权价格"
 date: 2025-03-08T17:16:49+08:00
 draft: false
 comment: true
@@ -105,8 +105,6 @@ python main.py --ts-code LH.DCE --adjust forward --method open/pre_close --plot
 价格图如下：
 
 ![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-06-v1.png)
-
-这里看起来通过 `open/pre_close`
 
 如果没有 Tushare 数据，文中也提供了关于如何自定义切换规则的一些思路和代码。或者联系我拿 Tushare 权限，有 20% 的折扣。如果是临时需要，我可以免费提供一个品种的复权数据。
 
