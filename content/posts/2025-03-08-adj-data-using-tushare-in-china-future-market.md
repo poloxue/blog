@@ -6,7 +6,31 @@ comment: true
 description: "本文介绍如何计算期货的复权数据，以 Tushare 作为数据源。"
 ---
 
-本周写点国内期货的内容，介绍如何通过 Python 计算期货主连合约的复权数据。为什么要处理这个数据？因为它会直接影响策略（如 CTA 策略）的回测结果，
+本周写点国内期货的内容，介绍如何通过 Python 计算期货主连合约的复权数据。之所以要处理这个数据，是因为它会影响策略（如 CTA 策略）的回测结果。
+
+为便于后续使用，我将本文内容整合成了一个期货复权数据下载命令，如下是它的帮助信息：
+
+```bash
+Usage: main.py [OPTIONS]
+
+Options:
+  --ts-code TEXT    期货合约代码（例如：LH.DCE 表示生猪期货）  [必填]
+  --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101）
+
+  --adjust          复权方式（默认：forward）: 
+                    forward: 前复权（以当前价格为基准调整历史数据）
+                    backward: 后复权（保持历史价格不变调整未来数据）
+  --method          换月调整方法（默认：pre_close/pre_close）:
+                    pre_close/pre_close: 使用前收盘价复权
+                    open/pre_close: 使用开盘价/前收盘价复权
+                    pre_settle/pre_settle: 使用前结算价复权
+                    open/pre_settle: 使用开盘价复权
+
+  --plot            是否显示价格曲线图（默认不显示）
+  --help            Show this message and exit.
+```
+
+如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
 
 ## 背景概述
 
@@ -69,29 +93,7 @@ $ ls
 LH.DCE_backward_pre_close-pre_close.csv
 ```
 
-如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
 
-如下是这个命令的帮助信息：
-
-```bash
-Usage: main.py [OPTIONS]
-
-Options:
-  --ts-code TEXT    期货合约代码（例如：LH.DCE 表示生猪期货）  [必填]
-  --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101）
-
-  --adjust          复权方式（默认：forward）: 
-                    forward: 前复权（以当前价格为基准调整历史数据）
-                    backward: 后复权（保持历史价格不变调整未来数据）
-  --method          换月调整方法（默认：pre_close/pre_close）:
-                    pre_close/pre_close: 使用前收盘价复权
-                    open/pre_close: 使用开盘价/前收盘价复权
-                    pre_settle/pre_settle: 使用前结算价复权
-                    open/pre_settle: 使用开盘价复权
-
-  --plot            是否显示价格曲线图（默认不显示）
-  --help            Show this message and exit.
-```
 
 前复权也支持。
 
