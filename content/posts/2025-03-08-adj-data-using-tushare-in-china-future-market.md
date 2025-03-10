@@ -24,8 +24,9 @@ Options:
                     pre_close/pre_close: 使用前收盘价复权
                     open/pre_close: 使用开盘价/前收盘价复权
                     pre_settle/pre_settle: 使用前结算价复权
-                    open/pre_settle: 使用开盘价复权
+                    open/open: 使用开盘价复权
 
+  --no-download     是否禁用复权数据下载（默认下载）
   --plot            是否显示价格曲线图（默认不显示）
   --help            Show this message and exit.
 ```
