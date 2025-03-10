@@ -57,6 +57,8 @@ LH.DCE_backward_pre_close-pre_close.csv
 数据样例：
 
 ```bash
+In [x]: data[['ts_code', 'mapping_ts_code', 'adj_open',  'adj_high', 'adj_low'].head()
+Out[x]: 
            ts_code  adj_open  adj_high  adj_low  adj_close
 date
 2021-01-08  LH.DCE   29500.0   30680.0  26385.0    26810.0
