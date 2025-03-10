@@ -31,6 +31,53 @@ Options:
   --help            Show this message and exit.
 ```
 
+支持了常见的主连合约的复权方法，先给大家效果，直观看看考虑复权和不复权价格数据的差异。
+
+以生猪为例：
+
+```bash
+python main.py --ts-code LH.DCE --method pre_close/pre_close --plot
+```
+
+后复权价格图如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-04-v1.png)
+
+如果你想做期货的量化策略，特别是 CTA 策略，用主连价格回测，与实盘交易差异将会很大。
+
+希望这能助新手避坑。
+
+这个脚本还会直接将复权数据下载到本地，便于后续回测使用。
+
+```bash
+$ ls
+LH.DCE_backward_pre_close-pre_close.csv
+```
+
+数据样例：
+
+```bash
+           ts_code  adj_open  adj_high  adj_low  adj_close
+date
+2021-01-08  LH.DCE   29500.0   30680.0  26385.0    26810.0
+2021-01-11  LH.DCE   26225.0   26720.0  26030.0    26030.0
+2021-01-12  LH.DCE   25760.0   26210.0  25205.0    25560.0
+2021-01-13  LH.DCE   25830.0   26350.0  25715.0    25870.0
+2021-01-14  LH.DCE   25805.0   26155.0  24860.0    24890.0
+```
+
+前复权也支持。
+
+```python
+python main.py --ts-code LH.DCE --adjust forward --method open/pre_close --plot 
+```
+
+价格图如下：
+
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-06-v1.png)
+
+如果没有 Tushare 数据，文中也提供了关于如何自定义切换规则的一些思路和代码。或者联系我拿 Tushare 权限，有 20% 的折扣。如果是临时需要，我可以免费提供一个品种的复权数据。
+
 如果不想看完整文章，直接看文件代码地址：[download_future_adj_data.py](https://gist.github.com/poloxue/74fc77c6069a2293c6b776f0ea40a5bf)。这个代码是完整版，文章重点是介绍实现逻辑。
 
 ## 背景概述
@@ -69,46 +116,10 @@ Options:
 
 当然是自己计算了。走独立自主的发展道路，还可以根据策略目标制定不同的换仓时间和复权计算的方法。
 
-## 期货复权数据下载工具
-
-我开发了一个基于 tushare 下载期货复权数据的小工具，它支持了常见的主连合约的复权方法，先给大家效果，直观看看考虑复权和不复权价格数据的差异。
-
-以生猪为例：
-
-```bash
-python main.py --ts-code LH.DCE --method pre_close/pre_close --plot
-```
-
-后复权价格图如下：
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-04-v1.png)
-
-如果你想做期货的量化策略，特别是 CTA 策略，用主连价格回测，与实盘交易差异将会很大。
-
-希望这能助新手避坑。
-
-这个脚本还会直接将复权数据下载到本地，便于后续回测使用。
-
-```bash
-$ ls
-LH.DCE_backward_pre_close-pre_close.csv
-```
-
-
-
-前复权也支持。
-
-```python
-python main.py --ts-code LH.DCE --adjust forward --method open/pre_close --plot 
-```
-
-价格图如下：
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-06-v1.png)
-
-如果没有 Tushare 数据，文中也提供了关于如何自定义切换规则的一些思路和代码。或者联系我拿 Tushare 权限，有 20% 的折扣。如果是临时需要，我可以免费提供一个品种的复权数据。
 
 ---
+
+## 计算期货复权数据
 
 正式进入主题，本文我将介绍如何基于 tushare 计算主连合约的复权数据。
 
