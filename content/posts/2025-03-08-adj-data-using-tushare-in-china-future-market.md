@@ -1,5 +1,5 @@
 ---
-title: "期货回测大坑-基于 tushare 下载和计算期货的复权数据"
+title: "期货回测避坑-基于 tushare 下载计算期货复权数据"
 date: 2025-03-08T17:16:49+08:00
 draft: false
 comment: true
