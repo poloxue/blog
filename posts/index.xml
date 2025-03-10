@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 08 Mar 2025 17:16:49 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>回测避坑-如何计算期货的复权数据？</title><link>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</link><pubDate>Sat, 08 Mar 2025 17:16:49 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</guid><description>本周写点国内期货的内容，介绍如何通过 Python 计算期货主力连续合约的复权数据。
-背景概述 我最近想测试下统计套利策略。因为希望合理分配资金、对冲风险，就计划测试下国内市场的表现，但 A 股不支持做空机制，于是转而选择了国内期货。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 08 Mar 2025 17:16:49 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>期货回测大坑-基于 tushare 下载和计算期货的复权数据</title><link>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</link><pubDate>Sat, 08 Mar 2025 17:16:49 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</guid><description>本周写点国内期货的内容，介绍如何通过 Python 计算期货主连合约的复权数据。为什么要处理这个数据？因为它会直接影响策略（如 CTA 策略）的回测结果，
+背景概述 最近希望合理分配资金、对冲风险，就计划测试些适用于国内市场的策略，如套利、CTA 策略，但 A 股不支持做空机制，于是转而选择了期货市场。
 但问题是，期货不同于股票，不是一个品种一个可交易标的，而是由连续的交割合约组成，即每个合约都有到期日，而同一品种的不同月合约都是有价差的。
 如下是玻璃2505和2509的合约的价格曲线：
 查看交易软件上的主合约价格图表，如下图所示是生猪的主力合约的价格图：
 你会发现，这其中存在一些明显的跳空。这些跳空基本就是主连合约切换合约时产生的。
-如果是短线交易或者跨期套利，这个问题或许不是那么重要。但我还有计划测试期货的 CTA 策略，还是要解决下这个问题。
-如何解决？答案就是计算复权数据，通过复权计算买入持有的收益曲线。
+如果是短线交易或者跨期套利，这个问题或许不是那么重要。但我还计划测试期货的 CTA 策略。如果用这个数据回测策略，和实盘将有会很大差异，因为那些跳空是不同合约的价差，是实际交易无法拿到的收益。
+如何解决？
+答案就是计算复权数据，通过复权计算买入持有的收益曲线，将换仓时的价差尽可能的考虑在内。
 熟悉股票交易的人都知道，交易软件或数据平台会提供股票的复权价格（如分红、拆股后的调整数据），以消除公司行为导致的历史价格断裂，确保长期收益计算的准确性。
 但期货不同，交易软件和数据平台通常不会提供这个数据。
 为什么呢？
@@ -13,13 +14,15 @@
 散户能接触到的数据源通常只提供主连合约的原始价格数据。听过付费平台（如 Wind）好像有定制的主连合约，也提供了相应的复权因子。
 那我这个小散该怎么办？
 当然是自己计算了。走独立自主的发展道路，还可以根据策略目标制定不同的换仓时间和复权计算的方法。
-开始前，先给大家看看，长持主连合约的收益与软件上主连合约价格曲线的差异。
+期货复权数据下载工具 我开发了一个基于 tushare 下载期货复权数据的小工具，它支持了常见的主连合约的复权方法，先给大家效果，直观看看考虑复权和不复权价格数据的差异。
 以生猪为例：
-1 python main.py --ts-code LH.DCE --method pre_close/pre_close --plot 绘制价格图如下：
-希望能助新手避坑。
-上面使用的命令是我开发的一个脚本，可以直接将复权数据下载到本地。如果不想看完整文章，直接看文件代码地址：download_future_adj_data.py。这个代码是完整版，文章重点是介绍实现逻辑。
+1 python main.py --ts-code LH.DCE --method pre_close/pre_close --plot 后复权价格图如下：
+如果你想做期货的量化策略，特别是 CTA 策略，用主连价格回测，与实盘交易差异将会很大。
+希望这能助新手避坑。
+这个脚本还会直接将复权数据下载到本地，便于后续回测使用。
+1 2 $ ls LH.DCE_backward_pre_close-pre_close.csv 如果不想看完整文章，直接看文件代码地址：download_future_adj_data.py。这个代码是完整版，文章重点是介绍实现逻辑。
 如下是这个命令的帮助信息：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 Usage: main.py [OPTIONS] Options: --ts-code TEXT 期货合约代码（例如：LH.DCE 表示生猪期货） [必填] --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101） --method 换月调整方法（默认：pre_close/pre_close）: pre_close/pre_close: 使用前收盘价复权 open/pre_close: 使用开盘价/前收盘价复权 pre_settle/pre_settle: 使用前结算价复权 open/pre_settle: 使用开盘价复权 --plot 是否显示价格曲线图（默认不显示） --help Show this message and exit.</description></item><item><title>开发了一个加密货币跨市场价差监控工具</title><link>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</link><pubDate>Mon, 03 Mar 2025 11:16:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</guid><description>前两周发了一篇关于如何监控加密货币跨市场套利监控的文章，介绍了基础的实现思路和示例代码。有不少朋友对这个内容表现出了浓厚的兴趣，也有人想要这样一个监控工具。
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 Usage: main.</description></item><item><title>开发了一个加密货币跨市场价差监控工具</title><link>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</link><pubDate>Mon, 03 Mar 2025 11:16:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-03-crypto-spread-monitor-using-python/</guid><description>前两周发了一篇关于如何监控加密货币跨市场套利监控的文章，介绍了基础的实现思路和示例代码。有不少朋友对这个内容表现出了浓厚的兴趣，也有人想要这样一个监控工具。
 上周我将示例代码重新整合，开发了一个终端监控工具，也修复了之前示例中的一些 bug，。如果还不是了解的，查看前文 实时监控加密货币跨交易所的套利机会。
 使用示例 接下来，演示下在不同市场间的监控案例。提示：可使用 Ctrl+q 退出监控终端。
 基于最新成交（Binance 现货和 OKX 正向永续合约的全量监控)：
