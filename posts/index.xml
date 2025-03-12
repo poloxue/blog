@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 08 Mar 2025 17:16:49 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>期货回测避坑-基于 tushare 计算期货复权价格</title><link>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</link><pubDate>Sat, 08 Mar 2025 17:16:49 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</guid><description>本周写点国内期货的内容，介绍如何通过 Python 计算期货主连合约的复权数据。之所以要处理这个数据，是因为它会影响策略（如 CTA 策略）的回测结，是个大坑。新手要理解下期货与股票的差异。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sun, 09 Mar 2025 19:37:59 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>加密货币市场的低风险套利策略-期现套利</title><link>https://www.poloxue.com/posts/2025-03-10-risk-free-cash-and-carry-strategy-in-crypto-market/</link><pubDate>Sun, 09 Mar 2025 19:37:59 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-10-risk-free-cash-and-carry-strategy-in-crypto-market/</guid><description>数字货币市场因为波动大，存在一些低风险套利机会，如前面介绍过的 资金费率套利策略，利用的是现货与永续合约对冲赚取资金费率长期为正的收益。
+本文继续介绍加密货币市场上的另一个低风险套利策略：期现套利。
+什么是期现套利？ 期现套利与资金费率套利有类似点，也是通过对冲实现低风险套利，它的两个对冲标的是由相同底层资产的现货和交割合约完成。
+举个简单例子吧。
+在 BTC 现货价格为 10,000 美元、1个月期货价格为 10,200 美元时，我们买入现货并同步卖出等量期货合约，如 1 BTC，即可锁定200美元价差。到期后以期货价交割现货，实现 2% 的月回报。
+若计入交易成本（如双向 0.3% 手续费+滑点）净收益从200美元降至150美元。如果还有资金成本，如杠杆交易有借款利率，这部分也有减掉。
+说白了，这种套利就是等期货价格比现货高出一截时，一手买现货，一手卖期货，赚中间的差价。但也不是稳赚不赔——价差得能覆盖手续费、借款利息这些成本，而且得拿这两个单子等合约到期（如一个月），差价才会真正落袋为安。
+这个策略和跨交易所那种看到价差立刻倒手赚快钱不一样，这玩法更考验耐心和资金量，所以一般都是机构大资金在玩，大部分人没资金且没耐心，不愿意等这个时间赚小钱。
+监控价差 先一起感受下这个价差回归的过程，我以 OKX 上的 BTC-USDT-20250328 与现货 BTC/USDT 为例，下面是这个它们的价格历史变化图。
+可以看到，现货和合约的价格随着时间不断靠近。
+如果是价差走势图的话，会更加直观。你会看到价差会随着时间不断在向零靠近。
+绝对值：
+百分比：
+可以看到，12 月份牛市高点的时候，3 个月到期的期现价差大概 5.3%，这个收益实在不要任何操盘的情况下，基本确定能拿到的收益。
+如果是 BTC-USDT-20250627 的价格交割合约，大概有 9% 的价差。
+如何监控这个价差呢？
+一些交易图表软件或者交易所可能会提供监控这个价差的工具。如果有编程能力，可以自己开发。
+虽说期现套利并非捕捉瞬时价差机会，但我开发的那个简单的跨市场价差监控工具也能监控期现价差。不知道的可查看之前的文章 开发了一个加密货币跨市场价差监控工具
+1 $ python main.py --market-a okx.spot --market-b okx.future.linear 因为最近行情不好，期现套利的价差也很小了。
+如何操作呢？ 简单点就手动操作，买入相同基准单位的仓位，如同时开仓 1 BTC 的现货和 1 BTC 的合约空头。
+也可以基于交易所的策略工具，如 OKX 有个套利策略。
+你可以按设置成交方式，如一腿按限价单下单，成交的同时，立刻用市价开仓另一腿。
+资金利用率 为了最大化资金利用率，可考虑将账户模式切换成跨币种保证金，这样能最大化提高资金率，还能减少爆仓风险。</description></item><item><title>期货回测避坑-基于 tushare 计算期货复权价格</title><link>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</link><pubDate>Sat, 08 Mar 2025 17:16:49 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-08-adj-data-using-tushare-in-china-future-market/</guid><description>本周写点国内期货的内容，介绍如何通过 Python 计算期货主连合约的复权数据。之所以要处理这个数据，是因为它会影响策略（如 CTA 策略）的回测结，是个大坑。新手要理解下期货与股票的差异。
 为便于后续使用，我将本文内容整合成了一个期货复权数据下载命令，如下是它的帮助信息：
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 Usage: main.py [OPTIONS] Options: --ts-code TEXT 期货合约代码（例如：LH.DCE 表示生猪期货） [必填] --start-date TEXT 起始日期（格式：YYYYMMDD，默认为20220101） --adjust 复权方式（默认：forward）: forward: 前复权（以当前价格为基准调整历史数据） backward: 后复权（保持历史价格不变调整未来数据） --method 换月调整方法（默认：pre_close/pre_close）: pre_close/pre_close: 使用前收盘价复权 open/pre_close: 使用开盘价/前收盘价复权 pre_settle/pre_settle: 使用前结算价复权 open/open: 使用开盘价复权 --no-download 是否禁用复权数据下载（默认下载） --plot 是否显示价格曲线图（默认不显示） --help Show this message and exit. 支持了常见的主连合约的复权方法，先给大家效果，直观看看考虑复权和不复权价格数据的差异。
 以生猪为例：
