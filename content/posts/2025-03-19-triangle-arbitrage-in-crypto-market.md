@@ -92,7 +92,6 @@ $ python seekoptrader/__main__.py triangle --exchange-name okx
 
 其中的 ask 和 bid 表示最优卖价和买价。
 
-当然也能更灵活的推算公式，只要提供计价币种和三角交易对，就能推送出三角兑换的汇率。不过现在的已经简单够用，就不折腾了。
 
 ### 过滤规则
 
@@ -141,7 +140,6 @@ def find_triangles(self, markets):
 
 一旦路径和基点变了，那计算的公式也就完全不同了。
 
-
 如 `USDT -> BTC -> ETH -> USDT` 的兑换路径，公式是：
 
 ```bash
@@ -157,6 +155,64 @@ def find_triangles(self, markets):
 这样组合起来，一个三角配对就有了 6 个交易路径，这也是为什么上面演示的工具中有 6 个 汇率的原因。
 
 现在很多币种都可以质押借款，如果能抓住这瞬时的交易机会，在还掉借贷后，还能赚点币在手里，这就是利润。
+
+## 灵活推算汇率公式
+
+除了前面按交易对模式固定死汇率公式，还可以更灵活的推算公式，只要提供兑换起点币种和三角交易对，就能推出三角兑换的汇率公式。
+
+我已经把这个思路的核心逻辑代码写出了，借这篇文章保存下，万一哪天需要还能找到。
+
+```python
+from collections import defaultdict
+
+
+def detect_arbitrage_ops(start_currency, symbols):
+    graph = defaultdict(dict)
+    for symbol in symbols:
+        base, quote = symbol.split("/")
+        graph[base][quote] = symbol  # 正向交易 base→quote
+        graph[quote][base] = symbol  # 反向交易 quote→base
+
+    chains = []
+    max_depth = 3
+
+    def dfs(current, path, ops=[], depth=0):
+        if depth == max_depth:
+            if current == start_currency:
+                chains.append(ops)
+            return
+
+        for next_currency in graph[current]:
+            symbol = graph[current][next_currency]
+            base, quote = symbol.split("/")
+            new_op = f"*bid({symbol})" if current == base else f"/ask({symbol})"
+            dfs(next_currency, path + [next_currency], ops + [new_op], depth + 1)
+
+    dfs(start_currency, [start_currency])
+
+    return ["1" + "".join(chain) for chain in chains]
+```
+
+
+示例测试:
+```python
+base = "ETH"
+pairs = ["BTC/USDT", "ETH/BTC", "ETH/USDT"]
+operations = detect_arbitrage_ops(base, pairs)
+print("ETH 兑换起点:", operations)
+```
+
+输出：
+
+```bash
+ETH 兑换起点: [
+    '1*bid(ETH/BTC)*bid(BTC/USDT)/ask(ETH/USDT)',
+    '1*bid(ETH/USDT)/ask(BTC/USDT)/ask(ETH/BTC)'
+]
+```
+
+现在的已经简单够用，就没把这个设计集成到工具里。
+
 
 ## 总结
 
