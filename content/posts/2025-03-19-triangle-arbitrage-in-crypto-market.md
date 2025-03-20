@@ -40,6 +40,7 @@ description: "本文继续介绍一个常见的套利策略，三角套利策略
 
 工具仓库地址 [github.com/poloxue/seekoptrader](https://github.com/poloxue/seekoptrader/tree/v0.0.2)
 
+
 效果如下：
 
 ```bash
@@ -52,6 +53,8 @@ $ python seekoptrader/__main__.py triangle --exchange-name okx
 如上图有六个汇率值，这是因为以不同币种作为起点和选择不同的兑换路径，一个三角配对可以有六种汇率计算方式。
 
 假设你的费率是 0.1%，不考虑滑点的情况下，如果你能发现汇率大于 1.003 的机会，就有机会获利。如果是质押借贷，还要考虑借贷利息。
+
+注：暂时不建议在 binance 上尝试，因为它的上面币种太多了，跑不动。不过或许它有机会的概率会高些。
 
 ## 实现思路
 
@@ -157,7 +160,7 @@ def find_triangles(self, markets):
 
 ## 总结
 
-本文简单介绍了三角套利，开发了一个监控小工具。
+本文简单介绍了三角套利，开发了一个监控小工具。这是我的一次尝试，如有建议请提出来。
 
 最后，希望本文对你有用。
 
