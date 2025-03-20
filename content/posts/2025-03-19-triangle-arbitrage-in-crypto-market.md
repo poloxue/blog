@@ -90,7 +90,7 @@ $ python seekoptrader/__main__.py triangle --exchange-name okx
 1 / ask(C/B) * bid(C/A) / ask(B/A)
 ```
 
-其中的 ask 和 bid 表示罪加最优卖价和买价。
+其中的 ask 和 bid 表示最优卖价和买价。
 
 当然也能更灵活的推算公式，只要提供计价币种和三角交易对，就能推送出三角兑换的汇率。不过现在的已经简单够用，就不折腾了。
 
@@ -160,7 +160,7 @@ def find_triangles(self, markets):
 
 ## 总结
 
-本文简单介绍了三角套利，开发了一个监控小工具。这是我的一次尝试，如有建议请提出来。
+本文简单介绍了三角套利，开发了一个监控小工具。这是我的一次尝试，如有建议请提出来。如果你对代码实现感兴趣，可查看：[triangle/monitor.py](https://github.com/poloxue/seekoptrader/blob/v0.0.2/seekoptrader/arbitrage/triangle/monitor.py)。
 
 最后，希望本文对你有用。
 
