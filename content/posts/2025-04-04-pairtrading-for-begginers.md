@@ -1,5 +1,5 @@
 ---
-title: "2025 04 04 Pairtrading for Begginers"
+title: "配对交易基础教程"
 date: 2025-04-04T15:24:11+08:00
 draft: false
 comment: true
