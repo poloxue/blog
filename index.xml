@@ -1,4 +1,29 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 19 Mar 2025 17:04:44 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>实时监控加密货币现货市场的三角套利机会</title><link>https://www.poloxue.com/posts/2025-03-19-triangle-arbitrage-in-crypto-market/</link><pubDate>Wed, 19 Mar 2025 17:04:44 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-19-triangle-arbitrage-in-crypto-market/</guid><description>本文继续介绍一个常见的套利策略，三角套利策略。我将介绍如何实时监控加密货币现货市场上的三角套利机会。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Fri, 04 Apr 2025 15:24:11 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>2025 04 04 Pairtrading for Begginers</title><link>https://www.poloxue.com/posts/2025-04-04-pairtrading-for-begginers/</link><pubDate>Fri, 04 Apr 2025 15:24:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-04-04-pairtrading-for-begginers/</guid><description>翻译：Pairs Trading for Beginners: Correlation, Cointegration, Examples, and Strategy Steps
+配对交易策略是在两只具有协整关系的股票之间寻找交易机会时最流行的策略之一。
+如何形成协整关系？如何利用配对交易策略从它们的协整关系中获利？
+本篇博客将全面探讨这些问题，内容涵盖：
+什么是配对交易？ 在配对交易策略中，通常会以市场中性方式交易两只股票，即无论市场处于上涨还是下跌趋势，两只股票的开仓头寸都能相互对冲。
+配对交易策略的关键挑战在于：
+筛选具备长期统计套利潜力的股票组合 精准把握入场与出场时机 配对交易的历史 配对交易策略最早出现于20世纪80年代中期，由摩根士丹利雇佣的一批技术分析师研究团队首创。该策略通过统计分析与技术分析相结合的方法，寻找潜在的市场中性盈利机会。
+配对交易的底层逻辑是什么？ 配对交易策略的核心在于：
+两只股票或金融工具的价格走势应当围绕相似均值波动，并保持相对稳定的价差关系。然而在某些情况下，其中一只标的价格可能出现短期偏离。
+当这种价差偏离发生时，交易者可以抓住机会做多被低估的金融工具，同时做空被高估的一方。具体头寸建立需综合考量两只股票的实时市场价格及其历史标准差。
+配对交易核心术语解析 在配对交易策略中，有一些关键术语需要掌握。
+相关性 相关性通过相关系数ρ量化表示，其取值范围为-1至+1。该系数反映两个变量之间的关联程度：
+相关性分析 相关性通过相关系数ρ量化表示，其取值范围为-1至+1。该系数反映两个变量之间的关联程度：
+完全正相关（+1）：当一个变量上涨或下跌时，另一个变量同向等幅变动 完全负相关（-1）：当一个变量上涨时，另一个变量等幅反向变动 零相关（0）：两个变量不存在线性关联关系 完全正相关指的是：当一个变量无论上涨或下跌时，另一个变量始终保持完全同向且等幅度的变动。
+而完全负相关则表现为：当一个变量上涨时，另一个变量呈现完全反向但幅度相等的下跌走势（反之亦然）。
+两个变量的相关系数计算公式如下：
+$$相关系数(X,Y) = ρ = COV(X,Y) / [SD(X) \cdot SD(Y)]$$
+其中：
+COV(X, Y) = X与Y的协方差 SD(X) 和 SD(Y) = 各自变量的标准差 当相关系数较高时（例如达到0.8），交易者可能会选择该股票对进行配对交易。这一高数值表明两只股票之间存在强关联性——若股票A上涨，股票B同步上涨的概率也相当高。
+基于这一假设，交易者会采取市场中性策略——买入股票A同时卖出股票B，买卖决策依据两只股票各自的走势模式而定。
+但仅凭相关性分析可能导致伪相关结论。例如，若配对交易策略基于两只股票的价格差（价差=log(a) - nlog(b)，其中a、b分别代表股票A、B的价格），可能出现两只股票价格持续同向增长而永不均值回归的情况。
+价差 = log(a) - nlog(b)
+当a、b价格同步上涨，但价差持续收窄时（即股票A涨幅小于股票B），由于做空了涨幅更大的股票B，最终将导致投资亏损。
+因此，在执行配对交易策略时，仅依靠相关性指标筛选股票对存在风险，需谨慎对待。
+协整性 配对交易最常用的检验方法是协整检验。协整是指两个或多个时间序列变量之间存在这样的统计特性：它们的线性组合能够形成平稳序列。
+具体来说，这里的两个时间序列变量分别是股票A和股票B的价格对数。这两个变量的线性组合可以构成定义价差的线性方程：</description></item><item><title>实时监控加密货币现货市场的三角套利机会</title><link>https://www.poloxue.com/posts/2025-03-19-triangle-arbitrage-in-crypto-market/</link><pubDate>Wed, 19 Mar 2025 17:04:44 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-03-19-triangle-arbitrage-in-crypto-market/</guid><description>本文继续介绍一个常见的套利策略，三角套利策略。我将介绍如何实时监控加密货币现货市场上的三角套利机会。
 如果你看过我的前几篇文章，应该知道我最近一直专注在数字货币套利策略的学习研究。至于是否有低费率权限、硬件配置、低延迟网络等客观条件，不是文章的重点。我更多还是放在介绍套利的主线逻辑，完成我的整个套利系列的文章和工具集。请把它们当成一个抛砖引玉的 demo 即可，当你有这方面需求，能给你提供一些参考和思考，那就是好的。
 正式开始本篇文章。
 什么是三角套利？ 三角套利原本是一种针对外汇市场的套利策略，通过利用三种货币对间的汇率失衡实现无风险利润。其核心原理基于“交叉汇率”一致性。
