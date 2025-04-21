@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 15 Apr 2025 17:59:11 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>掌握 backtrader 策略回测：均线交叉交易系统</title><link>https://www.poloxue.com/posts/2025-04-16-macross-using-backtrader/</link><pubDate>Tue, 15 Apr 2025 17:59:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-04-16-macross-using-backtrader/</guid><description>我花了一个星期通读了 backtrader 的官方文档，順便还通过 AI 整理出了它的中文文档，我不想写 backtrader 的基础入门教程，还不如直接用 backtrader 逐步展开回测这一个策略，或许更加容易掌握它的使用。
-相较于其他回测框架，backtrader 的功能强大，除了支持单品种，还可以实现组合策略，扩展能力非常强大，如果说缺点，一是这个项目基本不维护了，不过不影响它的使用，还有就是因为它很强大，扩展性强，于比其他的回测更不易于掌握。
+相较于其他回测框架，backtrader 的功能强大，除了支持单品种，还可以实现组合策略，扩展能力非常强大，如果说缺点，一是这个项目基本不维护了，不过不影响它的使用，还有就是因为它很强大，扩展性强，比其他的回测框架更不易于掌握。
 本文介绍如何使用 backtrader 回测双均线交易策略，将包含基本的进出场、风险控制，参数优化等，还有如何加载分钟数据尽可能模拟真实场景。我暂时先用双均线策略上手 backtrader，后续还会使用 backtrader 回测更多的策略。
 策略定义 选择品种
 暂定 BTC 作为回测品种，虽然这个策略在它上面的表现不算很好。 技术指标
