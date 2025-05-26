@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 26 May 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>对加密货币市场定投一些粗浅思考</title><link>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</link><pubDate>Mon, 26 May 2025 10:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</guid><description>最近在研究定投策略在数字货币上的表现，计划实际回测下不同的定投策略的表现。我计划以此为主题，从不同纬度展开，测试不同定投策略在数字货币上的表现。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 26 May 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>对加密货币市场定投一些粗浅思考</title><link>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</link><pubDate>Mon, 26 May 2025 10:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</guid><description>最近在研究定投策略在数字货币上的表现，计划实际回测下不同的定投策略的表现。我
 本文尝试先整理定投的一些概念，梳理下我对定投的理解，就是随便瞎扯犊子。
 理清几个概念 先明确几个容易被混乱的概念，分别是 DCA、定投和马丁格尔。这几个名词是我看几个交易机器人时产生的迷惑，它们的命名并不统一。
 定投常见的理解就是定期定额投资，至少是有定期的概念，而定投金额可能有动态调整的策略，如位于均线下方多投一些。
@@ -8,7 +8,7 @@ DCA 的英文全名是 Dollar Cost Averaging，平均成本法，中文通常解
 这几个概念不同交易所的命名上有差异，了解本质就行，没必要纠结命名差异。无论是马丁格尔还是定期定额策略都是在分批买入，平均成本。
 除了简单的定投，像 3Commas 这种交易机器人的平台，还提供了非常复杂的定投策略（DCA），如 RSI 超卖定投，MA 定投、下跌百分比定投等。除此意外，还可以设置复杂的止盈策略。
 不啰嗦了。统一称为定投吧，都是分批买入，区别在于是否定期与是否定额，可统一分为四类，即定期定额、定期不定额、不定期定额和不定期不定额。
-止盈与不止盈 我觉得定投还有一个比较重要点：是否止盈，它们对确定我的定投策略有什么影响。
+止盈与不止盈 我觉得定投还有一个比较重要点：是否止盈，它对确定我的定投策略有什么影响？
 不带止盈定投： 即一直买、一直拿着不卖；
 带止盈的定投： 即涨到一定程度就卖出止盈；
 虽然看起来它们只是“卖”还是“不卖”的区别，但这两种方式背后的思维方式和目的完全不同。
@@ -16,19 +16,19 @@ DCA 的英文全名是 Dollar Cost Averaging，平均成本法，中文通常解
 就像你每个月往账户里存 100 美元，不管比特币是涨是跌，反正你长期看好它，打算放个五年、十年甚至更久。这种方式适合那些相信比特币长期会上涨、不太关心短期涨跌的人。省心、简单，而且拉长周期后通常能获得不错的回报。
 设有止盈点的定投，则更像是 &amp;ldquo;交易&amp;rdquo; 或 &amp;ldquo;套利&amp;rdquo;。
 你在价格低的时候定投，一旦价格涨到某个目标，比如赚了50%、翻倍了，就卖出止盈，把钱收回来。这种方式适合想更快看到收益，或者对风险更敏感、想把握市场波动机会的人。
-为什么谈它们的区别？
-我开始一直如何将两个策略放在一起比较，但发现单纯从收益、风险这些评价纬度比较它们并不合适。逐渐明白，没有必要把它们放一起比较。
+为什么谈它们的区别？ 我开始一直如何将两个策略放在一起比较，但发现单纯从收益、风险这些评价纬度比较它们并不合适。逐渐明白，没有必要把它们放一起比较。
 基于场景决定是否止盈 如果你的目标是长期持有、积累资产，那么不带止盈的定投就是在“持续囤币”，关注的是资产的长期增值，而不是短期波动。
 如果你的目标是提高收益、灵活调配资金，那么带止盈的定投其实就是一种策略性交易，通过设定止盈点锁定收益、提升资金利用率。
 不止盈的定投强调“时间复利”和“稳定积累”，适合长期信仰者；而带止盈的定投则更像是“低买高卖”的波段套利，更适合资金效率优先的交易者。
-对于大部分人而言，基本都没有强大的信仰，带有止盈后续更适合你。
+如果没有强大的信仰，带有止盈后续更适合你。
 止盈后的资金如何利用 带有止盈的定投，还有一个比较重要点，要思考止盈后的资金该如何利用。
 我们可重启定投，但重启定投后的资金是无法全部利用的。
 多出来的资金如何处理呢？
 这些资金可配置到理财产品，获取低风险收益；
 亦或是配置其他策略，如我之前介绍的一些低风险策略如资金费率套利、期现套利。定投止盈时，可能就是牛市行情，这个时候这些低风险套利策略正好是高收益的时刻。
 当然，配置一些高风险的 CTA 策略，博取更大收益，也是不错的选择。
-总结 本文随便扯扯，只是谈谈个人想法，感觉阅读。</description></item><item><title>掌握 backtrader 策略回测：均线交叉交易系统</title><link>https://www.poloxue.com/posts/2025-04-16-macross-using-backtrader/</link><pubDate>Tue, 15 Apr 2025 17:59:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-04-16-macross-using-backtrader/</guid><description>我花了一个星期通读了 backtrader 的官方文档，順便还通过 AI 整理出了它的中文文档，我不想写 backtrader 的基础入门教程，还不如直接用 backtrader 逐步展开回测这一个策略，或许更加容易掌握它的使用。
+总结 本文随便扯扯，只是谈谈个人想法，感觉阅读。
+本文只是个人思考，交易有风险，请自行研究，明确承担的风险，谢谢！</description></item><item><title>掌握 backtrader 策略回测：均线交叉交易系统</title><link>https://www.poloxue.com/posts/2025-04-16-macross-using-backtrader/</link><pubDate>Tue, 15 Apr 2025 17:59:11 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-04-16-macross-using-backtrader/</guid><description>我花了一个星期通读了 backtrader 的官方文档，順便还通过 AI 整理出了它的中文文档，我不想写 backtrader 的基础入门教程，还不如直接用 backtrader 逐步展开回测这一个策略，或许更加容易掌握它的使用。
 相较于其他回测框架，backtrader 的功能强大，除了支持单品种，还可以实现组合策略，扩展能力非常强大，如果说缺点，一是这个项目基本不维护了，不过不影响它的使用，还有就是因为它很强大，扩展性强，比其他的回测框架更不易于掌握。
 本文介绍如何使用 backtrader 回测双均线交易策略，将包含基本的进出场、风险控制，参数优化等，还有如何加载分钟数据尽可能模拟真实场景。我暂时先用双均线策略上手 backtrader，后续还会使用 backtrader 回测更多的策略。
 策略定义 选择品种
