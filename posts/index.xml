@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 26 May 2025 10:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>对加密货币市场定投一些粗浅思考</title><link>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</link><pubDate>Mon, 26 May 2025 10:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</guid><description>最近在研究定投策略在数字货币上的表现，计划实际回测下不同的定投策略的表现。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on POLOXUE's BLOG</title><link>https://www.poloxue.com/posts/</link><description>Recent content in Posts on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 27 May 2025 13:00:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>测试分析定期定额的定投囤币方案</title><link>https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/</link><pubDate>Tue, 27 May 2025 13:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/</guid><description>本文尝试分析不止盈的定投策略，目标是寻找一个更优囤币的方案，我将先从简单的定期定额开始入手。
+注意：本文仅为个人观点分享，记录研究过程，不构成任何投资建议。投资有风险，入市需谨慎，请读者自行研究并独立承担相应后果。
+如果对回测代码有兴趣，在公众号回复 &amp;ldquo;dcastrategy-bt-p1&amp;rdquo; 获取代码地址，回测采用 backtrader 实现，暂只适用于 7x24 小时无休市场，没有针对如股票市场交易日历的处理。简单处理的话，可以将它们的行情做填充补齐。
+定投目标 什么是更优囤币的方案？我认为，肯定是能以更低价格且足额数量买到你心仪加密币的方案。
+什么是更优的价格？
+这个很好评价，即总持仓的成本越低越好，持仓成本的计算公式如下：
+$$持仓成本 = \dfrac{总投入金额}{总持仓数量}$$
+是不是持仓越低越好呢？ 当然不是，我还要保证买入的金额是足够的。
+那什么是足够的金额呢？
+这可以基于你的工作薪资制定定投金额，基于定投周期和推算出的目标金额，就是你计划投入的足额金额。
+举个简单的例子
+假设你每个月有 1000 USD 的额度可用于定投，如果目标是五年每月定投 1000 USD 到 BTC，则定投的目标总金额就是 60k USD。
+如果你的定投计划不能完全把你计划的金额全部投进去，那某种意义上就是资金的浪费。
+到这里，目标就明确了，我在一定的时间内，花完计划投入的所有金额，且买入的成本要足够低。
+那么，为了完成这个目标，我有哪些策略可以使用呢？
+定期定额 首先，讨论定期定额的定投策略，它是否满足我们对定投的目标。
+这个方案与定投目标算是正好契合，因为它就是定期购买固定额度。这能保证计划的金额在规定时间内全部兑换为我的目标数字币。
+按前面的例子，你每个月计划 1000 USD 用于定投 BTC，定投五年，投入金额为 60k USD。
+按这个方案，假设每月 1 号定投，我回测了过去五年（2020-01-01 到 2024-12-31）的表现。
+如下回测得到表现数据：
+投入金额: 60000 USD； 囤币数量: 约 2.60 BTC； 持仓成本: 23100.60； 这个持仓成本在 23000 附近，还是比较感人的，最终囤了 2.59 BTC。
+现在就将这个作为基准去测试其他定投方案吧。
+除了按月这个定投周期，还有选择其他周期，如每周、每双周、每日等，可以回测这些不同的周期，看看是否能带来一定的优势。
+我简单测试了每日和每周的表现，将它们的表现数据与每月定投合并，如下所示。
+定投周期 单次金额 总投入金额 囤币数量 持仓成本 每日 32.</description></item><item><title>对加密货币市场定投一些粗浅思考</title><link>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</link><pubDate>Mon, 26 May 2025 10:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-26-dca-stratey-in-cryptocurrency/</guid><description>最近在研究定投策略在数字货币上的表现，计划实际回测下不同的定投策略的表现。
 本文尝试先整理定投的一些概念，梳理下我对定投的理解，就是随便瞎扯犊子。
 理清几个概念 先明确几个容易被混乱的概念，分别是 DCA、定投和马丁格尔。这几个名词是我看几个交易机器人时产生的迷惑，它们的命名并不统一。
 定投常见的理解就是定期定额投资，至少是有定期的概念，而定投金额可能有动态调整的策略，如位于均线下方多投一些。
