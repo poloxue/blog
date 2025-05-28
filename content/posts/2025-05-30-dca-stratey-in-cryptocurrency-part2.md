@@ -1,5 +1,5 @@
 ---
-title: "测试分析定期定额的定投囤币方案"
+title: "探索定投囤币方案之定期定额"
 date: "2025-05-27T13:00:00+08:00"
 draft: false
 comment: true
