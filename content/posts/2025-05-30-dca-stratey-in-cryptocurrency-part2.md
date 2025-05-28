@@ -1,7 +1,7 @@
 ---
 title: "测试分析定期定额的定投囤币方案"
 date: "2025-05-27T13:00:00+08:00"
-draft: true
+draft: false
 comment: true
 description: "本文尝试分析不止盈的定投策略，目标是寻找一个更优囤币的方案。"
 ---
