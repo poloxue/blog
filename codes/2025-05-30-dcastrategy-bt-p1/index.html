@@ -1,0 +1,552 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>定期定额回测代码 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="定期定额回测代码"><meta itemprop=description content="本文记录数字货币的定期定额的代码，基于 backtrader 实现。"><meta itemprop=datePublished content="2025-05-28T17:56:10+08:00"><meta itemprop=dateModified content="2025-05-28T17:56:10+08:00"><meta itemprop=wordCount content="965"><meta itemprop=keywords content><meta property="og:title" content="定期定额回测代码"><meta property="og:description" content="本文记录数字货币的定期定额的代码，基于 backtrader 实现。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/codes/2025-05-30-dcastrategy-bt-p1/"><meta property="article:section" content="codes"><meta property="article:published_time" content="2025-05-28T17:56:10+08:00"><meta property="article:modified_time" content="2025-05-28T17:56:10+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="定期定额回测代码"><meta name=twitter:description content="本文记录数字货币的定期定额的代码，基于 backtrader 实现。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
+<script src=https://www.poloxue.com/js/main.js></script>
+<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script>
+<script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>28</span>
+<span class=rest>May 2025</span></div></div><div class=matter><h1 class=title>定期定额回测代码</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents></nav></aside><p>本文记录数字货币的定期定额的代码，基于 backtrader 实现。</p><p>完整代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">  9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 35
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 36
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 37
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 38
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 39
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 40
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 41
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 42
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 43
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 44
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 45
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 46
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 47
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 48
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 49
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 50
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 51
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 52
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 53
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 54
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 55
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 56
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 57
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 58
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 59
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 60
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 61
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 62
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 63
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 64
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 65
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 66
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 67
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 68
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 69
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 70
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 71
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 72
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 73
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 74
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 75
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 76
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 77
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 78
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 79
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 80
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 81
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 82
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 83
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 84
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 85
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 86
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 87
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 88
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 89
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 90
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 91
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 92
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 93
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 94
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 95
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 96
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 97
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 98
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 99
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">100
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">101
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">102
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">103
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">104
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">105
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">106
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">107
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">108
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">109
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">110
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">111
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">112
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">113
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">114
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">115
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">116
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">117
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">118
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">119
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">120
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">121
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">122
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">123
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">124
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">125
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">126
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">127
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">128
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">129
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">130
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">131
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">132
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">133
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">134
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">135
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">136
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">137
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">138
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">139
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">140
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">141
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">142
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">143
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">144
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">145
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">146
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">147
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">148
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">149
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">150
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">151
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">152
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">153
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">154
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">155
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">156
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">157
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">158
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">159
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">160
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">161
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">162
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">163
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">164
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">165
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">166
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">167
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">168
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">169
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">170
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">171
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">172
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">173
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">174
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">175
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">176
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">177
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">178
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">179
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">180
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">181
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">182
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">183
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">184
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">185
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">186
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">187
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">188
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">189
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">190
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">191
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">192
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">193
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">194
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">195
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">196
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">197
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">198
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">199
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">200
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">201
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">202
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">203
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">204
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">205
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">206
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">207
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">208
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">209
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">210
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">211
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">212
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">213
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">214
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">215
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">216
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">217
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">218
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">219
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">220
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">221
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">222
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">223
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">224
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">225
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">226
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">227
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">228
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">229
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">230
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">231
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">232
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">233
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">234
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">235
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">236
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">237
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">238
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">239
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">240
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">241
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">242
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">243
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">244
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">245
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">246
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">247
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">248
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">249
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">250
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">251
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">252
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">253
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">254
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">255
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">256
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">257
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">258
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">259
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">260
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">261
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">262
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">263
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">264
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">265
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">266
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">267
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">268
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">269
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">270
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">271
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">272
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">273
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> os
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> ccxt
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pytz
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> pandas <span style=color:#66d9ef>as</span> pd
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> numpy <span style=color:#66d9ef>as</span> np
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> datetime
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> dateutil.parser <span style=color:#f92672>import</span> parse <span style=color:#66d9ef>as</span> datetime_parse
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> dateutil.relativedelta <span style=color:#f92672>import</span> relativedelta
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> click
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> backtrader <span style=color:#66d9ef>as</span> bt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>params <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;enableRateLimit&#34;</span>: <span style=color:#66d9ef>True</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;proxies&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;http&#34;</span>: os<span style=color:#f92672>.</span>getenv(<span style=color:#e6db74>&#34;http_proxy&#34;</span>),
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;https&#34;</span>: os<span style=color:#f92672>.</span>getenv(<span style=color:#e6db74>&#34;http_proxy&#34;</span>),
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>exchanges <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>create_exchange</span>(name):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> name <span style=color:#f92672>in</span> exchanges:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> exchanges[name]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> hasattr(ccxt, name):
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>raise</span> <span style=color:#a6e22e>ValueError</span>(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;Not supported exchange: </span><span style=color:#e6db74>{</span>name<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>        exchanges[name] <span style=color:#f92672>=</span> getattr(ccxt, name)(params)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> exchanges[name]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>symbols</span>(market<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;swap.linear&#34;</span>, quote_ccy<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;USDT&#34;</span>, exchange_name<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;binance&#34;</span>):
+</span></span><span style=display:flex><span>    exchange <span style=color:#f92672>=</span> create_exchange(exchange_name)
+</span></span><span style=display:flex><span>    markets <span style=color:#f92672>=</span> exchange<span style=color:#f92672>.</span>load_markets()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    market_type, market_subtype <span style=color:#f92672>=</span> market<span style=color:#f92672>.</span>split(<span style=color:#e6db74>&#34;.&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> [
+</span></span><span style=display:flex><span>        m[<span style=color:#e6db74>&#34;symbol&#34;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> m <span style=color:#f92672>in</span> markets<span style=color:#f92672>.</span>values()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> m[<span style=color:#e6db74>&#34;active&#34;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#f92672>and</span> m[market_type]
+</span></span><span style=display:flex><span>        <span style=color:#f92672>and</span> m[market_subtype]
+</span></span><span style=display:flex><span>        <span style=color:#f92672>and</span> m[<span style=color:#e6db74>&#34;quoteId&#34;</span>] <span style=color:#f92672>==</span> quote_ccy
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>validate_date_range</span>(start_date, end_date):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> end_date <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span>:
+</span></span><span style=display:flex><span>        end_date <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>now(pytz<span style=color:#f92672>.</span>UTC)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> isinstance(end_date, str):
+</span></span><span style=display:flex><span>        end_date <span style=color:#f92672>=</span> datetime_parse(end_date)
+</span></span><span style=display:flex><span>        end_date <span style=color:#f92672>=</span> end_date<span style=color:#f92672>.</span>replace(tzinfo<span style=color:#f92672>=</span>pytz<span style=color:#f92672>.</span>UTC)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        end_date <span style=color:#f92672>=</span> end_date<span style=color:#f92672>.</span>replace(tzinfo<span style=color:#f92672>=</span>pytz<span style=color:#f92672>.</span>UTC)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    current_date <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>now(pytz<span style=color:#f92672>.</span>UTC)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> end_date <span style=color:#f92672>&gt;</span> current_date:
+</span></span><span style=display:flex><span>        end_date <span style=color:#f92672>=</span> current_date
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> start_date <span style=color:#f92672>is</span> <span style=color:#66d9ef>None</span>:
+</span></span><span style=display:flex><span>        start_date <span style=color:#f92672>=</span> end_date <span style=color:#f92672>-</span> relativedelta(years<span style=color:#f92672>=</span><span style=color:#ae81ff>3</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> isinstance(start_date, str):
+</span></span><span style=display:flex><span>        start_date <span style=color:#f92672>=</span> datetime_parse(start_date)
+</span></span><span style=display:flex><span>        start_date <span style=color:#f92672>=</span> start_date<span style=color:#f92672>.</span>replace(tzinfo<span style=color:#f92672>=</span>pytz<span style=color:#f92672>.</span>UTC)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        start_date <span style=color:#f92672>=</span> start_date<span style=color:#f92672>.</span>replace(tzinfo<span style=color:#f92672>=</span>pytz<span style=color:#f92672>.</span>UTC)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> start_date, end_date
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>download</span>(
+</span></span><span style=display:flex><span>    symbol: str, start_date<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, end_date<span style=color:#f92672>=</span><span style=color:#66d9ef>None</span>, interval<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1d&#34;</span>, exchange_name<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;binance&#34;</span>
+</span></span><span style=display:flex><span>):
+</span></span><span style=display:flex><span>    start_date, end_date <span style=color:#f92672>=</span> validate_date_range(start_date, end_date)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    exchange <span style=color:#f92672>=</span> create_exchange(exchange_name)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    max_limit <span style=color:#f92672>=</span> <span style=color:#ae81ff>100</span>
+</span></span><span style=display:flex><span>    since <span style=color:#f92672>=</span> int(start_date<span style=color:#f92672>.</span>timestamp() <span style=color:#f92672>*</span> <span style=color:#ae81ff>1e3</span>)
+</span></span><span style=display:flex><span>    end_time <span style=color:#f92672>=</span> int(end_date<span style=color:#f92672>.</span>timestamp() <span style=color:#f92672>*</span> <span style=color:#ae81ff>1e3</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    ohlcvs <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span>:
+</span></span><span style=display:flex><span>        new_ohlcvs <span style=color:#f92672>=</span> exchange<span style=color:#f92672>.</span>fetch_ohlcv(
+</span></span><span style=display:flex><span>            symbol<span style=color:#f92672>=</span>symbol,
+</span></span><span style=display:flex><span>            since<span style=color:#f92672>=</span>since,
+</span></span><span style=display:flex><span>            timeframe<span style=color:#f92672>=</span>interval,
+</span></span><span style=display:flex><span>            limit<span style=color:#f92672>=</span>max_limit,
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>        new_ohlcvs <span style=color:#f92672>=</span> [ohlcv <span style=color:#66d9ef>for</span> ohlcv <span style=color:#f92672>in</span> new_ohlcvs <span style=color:#66d9ef>if</span> ohlcv[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>&lt;=</span> end_time]
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> len(new_ohlcvs) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>break</span>
+</span></span><span style=display:flex><span>        ohlcvs <span style=color:#f92672>+=</span> new_ohlcvs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        since <span style=color:#f92672>=</span> ohlcvs[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>][<span style=color:#ae81ff>0</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>1000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    columns <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#34;timestamp&#34;</span>, <span style=color:#e6db74>&#34;open&#34;</span>, <span style=color:#e6db74>&#34;high&#34;</span>, <span style=color:#e6db74>&#34;low&#34;</span>, <span style=color:#e6db74>&#34;close&#34;</span>, <span style=color:#e6db74>&#34;volume&#34;</span>]
+</span></span><span style=display:flex><span>    data <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>DataFrame(ohlcvs, columns<span style=color:#f92672>=</span>np<span style=color:#f92672>.</span>array(columns))
+</span></span><span style=display:flex><span>    data<span style=color:#f92672>.</span>drop_duplicates(inplace<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>    data[<span style=color:#e6db74>&#34;datetime&#34;</span>] <span style=color:#f92672>=</span> pd<span style=color:#f92672>.</span>to_datetime(data[<span style=color:#e6db74>&#34;timestamp&#34;</span>], unit<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ms&#34;</span>, utc<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>    data<span style=color:#f92672>.</span>set_index(<span style=color:#e6db74>&#34;datetime&#34;</span>, inplace<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>    data<span style=color:#f92672>.</span>drop(columns<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#34;timestamp&#34;</span>], inplace<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>    data[<span style=color:#e6db74>&#34;symbol&#34;</span>] <span style=color:#f92672>=</span> symbol
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> data
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>strategy_title</span>(interval, dayoffset):
+</span></span><span style=display:flex><span>    cn_dayoffsets <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#34;一&#34;</span>, <span style=color:#e6db74>&#34;二&#34;</span>, <span style=color:#e6db74>&#34;三&#34;</span>, <span style=color:#e6db74>&#34;四&#34;</span>, <span style=color:#e6db74>&#34;五&#34;</span>, <span style=color:#e6db74>&#34;六&#34;</span>, <span style=color:#e6db74>&#34;日&#34;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1m&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;每月(</span><span style=color:#e6db74>{</span>dayoffset<span style=color:#e6db74>}</span><span style=color:#e6db74>号)&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;每周(星期</span><span style=color:#e6db74>{</span>cn_dayoffsets[dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>)&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;每双周(星期</span><span style=color:#e6db74>{</span>cn_dayoffsets[dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>)&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1d&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;每日&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next_month_day</span>(dt, day):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> dt<span style=color:#f92672>.</span>month <span style=color:#f92672>==</span> <span style=color:#ae81ff>12</span>:
+</span></span><span style=display:flex><span>        year <span style=color:#f92672>=</span> dt<span style=color:#f92672>.</span>year <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>        month <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        year <span style=color:#f92672>=</span> dt<span style=color:#f92672>.</span>year
+</span></span><span style=display:flex><span>        month <span style=color:#f92672>=</span> dt<span style=color:#f92672>.</span>month <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> datetime<span style=color:#f92672>.</span>date(year<span style=color:#f92672>=</span>year, month<span style=color:#f92672>=</span>month, day<span style=color:#f92672>=</span>day)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>investment_times</span>(start_date, end_date, interval<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1d&#34;</span>):
+</span></span><span style=display:flex><span>    days <span style=color:#f92672>=</span> (end_date <span style=color:#f92672>-</span> start_date)<span style=color:#f92672>.</span>days
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1d&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> days
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> int(days <span style=color:#f92672>//</span> <span style=color:#ae81ff>7</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> int(days <span style=color:#f92672>//</span> <span style=color:#ae81ff>14</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1m&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> int(days <span style=color:#f92672>//</span> <span style=color:#ae81ff>30</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>start_investment_date</span>(current_date, dayoffset, interval<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1d&#34;</span>):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1d&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> current_date
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> current_date<span style=color:#f92672>.</span>weekday() <span style=color:#f92672>&lt;=</span> dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>:
+</span></span><span style=display:flex><span>            days_ahead <span style=color:#f92672>=</span> dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>-</span> current_date<span style=color:#f92672>.</span>weekday()
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> current_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span>days_ahead)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            days_ahead <span style=color:#f92672>=</span> dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>-</span> current_date<span style=color:#f92672>.</span>weekday() <span style=color:#f92672>+</span> <span style=color:#ae81ff>7</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> current_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span>days_ahead)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> current_date<span style=color:#f92672>.</span>weekday() <span style=color:#f92672>&lt;=</span> dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>:
+</span></span><span style=display:flex><span>            days_ahead <span style=color:#f92672>=</span> dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>-</span> current_date<span style=color:#f92672>.</span>weekday()
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> current_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span>days_ahead)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            days_ahead <span style=color:#f92672>=</span> dayoffset <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>-</span> current_date<span style=color:#f92672>.</span>weekday() <span style=color:#f92672>+</span> <span style=color:#ae81ff>7</span>
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> current_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span>days_ahead)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1m&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> current_date<span style=color:#f92672>.</span>day <span style=color:#f92672>&lt;=</span> dayoffset:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> datetime<span style=color:#f92672>.</span>date(current_date<span style=color:#f92672>.</span>year, current_date<span style=color:#f92672>.</span>month, dayoffset)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> next_month_day(current_date, dayoffset)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next_investment_date</span>(pre_investment_date, dayoffset<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>, interval<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1d&#34;</span>):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1d&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> pre_investment_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> pre_investment_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span><span style=color:#ae81ff>7</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;2w&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> pre_investment_date <span style=color:#f92672>+</span> datetime<span style=color:#f92672>.</span>timedelta(days<span style=color:#f92672>=</span><span style=color:#ae81ff>14</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> interval <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;1m&#34;</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> next_month_day(pre_investment_date, dayoffset)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>DCAStrategy</span>(bt<span style=color:#f92672>.</span>Strategy):
+</span></span><span style=display:flex><span>    params <span style=color:#f92672>=</span> (
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#34;investment_interval&#34;</span>, <span style=color:#e6db74>&#34;1m&#34;</span>),
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#34;investment_dayoffset&#34;</span>, <span style=color:#ae81ff>1</span>),
+</span></span><span style=display:flex><span>        (<span style=color:#e6db74>&#34;investment_amount&#34;</span>, <span style=color:#ae81ff>100</span>),  <span style=color:#75715e># Amount to invest each period</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> __init__(self):
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>total_invested <span style=color:#f92672>=</span> <span style=color:#ae81ff>0.0</span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>invested_amount <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>investment_date <span style=color:#f92672>=</span> <span style=color:#66d9ef>None</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
+</span></span><span style=display:flex><span>        current_date <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>date(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> self<span style=color:#f92672>.</span>investment_date:
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>investment_date <span style=color:#f92672>=</span> start_investment_date(
+</span></span><span style=display:flex><span>                current_date,
+</span></span><span style=display:flex><span>                self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_dayoffset,
+</span></span><span style=display:flex><span>                self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_interval,
+</span></span><span style=display:flex><span>            )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> current_date <span style=color:#f92672>&lt;</span> self<span style=color:#f92672>.</span>investment_date:
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        price <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>close[<span style=color:#ae81ff>0</span>]
+</span></span><span style=display:flex><span>        size <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_amount <span style=color:#f92672>/</span> price
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>buy(size<span style=color:#f92672>=</span>size)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>total_invested <span style=color:#f92672>+=</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_amount
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>investment_date <span style=color:#f92672>=</span> next_investment_date(
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>investment_date,
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_dayoffset,
+</span></span><span style=display:flex><span>            interval<span style=color:#f92672>=</span>self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_interval,
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>stop</span>(self):
+</span></span><span style=display:flex><span>        title <span style=color:#f92672>=</span> strategy_title(self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_interval, self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_dayoffset)
+</span></span><span style=display:flex><span>        average_price <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>total_invested <span style=color:#f92672>/</span> self<span style=color:#f92672>.</span>position<span style=color:#f92672>.</span>size
+</span></span><span style=display:flex><span>        print(
+</span></span><span style=display:flex><span>            <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{</span>title<span style=color:#e6db74>}</span><span style=color:#e6db74> | </span><span style=color:#e6db74>{</span>self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>investment_amount<span style=color:#e6db74>:</span><span style=color:#e6db74>.2f</span><span style=color:#e6db74>}</span><span style=color:#e6db74>| </span><span style=color:#e6db74>{</span>self<span style=color:#f92672>.</span>total_invested<span style=color:#e6db74>:</span><span style=color:#e6db74>.2f</span><span style=color:#e6db74>}</span><span style=color:#e6db74> | </span><span style=color:#e6db74>{</span>self<span style=color:#f92672>.</span>position<span style=color:#f92672>.</span>size<span style=color:#e6db74>:</span><span style=color:#e6db74>.2f</span><span style=color:#e6db74>}</span><span style=color:#e6db74> | </span><span style=color:#e6db74>{</span>average_price<span style=color:#e6db74>:</span><span style=color:#e6db74>.2f</span><span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.command</span>()
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#34;--symbol&#34;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;BTC/USDT&#34;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;交易对符号&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;--interval&#34;</span>,
+</span></span><span style=display:flex><span>    default<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1m&#34;</span>,
+</span></span><span style=display:flex><span>    type<span style=color:#f92672>=</span>click<span style=color:#f92672>.</span>Choice([<span style=color:#e6db74>&#34;1d&#34;</span>, <span style=color:#e6db74>&#34;1w&#34;</span>, <span style=color:#e6db74>&#34;2w&#34;</span>, <span style=color:#e6db74>&#34;1m&#34;</span>]),
+</span></span><span style=display:flex><span>    help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;投资间隔 (1d: 每日, 1w: 每周, 2w: 每两周, 1m: 每月)&#34;</span>,
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;--dayoffset&#34;</span>,
+</span></span><span style=display:flex><span>    default<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>,
+</span></span><span style=display:flex><span>    type<span style=color:#f92672>=</span>int,
+</span></span><span style=display:flex><span>    help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;每月投资日(1-31)或每周投资星期几(1-7)&#34;</span>,
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#34;--start-date&#34;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;2020-01-01&#34;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;开始日期 (YYYY-MM-DD格式)&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#34;--end-date&#34;</span>, default<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;2024-12-31&#34;</span>, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;结束日期 (YYYY-MM-DD格式)&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@click.option</span>(<span style=color:#e6db74>&#34;--amount&#34;</span>, default<span style=color:#f92672>=</span><span style=color:#ae81ff>60000</span>, type<span style=color:#f92672>=</span>float, help<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;总投资金额&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>(symbol, interval, dayoffset, start_date, end_date, amount):
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Convert string dates to datetime objects</span>
+</span></span><span style=display:flex><span>    start_date <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(start_date, <span style=color:#e6db74>&#34;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>    end_date <span style=color:#f92672>=</span> datetime<span style=color:#f92672>.</span>datetime<span style=color:#f92672>.</span>strptime(end_date, <span style=color:#e6db74>&#34;%Y-%m-</span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    cerebro <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>Cerebro()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    data <span style=color:#f92672>=</span> download(symbol, start_date<span style=color:#f92672>=</span>start_date, end_date<span style=color:#f92672>=</span>end_date, interval<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1d&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    data <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>PandasData(dataname<span style=color:#f92672>=</span>data)  <span style=color:#75715e># pyright: ignore</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>adddata(data)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>setcash(<span style=color:#ae81ff>2</span> <span style=color:#f92672>*</span> amount)
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>setcommission(<span style=color:#ae81ff>0.001</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    investment_amount <span style=color:#f92672>=</span> amount <span style=color:#f92672>/</span> investment_times(
+</span></span><span style=display:flex><span>        start_date, end_date, interval<span style=color:#f92672>=</span>interval
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>addstrategy(
+</span></span><span style=display:flex><span>        DCAStrategy,
+</span></span><span style=display:flex><span>        investment_interval<span style=color:#f92672>=</span>interval,
+</span></span><span style=display:flex><span>        investment_amount<span style=color:#f92672>=</span>investment_amount,
+</span></span><span style=display:flex><span>        investment_dayoffset<span style=color:#f92672>=</span>dayoffset,
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>run()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    main()
+</span></span></code></pre></td></tr></table></div></div><div>本文来源于 <a href=https://www.poloxue.com>POLOXUE's BLOG</a>，地址： <a href=https://www.poloxue.com/codes/2025-05-30-dcastrategy-bt-p1/>定期定额回测代码</a></div></div><nav class="hide-on-mobile section-nav"><nav id=TableOfContents></nav></nav></div><div class=post><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post><img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2025 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script><script>var enableTruncate=!0,filterDepth=!1;const MAX_DEPTH=9;window.addEventListener("DOMContentLoaded",()=>{const e=new IntersectionObserver(e=>{e.reverse().forEach(e=>{const n=e.target.getAttribute("id");if(e.intersectionRatio>0){var t=document.querySelectorAll(`nav li a[href="#${n}"]`);t!=null&&t.forEach(e=>{if(e!=null){var t=getDepth(e.parentElement);filterDepth&&t<=MAX_DEPTH&&(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))}else filterDepth||(clearActiveStatesInTableOfContents(),e.parentElement.classList.add("active"))})}})});document.querySelectorAll("h1[id],h2[id],h3[id],h4[id]").forEach(t=>{e.observe(t)})});function isVisible(e){if(!(e instanceof Element))return!1;const n=getComputedStyle(e);if(n.display==="none")return!1;if(n.visibility!=="visible")return!1;if(n.opacity<.1)return!1;if(e.offsetWidth+e.offsetHeight+e.getBoundingClientRect().height+e.getBoundingClientRect().width===0)return!1;const t={x:e.getBoundingClientRect().left+e.offsetWidth/2,y:e.getBoundingClientRect().top+e.offsetHeight/2};if(t.x<0)return!1;if(t.x>(document.documentElement.clientWidth||window.innerWidth))return!1;if(t.y<0)return!1;if(t.y>(document.documentElement.clientHeight||window.innerHeight))return!1;let s=document.elementFromPoint(t.x,t.y);do if(s===e)return!0;while(s=s.parentNode)return!1}function clearActiveStatesInTableOfContents(){document.querySelectorAll("nav li").forEach(e=>{e.classList.remove("active")})}function getDepth(e){for(var t=0;e!==null&&e.tagName.toLowerCase()!=="ul";)t++,e=e.parentElement;return t}function navItems(){var e=document.querySelectorAll("nav nav li a");return Array.from(e).filter(e=>e.href!=null&&e.hash.startsWith("#"))}function lasItemInNavBarVisible(){var e=navItems().slice(-1)[0];return isVisible(e)}document.addEventListener("DOMContentLoaded",function(){if(!enableTruncate)return;var e=navItems();console.log(e),lasItemInNavBarVisible()||(filterDepth=!0,e.forEach(function(e){var t=getDepth(e.parentElement);t>MAX_DEPTH&&e.parentElement.classList.add("depth-nested")}))})</script></body></html>
