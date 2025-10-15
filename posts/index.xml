@@ -39,7 +39,8 @@
 简单例子 先通过一个最小化的可运行示例，模拟用历史数据加载苹果股票（AAPL），并通过 Backtrader 运行并画图。
 这个例子不带任何交易策略，仅用于感受框架整体流程。
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 import backtrader as bt from datetime import datetime import yfinance as yf import pandas as pd # 使用 yfinance 下载苹果股票数据并转换为 Pandas DataFrame raw_data = yf.</description></item><item><title>Backtrader 教程一：为什么选择 Backtrader？</title><link>https://www.poloxue.com/posts/2025-07-03-backtrader-tutorial-p1/</link><pubDate>Thu, 03 Jul 2025 15:18:08 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-07-03-backtrader-tutorial-p1/</guid><description>—— 从“策略实现”迈向“系统化开发”
-在量化交易的执行过程中，策略开发只是开始，真正构建起一个稳健的交易系统，还需要有结构化的架构支持、可扩展的功能设计以及模块化的实现能力。Backtrader，正是这样一款以策略回测为核心，同时具备系统构建能力的 Python 框架。
+在量化交易的执行过程中，策略开发只是开始，如果我们只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。
+为什么选择 backtrader？ 真正构建起一个稳健的交易系统，还需要有结构化的架构支持、可扩展的功能设计以及模块化的实现能力。Backtrader，正是这样一款以策略回测为核心，同时具备系统构建能力的 Python 框架。
 本文介绍一个著名的回测框架 backtrader，或者也可称作交易框架。我将尝试解释选择 backtrader 的原因，介绍它有哪些优势。
 Backtrader 是什么？ Backtrader 是一个用 Python 编写的量化交易回测框架，专为个人交易者与量化研究者设计，它提供了丰富的接口来支持策略开发、历史回测、结果可视化，甚至可以扩展到实盘接入。
 与其说 Backtrader 是一个回测工具，不如说它是一个轻量级的交易系统骨架。
@@ -61,7 +62,7 @@ Backtrader 是什么？ Backtrader 是一个用 Python 编写的量化交易回�
 我可以专注于研究交易逻辑，而不必重新造轮子处理仓位、画图、分析收益率。这种结构也使得策略迁移到实盘平台（如 Interactive Brokers、CCXT 等）变得更加自然。
 回测流程图与模块关系 下面是 Backtrader 在回测过程中各模块的交互流程图，展示了从数据流入、策略判断、订单生成、成交撮合，到结果展示和分析的全过程。
 如下是各部分的简要说明：
-数据流入：通过 DataFeed 加载行情数据（External Data）（CSV、Pandas、API 等）进入 Cerebro。 策略运行：Cerebro 在每个 bar 推进时调用 Strategy.next()，用技术指标（如 MA、RSI）判断； 下单撮合：策略中发出 self.buy() / self.</description></item><item><title>探索定投囤币方案之定期定额</title><link>https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/</link><pubDate>Tue, 27 May 2025 13:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/</guid><description>本文尝试分析不止盈的定投策略，目标是寻找一个更优囤币的方案，我将先从简单的定期定额开始入手。
+数据流入：通过 DataFeed 加载行情数据（External Data）（CSV、Pandas、API 等）进入 Cerebro。 策略运行：Cerebro 在每个 bar 推进时调用 Strategy.</description></item><item><title>探索定投囤币方案之定期定额</title><link>https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/</link><pubDate>Tue, 27 May 2025 13:00:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/</guid><description>本文尝试分析不止盈的定投策略，目标是寻找一个更优囤币的方案，我将先从简单的定期定额开始入手。
 注意：本文仅为个人观点分享，记录研究过程，不构成任何投资建议。投资有风险，入市需谨慎，请读者自行研究并独立承担相应后果。
 如果对回测代码有兴趣，在公众号回复 &amp;ldquo;dcastrategy-bt-p1&amp;rdquo; 获取代码地址，回测采用 backtrader 实现，暂只适用于 7x24 小时无休市场，没有针对如股票市场交易日历的处理。简单处理的话，可以将它们的行情做填充补齐。
 定投目标 什么是更优囤币的方案？我认为，肯定是能以更低价格且足额数量买到你心仪加密币的方案。
