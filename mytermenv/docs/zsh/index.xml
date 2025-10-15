@@ -1,21 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>zsh on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/zsh/</link><description>Recent content in zsh on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么选择 zsh ？</title><link>https://www.poloxue.com/mytermenv/docs/zsh/why/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/why/</guid><description>为什么选择 zsh ？ # 开始前，先问为什么，知其然，要知其所以然，是个好习惯。所以，为什么要用 zsh 呢？
-大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？
-改进的自动补全能力 # zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。
-对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
-更好的脚本和插件支持 # zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。
-这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
-高级的主题和提示符定制 # zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
-我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
-更智能的命令行交互 # zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
-如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;
-❯ lls zsh: correct &amp;#39;lls&amp;#39; to &amp;#39;ls&amp;#39; [nyae]? 输入 y 接受纠正建议。</description></item><item><title>快速安装</title><link>https://www.poloxue.com/mytermenv/docs/zsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/install/</guid><description> 安装 # 对于不同系统，zsh 的安装命令，如下所示：
-Debian
-apt install zsh Centos
-yum install -y zsh Arch Linux
-pacman -S zsh Fedora
-dnf install zsh 对于 macOS 系统的用户，MacOS 的默认 shell 从 2019 开始以前替换为 zsh，该步骤可省略。可阅读： What is Zsh? Should You Use it? 其中有介绍为什么 2019 macOS 将默认的 shell 从 bash 切换到 zsh。
-我看下来，主要原因就是版权问题啦。
-如果你是个老古董，还是用 MacOS 2019 之前的系统，可通过如下命令安装：
-brew install zsh 安装完成后，将 zsh 设置为默认 shell，命令如下所示：
-chsh -s /bin/zsh 通过如下命令检查下是否成功。
-echo $SHELL zsh</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>zsh on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/zsh/</link><description>Recent content in zsh on 我的终端环境</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么选择 zsh ？</title><link>https://www.poloxue.com/mytermenv/docs/zsh/why/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/why/</guid><description>&lt;h1 id="为什么选择-zsh-"&gt;为什么选择 zsh ？&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89%e6%8b%a9-zsh-"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;开始前，先问为什么，知其然，要知其所以然，是个好习惯。所以，为什么要用 zsh 呢？&lt;/p&gt;
+&lt;p&gt;大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？&lt;/p&gt;
+&lt;h3 id="改进的自动补全能力"&gt;改进的自动补全能力&lt;a class="anchor" href="#%e6%94%b9%e8%bf%9b%e7%9a%84%e8%87%aa%e5%8a%a8%e8%a1%a5%e5%85%a8%e8%83%bd%e5%8a%9b"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-18.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。&lt;/p&gt;
+&lt;h3 id="更好的脚本和插件支持"&gt;更好的脚本和插件支持&lt;a class="anchor" href="#%e6%9b%b4%e5%a5%bd%e7%9a%84%e8%84%9a%e6%9c%ac%e5%92%8c%e6%8f%92%e4%bb%b6%e6%94%af%e6%8c%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-21.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。&lt;/p&gt;
+&lt;h3 id="高级的主题和提示符定制"&gt;高级的主题和提示符定制&lt;a class="anchor" href="#%e9%ab%98%e7%ba%a7%e7%9a%84%e4%b8%bb%e9%a2%98%e5%92%8c%e6%8f%90%e7%a4%ba%e7%ac%a6%e5%ae%9a%e5%88%b6"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-19.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。&lt;/p&gt;
+&lt;h3 id="更智能的命令行交互"&gt;更智能的命令行交互&lt;a class="anchor" href="#%e6%9b%b4%e6%99%ba%e8%83%bd%e7%9a%84%e5%91%bd%e4%bb%a4%e8%a1%8c%e4%ba%a4%e4%ba%92"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。&lt;/p&gt;
+&lt;p&gt;如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-zsh" data-lang="zsh"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;❯ lls
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;zsh: correct &lt;span style="color:#e6db74"&gt;&amp;#39;lls&amp;#39;&lt;/span&gt; to &lt;span style="color:#e6db74"&gt;&amp;#39;ls&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;[&lt;/span&gt;nyae&lt;span style="color:#f92672"&gt;]&lt;/span&gt;?&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输入 y 接受纠正建议。&lt;/p&gt;
+&lt;p&gt;当然这个是要做个简单的配置，通过 &lt;code&gt;setopt CORRECT_ALL&lt;/code&gt; 启用。&lt;/p&gt;</description></item><item><title>快速安装</title><link>https://www.poloxue.com/mytermenv/docs/zsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/zsh/install/</guid><description>&lt;h2 id="安装"&gt;安装&lt;a class="anchor" href="#%e5%ae%89%e8%a3%85"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;对于不同系统，zsh 的安装命令，如下所示：&lt;/p&gt;
+&lt;p&gt;Debian&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;apt install zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Centos&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;yum install -y zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Arch Linux&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pacman -S zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Fedora&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dnf install zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;对于 macOS 系统的用户，MacOS 的默认 shell 从 2019 开始以前替换为 zsh，该步骤可省略。可阅读：&lt;a href="https://linuxhandbook.com/why-zsh/#:~:text=Zsh%20is%20more%20powerful%20and,more%20advanced%20features%20shipped%20in."&gt;What is Zsh? Should You Use it?&lt;/a&gt; 其中有介绍为什么 2019 macOS 将默认的 shell 从 bash 切换到 zsh。&lt;/p&gt;
+&lt;p&gt;我看下来，主要原因就是版权问题啦。&lt;/p&gt;
+&lt;p&gt;如果你是个老古董，还是用 MacOS 2019 之前的系统，可通过如下命令安装：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;brew install zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成后，将 zsh 设置为默认 shell，命令如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;chsh -s /bin/zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通过如下命令检查下是否成功。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;echo $SHELL
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

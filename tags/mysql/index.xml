@@ -1,7 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>mysql on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/mysql/</link><description>Recent content in mysql on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 10 Dec 2016 18:14:45 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>循序渐进 MySQL 事务隔离级别</title><link>https://www.poloxue.com/posts/2016-12-10-isolation-in-mysql/</link><pubDate>Sat, 10 Dec 2016 18:14:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-10-isolation-in-mysql/</guid><description>本篇文章的重点在于总结MYSQL事务。
-什么是事务 事务简言之就是一组 SQL 执行要么全部成功，要么全部失败。MYSQL 的事务在存储引擎层实现。
-事务都有 ACID 特性：
-原子性（Atomicity）：一个事务必须被视为一个不可分割的单元； 一致性（Consistency）：数据库总是从一种状态切换到另一种状态； 隔离性（Isolation）：通常来说，事务在提交前对于其他事务不可见； 持久性（Durablity）：一旦事务提交，所做修改永久保存数据库； 事务最常用的例子就是银行转账。假设 polo 需给 lynn 转账1000元，如下步骤：
-确认 polo 账户余额高于1000元； 从 polo 的账户余额减去1000元； 将 lynn 的账户余额增加1000元； SQL语句如下:
-1 2 3 4 5 mysql&amp;gt; BEGIN; mysql&amp;gt; SELECT balance FROM bank_account WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance-1000 WHERE uid=10001; mysql&amp;gt; UPDATE bank_account SET balance=balance+1000 WHERE uid=10002; mysql&amp;gt; COMMIT; mysql 启动事务可使用 BEGIN 或 START TRANSACTION；上述三个步骤执行在一个事务中就能够保证数据的完整性，要么全部成功，要么全部失败。
-MYSQL 提供两种事务型引擎：Innodb 和 NDBCluster。默认采用自动提交模式，执行一条语句自动 COMMIT。通过 AUTOCOMMIT 变量可启用或者禁用自动提交模式：</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mysql on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/mysql/</link><description>Recent content in Mysql on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 10 Dec 2016 18:14:45 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>循序渐进 MySQL 事务隔离级别</title><link>https://www.poloxue.com/posts/2016-12-10-isolation-in-mysql/</link><pubDate>Sat, 10 Dec 2016 18:14:45 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-10-isolation-in-mysql/</guid><description>&lt;p&gt;本篇文章的重点在于总结MYSQL事务。&lt;/p&gt;
+&lt;h1 id="什么是事务"&gt;什么是事务&lt;/h1&gt;
+&lt;p&gt;事务简言之就是一组 SQL 执行要么全部成功，要么全部失败。MYSQL 的事务在存储引擎层实现。&lt;/p&gt;
+&lt;p&gt;事务都有 ACID 特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;原子性（Atomicity）：一个事务必须被视为一个不可分割的单元；&lt;/li&gt;
+&lt;li&gt;一致性（Consistency）：数据库总是从一种状态切换到另一种状态；&lt;/li&gt;
+&lt;li&gt;隔离性（Isolation）：通常来说，事务在提交前对于其他事务不可见；&lt;/li&gt;
+&lt;li&gt;持久性（Durablity）：一旦事务提交，所做修改永久保存数据库；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;事务最常用的例子就是银行转账。假设 polo 需给 lynn 转账1000元，如下步骤：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;确认 polo 账户余额高于1000元；&lt;/li&gt;
+&lt;li&gt;从 polo 的账户余额减去1000元；&lt;/li&gt;
+&lt;li&gt;将 lynn 的账户余额增加1000元；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;SQL语句如下:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;3
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;4
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-sql" data-lang="sql"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mysql&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;BEGIN&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mysql&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;SELECT&lt;/span&gt; balance &lt;span style="color:#66d9ef"&gt;FROM&lt;/span&gt; bank_account &lt;span style="color:#66d9ef"&gt;WHERE&lt;/span&gt; uid&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10001&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mysql&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;UPDATE&lt;/span&gt; bank_account &lt;span style="color:#66d9ef"&gt;SET&lt;/span&gt; balance&lt;span style="color:#f92672"&gt;=&lt;/span&gt;balance&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1000&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;WHERE&lt;/span&gt; uid&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10001&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mysql&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;UPDATE&lt;/span&gt; bank_account &lt;span style="color:#66d9ef"&gt;SET&lt;/span&gt; balance&lt;span style="color:#f92672"&gt;=&lt;/span&gt;balance&lt;span style="color:#f92672"&gt;+&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1000&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;WHERE&lt;/span&gt; uid&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10002&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mysql&lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;COMMIT&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;mysql 启动事务可使用 BEGIN 或 START TRANSACTION；上述三个步骤执行在一个事务中就能够保证数据的完整性，要么全部成功，要么全部失败。&lt;/p&gt;
+&lt;p&gt;MYSQL 提供两种事务型引擎：Innodb 和 NDBCluster。默认采用自动提交模式，执行一条语句自动 COMMIT。通过 AUTOCOMMIT 变量可启用或者禁用自动提交模式：&lt;/p&gt;</description></item></channel></rss>

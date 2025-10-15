@@ -1,19 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kafka on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/kafka/</link><description>Recent content in kafka on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 30 Mar 2016 18:16:57 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/kafka/index.xml" rel="self" type="application/rss+xml"/><item><title>快速了解 Kafka 基础架构</title><link>https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/</link><pubDate>Wed, 30 Mar 2016 18:16:57 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/</guid><description>今天来聊下大数据场景下比较流行的消息队列组件 kafka。本篇文章将主要从理论角度来介绍。
-kafka 是一款开源、追求高吞吐、实时性，可持久化的流式消息队列，可同时处理在线（消息）与离线应用(业务数据和日志)。在如今火热的大数据时代，得到了广泛的应用。
-整体架构 kafka 的消息以 Topic 进行归类，支持分布式 distribution、可分区partition 和可复制 replicated 的特性。下面为本人梳理的一张 Kafka 系统架构图。
-Kafka的架构相较于其他消息系统而言，比较简单。其整体流程简述如下
-Producer 与指定 Topic 各分区 Partition 的 Leader 连接，从而将消息 push 到 Broker 中。
-Broker 可理解消息系统的中间代理，将消息写入磁盘实现持久化，并可对消息复制备份。
-Consumer 采用 pull 的方式主动获取 broker 中指定 Topic 的消息，并进行处理。
-Zookeeper负责Kafka服务相关metadata的存储，如broker，topic和consumer等信息的存储。
-注：zookeeper是一个分布式协调服务，分布式应用可基于它实现同步服务，配置维护和命名服务等。此篇文章不做介绍，以后有时间再做总结！
-下面对涉及的各个组件作详细介绍。
-主题Topic 首先，Kafka中的消息以Topic分类管理。在Kafka中，一个topic可被多个Consumer订阅。通过集群管理，每个Topic可由多个Partition组成。如下图
-从上图可以看出，Topic中数据是顺序不可变序列，采用log追加方式写入，因而kafka中无因随机写入导致性能低下的问题。
-Topic的数据可存储在多个partition中，即可存放在不同的服务器上。这可使Topic大小不限于一台server容量。同时，消息存在多个partition上，可以实现Topic上消息的并发访问。
-Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定消息保存时长。Topic中每个partition中的消息都有一个唯一的标识，也称为offset。因数据不会因消费而丢失，所以只要consumer指定offset，一个消息可被不同的consumer多次消费。
-基于此，消息获取即可采用顺序访问，我们也可以指定任意offset随机访问，且不会对其他consumer产生影响。
-分布式Distribution Kafka 的集群分布式主要涉及两个内容：Partition 分区与 Replication 备份。
-Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而分布在不同的 Kafka 节点之上，使 Topic 的数据大小不限于一台 Server。
-Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。
-虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kafka on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/kafka/</link><description>Recent content in Kafka on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 30 Mar 2016 18:16:57 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/kafka/index.xml" rel="self" type="application/rss+xml"/><item><title>快速了解 Kafka 基础架构</title><link>https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/</link><pubDate>Wed, 30 Mar 2016 18:16:57 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-03-30-introduce-kafka-architecture/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-06.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;今天来聊下大数据场景下比较流行的消息队列组件 kafka。本篇文章将主要从理论角度来介绍。&lt;/p&gt;
+&lt;p&gt;kafka 是一款开源、追求高吞吐、实时性，可持久化的流式消息队列，可同时处理在线（消息）与离线应用(业务数据和日志)。在如今火热的大数据时代，得到了广泛的应用。&lt;/p&gt;
+&lt;h1 id="整体架构"&gt;整体架构&lt;/h1&gt;
+&lt;p&gt;kafka 的消息以 Topic 进行归类，支持分布式 distribution、可分区partition 和可复制 replicated 的特性。下面为本人梳理的一张 Kafka 系统架构图。&lt;/p&gt;
+&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-01-v1.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;Kafka的架构相较于其他消息系统而言，比较简单。其整体流程简述如下&lt;/p&gt;
+&lt;p&gt;Producer 与指定 Topic 各分区 Partition 的 Leader 连接，从而将消息 push 到 Broker 中。&lt;/p&gt;
+&lt;p&gt;Broker 可理解消息系统的中间代理，将消息写入磁盘实现持久化，并可对消息复制备份。&lt;/p&gt;
+&lt;p&gt;Consumer 采用 pull 的方式主动获取 broker 中指定 Topic 的消息，并进行处理。&lt;/p&gt;
+&lt;p&gt;Zookeeper负责Kafka服务相关metadata的存储，如broker，topic和consumer等信息的存储。&lt;/p&gt;
+&lt;p&gt;注：zookeeper是一个分布式协调服务，分布式应用可基于它实现同步服务，配置维护和命名服务等。此篇文章不做介绍，以后有时间再做总结！&lt;/p&gt;
+&lt;p&gt;下面对涉及的各个组件作详细介绍。&lt;/p&gt;
+&lt;h1 id="主题topic"&gt;主题Topic&lt;/h1&gt;
+&lt;p&gt;首先，Kafka中的消息以Topic分类管理。在Kafka中，一个topic可被多个Consumer订阅。通过集群管理，每个Topic可由多个Partition组成。如下图&lt;/p&gt;
+&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-02.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;从上图可以看出，Topic中数据是顺序不可变序列，采用log追加方式写入，因而kafka中无因随机写入导致性能低下的问题。&lt;/p&gt;
+&lt;p&gt;Topic的数据可存储在多个partition中，即可存放在不同的服务器上。这可使Topic大小不限于一台server容量。同时，消息存在多个partition上，可以实现Topic上消息的并发访问。&lt;/p&gt;
+&lt;p&gt;Kafka中数据不会因被consumer消费后而丢失，而是通过配置指定消息保存时长。Topic中每个partition中的消息都有一个唯一的标识，也称为offset。因数据不会因消费而丢失，所以只要consumer指定offset，一个消息可被不同的consumer多次消费。&lt;/p&gt;
+&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2016-03/2016-03-30-introduce-kafka-architecture-03.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;基于此，消息获取即可采用顺序访问，我们也可以指定任意offset随机访问，且不会对其他consumer产生影响。&lt;/p&gt;
+&lt;h1 id="分布式distribution"&gt;分布式Distribution&lt;/h1&gt;
+&lt;p&gt;Kafka 的集群分布式主要涉及两个内容：Partition 分区与 Replication 备份。&lt;/p&gt;
+&lt;p&gt;Partition 实现将 Topic 中的各个消息存储到不同的分区中，从而分布在不同的 Kafka 节点之上，使 Topic 的数据大小不限于一台 Server。&lt;/p&gt;
+&lt;p&gt;Replication 主要用于容错，对一个 Partition 复制多份，存储在不同 kafka 节点上。这可防止因某一分区数据丢失而导致错误。&lt;/p&gt;
+&lt;p&gt;虽然 Relication 复制 Partition 多份，但其中只有一个为 Leader 角色，其余 Partition 角色皆为 Follower。Producer 发布消息都是由Leader 负责写入，并同步到其他的 Follower 分区中。如果 Leader 失效，则某个 Follower 会自动替换，成为新的Leader分区。此时，Follower 可能落后于 Leader，所以从所有 Follower 中选择一个”up-to-date”的分区。&lt;/p&gt;</description></item></channel></rss>

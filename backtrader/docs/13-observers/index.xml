@@ -1,27 +1,118 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Observer on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/13-observers/</link><description>Recent content in Observer on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/13-observers/index.xml" rel="self" type="application/rss+xml"/><item><title>统计</title><link>https://www.poloxue.com/backtrader/docs/13-observers/01-statistics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/01-statistics/</guid><description>统计 # 在 backtrader 中运行的策略主要处理数据源和指标。数据源添加到 Cerebro 实例中，并最终成为策略的输入（解析并作为实例的属性提供），而指标由策略本身声明和管理。
-到目前为止，所有 backtrader 示例图表都绘制了三件看似理所当然的东西，因为它们在任何地方都没有声明：
-现金和价值（经纪人中的资金情况） 交易（即操作） 买/卖订单 它们是观察器，存在于子模块 backtrader.observers 中。因为 Cerebro 支持一个参数来自动将它们（或不将它们）添加到策略中：stdstats（默认：True）。
-如果遵循默认设置，Cerebro 将执行以下等效用户代码：
-import backtrader as bt cerebro = bt.Cerebro() # 默认参数：stdstats=True cerebro.addobserver(bt.observers.Broker) cerebro.addobserver(bt.observers.Trades) cerebro.addobserver(bt.observers.BuySell) 让我们看看通常带有这三个默认观察器的图表（即使没有发出订单，因此没有交易发生，现金和投资组合价值没有变化）：
-from __future__ import (absolute_import, division, print_function, unicode_literals) import backtrader as bt import backtrader.feeds as btfeeds if __name__ == &amp;#39;__main__&amp;#39;: cerebro = bt.Cerebro(stdstats=False) cerebro.addstrategy(bt.Strategy) data = bt.feeds.BacktraderCSVData(dataname=&amp;#39;../../datas/2006-day-001.txt&amp;#39;) cerebro.adddata(data) cerebro.run() cerebro.plot() 现在让我们在创建 Cerebro 实例时将 stdstats 的值更改为 False（也可以在调用 run 时完成）：</description></item><item><title>基准测试</title><link>https://www.poloxue.com/backtrader/docs/13-observers/02-benchmarking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/02-benchmarking/</guid><description>基准测试 # Ticket #89 是关于添加基准测试以对比一个资产的表现。这个功能非常实用，因为有些策略即使盈利也可能低于单纯追踪资产的收益。
-backtrader 包含两种不同类型的对象可以帮助进行追踪：
-观察器 分析器 在分析器领域，已经有一个 TimeReturn 对象，用于跟踪整个投资组合价值的回报演变（包括现金）。
-这显然也可以是一个观察器，所以在添加一些基准测试时，也对如何将观察器和分析器组合在一起进行了工作，这两者旨在跟踪相同的内容。
-注意
-观察器和分析器之间的主要区别在于观察器的线条特性，观察器记录每个值，这使得它们适合绘图和实时查询。当然，这会消耗内存。
-另一方面，分析器通过 get_analysis 返回一组结果，并且实现可能直到运行结束时才会提供任何结果。
-分析器 - 基准测试 # 标准的 TimeReturn 分析器已扩展为支持跟踪数据源。涉及的两个主要参数：
-timeframe（默认：无） 如果为 None，将报告整个回测期间的总回报。 data（默认：无） 要跟踪的参考资产，而不是投资组合价值。 注意
-此数据必须已通过 adddata、resampledata 或 replaydata 添加到 cerebro 实例中。
-更多详细信息和参数请参阅：分析器参考。
-因此，可以像这样按年度跟踪投资组合的回报：
-import backtrader as bt cerebro = bt.Cerebro() cerebro.addanalyzer(bt.analyzers.TimeReturn, timeframe=bt.TimeFrame.Years) # 添加数据、策略等... results = cerebro.run() strat0 = results[0] # 如果没有指定名称，则名称为类名的小写形式 tret_analyzer = strat0.analyzers.getbyname(&amp;#39;timereturn&amp;#39;) print(tret_analyzer.get_analysis()) 如果我们想跟踪一个数据的回报：
-import backtrader as bt cerebro = bt.</description></item><item><title>参考</title><link>https://www.poloxue.com/backtrader/docs/13-observers/03-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/03-reference/</guid><description>参考 # Benchmark # class backtrader.observers.Benchmark() 该观察器存储策略的回报和作为参考资产的回报，这个参考资产是传递给系统的一个数据。
-参数：
-timeframe（默认：无）：如果为 None，则报告整个回测期间的总回报。 compression（默认：无）：仅用于子日时间框架，例如通过指定 “TimeFrame.Minutes” 和 60 作为压缩在每小时时间框架上工作。 data（默认：无）：跟踪的参考资产以便进行比较。 注意：此数据必须已通过 adddata、resampledata 或 replaydata 添加到 cerebro 实例中。
-_doprenext（默认：False）：基准测试将在策略开始运行时进行（即策略的最小周期已达到时）。将其设置为 True 将从数据源的起点记录基准值。 firstopen（默认：False）：保持为 False 确保价值和基准之间的首次比较点从 0% 开始，因为基准不会使用其开盘价。参见 TimeReturn 分析器参考以获得参数的完整解释。 fund（默认：无）：如果为 None，将自动检测经纪人的实际模式（fundmode - True/False）来决定回报率是基于总净资产价值还是基金价值。见经纪人文档中的 set_fundmode。设置为 True 或 False 以获得特定行为。 记住，在运行的任何时刻都可以通过查看索引 0 处的线条名称来检查当前值。
-Broker # class backtrader.observers.Broker(*args, **kwargs) 该观察器跟踪经纪人中的当前现金金额和投资组合价值（包括现金）。
-参数：无
-Broker - Cash # class backtrader.observers.Cash(*args, **kwargs) 该观察器跟踪经纪人中的当前现金金额。
-参数：无
-Broker - Value # class backtrader.observers.Value(*args, **kwargs) 该观察器跟踪经纪人中的当前投资组合价值，包括现金。</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Observer on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/13-observers/</link><description>Recent content in Observer on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/13-observers/index.xml" rel="self" type="application/rss+xml"/><item><title>统计</title><link>https://www.poloxue.com/backtrader/docs/13-observers/01-statistics/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/01-statistics/</guid><description>&lt;h1 id="统计"&gt;统计&lt;a class="anchor" href="#%e7%bb%9f%e8%ae%a1"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;在 backtrader 中运行的策略主要处理数据源和指标。数据源添加到 Cerebro 实例中，并最终成为策略的输入（解析并作为实例的属性提供），而指标由策略本身声明和管理。&lt;/p&gt;
+&lt;p&gt;到目前为止，所有 backtrader 示例图表都绘制了三件看似理所当然的东西，因为它们在任何地方都没有声明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;现金和价值（经纪人中的资金情况）&lt;/li&gt;
+&lt;li&gt;交易（即操作）&lt;/li&gt;
+&lt;li&gt;买/卖订单&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它们是观察器，存在于子模块 backtrader.observers 中。因为 Cerebro 支持一个参数来自动将它们（或不将它们）添加到策略中：&lt;code&gt;stdstats&lt;/code&gt;（默认：True）。&lt;/p&gt;
+&lt;p&gt;如果遵循默认设置，Cerebro 将执行以下等效用户代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro() &lt;span style="color:#75715e"&gt;# 默认参数：stdstats=True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addobserver(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Broker)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addobserver(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Trades)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addobserver(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;BuySell)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;让我们看看通常带有这三个默认观察器的图表（即使没有发出订单，因此没有交易发生，现金和投资组合价值没有变化）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; __future__ &lt;span style="color:#f92672"&gt;import&lt;/span&gt; (absolute_import, division, print_function, unicode_literals)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader.feeds &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; btfeeds
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro(stdstats&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addstrategy(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;BacktraderCSVData(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;../../datas/2006-day-001.txt&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;plot()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现在让我们在创建 Cerebro 实例时将 &lt;code&gt;stdstats&lt;/code&gt; 的值更改为 False（也可以在调用 &lt;code&gt;run&lt;/code&gt; 时完成）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro(stdstats&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;图表现在有所不同。&lt;/p&gt;</description></item><item><title>基准测试</title><link>https://www.poloxue.com/backtrader/docs/13-observers/02-benchmarking/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/02-benchmarking/</guid><description>&lt;h1 id="基准测试"&gt;基准测试&lt;a class="anchor" href="#%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Ticket #89 是关于添加基准测试以对比一个资产的表现。这个功能非常实用，因为有些策略即使盈利也可能低于单纯追踪资产的收益。&lt;/p&gt;
+&lt;p&gt;backtrader 包含两种不同类型的对象可以帮助进行追踪：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;观察器&lt;/li&gt;
+&lt;li&gt;分析器&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在分析器领域，已经有一个 &lt;code&gt;TimeReturn&lt;/code&gt; 对象，用于跟踪整个投资组合价值的回报演变（包括现金）。&lt;/p&gt;
+&lt;p&gt;这显然也可以是一个观察器，所以在添加一些基准测试时，也对如何将观察器和分析器组合在一起进行了工作，这两者旨在跟踪相同的内容。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;观察器和分析器之间的主要区别在于观察器的线条特性，观察器记录每个值，这使得它们适合绘图和实时查询。当然，这会消耗内存。&lt;/p&gt;
+&lt;p&gt;另一方面，分析器通过 &lt;code&gt;get_analysis&lt;/code&gt; 返回一组结果，并且实现可能直到运行结束时才会提供任何结果。&lt;/p&gt;
+&lt;h2 id="分析器---基准测试"&gt;分析器 - 基准测试&lt;a class="anchor" href="#%e5%88%86%e6%9e%90%e5%99%a8---%e5%9f%ba%e5%87%86%e6%b5%8b%e8%af%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;标准的 &lt;code&gt;TimeReturn&lt;/code&gt; 分析器已扩展为支持跟踪数据源。涉及的两个主要参数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;timeframe&lt;/code&gt;（默认：无） 如果为 None，将报告整个回测期间的总回报。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;data&lt;/code&gt;（默认：无） 要跟踪的参考资产，而不是投资组合价值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;此数据必须已通过 &lt;code&gt;adddata&lt;/code&gt;、&lt;code&gt;resampledata&lt;/code&gt; 或 &lt;code&gt;replaydata&lt;/code&gt; 添加到 cerebro 实例中。&lt;/p&gt;
+&lt;p&gt;更多详细信息和参数请参阅：分析器参考。&lt;/p&gt;
+&lt;p&gt;因此，可以像这样按年度跟踪投资组合的回报：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addanalyzer(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;analyzers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;TimeReturn, timeframe&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;TimeFrame&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Years)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 添加数据、策略等...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;results &lt;span style="color:#f92672"&gt;=&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;strat0 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; results[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 如果没有指定名称，则名称为类名的小写形式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tret_analyzer &lt;span style="color:#f92672"&gt;=&lt;/span&gt; strat0&lt;span style="color:#f92672"&gt;.&lt;/span&gt;analyzers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getbyname(&lt;span style="color:#e6db74"&gt;&amp;#39;timereturn&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(tret_analyzer&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get_analysis())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果我们想跟踪一个数据的回报：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;OneOfTheFeeds(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;abcde&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;...&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addanalyzer(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;analyzers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;TimeReturn, timeframe&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;TimeFrame&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Years, data&lt;span style="color:#f92672"&gt;=&lt;/span&gt;data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 添加策略等...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;results &lt;span style="color:#f92672"&gt;=&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;strat0 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; results[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 如果没有指定名称，则名称为类名的小写形式&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;tret_analyzer &lt;span style="color:#f92672"&gt;=&lt;/span&gt; strat0&lt;span style="color:#f92672"&gt;.&lt;/span&gt;analyzers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getbyname(&lt;span style="color:#e6db74"&gt;&amp;#39;timereturn&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(tret_analyzer&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get_analysis())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果要同时跟踪两者，最好为分析器指定名称：&lt;/p&gt;</description></item><item><title>参考</title><link>https://www.poloxue.com/backtrader/docs/13-observers/03-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/13-observers/03-reference/</guid><description>&lt;h1 id="参考"&gt;参考&lt;a class="anchor" href="#%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="benchmark"&gt;Benchmark&lt;a class="anchor" href="#benchmark"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Benchmark()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该观察器存储策略的回报和作为参考资产的回报，这个参考资产是传递给系统的一个数据。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参数：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;timeframe&lt;/code&gt;（默认：无）：如果为 None，则报告整个回测期间的总回报。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;compression&lt;/code&gt;（默认：无）：仅用于子日时间框架，例如通过指定 “TimeFrame.Minutes” 和 60 作为压缩在每小时时间框架上工作。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;data&lt;/code&gt;（默认：无）：跟踪的参考资产以便进行比较。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：此数据必须已通过 &lt;code&gt;adddata&lt;/code&gt;、&lt;code&gt;resampledata&lt;/code&gt; 或 &lt;code&gt;replaydata&lt;/code&gt; 添加到 cerebro 实例中。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;_doprenext&lt;/code&gt;（默认：False）：基准测试将在策略开始运行时进行（即策略的最小周期已达到时）。将其设置为 True 将从数据源的起点记录基准值。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;firstopen&lt;/code&gt;（默认：False）：保持为 False 确保价值和基准之间的首次比较点从 0% 开始，因为基准不会使用其开盘价。参见 &lt;code&gt;TimeReturn&lt;/code&gt; 分析器参考以获得参数的完整解释。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fund&lt;/code&gt;（默认：无）：如果为 None，将自动检测经纪人的实际模式（fundmode - True/False）来决定回报率是基于总净资产价值还是基金价值。见经纪人文档中的 &lt;code&gt;set_fundmode&lt;/code&gt;。设置为 True 或 False 以获得特定行为。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;记住，在运行的任何时刻都可以通过查看索引 0 处的线条名称来检查当前值。&lt;/p&gt;
+&lt;h2 id="broker"&gt;Broker&lt;a class="anchor" href="#broker"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Broker(&lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该观察器跟踪经纪人中的当前现金金额和投资组合价值（包括现金）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参数&lt;/strong&gt;：无&lt;/p&gt;
+&lt;h2 id="broker---cash"&gt;Broker - Cash&lt;a class="anchor" href="#broker---cash"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cash(&lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该观察器跟踪经纪人中的当前现金金额。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参数&lt;/strong&gt;：无&lt;/p&gt;
+&lt;h4 id="broker---value"&gt;Broker - Value&lt;a class="anchor" href="#broker---value"&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Value(&lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该观察器跟踪经纪人中的当前投资组合价值，包括现金。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参数&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;fund&lt;/code&gt;（默认：无）：如果为 None，将自动检测经纪人的实际模式（fundmode - True/False）来决定回报率是基于总净资产价值还是基金价值。见经纪人文档中的 &lt;code&gt;set_fundmode&lt;/code&gt;。设置为 True 或 False 以获得特定行为。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="buysell"&gt;BuySell&lt;a class="anchor" href="#buysell"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;BuySell(&lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该观察器跟踪单个买入/卖出订单（单个执行）并将在图表上绘制它们，围绕执行价格水平绘制。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参数&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;barplot&lt;/code&gt;（默认：&lt;code&gt;False&lt;/code&gt;）：在最低点下方绘制买入信号，在最高点上方绘制卖出信号。如果为 &lt;code&gt;False&lt;/code&gt;，则将在条形的平均执行价格上绘制。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;bardist&lt;/code&gt;（默认：&lt;code&gt;0.015&lt;/code&gt; 1.5%）：当 &lt;code&gt;barplot&lt;/code&gt; 为 &lt;code&gt;True&lt;/code&gt; 时，与最大值/最小值的距离。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="drawdown"&gt;DrawDown&lt;a class="anchor" href="#drawdown"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;observers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;DrawDown()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该观察器跟踪当前的回撤水平（绘图）和最大回撤（不绘图）水平。&lt;/p&gt;</description></item></channel></rss>

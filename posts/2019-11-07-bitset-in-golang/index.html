@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>详细介绍 Go 中如何实现 bitset - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="详细介绍 Go 中如何实现 bitset"><meta itemprop=description content="最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>详细介绍 Go 中如何实现 bitset - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="详细介绍 Go 中如何实现 bitset"><meta itemprop=description content="最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
 在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
 相关代码已经放在了 github，地址如下：go-set-example
 如果发现有什么不妥的地方，欢迎大佬们指正，感谢。
@@ -10,8 +10,7 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 但如果再增加了一个元素，比如 64（一个 int64 的表示范围是 0-63），这已经超出了一个 int64 能表示的范围。该怎么办？
 一个 int64 无法表示，那就用多个呗。此时的结构如下：
 一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 BitSet，如下：
-1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。
-还有，因为 bitset 中元素个数无法通过 len 函数获取，而具体的方法相对复杂一点，可增加一个 size 字段记录集合元素的个数。然后就可以增加一个 Size 方法。"><meta itemprop=datePublished content="2019-11-07T19:37:26+08:00"><meta itemprop=dateModified content="2019-11-07T19:37:26+08:00"><meta itemprop=wordCount content="1198"><meta itemprop=keywords content="Golang,"><meta property="og:title" content="详细介绍 Go 中如何实现 bitset"><meta property="og:description" content="最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
+1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。"><meta itemprop=datePublished content="2019-11-07T19:37:26+08:00"><meta itemprop=dateModified content="2019-11-07T19:37:26+08:00"><meta itemprop=wordCount content="1198"><meta itemprop=keywords content="Golang"><meta property="og:url" content="https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/"><meta property="og:site_name" content="POLOXUE's BLOG"><meta property="og:title" content="详细介绍 Go 中如何实现 bitset"><meta property="og:description" content="最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
 在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
 相关代码已经放在了 github，地址如下：go-set-example
 如果发现有什么不妥的地方，欢迎大佬们指正，感谢。
@@ -23,8 +22,7 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 但如果再增加了一个元素，比如 64（一个 int64 的表示范围是 0-63），这已经超出了一个 int64 能表示的范围。该怎么办？
 一个 int64 无法表示，那就用多个呗。此时的结构如下：
 一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 BitSet，如下：
-1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。
-还有，因为 bitset 中元素个数无法通过 len 函数获取，而具体的方法相对复杂一点，可增加一个 size 字段记录集合元素的个数。然后就可以增加一个 Size 方法。"><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/posts/2019-11-07-bitset-in-golang/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-11-07T19:37:26+08:00"><meta property="article:modified_time" content="2019-11-07T19:37:26+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="详细介绍 Go 中如何实现 bitset"><meta name=twitter:description content="最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
+1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-11-07T19:37:26+08:00"><meta property="article:modified_time" content="2019-11-07T19:37:26+08:00"><meta property="article:tag" content="Golang"><meta name=twitter:card content="summary"><meta name=twitter:title content="详细介绍 Go 中如何实现 bitset"><meta name=twitter:description content="最近尝试在 B 站录些小视频，我的 B 站主页。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。
 在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。
 相关代码已经放在了 github，地址如下：go-set-example
 如果发现有什么不妥的地方，欢迎大佬们指正，感谢。
@@ -36,12 +34,7 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 但如果再增加了一个元素，比如 64（一个 int64 的表示范围是 0-63），这已经超出了一个 int64 能表示的范围。该怎么办？
 一个 int64 无法表示，那就用多个呗。此时的结构如下：
 一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 BitSet，如下：
-1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。
-还有，因为 bitset 中元素个数无法通过 len 函数获取，而具体的方法相对复杂一点，可增加一个 size 字段记录集合元素的个数。然后就可以增加一个 Size 方法。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-<link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script>
-<script src=https://www.poloxue.com/js/main.js></script>
-<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script>
-<script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>07</span>
+1 2 3 4 type BitSet struct { data []int64 size int } data 成员用于存放集合元素，切片的特点就是能动态扩容。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script><script src=https://www.poloxue.com/js/main.js></script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container-wide wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=article-nav id=article-nav-id><div class=post><div class=post-header><div class=meta><div class=date><span class=day>07</span>
 <span class=rest>Nov 2019</span></div></div><div class=matter><h1 class=title>详细介绍 Go 中如何实现 bitset</h1></div></div><aside class="show-on-mobile toc" id=static-toc><header><h3>Contents</h3></header><nav id=TableOfContents><ol><li><a href=#contains>contains</a></li><li><a href=#clear>clear</a></li><li><a href=#add>add</a></li></ol><ol><li><a href=#computesize>computeSize</a></li><li><a href=#方法定义>方法定义</a></li><li><a href=#intersect>intersect</a></li><li><a href=#union>union</a></li><li><a href=#difference>difference</a></li></ol></nav></aside><p>最近尝试在 B 站录些小视频，我的 <a href=https://space.bilibili.com/314069695>B 站主页</a>。录视频当是为了彻底搞懂某个知识点的最后一步吧，同时也希望能习得一些额外的能力。</p><p>在讲 Go 如何实现 bitset 的时候，发现这块内容有点难讲。思考后，我决定通过文字辅以视频的方式说明，于是就写了这篇文章。</p><p>相关代码已经放在了 github，地址如下：<a href=https://github.com/poloxue/go-set-example>go-set-example</a></p><p>如果发现有什么不妥的地方，欢迎大佬们指正，感谢。</p><h1 id=bitset-结构>bitset 结构</h1><p>之前我已经写过一篇题为 <a href=https://mp.weixin.qq.com/s/a0BWRTikJNTPc6VXVn43OQ>Go 中如何使用 Set</a> 的文章，其中介绍了 bitset 一种最简单的应用场景，状态标志位，顺便还提了下 bitset 的实现思路。</p><p>状态标志和一般的集合有什么区别呢？</p><p>我的总结是主要一点，那就是状态标志中元素个数通常是固定的。而一般的集合中，元素个数通常是动态变化的。这会导致什么问题？</p><p>一般，我们使用一个整数就足以表示状态标志中的所有状态，最大的 int64 类型，足足有 64 个二进制位，最多可以包含 64 个元素，完全足够使用。但如果是集合，元素数量和值通常都不固定。</p><p>比如一个 bitset 集合最初可能只包含 1、2、4 几个元素，只要一个 int64 就能表示。如下：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-11-07-bitset-in-golang-01.png alt></p><p>但如果再增加了一个元素，比如 64（一个 int64 的表示范围是 0-63），这已经超出了一个 int64 能表示的范围。该怎么办？</p><p>一个 int64 无法表示，那就用多个呗。此时的结构如下：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-11-07-bitset-in-golang-02.png alt></p><p>一个 int64 切片正好符合上面的结构。那我们就可以定义一个新的类型 <code>BitSet</code>，如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
@@ -61,9 +54,9 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>const</span> (
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>shift</span> = <span style=color:#ae81ff>6</span>    <span style=color:#75715e>// 2^n = 64 的 n
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>mask</span>  = <span style=color:#ae81ff>0x3f</span> <span style=color:#75715e>// n=6，即 2^n - 1 = 63，即 0x3f
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>shift</span> = <span style=color:#ae81ff>6</span>    <span style=color:#75715e>// 2^n = 64 的 n</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>mask</span>  = <span style=color:#ae81ff>0x3f</span> <span style=color:#75715e>// n=6，即 2^n - 1 = 63，即 0x3f</span>
+</span></span><span style=display:flex><span>)
 </span></span></code></pre></td></tr></table></div></div><p>就是前面提到的用于计算 <code>index</code> 和 <code>pos</code> 的两个常量。</p><p>提供两个函数，用于方便 <code>index</code> 和 <code>pos</code> 上对应值的计算，代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
@@ -76,16 +69,16 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>n</span> <span style=color:#f92672>&gt;&gt;</span> <span style=color:#a6e22e>shift</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 相对于标志位使用场景中某个标志的值
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>uint64</span> {
+</span></span><span style=display:flex><span><span style=color:#75715e>// 相对于标志位使用场景中某个标志的值</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>uint64</span> {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> uint(<span style=color:#a6e22e>n</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>mask</span>)
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><h1 id=构造函数>构造函数</h1><p>提供了一个函数，用于创建初始 <code>BitSet</code>，且支持设置初始的元素。</p><p>函数原型如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>NewBitSet</span>(<span style=color:#a6e22e>ns</span> <span style=color:#f92672>...</span><span style=color:#66d9ef>int</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><p>输出参数 <code>ns</code> 是一个 <code>int</code> 类型的变长参数，用于设置集合中的初始值。</p><p>如果输入参数 <code>ns</code> 为空的话，<code>new(BitSet)</code> 返回空集合即可。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
@@ -110,22 +103,22 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 计算多 bitset 开辟多个空间
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>max</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ns</span>[<span style=color:#ae81ff>0</span>]
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 计算多 bitset 开辟多个空间</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>max</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ns</span>[<span style=color:#ae81ff>0</span>]
 </span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>ns</span> {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>n</span> &gt; <span style=color:#a6e22e>max</span> {
 </span></span><span style=display:flex><span>		<span style=color:#a6e22e>max</span> = <span style=color:#a6e22e>n</span>
 </span></span><span style=display:flex><span>	}
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 如果 max &lt; 0，直接返回空。
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>max</span> &lt; <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span><span style=color:#75715e>// 如果 max &lt; 0，直接返回空。</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>max</span> &lt; <span style=color:#ae81ff>0</span> {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> new(<span style=color:#a6e22e>BitSet</span>)
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 通过 max &gt;&gt; shift+1 计算最大值 max 所在 index
-</span></span></span><span style=display:flex><span><span style=color:#75715e>// 而 index + 1 即为要开辟的空间
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>BitSet</span>{
+</span></span><span style=display:flex><span><span style=color:#75715e>// 通过 max &gt;&gt; shift+1 计算最大值 max 所在 index</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 而 index + 1 即为要开辟的空间</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>s</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>BitSet</span>{
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>data</span>: make([]<span style=color:#66d9ef>int64</span>, <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>max</span>)<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>),
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><p>现在，可以向 <code>BitSet</code> 中添加元素了。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
@@ -142,16 +135,16 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>for</span> <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>ns</span> {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>n</span> <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span> {
-</span></span><span style=display:flex><span>		<span style=color:#75715e>// e &gt;&gt; shift 获取索引位置，即行，一般叫 index
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// e&amp;mask 获取所在列，一般叫 pos，F1 0 F2 1
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>n</span><span style=color:#f92672>&gt;&gt;</span><span style=color:#a6e22e>shift</span>] <span style=color:#f92672>|=</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>)
-</span></span><span style=display:flex><span>		<span style=color:#75715e>// 增加元素个数
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>size</span><span style=color:#f92672>++</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// e &gt;&gt; shift 获取索引位置，即行，一般叫 index</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// e&amp;mask 获取所在列，一般叫 pos，F1 0 F2 1</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>n</span><span style=color:#f92672>&gt;&gt;</span><span style=color:#a6e22e>shift</span>] <span style=color:#f92672>|=</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// 增加元素个数</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>size</span><span style=color:#f92672>++</span>
 </span></span><span style=display:flex><span>	}
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 返回创建的 BitSet
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 返回创建的 BitSet</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>return</span> <span style=color:#a6e22e>s</span>
 </span></span></code></pre></td></tr></table></div></div><p>元素已经全部添加完成！</p><h1 id=bitset-的方法>BitSet 的方法</h1><p>接下来是重点了，为 <code>BitSet</code> 增加一些方法。主要是分成两类，一是常见的增删查等基础方法，二是集合的特有操作，交并差。</p><h1 id=基础方法>基础方法</h1><p>主要是几个方法，分别是 <code>Add</code>（增加）、<code>Clear</code>（清除） 、<code>Contains</code>（检查）以及返回元素个数。如果要有更好的性能和空间使用率，<code>Add</code> 和 <code>Clear</code> 还有考虑灵活的。</p><h2 id=contains>contains</h2><p>先讲 <code>Contains</code>，即检查是否存在某个元素。</p><p>函数定义如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
@@ -165,8 +158,8 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 获取元素对应的 int64 的位置，如果超出 data 能表示的范围，直接返回。
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>n</span>)
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 获取元素对应的 int64 的位置，如果超出 data 能表示的范围，直接返回。</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>n</span>)
 </span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>) {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>
 </span></span><span style=display:flex><span>}
@@ -176,8 +169,8 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Clear</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><p>实现代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
@@ -194,19 +187,19 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 元素不能小于 0
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>n</span> &lt; <span style=color:#ae81ff>0</span> {
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 元素不能小于 0</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>n</span> &lt; <span style=color:#ae81ff>0</span> {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>set</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 计算切片索引位置，如果超出当前索引表示的范围，返回即可。
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e>// 计算切片索引位置，如果超出当前索引表示的范围，返回即可。</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>n</span>)
 </span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>) {
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>set</span>
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 检查是否存在元素
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>d</span>[<span style=color:#a6e22e>i</span>]<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span><span style=color:#75715e>// 检查是否存在元素</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>d</span>[<span style=color:#a6e22e>i</span>]<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>) <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] <span style=color:#f92672>&amp;^=</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>size</span><span style=color:#f92672>--</span>
 </span></span><span style=display:flex><span>}
@@ -240,11 +233,11 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 检测是否有足够的空间存放新元素
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>n</span>)
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 检测是否有足够的空间存放新元素</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>index</span>(<span style=color:#a6e22e>n</span>)
 </span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>) {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// 扩容大小为 i+1
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>ndata</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>uint64</span>, <span style=color:#a6e22e>i</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 扩容大小为 i+1</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ndata</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>uint64</span>, <span style=color:#a6e22e>i</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)
 </span></span><span style=display:flex><span>	copy(<span style=color:#a6e22e>ndata</span>, <span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span> = <span style=color:#a6e22e>ndata</span>
 </span></span><span style=display:flex><span>}
@@ -254,8 +247,8 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>]<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// 设置元素到集合中
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] <span style=color:#f92672>|=</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 设置元素到集合中</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] <span style=color:#f92672>|=</span> <span style=color:#a6e22e>posVal</span>(<span style=color:#a6e22e>n</span>)
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>s</span>.<span style=color:#a6e22e>size</span><span style=color:#f92672>++</span>
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><p>好了！基础的方法就介绍这么多吧。</p><p>当然，这里的方法还可以增加更多，比如查找当前元素的下一个元素，将某个范围值都添加进集合等等等。</p><h1 id=集合方法>集合方法</h1><p>介绍完了基础的方法，再继续介绍集合一些特有的方法，交并差。</p><h2 id=computesize>computeSize</h2><p>在正式介绍这些方法前，先引入一个辅助方法，用于计算集合中的元素个数。之所以要引入这个方法，是因为交并差没有办法像之前在增删的时候更新 <code>size</code>，要重新计算一下。</p><p>实现代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
@@ -292,18 +285,18 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 交集
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Intersect</span>(<span style=color:#a6e22e>other</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
-</span></span><span style=display:flex><span><span style=color:#75715e>// 并集
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Union</span>(<span style=color:#a6e22e>other</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
-</span></span><span style=display:flex><span><span style=color:#75715e>// 差集
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Difference</span>(<span style=color:#a6e22e>other</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 交集</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Intersect</span>(<span style=color:#a6e22e>other</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#75715e>// 并集</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Union</span>(<span style=color:#a6e22e>other</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#75715e>// 差集</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Difference</span>(<span style=color:#a6e22e>other</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span> {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><h2 id=intersect>intersect</h2><p>先介绍 <code>Intersect</code>，即计算交集的方法。</p><p>一个重要前提，因为交集是 <code>与运算</code>，结果肯定位于两个参与运算的那个小范围集合中，所以，开辟空间和遍历可以缩小到这个范围进行。</p><p>实现代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
@@ -318,16 +311,16 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 首先，获取这个小范围的集合的长度
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>minLen</span> <span style=color:#f92672>:=</span> min(len(<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>), len(<span style=color:#a6e22e>other</span>.<span style=color:#a6e22e>data</span>))
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 首先，获取这个小范围的集合的长度</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>minLen</span> <span style=color:#f92672>:=</span> min(len(<span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>), len(<span style=color:#a6e22e>other</span>.<span style=color:#a6e22e>data</span>))
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 以 minLen 开辟空间
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>intersectSet</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>BitSet</span>{
+</span></span><span style=display:flex><span><span style=color:#75715e>// 以 minLen 开辟空间</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>intersectSet</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>BitSet</span>{
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>data</span>: make([]<span style=color:#66d9ef>uint64</span>, <span style=color:#a6e22e>minLen</span>),
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 以 minLen 进行遍历计算交集
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>minLen</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>--</span> {
+</span></span><span style=display:flex><span><span style=color:#75715e>// 以 minLen 进行遍历计算交集</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>minLen</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>--</span> {
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>intersectSet</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] = <span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] <span style=color:#f92672>&amp;</span> <span style=color:#a6e22e>other</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>]
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
@@ -366,8 +359,8 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>unionSet</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] = <span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] | <span style=color:#a6e22e>other</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>]
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// 更新计算 size
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>unionSet</span>.<span style=color:#a6e22e>size</span> = <span style=color:#a6e22e>unionSet</span>.<span style=color:#a6e22e>computeSize</span>()
+</span></span><span style=display:flex><span><span style=color:#75715e>// 更新计算 size</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>unionSet</span>.<span style=color:#a6e22e>size</span> = <span style=color:#a6e22e>unionSet</span>.<span style=color:#a6e22e>computeSize</span>()
 </span></span></code></pre></td></tr></table></div></div><h2 id=difference>difference</h2><p>介绍最后一个与集合相关的方法，<code>Difference</code>，即差集操作。</p><p>差集计算结果 <code>differenceSet</code> 的分配空间由被减集合 <code>set</code> 决定。其他的操作和 <code>Intersect</code> 和 <code>Union</code> 类似，位运算通过 <code>&^</code> 实现。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
@@ -394,8 +387,8 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 遍历 data 执行位运算。
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#a6e22e>minLen</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 遍历 data 执行位运算。</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> &lt; <span style=color:#a6e22e>minLen</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {
 </span></span><span style=display:flex><span>	<span style=color:#a6e22e>differenceSet</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] = <span style=color:#a6e22e>set</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>] <span style=color:#f92672>&amp;^</span> <span style=color:#a6e22e>other</span>.<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>]
 </span></span><span style=display:flex><span>}
 </span></span><span style=display:flex><span>
@@ -406,8 +399,8 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
 </span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>set</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>BitSet</span>) <span style=color:#a6e22e>Visit</span>(<span style=color:#a6e22e>do</span> <span style=color:#66d9ef>func</span>(<span style=color:#66d9ef>int</span>) (<span style=color:#a6e22e>skip</span> <span style=color:#66d9ef>bool</span>)) (<span style=color:#a6e22e>aborted</span> <span style=color:#66d9ef>bool</span>) {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>//...
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//...</span>
+</span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><p>输入参数是一个回调函数，通过它获取元素的值，不然每次都要写一大串循环运算逻辑，不太可能。回调函数的返回值 <code>bool</code>，表明是否继续遍历。<code>Visit</code> 的返回值表明是函数是非正常结束的。</p><p>实现代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
@@ -439,21 +432,21 @@ bitset 结构 之前我已经写过一篇题为 Go 中如何使用 Set 的文章
 </span></span><span style=display:flex><span>		<span style=color:#66d9ef>continue</span>
 </span></span><span style=display:flex><span>	}
 </span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// 理论功力不好，不知道怎么描述了。哈哈
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 这小段代码可以理解为从元素值到 index 的逆运算，
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 只不过得到的值是诸如 0、64、128 的第一个位置的值。
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 0 &lt;&lt; 6，还是 0，1 &lt;&lt; 6 就是 64，2 &lt;&lt; 6 的就是 128
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#a6e22e>shift</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 理论功力不好，不知道怎么描述了。哈哈</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 这小段代码可以理解为从元素值到 index 的逆运算，</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 只不过得到的值是诸如 0、64、128 的第一个位置的值。</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 0 &lt;&lt; 6，还是 0，1 &lt;&lt; 6 就是 64，2 &lt;&lt; 6 的就是 128</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#a6e22e>shift</span>
 </span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>w</span> <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {
-</span></span><span style=display:flex><span>		<span style=color:#75715e>// 000.....000100 64~128 的话，表示 66，即 64 + 2，这个 2 可以由结尾 0 的个数确定
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// 那怎么获取结果 0 的个数呢？可以使用 bits.TrailingZeros64 函数
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>bits</span>.<span style=color:#a6e22e>TrailingZeros64</span>(<span style=color:#a6e22e>w</span>)
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// 000.....000100 64~128 的话，表示 66，即 64 + 2，这个 2 可以由结尾 0 的个数确定</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// 那怎么获取结果 0 的个数呢？可以使用 bits.TrailingZeros64 函数</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>bits</span>.<span style=color:#a6e22e>TrailingZeros64</span>(<span style=color:#a6e22e>w</span>)
 </span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>do</span>(<span style=color:#a6e22e>n</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>) {
 </span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
 </span></span><span style=display:flex><span>		}
-</span></span><span style=display:flex><span>		<span style=color:#75715e>// 将已经检查的位清零
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// 为了保证尾部 0 的个数能代表元素的值
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#a6e22e>w</span> <span style=color:#f92672>&amp;^=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> uint64(<span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// 将已经检查的位清零</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// 为了保证尾部 0 的个数能代表元素的值</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>w</span> <span style=color:#f92672>&amp;^=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> uint64(<span style=color:#a6e22e>b</span>)
 </span></span><span style=display:flex><span>	}
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></td></tr></table></div></div><p>使用也非常方便，示例代码如下：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1

@@ -1,17 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>开发调试 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/</link><description>Recent content in 开发调试 on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/commands/dev/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>entr - 实现语言无关热重启 # 在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
-本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 entry。
-特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。
-什么 entry # 简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。
-$ ls text.txt | entr echo &amp;#34;file changed&amp;#34; 我们通过 ls text.txt 告诉 entry 监听的文件。当编辑并保存文件后，它通过指定命令 echo 打印提示 file changed。
-我们只要对它稍做修改，就可以实现在监听到文件变化后，自动执行 停止服务 -&amp;gt; 重新编译 -&amp;gt; 启动服务 等一系列动作。
-安装 # # mac 安装命令 brew install entr 实现热重启 # 首先，开发一个简单 Go server 服务，文件是 main.go，代码如下：
-package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, func(w http.ResponseWriter, req *http.Request) { _, _ = w.</description></item><item><title>httpie - 人性化 HTTP Client</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>人性化 HTTP Client 命令 - httpie # 快速调试 HTTP Web 接口，你首先想到的方案是什么？或许是是图形化能力超强的 Postman，亦或是命令行工具 curl，甚至可能通过浏览器即可。
-httpie 是一款更人性化的 HTTP 命令行客户端，简单来说，比 curl 更加易于使用。
-安装 # brew install httpie 快手上手 # 最简单的使用案例，快速发起 GET 和 POST 请求。
-GET 请求：
-http GET http://httpbin.org/get name==poloxue age==18 POST 请求：
-http POST http://httpbin.org/post name=poloxue age=18 http 命令的完整语法，如下所示：
-http [flags] [METHOD] URL [ITEM [ITEM]] 体现易用性 # 从易用性角度，如果拷贝一个 url 可直接通过在 scheme 之后添加一个 &amp;lt;space&amp;gt; 便可直接使用：
-例如，GET 方法请求 http://httpbin.org/get，如下所示：
-http ://httpbin.org/get 演示效果：
-另外，METHOD 默认也可省略的，省略规则是：</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>开发调试 on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/</link><description>Recent content in 开发调试 on 我的终端环境</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/commands/dev/index.xml" rel="self" type="application/rss+xml"/><item><title>entr - 实现语言无关热重启</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/entr/</guid><description>&lt;h1 id="entr---实现语言无关热重启"&gt;entr - 实现语言无关热重启&lt;a class="anchor" href="#entr---%e5%ae%9e%e7%8e%b0%e8%af%ad%e8%a8%80%e6%97%a0%e5%85%b3%e7%83%ad%e9%87%8d%e5%90%af"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;hi&lt;/p&gt;
+&lt;p&gt;在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。&lt;/p&gt;
+&lt;p&gt;本文将介绍一款工具，它能轻松实现简单的热重启，它具有语言和框架无关性，是一个通用小工具，它就是 &lt;a href="https://github.com/eradman/entr"&gt;entry&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;特别说明，这个工具主要是用在开发调试阶段，不支持复杂的热重启能力。&lt;/p&gt;
+&lt;h2 id="什么-entry"&gt;什么 entry&lt;a class="anchor" href="#%e4%bb%80%e4%b9%88-entry"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;简单来说，它是一个可监听文件状态变化并执行特定动作的命令。让我们直接通过演示观察它的行为。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ ls text.txt | entr echo &lt;span style="color:#e6db74"&gt;&amp;#34;file changed&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-02-high-productivity-shell-commands-part3-01.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;我们通过 &lt;code&gt;ls text.txt&lt;/code&gt; 告诉 entry 监听的文件。当编辑并保存文件后，它通过指定命令 echo 打印提示 &lt;code&gt;file changed&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;我们只要对它稍做修改，就可以实现在监听到文件变化后，自动执行 &lt;code&gt;停止服务 -&amp;gt; 重新编译 -&amp;gt; 启动服务&lt;/code&gt; 等一系列动作。&lt;/p&gt;
+&lt;h2 id="安装"&gt;安装&lt;a class="anchor" href="#%e5%ae%89%e8%a3%85"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# mac 安装命令&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;brew install entr&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="实现热重启"&gt;实现热重启&lt;a class="anchor" href="#%e5%ae%9e%e7%8e%b0%e7%83%ad%e9%87%8d%e5%90%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;首先，开发一个简单 Go server 服务，文件是 &lt;code&gt;main.go&lt;/code&gt;，代码如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#e6db74"&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#e6db74"&gt;&amp;#34;net/http&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;HandleFunc&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;/&amp;#34;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;w&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;ResponseWriter&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;req&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Request&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;		&lt;span style="color:#a6e22e"&gt;_&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;_&lt;/span&gt; = &lt;span style="color:#a6e22e"&gt;w&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Write&lt;/span&gt;([]byte(&lt;span style="color:#e6db74"&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;Server is listening on :3000&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#a6e22e"&gt;http&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;ListenAndServe&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;:3000&amp;#34;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;nil&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为这个服务加上热重启能力，命令如下：&lt;/p&gt;</description></item><item><title>HTTPie - 人性化 HTTP 客户端</title><link>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/commands/dev/httpie/</guid><description>&lt;h1 id="人性化-http-client-命令---httpie"&gt;人性化 HTTP Client 命令 - httpie&lt;a class="anchor" href="#%e4%ba%ba%e6%80%a7%e5%8c%96-http-client-%e5%91%bd%e4%bb%a4---httpie"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;作为程序员，如果你要快速调试 HTTP 接口，首先想到的工具是什么？GUI 版 HTTP 客户端 Postman？命令行 curl？还是使用浏览器？不知道你是否抱怨过，如 curl 的很多传统命令基本都存在一个问题：虽然功能强大，但用户体验极差，基本不考虑使用者的感受。&lt;/p&gt;
+&lt;p&gt;本文介绍一款意外丢失 54k star，不到两年重获 34k 的 HTTP 客户端命令 - &lt;a href="https://github.com/httpie/cli/"&gt;HTTPie&lt;/a&gt; ，它比 curl 更易于使用，是一款注重用户体验的 HTTP 客户端命令。&lt;/p&gt;
+&lt;h2 id="一个趣事"&gt;一个趣事&lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e8%b6%a3%e4%ba%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;先说关于 HTTPie 的 star 数的一个趣事：&lt;/p&gt;
+&lt;p&gt;2022 年，由于 HTTPie 的作者出现了一次误操作，将仓位设为私有，导致 HTTPie 的 star 直接清零。经历了两年时间，如今重新恢复到 36k star。&lt;/p&gt;
+&lt;p&gt;当时，HTTPie 官方还写了一篇博客，专门反思了这次的事故，查看博客：&lt;a href="https://httpie.io/blog/stardust"&gt;How We Lost 54k stars&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="为什么推荐-httpie"&gt;为什么推荐 HTTPie&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e6%8e%a8%e8%8d%90-httpie"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;HTTPie 的哲学是使 API 测试和调试变得直观友好，相比传统命令行工具（如 curl 和 wget），它提供了更丰富的功能和更易读的输出。&lt;/p&gt;
+&lt;p&gt;来自官方的示例：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-10-httpie-02.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;首先是，它的命令行语法直观易懂，如发送 GET 请求只需 &lt;code&gt;http GET &amp;lt;URL&amp;gt;&lt;/code&gt;，而 POST 请求则是 &lt;code&gt;http POST &amp;lt;URL&amp;gt; &amp;lt;body&amp;gt;&lt;/code&gt;，这比 curl 的命令行参数更易于理解和记忆。&lt;/p&gt;</description></item></channel></rss>

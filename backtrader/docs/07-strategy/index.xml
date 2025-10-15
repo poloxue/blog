@@ -1,33 +1,133 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Strategy on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/</link><description>Recent content in Strategy on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/07-strategy/index.xml" rel="self" type="application/rss+xml"/><item><title>Strategy</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/01-strategy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/07-strategy/01-strategy/</guid><description>Strategy # 在 backtrader 中，Cerebro 实例是整个系统的核心，而 Strategy 是用户的核心。
-Strategy 的生命周期方法 # 注意, 策略可以在创建时通过抛出 StrategySkipError 异常来中断，该异常来自 backtrader.errors 模块。这将避免在回测期间处理该策略。请参阅“异常”部分。
-构建：__init__ # 这是在实例化期间调用的：指标将在此处创建以及其他需要的属性。
-示例代码：
-def __init__(self): self.sma = btind.SimpleMovingAverage(period=15) 启动：start # Cerebro 实例通知策略是时候开始运行了。存在一个默认的空方法。
-初期：prenext # 在创建期间声明的指标将对策略的成熟期施加限制：这称为最小周期。上面的 __init__ 创建了一个周期为 15 的简单移动平均线 (SMA)。
-只要系统看到的 bar 少于 15 个，就会调用 prenext（默认实现为空操作）。
-成熟：next # 一旦系统看到 15 个 bar 并且 SMA 有足够的缓冲区开始生成值，策略就足够成熟可以真正执行。
-存在一个 nextstart 方法，会在从 prenext 切换到 next 时调用一次。nextstart 的默认实现是简单地调用 next。
-繁衍：无 # 策略实际上不会繁衍，但从某种意义上来说，它们会，因为系统会在优化时实例化它们多次（使用不同的参数）。
-结束：stop # 系统通知策略是时候重置并整理一切了。存在一个默认的空方法。
-通常情况下和常规使用模式下，这看起来像这样：</description></item><item><title>信号策略</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/02-strategy-with-signals/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/07-strategy/02-strategy-with-signals/</guid><description>信号策略 # 使用 backtrader 进行操作不一定非得编写一个策略类。虽然这是首选方式，但由于对象层次结构的原因，使用信号也是可行的。
-快速总结： # 不需要编写策略类、实例化指标、编写买卖逻辑等。 添加信号（无论如何也是指标），其余部分在后台完成。 快速示例： # import backtrader as bt data = bt.feeds.OneOfTheFeeds(dataname=&amp;#39;mydataname&amp;#39;) cerebro.adddata(data) cerebro.add_signal(bt.SIGNAL_LONGSHORT, MySignal) cerebro.run() 这就完成了。当然，信号本身还没有定义。
-让我们定义一个非常简单的信号：
-如果收盘价高于简单移动平均线 (SMA)，则发出多头信号。 如果收盘价低于 SMA，则发出空头信号。 定义如下：
-class MySignal(bt.Indicator): lines = (&amp;#39;signal&amp;#39;,) params = ((&amp;#39;period&amp;#39;, 30),) def __init__(self): self.lines.signal = self.data - bt.indicators.SMA(period=self.p.period) 现在真的完成了。
-当运行 run 时，Cerebro 会处理实例化一个特殊的策略实例，它知道如何处理这些信号。
-常见问题 # 买卖操作的数量是如何确定的？
-Cerebro 实例自动为策略添加一个固定大小 (FixedSize) 的定量器。最终用户可以通过 cerebro.addsizer 更改定量器以改变策略。
-订单是如何执行的？
-执行类型为市价单，订单的有效期为“直到取消” (Good Until Canceled)。
-信号细节 # 从技术和理论角度来看，可以描述为：
-一个可调用对象，当被调用时返回另一个对象（只调用一次）。 在大多数情况下，这是一个类的实例化，但不一定非得是。 支持 __getitem__ 接口。唯一请求的键/索引将是 0。 从实际角度来看，信号是：</description></item><item><title>策略参考</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/03-strategy-references/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/07-strategy/03-strategy-references/</guid><description>策略参考 # 内置策略参考 # MA_CrossOver # 别名：SMA_CrossOver，这是一个仅做多的策略，基于移动平均线交叉操作。
-交易规则 # 买入逻辑： 如果无持仓，fast 移动平均线向上穿过 slow 移动平均线。
-卖出逻辑： 有持仓时，fast 移动平均线向下穿过 slow 移动平均线。
-订单类型： 市价单
-参数：
-fast (10)，_movav (&amp;lt;class ‘backtrader.indicators.sma.SMA’&amp;gt;) slow (30)，_movav (&amp;lt;class ‘backtrader.indicators.sma.SMA’&amp;gt;) SignalStrategy # 此策略的子类旨在使用信号自动操作。信号通常是指标，预期输出值为：
-&amp;gt; 0 表示多头指示 &amp;lt; 0 表示空头指示 信号分为两组，共有 5 种类型。
-主要组：
-LONGSHORT：接受来自该信号的多头和空头指示。 LONG： 接受多头指示进行做多。 接受空头指示平仓多头。但： 如果系统中有 LONGEXIT 信号，将用它来平仓多头。 如果有 SHORT 信号且没有 LONGEXIT 信号，它将被用来平仓多头再开空头。 SHORT： 接受空头指示进行做空。 接受多头指示平仓空头。但： 如果系统中有 SHORTEXIT 信号，将用它来平仓空头。 如果有 LONG 信号且没有 SHORTEXIT 信号，它将被用来平仓空头再开多头。 退出组：
-这两个信号旨在覆盖其他信号，并为平仓提供标准。
-LONGEXIT：接受空头指示平仓多头。 SHORTEXIT：接受多头指示平仓空头。 订单发出：</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Strategy on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/</link><description>Recent content in Strategy on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/07-strategy/index.xml" rel="self" type="application/rss+xml"/><item><title>Strategy</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/01-strategy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/07-strategy/01-strategy/</guid><description>&lt;h1 id="strategy"&gt;Strategy&lt;a class="anchor" href="#strategy"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;在 backtrader 中，Cerebro 实例是整个系统的核心，而 Strategy 是用户的核心。&lt;/p&gt;
+&lt;h2 id="strategy-的生命周期方法"&gt;Strategy 的生命周期方法&lt;a class="anchor" href="#strategy-%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f%e6%96%b9%e6%b3%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;, 策略可以在创建时通过抛出 &lt;code&gt;StrategySkipError&lt;/code&gt; 异常来中断，该异常来自 &lt;code&gt;backtrader.errors&lt;/code&gt; 模块。这将避免在回测期间处理该策略。请参阅“异常”部分。&lt;/p&gt;
+&lt;h3 id="构建__init__"&gt;构建：&lt;code&gt;__init__&lt;/code&gt;&lt;a class="anchor" href="#%e6%9e%84%e5%bb%ba__init__"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;这是在实例化期间调用的：指标将在此处创建以及其他需要的属性。&lt;/p&gt;
+&lt;p&gt;示例代码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; btind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SimpleMovingAverage(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;15&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="启动start"&gt;启动：&lt;code&gt;start&lt;/code&gt;&lt;a class="anchor" href="#%e5%90%af%e5%8a%a8start"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Cerebro 实例通知策略是时候开始运行了。存在一个默认的空方法。&lt;/p&gt;
+&lt;h3 id="初期prenext"&gt;初期：&lt;code&gt;prenext&lt;/code&gt;&lt;a class="anchor" href="#%e5%88%9d%e6%9c%9fprenext"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;在创建期间声明的指标将对策略的成熟期施加限制：这称为最小周期。上面的 &lt;code&gt;__init__&lt;/code&gt; 创建了一个周期为 15 的简单移动平均线 (SMA)。&lt;/p&gt;
+&lt;p&gt;只要系统看到的 bar 少于 15 个，就会调用 &lt;code&gt;prenext&lt;/code&gt;（默认实现为空操作）。&lt;/p&gt;
+&lt;h3 id="成熟next"&gt;成熟：&lt;code&gt;next&lt;/code&gt;&lt;a class="anchor" href="#%e6%88%90%e7%86%9fnext"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;一旦系统看到 15 个 bar 并且 SMA 有足够的缓冲区开始生成值，策略就足够成熟可以真正执行。&lt;/p&gt;
+&lt;p&gt;存在一个 &lt;code&gt;nextstart&lt;/code&gt; 方法，会在从 &lt;code&gt;prenext&lt;/code&gt; 切换到 &lt;code&gt;next&lt;/code&gt; 时调用一次。&lt;code&gt;nextstart&lt;/code&gt; 的默认实现是简单地调用 &lt;code&gt;next&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id="繁衍无"&gt;繁衍：无&lt;a class="anchor" href="#%e7%b9%81%e8%a1%8d%e6%97%a0"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;策略实际上不会繁衍，但从某种意义上来说，它们会，因为系统会在优化时实例化它们多次（使用不同的参数）。&lt;/p&gt;
+&lt;h3 id="结束stop"&gt;结束：&lt;code&gt;stop&lt;/code&gt;&lt;a class="anchor" href="#%e7%bb%93%e6%9d%9fstop"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;系统通知策略是时候重置并整理一切了。存在一个默认的空方法。&lt;/p&gt;
+&lt;p&gt;通常情况下和常规使用模式下，这看起来像这样：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; btind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SimpleMovingAverage(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;15&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 执行某些操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;elif&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 执行其他操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在这个代码片段中：&lt;/p&gt;</description></item><item><title>信号策略</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/02-strategy-with-signals/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/07-strategy/02-strategy-with-signals/</guid><description>&lt;h1 id="信号策略"&gt;信号策略&lt;a class="anchor" href="#%e4%bf%a1%e5%8f%b7%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;使用 backtrader 进行操作不一定非得编写一个策略类。虽然这是首选方式，但由于对象层次结构的原因，使用信号也是可行的。&lt;/p&gt;
+&lt;h2 id="快速总结"&gt;快速总结：&lt;a class="anchor" href="#%e5%bf%ab%e9%80%9f%e6%80%bb%e7%bb%93"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;不需要编写策略类、实例化指标、编写买卖逻辑等。&lt;/li&gt;
+&lt;li&gt;添加信号（无论如何也是指标），其余部分在后台完成。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="快速示例"&gt;快速示例：&lt;a class="anchor" href="#%e5%bf%ab%e9%80%9f%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;OneOfTheFeeds(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;mydataname&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;add_signal(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SIGNAL_LONGSHORT, MySignal)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这就完成了。当然，信号本身还没有定义。&lt;/p&gt;
+&lt;p&gt;让我们定义一个非常简单的信号：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果收盘价高于简单移动平均线 (SMA)，则发出多头信号。&lt;/li&gt;
+&lt;li&gt;如果收盘价低于 SMA，则发出空头信号。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;定义如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MySignal&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;signal&amp;#39;&lt;/span&gt;,)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;period&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;),)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;lines&lt;span style="color:#f92672"&gt;.&lt;/span&gt;signal &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data &lt;span style="color:#f92672"&gt;-&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;indicators&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SMA(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;period)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现在真的完成了。&lt;/p&gt;
+&lt;p&gt;当运行 &lt;code&gt;run&lt;/code&gt; 时，Cerebro 会处理实例化一个特殊的策略实例，它知道如何处理这些信号。&lt;/p&gt;
+&lt;h3 id="常见问题"&gt;常见问题&lt;a class="anchor" href="#%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;买卖操作的数量是如何确定的？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Cerebro 实例自动为策略添加一个固定大小 (FixedSize) 的定量器。最终用户可以通过 &lt;code&gt;cerebro.addsizer&lt;/code&gt; 更改定量器以改变策略。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;订单是如何执行的？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;执行类型为市价单，订单的有效期为“直到取消” (Good Until Canceled)。&lt;/p&gt;
+&lt;h3 id="信号细节"&gt;信号细节&lt;a class="anchor" href="#%e4%bf%a1%e5%8f%b7%e7%bb%86%e8%8a%82"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;从技术和理论角度来看，可以描述为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个可调用对象，当被调用时返回另一个对象（只调用一次）。&lt;/li&gt;
+&lt;li&gt;在大多数情况下，这是一个类的实例化，但不一定非得是。&lt;/li&gt;
+&lt;li&gt;支持 &lt;code&gt;__getitem__&lt;/code&gt; 接口。唯一请求的键/索引将是 0。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;从实际角度来看，信号是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;来自 backtrader 生态系统的 &lt;code&gt;lines&lt;/code&gt; 对象，主要是指标。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这在使用其他指标时很有帮助，比如示例中的简单移动平均线。&lt;/p&gt;</description></item><item><title>策略参考</title><link>https://www.poloxue.com/backtrader/docs/07-strategy/03-strategy-references/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/07-strategy/03-strategy-references/</guid><description>&lt;h1 id="策略参考"&gt;策略参考&lt;a class="anchor" href="#%e7%ad%96%e7%95%a5%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="内置策略参考"&gt;内置策略参考&lt;a class="anchor" href="#%e5%86%85%e7%bd%ae%e7%ad%96%e7%95%a5%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="ma_crossover"&gt;MA_CrossOver&lt;a class="anchor" href="#ma_crossover"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;别名：SMA_CrossOver，这是一个仅做多的策略，基于移动平均线交叉操作。&lt;/p&gt;
+&lt;h3 id="交易规则"&gt;交易规则&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;买入逻辑：&lt;/strong&gt; 如果无持仓，&lt;code&gt;fast&lt;/code&gt; 移动平均线向上穿过 &lt;code&gt;slow&lt;/code&gt; 移动平均线。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;卖出逻辑：&lt;/strong&gt; 有持仓时，&lt;code&gt;fast&lt;/code&gt; 移动平均线向下穿过 &lt;code&gt;slow&lt;/code&gt; 移动平均线。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;订单类型：&lt;/strong&gt; 市价单&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参数：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;fast (10)，_movav (&amp;lt;class ‘backtrader.indicators.sma.SMA’&amp;gt;)&lt;/li&gt;
+&lt;li&gt;slow (30)，_movav (&amp;lt;class ‘backtrader.indicators.sma.SMA’&amp;gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="signalstrategy"&gt;SignalStrategy&lt;a class="anchor" href="#signalstrategy"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;此策略的子类旨在使用信号自动操作。信号通常是指标，预期输出值为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;gt; 0 表示多头指示&lt;/li&gt;
+&lt;li&gt;&amp;lt; 0 表示空头指示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;信号分为两组，共有 5 种类型。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;主要组：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;LONGSHORT&lt;/code&gt;：接受来自该信号的多头和空头指示。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LONG&lt;/code&gt;：
+&lt;ul&gt;
+&lt;li&gt;接受多头指示进行做多。&lt;/li&gt;
+&lt;li&gt;接受空头指示平仓多头。但：
+&lt;ul&gt;
+&lt;li&gt;如果系统中有 &lt;code&gt;LONGEXIT&lt;/code&gt; 信号，将用它来平仓多头。&lt;/li&gt;
+&lt;li&gt;如果有 &lt;code&gt;SHORT&lt;/code&gt; 信号且没有 &lt;code&gt;LONGEXIT&lt;/code&gt; 信号，它将被用来平仓多头再开空头。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHORT&lt;/code&gt;：
+&lt;ul&gt;
+&lt;li&gt;接受空头指示进行做空。&lt;/li&gt;
+&lt;li&gt;接受多头指示平仓空头。但：
+&lt;ul&gt;
+&lt;li&gt;如果系统中有 &lt;code&gt;SHORTEXIT&lt;/code&gt; 信号，将用它来平仓空头。&lt;/li&gt;
+&lt;li&gt;如果有 &lt;code&gt;LONG&lt;/code&gt; 信号且没有 &lt;code&gt;SHORTEXIT&lt;/code&gt; 信号，它将被用来平仓空头再开多头。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;退出组：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这两个信号旨在覆盖其他信号，并为平仓提供标准。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;LONGEXIT&lt;/code&gt;：接受空头指示平仓多头。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SHORTEXIT&lt;/code&gt;：接受多头指示平仓空头。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;订单发出：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;订单执行类型为市价单，有效期为“直到取消” (Good until Canceled)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;参数：&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>

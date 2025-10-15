@@ -1,45 +1,469 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Broker on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/10-broker/</link><description>Recent content in Broker on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/10-broker/index.xml" rel="self" type="application/rss+xml"/><item><title>Broker</title><link>https://www.poloxue.com/backtrader/docs/10-broker/01-broker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/01-broker/</guid><description>Broker # 类 backtrader.brokers.BackBroker() # Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。
-现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。 支持的订单类型：
-Market：将在下一个柱的第一个tick（即开盘价）执行 Close：用于日内交易，订单以会话最后一个柱的收盘价执行 Limit：如果在会话期间看到给定的限价则执行 Stop：如果看到给定的止损价，则执行市场订单 StopLimit：如果看到给定的止损价，则启动限价订单 因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。
-要更改参数，有两种选择：
-手动创建带所需参数的 Broker，用 cerebro.broker = instance 将该实例设置为这个经纪商； 使用 set_xxx 方法通过 cerebro.broker.set_xxx 设置参数，其中 xxx 代表设置参数名称； 注意，cerebro.broker 是一个由 Cerebro 的 getbroker 和 setbroker 方法支持的属性。
-参数 # 参数名 默认值 描述 cash 10000 起始现金 commission CommInfoBase(percabs=True) 适用于所有资产的基础佣金方案 checksubmit True 在将订单接受到系统之前检查保证金/现金 eosbar False 对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖） filler None 一个可调用对象，签名为 callable(order, price, ago)。参数说明：- order：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（order.executed.remsize）等。- price：订单将在 ago 柱中执行的价格- ago：用于从 order.</description></item><item><title>滑点</title><link>https://www.poloxue.com/backtrader/docs/10-broker/02-slippage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/02-slippage/</guid><description>滑点 # 回测无法保证真实市场条件。无论市场模拟有多好，在真实市场条件下滑点可能发生。这意味着，请求的价格可能无法匹配。
-集成的回测经纪商支持滑点，以下参数可以传递给经纪商：
-参数名 默认值 描述 slip_perc 0.0 应用于买卖订单的价格上下滑动的绝对百分比（且为正值），注意：0.01 是 1%，0.001 是 0.1%； slip_fixed 0.0 应用于买卖订单的价格上下滑动的单位百分比（且为正值），注意：如果 slip_perc 非零，则优先于此。 slip_open False 是否为专门使用下一个柱的开盘价执行的订单滑动价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。 slip_match True - 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行 slip_limit True - 限价订单，给定确切的匹配价格请求，即使 slip_match 为 False，也会被匹配。- 此选项控制该行为。- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配。- 如果为 False 且滑点超出上限，则不会有匹配 slip_out False 即使价格超出高-低范围，也提供滑点。 工作原理 # 为了决定何时应用滑点，考虑了订单执行类型：
-Close - 不应用滑点
-这种订单匹配收盘价，而这个价格是当天的最后一个。滑点无法发生，因为订单只能在会话的最后一个tick发生，而这是唯一的价格，没有容忍度。 Market - 应用滑点
-请检查 slip_open 例外情况。因为市场订单将匹配下一个柱的开盘价。 Limit - 按以下逻辑应用滑点
-如果匹配价格是开盘价，则根据参数 slip_open 应用滑点。如果应用，价格不会比请求的限价更差。 如果匹配价格不是限价，则应用滑点在高/低点封顶。在这种情况下，slip_limit 应用以决定在超过封顶时是否会发生匹配。 如果匹配价格是限价，则不应用滑点。 Stop - 一旦订单触发，应用与市场订单相同的逻辑</description></item><item><title>开盘作弊</title><link>https://www.poloxue.com/backtrader/docs/10-broker/03-cheat-on-open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/03-cheat-on-open/</guid><description>Cheat On Open（开盘作弊） # 版本 1.9.44.116 添加了 Cheat-On-Open 支持。这似乎是对那些在计算完一个柱的收盘价后全仓操作的人们的需求，他们期望与开盘价匹配。
-当开盘价跳空（向上或向下，取决于买入或卖出）且现金不足以进行全仓操作时，这种情况会失败。这迫使经纪商拒绝操作。
-虽然人们可以尝试通过正 [1] 索引法查看未来，但这需要预加载数据，而这并不总是可行的。
-模式 # cerebro = bt.Cerebro(cheat_on_open=True) 这会在系统中激活一个额外的循环，该循环调用策略中的 next_open、nextstart_open 和 prenext_open 方法。
-为了清楚地分离常规方法（这些方法基于所检查的价格不再可用且未来未知）和作弊模式下的操作，决定增加一组额外的方法家族。
-这也避免了对常规 next 方法的两次调用。
-以下情况在 xxx_open 方法内部保持不变：
-指标尚未重新计算，保持上一个循环中在等效的 xxx 常规方法中最后看到的值。 经纪商尚未评估新循环中的待处理订单，并且可以引入新订单，如果可能，将进行评估。 注意：
-Cerebro 还有一个名为 broker_coo（默认值：True）参数，它告诉 cerebro 如果激活了 cheat-on-open，它也会尝试在经纪商中激活它（如果可能的话）。 模拟经纪商有一个名为 coo 的参数和一个名为 set_coo 的方法来设置它。 尝试 Cheat-on-open # 下面的示例有一个策略，具有两种不同的行为：
-如果 cheat-on-open 为 True，它将仅从 next_open 操作。 如果 cheat-on-open 为 False，它将仅从 next 操作。 在这两种情况下，匹配价格必须相同：
-如果不作弊，订单在前一天的收盘后发出，并将与下一个到来的价格（开盘价）匹配。 如果作弊，订单在同一天发出并执行。因为订单是在经纪商评估订单之前发出的，所以它也将与下一个到来的价格（开盘价）匹配。 第二种情况下，可以精确计算全仓策略的份额，因为可以直接访问当前的开盘价。
-在这两种情况下，当前的开盘价和收盘价将从 next 中打印。</description></item><item><title>填充器</title><link>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</guid><description>填充器 # Backtrader 的经纪模拟在订单执行时有一个默认策略：忽略交易量。这是基于两个前提：
-交易在流动性足够高的市场中，可以一次性完全吸收买/卖订单 实际的交易量匹配需要真实的市场环境 一个简单的例子是“立即成交或取消”（Fill or Kill）订单。即使细化到每一笔交易，并且有足够的交易量来完成订单，Backtrader的经纪模拟也无法知道市场中有多少其他参与者来判断这样的订单是否会被匹配以遵循“立即成交”部分，或者订单是否应该被取消。
-但是经纪模拟可以接受交易量填充器（Volume Fillers），它们决定在给定时间点应该使用多少交易量来匹配订单。
-填充器签名 # 在Backtrader生态系统中，填充器可以是任何符合以下签名的可调用对象：
-callable(order, price, ago) 其中：
-order 是即将执行的订单，该对象提供对目标数据对象的访问，创建的大小/价格、执行的价格/大小/剩余大小和其他详细信息 price 是订单执行的价格 ago 是数据在订单中的索引，用于查找交易量和价格元素 在几乎所有情况下，这将是0（当前时间点），但在某些特殊情况下（例如Close订单），这可能是-1。
-例如，访问bar交易量可以这样做：
-barvolume = order.data.volume[ago] 可调用对象可以是一个函数，或例如支持__call__方法的类的实例，例如：
-class MyFiller(object): def __call__(self, order, price, ago): pass 将填充器添加到经纪模拟
-最直接的方法是使用set_filler：
-import backtrader as bt cerebro = Cerebro() cerebro.broker.set_filler(bt.broker.fillers.FixedSize()) 第二种选择是完全替换经纪模拟，这可能仅适用于重写了部分功能的BrokerBack子类：
-import backtrader as bt cerebro = Cerebro() filler = bt.broker.fillers.FixedSize() newbroker = bt.broker.BrokerBack(filler=filler) cerebro.broker = newbroker 示例 # Backtrader的源代码中包含一个名为volumefilling的示例，它允许测试一些集成的填充器（最初是全部）。
-参考 # class backtrader.</description></item><item><title>Position</title><link>https://www.poloxue.com/backtrader/docs/10-broker/05-position/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/05-position/</guid><description>Position # 通常在策略中要检查资产 Position，或成为仓位、头寸，通过 position 属性或 getposition(data=None, broker=None) 方法。这将返回策略在cerebro提供的默认经纪商中的datas[0]的头寸。
-头寸只是一个表示：
-持有的资产数量（size） 平均价格（price） 它用作状态指示，例如可以用于决定是否需要发出订单（例如：仅在没有持仓时进入多头头寸）。
-参考 # class backtrader.position.Position(size=0, price=0.0) 保存并更新头寸的数量和价格。该对象与任何资产没有关系。它只保存数量和价格。
-成员属性：
-size（int）：当前头寸的数量 price（float）：当前头寸的价格 可以使用 len(position) 来测试头寸实例以查看数量是否不为零。</description></item><item><title>Trade</title><link>https://www.poloxue.com/backtrader/docs/10-broker/06-trade/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/06-trade/</guid><description> Trade # 交易的定义：当一个工具的头寸从 0 变为一个大小X（多头/空头头寸分别为正/负）时，交易被认为是开启的。或是当一个头寸从X变为0时，交易被认为是关闭的。
-以下两种操作：
-从正变负 从负变正 实际上被视为：一个交易被关闭了（头寸从X变为0），一个新的交易被开启了（头寸从0变为Y）
-交易仅用于信息展示，用户无法调用其方法。
-参考 # class backtrader.trade.Trade(data=None, tradeid=0, historyon=False, size=0, price=0.0, value=0.0, commission=0.0) 追踪交易的生命周期：数量、价格、佣金（和价值？）。一个交易从0开始，可以增加和减少，如果回到0可以被认为是关闭的。交易可以是多头（正数）或空头（负数）。交易不支持反转（逻辑中不支持）
-成员属性 描述 ref 唯一的交易标识符 status Created, Open, Closed之一 tradeid 在创建订单时传递给订单的分组交易ID，订单的默认值为0 size 当前交易的数量 price 当前交易的价格 value 当前交易的价值 commission 当前累计的佣金 pnl 当前交易的盈亏（毛利） pnlcomm 当前交易的净盈亏（扣除佣金后的净利润） isclosed 记录最后一次更新是否关闭了交易（将交易数量设为零） isopen 记录任何更新是否开启了交易 justopened 如果交易刚刚开启 baropen 交易开启的bar dtopen 交易开启的浮点编码日期时间，使用 open_datetime 方法获取 Python datetime.datetime 或使用平台提供的 num2date 方法 barclose 交易关闭的bar dtclose 交易关闭的浮点编码日期时间，使用 close_datetime 方法获取 Python datetime.datetime 或使用平台提供的 num2date 方法 barlen 交易开启的bar数量 historyon 是否记录历史 history 包含每次“更新”事件更新后的状态和使用的参数的列表，历史记录的第一个条目是开启事件，最后一个条目是关闭事件</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Broker on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/10-broker/</link><description>Recent content in Broker on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/10-broker/index.xml" rel="self" type="application/rss+xml"/><item><title>Broker</title><link>https://www.poloxue.com/backtrader/docs/10-broker/01-broker/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/01-broker/</guid><description>&lt;h1 id="broker"&gt;Broker&lt;a class="anchor" href="#broker"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="类-backtraderbrokersbackbroker"&gt;类 &lt;code&gt;backtrader.brokers.BackBroker()&lt;/code&gt;&lt;a class="anchor" href="#%e7%b1%bb-backtraderbrokersbackbroker"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。&lt;/p&gt;
+&lt;p&gt;现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。
+支持的订单类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Market&lt;/code&gt;：将在下一个柱的第一个tick（即开盘价）执行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Close&lt;/code&gt;：用于日内交易，订单以会话最后一个柱的收盘价执行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Limit&lt;/code&gt;：如果在会话期间看到给定的限价则执行&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Stop&lt;/code&gt;：如果看到给定的止损价，则执行市场订单&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;StopLimit&lt;/code&gt;：如果看到给定的止损价，则启动限价订单&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。&lt;/p&gt;
+&lt;p&gt;要更改参数，有两种选择：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;手动创建带所需参数的 Broker，用 &lt;code&gt;cerebro.broker = instance&lt;/code&gt; 将该实例设置为这个经纪商；&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;set_xxx&lt;/code&gt; 方法通过 &lt;code&gt;cerebro.broker.set_xxx&lt;/code&gt; 设置参数，其中 &lt;code&gt;xxx&lt;/code&gt; 代表设置参数名称；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，&lt;code&gt;cerebro.broker&lt;/code&gt; 是一个由 Cerebro 的 &lt;code&gt;getbroker&lt;/code&gt; 和 &lt;code&gt;setbroker&lt;/code&gt; 方法支持的属性。&lt;/p&gt;
+&lt;h2 id="参数"&gt;参数&lt;a class="anchor" href="#%e5%8f%82%e6%95%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;参数名&lt;/th&gt;
+ &lt;th&gt;默认值&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;cash&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;10000&lt;/td&gt;
+ &lt;td&gt;起始现金&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;commission&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;CommInfoBase(percabs=True)&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;适用于所有资产的基础佣金方案&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;checksubmit&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;在将订单接受到系统之前检查保证金/现金&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;eosbar&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;filler&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;None&lt;/td&gt;
+ &lt;td&gt;一个可调用对象，签名为 &lt;code&gt;callable(order, price, ago)&lt;/code&gt;。&lt;br/&gt;&lt;br/&gt;参数说明：&lt;ul style="list-style-type: none;padding-left: 0; margin-left: 0;"&gt;&lt;li&gt;- &lt;code&gt;order&lt;/code&gt;：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（&lt;code&gt;order.executed.remsize&lt;/code&gt;）等。&lt;/li&gt;&lt;li&gt;- &lt;code&gt;price&lt;/code&gt;：订单将在 &lt;code&gt;ago&lt;/code&gt; 柱中执行的价格&lt;/li&gt;&lt;li&gt;- &lt;code&gt;ago&lt;/code&gt;：用于从 &lt;code&gt;order.data&lt;/code&gt; 提取 ohlc 和成交量价格的索引。在大多数情况下，这将是 0，但在某些角落情况下，对于 &lt;code&gt;Close&lt;/code&gt; 订单，这将是 -1。&lt;/li&gt;&lt;li&gt;- 可调用对象必须返回执行的大小（值 &amp;gt;= 0）&lt;/li&gt;&lt;/ul&gt;可调用对象当然可以是一个 &lt;code&gt;__call__&lt;/code&gt; 符合上述签名的对象。默认情况下，订单将一次性完全执行。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;slip_perc&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;0.0&lt;/td&gt;
+ &lt;td&gt;用于买卖订单上下滑动价格的绝对百分比（且为正值）。&lt;br/&gt;注意：0.01 是 1%，0.001 是 0.1%&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;slip_fixed&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;0.0&lt;/td&gt;
+ &lt;td&gt;用于买卖订单上下滑动价格的单位百分比（且为正值）。&lt;br/&gt;注意：如果 &lt;code&gt;slip_perc&lt;/code&gt; 非零，则优先于此。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;slip_open&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;是否滑动专门使用下一个柱的开盘价执行的订单价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;slip_match&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;- 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。&lt;br/&gt;&lt;br/&gt;- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;slip_limit&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;- 限价订单，给定确切的匹配价格请求，即使 &lt;code&gt;slip_match&lt;/code&gt; 为 False，也会被匹配。&lt;br/&gt;- 此选项控制该行为。&lt;br/&gt;- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配&lt;br/&gt;- 如果为 False 且滑点超出上限，则不会有匹配&lt;br/&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;slip_out&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;即使价格超出高-低范围，也提供滑点。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;coc&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;Cheat-On-Close 将其设置为 True 与 &lt;code&gt;set_coc&lt;/code&gt; 启用，将“市场”订单与订单条的收盘价匹配。这实际上是作弊，因为柱已关闭，任何订单都应首先与下一个柱的价格匹配&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;coo&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;Cheat-On-Open 将其设置为 True 与 &lt;code&gt;set_coo&lt;/code&gt; 启用，将“市场”订单与开盘价匹配，例如使用设置为 True 的计时器，因为这种计时器在经纪商评估之前执行&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;int2pnl&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;将生成的利息（如果有）分配给减少头寸的操作的利润和亏损（无论是多头还是空头）。在某些情况下，这可能是不希望的，因为不同的策略在竞争，利息将以不确定的方式分配给其中任何一个。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;shortcash&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;如果为 True，则在卖空类似股票的资产时将增加现金，并且该资产的计算价值将为负值。&lt;br/&gt;- 如果为 False，则现金将作为操作成本扣除，计算的价值将为正值，以最终得到相同的金额&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;fundstartval&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;100.0&lt;/td&gt;
+ &lt;td&gt;此参数控制基金式绩效测量的起始值，即：现金可以增加和扣除，增加股票数量。绩效不是使用投资组合的净资产价值来衡量，而是使用基金的价值&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;fundmode&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;如果设置为 True，诸如 TimeReturn 的分析器可以基于基金价值而不是总净资产价值自动计算回报&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="方法"&gt;方法&lt;a class="anchor" href="#%e6%96%b9%e6%b3%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;签名&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_cash(cash)&lt;/td&gt;
+ &lt;td&gt;设置现金参数（别名：setcash）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;get_cash()&lt;/td&gt;
+ &lt;td&gt;返回当前现金（别名：getcash）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;get_value(&lt;br/&gt; datas=None, &lt;br/&gt; mkt=False, &lt;br/&gt; lever=False&lt;br/&gt;)&lt;/td&gt;
+ &lt;td&gt;返回给定数据的投资组合价值（如果数据为 None，则返回总投资组合价值）（别名：getvalue）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_eosbar(eosbar)&lt;/td&gt;
+ &lt;td&gt;设置 eosbar 参数（别名：seteosbar）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_checksubmit(checksubmit)&lt;/td&gt;
+ &lt;td&gt;设置 checksubmit 参数&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_filler(filler)&lt;/td&gt;
+ &lt;td&gt;设置用于成交量填充执行的填充器&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_coc(coc)&lt;/td&gt;
+ &lt;td&gt;配置 Cheat-On-Close 方法以在订单柱上买入收盘价&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_coo(coo)&lt;/td&gt;
+ &lt;td&gt;配置 Cheat-On-Open 方法以在订单柱上买入收盘价&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_int2pnl(int2pnl)&lt;/td&gt;
+ &lt;td&gt;配置将利息分配给利润和亏损&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_fundstartval(fundstartval)&lt;/td&gt;
+ &lt;td&gt;设置基金式绩效跟踪器的起始值&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_slippage_perc(&lt;br/&gt; perc, &lt;br/&gt; slip_open=True, &lt;br/&gt; slip_limit=True, &lt;br/&gt; slip_match=True, &lt;br/&gt;&amp;amp;emspslip_out=False&lt;br/&gt;)&lt;/td&gt;
+ &lt;td&gt;配置滑点为基于百分比&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;set_slippage_fixed(&lt;br/&gt; fixed, &lt;br/&gt; slip_open=True, &lt;br/&gt; slip_limit=True, &lt;br/&gt; slip_match=True, &lt;br/&gt; slip_out=False&lt;br/&gt;)&lt;/td&gt;
+ &lt;td&gt;配置滑点为固定点数&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;get_orders_open(safe=False)&lt;/td&gt;
+ &lt;td&gt;返回仍然打开的订单（未执行或部分执行）的可迭代对象。返回的订单不得被触摸。如果需要订单操作，请将参数 safe 设置为 True&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;getcommissioninfo(data)&lt;/td&gt;
+ &lt;td&gt;检索与给定数据相关的 &lt;code&gt;CommissionInfo&lt;/code&gt; 方案&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;setcommission(&lt;br/&gt; commission=0.0, &lt;br/&gt; margin=None, &lt;br/&gt; mult=1.0, &lt;br/&gt; commtype=None, &lt;br/&gt; percabs=True, &lt;br/&gt; stocklike=False, &lt;br/&gt; interest=0.0, &lt;br/&gt; interest_long=False, &lt;br&gt; leverage=1.0, &lt;br/&gt; automargin=False, &lt;br/&gt; name=None&lt;br/&gt;)&lt;/td&gt;
+ &lt;td&gt;为 Broker 设置 &lt;code&gt;CommissionInfo&lt;/code&gt; 对象，参考 &lt;code&gt;CommInfoBase&lt;/code&gt; 文档介绍。&lt;br/&gt;&lt;br/&gt;如果 name 为 None，这将是没有找到其他 &lt;code&gt;CommissionInfo&lt;/code&gt; 方案的资产的默认设置&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;addcommissioninfo(&lt;br/&gt; comminfo, name=None&lt;br/&gt;)&lt;/td&gt;
+ &lt;td&gt;添加 &lt;code&gt;CommissionInfo&lt;/code&gt; 对象，如果 name 为 None，将成为所有资产的默认设置&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;getposition(data)&lt;/td&gt;
+ &lt;td&gt;返回给定数据的当前头寸状态（一个 &lt;code&gt;Position&lt;/code&gt; 实例）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;get_fundshares()&lt;/td&gt;
+ &lt;td&gt;返回基金模式中的当前股票数量&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;get_fundvalue()&lt;/td&gt;
+ &lt;td&gt;返回基金式的股票价值&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;add_cash(cash)&lt;/td&gt;
+ &lt;td&gt;添加/移除系统现金（使用负值移除）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</description></item><item><title>滑点</title><link>https://www.poloxue.com/backtrader/docs/10-broker/02-slippage/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/02-slippage/</guid><description>&lt;h1 id="滑点"&gt;滑点&lt;a class="anchor" href="#%e6%bb%91%e7%82%b9"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;回测无法保证真实市场条件。无论市场模拟有多好，在真实市场条件下滑点可能发生。这意味着，请求的价格可能无法匹配。&lt;/p&gt;
+&lt;p&gt;集成的回测经纪商支持滑点，以下参数可以传递给经纪商：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;参数名&lt;/th&gt;
+ &lt;th&gt;默认值&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_perc&lt;/td&gt;
+ &lt;td&gt;0.0&lt;/td&gt;
+ &lt;td&gt;应用于买卖订单的价格上下滑动的绝对百分比（且为正值），注意：0.01 是 1%，0.001 是 0.1%；&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_fixed&lt;/td&gt;
+ &lt;td&gt;0.0&lt;/td&gt;
+ &lt;td&gt;应用于买卖订单的价格上下滑动的单位百分比（且为正值），注意：如果 &lt;code&gt;slip_perc&lt;/code&gt; 非零，则优先于此。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_open&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;是否为专门使用下一个柱的开盘价执行的订单滑动价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_match&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;- 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。&lt;br/&gt;- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_limit&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;- 限价订单，给定确切的匹配价格请求，即使 &lt;code&gt;slip_match&lt;/code&gt; 为 False，也会被匹配。&lt;br/&gt;- 此选项控制该行为。&lt;br/&gt;- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配。&lt;br/&gt;- 如果为 False 且滑点超出上限，则不会有匹配&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_out&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;即使价格超出高-低范围，也提供滑点。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="工作原理"&gt;工作原理&lt;a class="anchor" href="#%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;为了决定何时应用滑点，考虑了订单执行类型：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Close&lt;/code&gt; - 不应用滑点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这种订单匹配收盘价，而这个价格是当天的最后一个。滑点无法发生，因为订单只能在会话的最后一个tick发生，而这是唯一的价格，没有容忍度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;Market&lt;/code&gt; - 应用滑点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;请检查 &lt;code&gt;slip_open&lt;/code&gt; 例外情况。因为市场订单将匹配下一个柱的开盘价。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;Limit&lt;/code&gt; - 按以下逻辑应用滑点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果匹配价格是开盘价，则根据参数 &lt;code&gt;slip_open&lt;/code&gt; 应用滑点。如果应用，价格不会比请求的限价更差。&lt;/li&gt;
+&lt;li&gt;如果匹配价格不是限价，则应用滑点在高/低点封顶。在这种情况下，&lt;code&gt;slip_limit&lt;/code&gt; 应用以决定在超过封顶时是否会发生匹配。&lt;/li&gt;
+&lt;li&gt;如果匹配价格是限价，则不应用滑点。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;Stop&lt;/code&gt; - 一旦订单触发，应用与市场订单相同的逻辑&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;StopLimit&lt;/code&gt; - 一旦订单触发，应用与限价订单相同的逻辑&lt;/p&gt;</description></item><item><title>开盘作弊</title><link>https://www.poloxue.com/backtrader/docs/10-broker/03-cheat-on-open/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/03-cheat-on-open/</guid><description>&lt;h1 id="cheat-on-open开盘作弊"&gt;Cheat On Open（开盘作弊）&lt;a class="anchor" href="#cheat-on-open%e5%bc%80%e7%9b%98%e4%bd%9c%e5%bc%8a"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;版本 1.9.44.116 添加了 Cheat-On-Open 支持。这似乎是对那些在计算完一个柱的收盘价后全仓操作的人们的需求，他们期望与开盘价匹配。&lt;/p&gt;
+&lt;p&gt;当开盘价跳空（向上或向下，取决于买入或卖出）且现金不足以进行全仓操作时，这种情况会失败。这迫使经纪商拒绝操作。&lt;/p&gt;
+&lt;p&gt;虽然人们可以尝试通过正 [1] 索引法查看未来，但这需要预加载数据，而这并不总是可行的。&lt;/p&gt;
+&lt;h2 id="模式"&gt;模式&lt;a class="anchor" href="#%e6%a8%a1%e5%bc%8f"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro(cheat_on_open&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这会在系统中激活一个额外的循环，该循环调用策略中的 &lt;code&gt;next_open&lt;/code&gt;、&lt;code&gt;nextstart_open&lt;/code&gt; 和 &lt;code&gt;prenext_open&lt;/code&gt; 方法。&lt;/p&gt;
+&lt;p&gt;为了清楚地分离常规方法（这些方法基于所检查的价格不再可用且未来未知）和作弊模式下的操作，决定增加一组额外的方法家族。&lt;/p&gt;
+&lt;p&gt;这也避免了对常规 &lt;code&gt;next&lt;/code&gt; 方法的两次调用。&lt;/p&gt;
+&lt;p&gt;以下情况在 &lt;code&gt;xxx_open&lt;/code&gt; 方法内部保持不变：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;指标尚未重新计算，保持上一个循环中在等效的 &lt;code&gt;xxx&lt;/code&gt; 常规方法中最后看到的值。&lt;/li&gt;
+&lt;li&gt;经纪商尚未评估新循环中的待处理订单，并且可以引入新订单，如果可能，将进行评估。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cerebro 还有一个名为 &lt;code&gt;broker_coo&lt;/code&gt;（默认值：True）参数，它告诉 cerebro 如果激活了 cheat-on-open，它也会尝试在经纪商中激活它（如果可能的话）。&lt;/li&gt;
+&lt;li&gt;模拟经纪商有一个名为 &lt;code&gt;coo&lt;/code&gt; 的参数和一个名为 &lt;code&gt;set_coo&lt;/code&gt; 的方法来设置它。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="尝试-cheat-on-open"&gt;尝试 Cheat-on-open&lt;a class="anchor" href="#%e5%b0%9d%e8%af%95-cheat-on-open"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;下面的示例有一个策略，具有两种不同的行为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果 cheat-on-open 为 True，它将仅从 &lt;code&gt;next_open&lt;/code&gt; 操作。&lt;/li&gt;
+&lt;li&gt;如果 cheat-on-open 为 False，它将仅从 &lt;code&gt;next&lt;/code&gt; 操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在这两种情况下，匹配价格必须相同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果不作弊，订单在前一天的收盘后发出，并将与下一个到来的价格（开盘价）匹配。&lt;/li&gt;
+&lt;li&gt;如果作弊，订单在同一天发出并执行。因为订单是在经纪商评估订单之前发出的，所以它也将与下一个到来的价格（开盘价）匹配。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;第二种情况下，可以精确计算全仓策略的份额，因为可以直接访问当前的开盘价。&lt;/p&gt;
+&lt;p&gt;在这两种情况下，当前的开盘价和收盘价将从 &lt;code&gt;next&lt;/code&gt; 中打印。&lt;/p&gt;
+&lt;h2 id="常规执行"&gt;常规执行：&lt;a class="anchor" href="#%e5%b8%b8%e8%a7%84%e6%89%a7%e8%a1%8c"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ ./cheat-on-open.py --cerebro cheat_on_open&lt;span style="color:#f92672"&gt;=&lt;/span&gt;False
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-04-07 next, open 3073.4 close 3090.72
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-04-08 next, open 3092.07 close 3088.92
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Strat Len &lt;span style="color:#ae81ff"&gt;68&lt;/span&gt; 2005-04-08 Send Buy, fromopen False, close 3088.92
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-04-11 Buy Executed at price 3088.47
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-04-11 next, open 3088.47 close 3080.6
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-04-12 next, open 3080.42 close 3065.18
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;...&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;订单：&lt;/p&gt;</description></item><item><title>填充器</title><link>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</guid><description>&lt;h1 id="填充器"&gt;填充器&lt;a class="anchor" href="#%e5%a1%ab%e5%85%85%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;Backtrader 的经纪模拟在订单执行时有一个默认策略：忽略交易量。这是基于两个前提：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;交易在流动性足够高的市场中，可以一次性完全吸收买/卖订单&lt;/li&gt;
+&lt;li&gt;实际的交易量匹配需要真实的市场环境&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一个简单的例子是“立即成交或取消”（Fill or Kill）订单。即使细化到每一笔交易，并且有足够的交易量来完成订单，Backtrader的经纪模拟也无法知道市场中有多少其他参与者来判断这样的订单是否会被匹配以遵循“立即成交”部分，或者订单是否应该被取消。&lt;/p&gt;
+&lt;p&gt;但是经纪模拟可以接受交易量填充器（Volume Fillers），它们决定在给定时间点应该使用多少交易量来匹配订单。&lt;/p&gt;
+&lt;h2 id="填充器签名"&gt;填充器签名&lt;a class="anchor" href="#%e5%a1%ab%e5%85%85%e5%99%a8%e7%ad%be%e5%90%8d"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在Backtrader生态系统中，填充器可以是任何符合以下签名的可调用对象：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;callable(order, price, ago)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;order&lt;/code&gt; 是即将执行的订单，该对象提供对目标数据对象的访问，创建的大小/价格、执行的价格/大小/剩余大小和其他详细信息&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;price&lt;/code&gt; 是订单执行的价格&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ago&lt;/code&gt; 是数据在订单中的索引，用于查找交易量和价格元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在几乎所有情况下，这将是0（当前时间点），但在某些特殊情况下（例如Close订单），这可能是-1。&lt;/p&gt;
+&lt;p&gt;例如，访问bar交易量可以这样做：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;barvolume &lt;span style="color:#f92672"&gt;=&lt;/span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;volume[ago]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可调用对象可以是一个函数，或例如支持&lt;code&gt;__call__&lt;/code&gt;方法的类的实例，例如：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyFiller&lt;/span&gt;(object):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__call__&lt;/span&gt;(self, order, price, ago):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;将填充器添加到经纪模拟&lt;/p&gt;
+&lt;p&gt;最直接的方法是使用&lt;code&gt;set_filler&lt;/code&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;set_filler(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fillers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;FixedSize())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;第二种选择是完全替换经纪模拟，这可能仅适用于重写了部分功能的BrokerBack子类：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;filler &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fillers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;FixedSize()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;newbroker &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;BrokerBack(filler&lt;span style="color:#f92672"&gt;=&lt;/span&gt;filler)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker &lt;span style="color:#f92672"&gt;=&lt;/span&gt; newbroker&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="示例"&gt;示例&lt;a class="anchor" href="#%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Backtrader的源代码中包含一个名为&lt;code&gt;volumefilling&lt;/code&gt;的示例，它允许测试一些集成的填充器（最初是全部）。&lt;/p&gt;
+&lt;h2 id="参考"&gt;参考&lt;a class="anchor" href="#%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fillers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;FixedSize()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用条形图中某个百分比的交易量返回给定订单的执行大小。&lt;/p&gt;
+&lt;p&gt;该百分比通过参数&lt;code&gt;perc&lt;/code&gt;设置。&lt;/p&gt;
+&lt;p&gt;参数：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;size&lt;/code&gt;（默认：None）最大执行大小。如果执行时间的条形图实际交易量小于该大小，则条形图的实际交易量也是一个限制。&lt;/p&gt;
+&lt;p&gt;如果该参数的值评估为False，则将使用条形图的全部交易量来匹配订单。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fillers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;FixedBarPerc()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用条形图中某个百分比的交易量返回给定订单的执行大小。&lt;/p&gt;
+&lt;p&gt;该百分比通过参数&lt;code&gt;perc&lt;/code&gt;设置。&lt;/p&gt;
+&lt;p&gt;参数：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;perc&lt;/code&gt;（默认：100.0）（有效值：0.0 - 100.0）&lt;/p&gt;
+&lt;p&gt;用于执行订单的条形图交易量百分比&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fillers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;BarPointPerc()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;返回给定订单的执行大小。交易量将在高-低范围内均匀分布，使用&lt;code&gt;minmov&lt;/code&gt;进行分区。&lt;/p&gt;
+&lt;p&gt;对于给定价格分配的交易量，将使用&lt;code&gt;perc&lt;/code&gt;百分比。&lt;/p&gt;
+&lt;p&gt;参数：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;minmov&lt;/code&gt;（默认：0.01）&lt;/p&gt;
+&lt;p&gt;最小价格变动。用于分区高-低范围，以按比例分配可能价格之间的交易量&lt;/p&gt;</description></item><item><title>Position</title><link>https://www.poloxue.com/backtrader/docs/10-broker/05-position/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/05-position/</guid><description>&lt;h1 id="position"&gt;Position&lt;a class="anchor" href="#position"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;通常在策略中要检查资产 Position，或成为仓位、头寸，通过 &lt;code&gt;position&lt;/code&gt; 属性或 &lt;code&gt;getposition(data=None, broker=None)&lt;/code&gt; 方法。这将返回策略在cerebro提供的默认经纪商中的&lt;code&gt;datas[0]&lt;/code&gt;的头寸。&lt;/p&gt;
+&lt;p&gt;头寸只是一个表示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;持有的资产数量（size）&lt;/li&gt;
+&lt;li&gt;平均价格（price）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它用作状态指示，例如可以用于决定是否需要发出订单（例如：仅在没有持仓时进入多头头寸）。&lt;/p&gt;
+&lt;h2 id="参考"&gt;参考&lt;a class="anchor" href="#%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;position&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Position(size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;, price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;保存并更新头寸的数量和价格。该对象与任何资产没有关系。它只保存数量和价格。&lt;/p&gt;
+&lt;p&gt;成员属性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;size&lt;/code&gt;（int）：当前头寸的数量&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;price&lt;/code&gt;（float）：当前头寸的价格&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以使用 &lt;code&gt;len(position)&lt;/code&gt; 来测试头寸实例以查看数量是否不为零。&lt;/p&gt;</description></item><item><title>Trade</title><link>https://www.poloxue.com/backtrader/docs/10-broker/06-trade/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/06-trade/</guid><description>&lt;h1 id="trade"&gt;Trade&lt;a class="anchor" href="#trade"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;交易的定义：当一个工具的头寸从 0 变为一个大小X（多头/空头头寸分别为正/负）时，交易被认为是开启的。或是当一个头寸从X变为0时，交易被认为是关闭的。&lt;/p&gt;
+&lt;p&gt;以下两种操作：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从正变负&lt;/li&gt;
+&lt;li&gt;从负变正&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实际上被视为：一个交易被关闭了（头寸从X变为0），一个新的交易被开启了（头寸从0变为Y）&lt;/p&gt;
+&lt;p&gt;交易仅用于信息展示，用户无法调用其方法。&lt;/p&gt;
+&lt;h2 id="参考"&gt;参考&lt;a class="anchor" href="#%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;backtrader&lt;/span&gt;&lt;span style="color:#f92672"&gt;.&lt;/span&gt;trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Trade(data&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;, tradeid&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;, historyon&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;, size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;, price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;, value&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;, commission&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;追踪交易的生命周期：数量、价格、佣金（和价值？）。一个交易从0开始，可以增加和减少，如果回到0可以被认为是关闭的。交易可以是多头（正数）或空头（负数）。交易不支持反转（逻辑中不支持）&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;成员属性&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;ref&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;唯一的交易标识符&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;status&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;&lt;code&gt;Created&lt;/code&gt;, &lt;code&gt;Open&lt;/code&gt;, &lt;code&gt;Closed&lt;/code&gt;之一&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;tradeid&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;在创建订单时传递给订单的分组交易ID，订单的默认值为0&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;size&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前交易的数量&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;price&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前交易的价格&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;value&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前交易的价值&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;commission&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前累计的佣金&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;pnl&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前交易的盈亏（毛利）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;pnlcomm&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;当前交易的净盈亏（扣除佣金后的净利润）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;isclosed&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;记录最后一次更新是否关闭了交易（将交易数量设为零）&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;isopen&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;记录任何更新是否开启了交易&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;justopened&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;如果交易刚刚开启&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;baropen&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;交易开启的bar&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;dtopen&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;交易开启的浮点编码日期时间，使用 &lt;code&gt;open_datetime&lt;/code&gt; 方法获取 Python &lt;code&gt;datetime.datetime&lt;/code&gt; 或使用平台提供的 &lt;code&gt;num2date&lt;/code&gt; 方法&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;barclose&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;交易关闭的bar&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;dtclose&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;交易关闭的浮点编码日期时间，使用 &lt;code&gt;close_datetime&lt;/code&gt; 方法获取 Python &lt;code&gt;datetime.datetime&lt;/code&gt; 或使用平台提供的 &lt;code&gt;num2date&lt;/code&gt; 方法&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;barlen&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;交易开启的bar数量&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;historyon&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;是否记录历史&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;history&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;包含每次“更新”事件更新后的状态和使用的参数的列表，历史记录的第一个条目是开启事件，最后一个条目是关闭事件&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;</description></item></channel></rss>

@@ -1,52 +1,128 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ohmyzsh on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/</link><description>Recent content in ohmyzsh on 我的终端环境</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/ohmyzsh/index.xml" rel="self" type="application/rss+xml"/><item><title>安装与主题</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/install/</guid><description>安装与主题 # 本节介绍 ohmyzsh 的安装与主题。
-安装 # oh-my-zsh 的安装很简单。安装命令，如下所示：
-sh -c &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&amp;#34; 安装后，就已经有一些默认效果，如命令行提示符的主题变化。
-这是默认的 oh-my-zsh 主题 &amp;ldquo;robbyrussell&amp;rdquo;。
-主题 # oh-my-zsh 提供了许多内置主题，可查看 themes 获取一系列的主题。
-我们可直接通过 ~/.zshrc 配置更新主题配置，将内容修改如下：
-ZSH_THEME=&amp;#34;agnoster&amp;#34;` # 默认为 robbyrussell 执行 source ~/.zshrc 生效配置，就能看到主题效果。
-另外，oh-my-zsh 还提供了 random 主题，它会在 oh-my-zsh 内置主题中随机选择一个主题展示。只需编辑 ~/.zshrc，将 ZSH_THEME 更新为 random 即可。
-配置如下所示：
-ZSH_THEME=&amp;#34;random&amp;#34; 演示效果，如下所示：
-说实话，我觉得没人会这么用吧。这明显很鸡肋的功能啊。</description></item><item><title>基础插件</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins/</guid><description>基础插件 # 重点来了，接下来我们一起来看看 zsh 的效率神器 - 插件能力吧。本问先给大家推荐 5 款常用的插件。ohmyzsh 提供的所有内置插件，都可以在仓库 ohmyzsh/ohmyzsh/plugins 中找到，每个插件都有相应的介绍文档。
-本教程将要介绍的 5 个 oh-my-zsh 内置插件，如下所示：
-git，Git 插件，其实就是提供一些常用的 git 命令别名。 web-search，命令行打开搜索引擎，已支持大部分搜索引擎； jsontools，用于格式化 json 数据； z，基于历史访问目录的快速跳转； vi-mode，使用 vi 模式编辑命令行； 启用所有插件，打开 zshrc 配置，把这些内置插件都打开，如下所示：
-plugins=(git web-search jsontools z vi-mode) 插件 1 - git # Git 插件提供了 git 命令的大量别名，查看 git 插件文档。
-如下一些常用命令的别名：
-git clone -&amp;gt; gcl git status -&amp;gt; gst git commit -&amp;gt; gc git add -&amp;gt; ga git add --all -&amp;gt; gaa git diff -&amp;gt; gd git push -&amp;gt; gp git pull -&amp;gt; gl 更多命令的映射关键关系，可自行查看它的 文档。</description></item><item><title>基础插件 2</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</guid><description>本文是基础篇插件的第二篇，继续介绍 4 个常用的 zsh 插件。我将涉及的插件，如下所示：
-name description copypath 拷贝路径到剪贴版； copyfile 拷贝文件内容到剪贴板； copybuffer 拷贝命令行内容到剪贴板； sudo 命令行开头快速添加 sudo； 让我们正式开始。
-推荐插件 # 先说 oh-my-zsh 的内置插件。
-打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
-plugins=(... copypath copyfile copybuffer sudo ...) 保存退出，执行 source ~/.zshrc 生效。
-copypath # copypath 的用途如其名，就是用来 copy 路径的。
-支持两种用法。
-copypath: 无参数，直接拷贝当前路径；
-copypath &amp;lt;文件或目录&amp;gt;：拷贝指定文件或目录的绝对路径；
-相比于 pwd 之后再拷贝，这种方式真的是省心省力的方式。
-copyfile # copyfile，用于拷贝文件内容，命令格式 copyfile &amp;lt;文件路径&amp;gt;。
-假设，现有一个文件 test.txt。
-cat test.txt Hello oh my zsh 一个测试命令，copyfile test.txt，即可将 test.txt 文件中的内容拷贝到剪贴板中。
-效果如下：</description></item><item><title>高级插件</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/advancedplugins/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/advancedplugins/</guid><description>高级插件 # 我们再来了解 4 个非 oh-my-zsh 内置插件，它们 zsh-syntax-highlighting、zsh-autosuggestions、zsh-substring-history-search 和 you-should-use。这两个插件由 zsh 社区开发。
-开始介绍前，先将这两个插件全部安装配置完成。
-下载 # 下载命令如下所示：
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/you-should-use 配置 # 打开 .zshrc 完成配置：
-plugins=(..., zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search you-should-use)) 记得执行 source ~/.zshrc 生效配置。
-插件 1：zsh-syntax-highlighting # zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或者输入 shell 语法不正确，将会自动以红色表示。它的优点就是，当我们在终端输入，实时输入实时反馈。
-首先，我们尝试下错误命令，提示效果，如下所示：
-再来看看，正确命令提示效果，如下所示：
-对，就是这么简单。通过这个插件提供的实时反馈，可以防止我们在命令执行后，才知道输入错了。
-插件 2：zsh-autosuggestions # zsh-autosuggestions 可以说是我最喜欢的插件了。
-它的作用是什么呢？
-它可用于提示补全建议，当输入字符，默认情况下，它基于我们的历史命令自动提供输入建议。还记得前面提到的，zsh 的历史命令是在不同的会话间共享。现在，再结合 zsh-autosuggestions 插件，简直不要太爽。哈哈。
-我们先看下效果，如下所示：</description></item><item><title>自定义提示主题</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/powerlevel10k/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/powerlevel10k/</guid><description>自定义提示主题 # 不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
-在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。
-什么是 powerlevel10k? # Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。
-效果展示：
-安装依赖字体 # 在安装 powerlevel10k 前，要先安装它依赖的字体： NerdFont。不同系统下的安装方法，查看 它的文档。
-简单说下 Nerd Fonts 字体。它是一系列开源字体的集合，被特别增强，它包含大量的图标和符号，如开发工具、编程语言和版本控制系统的图标。这些字体对于提高我们终端和编辑器的视觉体验和功能性有着极大帮助。
-有了它，我们的终端才能显示一些复杂字体甚至是图标。
-MacOS 的话，可直接通过 Homebrew 快速安装：
-brew tap homebrew/cask-fonts brew install font-hack-nerd-font 安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。
-现在，我们终端就支持 NerdFont 字体了。
-如何测试？
-接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>oh-my-zsh on 我的终端环境</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/</link><description>Recent content in oh-my-zsh on 我的终端环境</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/mytermenv/docs/ohmyzsh/index.xml" rel="self" type="application/rss+xml"/><item><title>安装与主题</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/install/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/install/</guid><description>&lt;h1 id="安装与主题"&gt;安装与主题&lt;a class="anchor" href="#%e5%ae%89%e8%a3%85%e4%b8%8e%e4%b8%bb%e9%a2%98"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;本节介绍 ohmyzsh 的安装与主题。&lt;/p&gt;
+&lt;h2 id="安装"&gt;安装&lt;a class="anchor" href="#%e5%ae%89%e8%a3%85"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;oh-my-zsh 的安装很简单。安装命令，如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sh -c &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装后，就已经有一些默认效果，如命令行提示符的主题变化。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-01.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;这是默认的 oh-my-zsh 主题 &amp;ldquo;robbyrussell&amp;rdquo;。&lt;/p&gt;
+&lt;h2 id="主题"&gt;主题&lt;a class="anchor" href="#%e4%b8%bb%e9%a2%98"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;oh-my-zsh 提供了许多内置主题，可查看 &lt;a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes"&gt;themes&lt;/a&gt; 获取一系列的主题。&lt;/p&gt;
+&lt;p&gt;我们可直接通过 ~/.zshrc 配置更新主题配置，将内容修改如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ZSH_THEME&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;agnoster&amp;#34;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;`&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 默认为 robbyrussell&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行 &lt;code&gt;source ~/.zshrc&lt;/code&gt; 生效配置，就能看到主题效果。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-02.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;另外，oh-my-zsh 还提供了 random 主题，它会在 oh-my-zsh 内置主题中随机选择一个主题展示。只需编辑 &lt;code&gt;~/.zshrc&lt;/code&gt;，将 ZSH_THEME 更新为 random 即可。&lt;/p&gt;
+&lt;p&gt;配置如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ZSH_THEME&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;random&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;演示效果，如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-03.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;说实话，我觉得没人会这么用吧。这明显很鸡肋的功能啊。&lt;/p&gt;</description></item><item><title>基础插件</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins/</guid><description>&lt;h1 id="基础插件"&gt;基础插件&lt;a class="anchor" href="#%e5%9f%ba%e7%a1%80%e6%8f%92%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;重点来了，接下来我们一起来看看 zsh 的效率神器 - 插件能力吧。本问先给大家推荐 5 款常用的插件。ohmyzsh 提供的所有内置插件，都可以在仓库 &lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins"&gt;ohmyzsh/ohmyzsh/plugins&lt;/a&gt; 中找到，每个插件都有相应的介绍文档。&lt;/p&gt;
+&lt;p&gt;本教程将要介绍的 5 个 oh-my-zsh 内置插件，如下所示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git"&gt;git&lt;/a&gt;，Git 插件，其实就是提供一些常用的 git 命令别名。&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/web-search"&gt;web-search&lt;/a&gt;，命令行打开搜索引擎，已支持大部分搜索引擎；&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/jsontools"&gt;jsontools&lt;/a&gt;，用于格式化 json 数据；&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/z"&gt;z&lt;/a&gt;，基于历史访问目录的快速跳转；&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vi-mode"&gt;vi-mode&lt;/a&gt;，使用 vi 模式编辑命令行；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;启用所有插件，打开 &lt;code&gt;zshrc&lt;/code&gt; 配置，把这些内置插件都打开，如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;plugins&lt;span style="color:#f92672"&gt;=(&lt;/span&gt;git web-search jsontools z vi-mode&lt;span style="color:#f92672"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="插件-1---git"&gt;插件 1 - git&lt;a class="anchor" href="#%e6%8f%92%e4%bb%b6-1---git"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Git 插件提供了 git 命令的大量别名，查看&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/"&gt;git 插件文档&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;如下一些常用命令的别名：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone -&amp;gt; gcl
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git status -&amp;gt; gst
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git commit -&amp;gt; gc
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git add -&amp;gt; ga
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git add --all -&amp;gt; gaa
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git diff -&amp;gt; gd
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git push -&amp;gt; gp
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git pull -&amp;gt; gl&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;更多命令的映射关键关系，可自行查看它的&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git/"&gt;文档&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>基础插件 2</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/basicplugins2/</guid><description>&lt;p&gt;本文是基础篇插件的第二篇，继续介绍 4 个常用的 zsh 插件。我将涉及的插件，如下所示：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;name&lt;/th&gt;
+ &lt;th&gt;description&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;copypath&lt;/td&gt;
+ &lt;td&gt;拷贝路径到剪贴版；&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;copyfile&lt;/td&gt;
+ &lt;td&gt;拷贝文件内容到剪贴板；&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;copybuffer&lt;/td&gt;
+ &lt;td&gt;拷贝命令行内容到剪贴板；&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;sudo&lt;/td&gt;
+ &lt;td&gt;命令行开头快速添加 sudo；&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;让我们正式开始。&lt;/p&gt;
+&lt;h2 id="推荐插件"&gt;推荐插件&lt;a class="anchor" href="#%e6%8e%a8%e8%8d%90%e6%8f%92%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;先说 oh-my-zsh 的内置插件。&lt;/p&gt;
+&lt;p&gt;打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;plugins&lt;span style="color:#f92672"&gt;=(&lt;/span&gt;... copypath copyfile copybuffer sudo ...&lt;span style="color:#f92672"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;保存退出，执行 &lt;code&gt;source ~/.zshrc 生效&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id="copypath"&gt;copypath&lt;a class="anchor" href="#copypath"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copypath"&gt;copypath&lt;/a&gt; 的用途如其名，就是用来 copy 路径的。&lt;/p&gt;
+&lt;p&gt;支持两种用法。&lt;/p&gt;
+&lt;p&gt;copypath: 无参数，直接拷贝当前路径；&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-01.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;copypath &amp;lt;文件或目录&amp;gt;：拷贝指定文件或目录的绝对路径；&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-02.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;相比于 &lt;code&gt;pwd&lt;/code&gt; 之后再拷贝，这种方式真的是省心省力的方式。&lt;/p&gt;
+&lt;h3 id="copyfile"&gt;copyfile&lt;a class="anchor" href="#copyfile"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/copyfile"&gt;copyfile&lt;/a&gt;，用于拷贝文件内容，命令格式 copyfile &amp;lt;文件路径&amp;gt;。&lt;/p&gt;
+&lt;p&gt;假设，现有一个文件 test.txt。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cat test.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Hello oh my zsh&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;一个测试命令，&lt;code&gt;copyfile test.txt&lt;/code&gt;，即可将 &lt;code&gt;test.txt&lt;/code&gt; 文件中的内容拷贝到剪贴板中。&lt;/p&gt;
+&lt;p&gt;效果如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-03.gif" alt="" /&gt;&lt;/p&gt;</description></item><item><title>高级插件</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/advancedplugins/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/advancedplugins/</guid><description>&lt;h1 id="高级插件"&gt;高级插件&lt;a class="anchor" href="#%e9%ab%98%e7%ba%a7%e6%8f%92%e4%bb%b6"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;我们再来了解 4 个非 oh-my-zsh 内置插件，它们 zsh-syntax-highlighting、zsh-autosuggestions、zsh-substring-history-search 和 you-should-use。这两个插件由 zsh 社区开发。&lt;/p&gt;
+&lt;p&gt;开始介绍前，先将这两个插件全部安装配置完成。&lt;/p&gt;
+&lt;h3 id="下载"&gt;下载&lt;a class="anchor" href="#%e4%b8%8b%e8%bd%bd"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;下载命令如下所示：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-zsh" data-lang="zsh"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/zsh-users/zsh-autosuggestions &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;ZSH_CUSTOM&lt;span style="color:#66d9ef"&gt;:-&lt;/span&gt;$HOME/.oh-my-zsh/custom&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;/plugins/zsh-autosuggestions
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/zsh-users/zsh-syntax-highlighting &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;ZSH_CUSTOM&lt;span style="color:#66d9ef"&gt;:-&lt;/span&gt;~/.oh-my-zsh/custom&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;/plugins/zsh-syntax-highlighting
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/zsh-users/zsh-history-substring-search &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;ZSH_CUSTOM&lt;span style="color:#66d9ef"&gt;:-&lt;/span&gt;~/.oh-my-zsh/custom&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;/plugins/zsh-history-substring-search
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/MichaelAquilina/zsh-you-should-use.git &lt;span style="color:#e6db74"&gt;${&lt;/span&gt;ZSH_CUSTOM&lt;span style="color:#66d9ef"&gt;:-&lt;/span&gt;~/.oh-my-zsh/custom&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;/plugins/you-should-use&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="配置"&gt;配置&lt;a class="anchor" href="#%e9%85%8d%e7%bd%ae"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;打开 &lt;code&gt;.zshrc&lt;/code&gt; 完成配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-zsh" data-lang="zsh"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;plugins&lt;span style="color:#f92672"&gt;=(&lt;/span&gt;..., zsh-syntax-highlighting zsh-autosuggestions zsh-history-substring-search you-should-use&lt;span style="color:#f92672"&gt;))&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;记得执行 &lt;code&gt;source ~/.zshrc&lt;/code&gt; 生效配置。&lt;/p&gt;
+&lt;h3 id="插件-1zsh-syntax-highlighting"&gt;插件 1：zsh-syntax-highlighting&lt;a class="anchor" href="#%e6%8f%92%e4%bb%b6-1zsh-syntax-highlighting"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;zsh-syntax-highlighting 是 zsh 的语法高亮插件，如果输入的命令不存在，或者输入 shell 语法不正确，将会自动以红色表示。它的优点就是，当我们在终端输入，实时输入实时反馈。&lt;/p&gt;
+&lt;p&gt;首先，我们尝试下错误命令，提示效果，如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-10.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;再来看看，正确命令提示效果，如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-11.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;对，就是这么简单。通过这个插件提供的实时反馈，可以防止我们在命令执行后，才知道输入错了。&lt;/p&gt;
+&lt;h3 id="插件-2zsh-autosuggestions"&gt;插件 2：zsh-autosuggestions&lt;a class="anchor" href="#%e6%8f%92%e4%bb%b6-2zsh-autosuggestions"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;zsh-autosuggestions 可以说是我最喜欢的插件了。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-16.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;它的作用是什么呢？&lt;/p&gt;
+&lt;p&gt;它可用于提示补全建议，当输入字符，默认情况下，它基于我们的历史命令自动提供输入建议。还记得前面提到的，zsh 的历史命令是在不同的会话间共享。现在，再结合 zsh-autosuggestions 插件，简直不要太爽。哈哈。&lt;/p&gt;
+&lt;p&gt;我们先看下效果，如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-12.gif" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，输入右方向键 → 可将建议直接输入终端。&lt;/p&gt;
+&lt;p&gt;但这个其实体验很差，对于一个双手不想离开键盘中心区域的人而言，通过右键接受提示建议，这简直不能忍啊。是否能改变这个默认快捷键呢？&lt;/p&gt;</description></item><item><title>自定义提示主题</title><link>https://www.poloxue.com/mytermenv/docs/ohmyzsh/powerlevel10k/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/mytermenv/docs/ohmyzsh/powerlevel10k/</guid><description>&lt;h1 id="自定义提示主题"&gt;自定义提示主题&lt;a class="anchor" href="#%e8%87%aa%e5%ae%9a%e4%b9%89%e6%8f%90%e7%a4%ba%e4%b8%bb%e9%a2%98"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？&lt;/p&gt;
+&lt;p&gt;在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。&lt;/p&gt;
+&lt;h2 id="什么是-powerlevel10k"&gt;什么是 powerlevel10k?&lt;a class="anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af-powerlevel10k"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-16.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。&lt;/p&gt;
+&lt;p&gt;效果展示：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-13.png" alt="" /&gt;&lt;/p&gt;
+&lt;h2 id="安装依赖字体"&gt;安装依赖字体&lt;a class="anchor" href="#%e5%ae%89%e8%a3%85%e4%be%9d%e8%b5%96%e5%ad%97%e4%bd%93"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在安装 powerlevel10k 前，要先安装它依赖的字体：&lt;a href="https://github.com/ryanoasis/nerd-fonts#font-installation"&gt;NerdFont&lt;/a&gt;。不同系统下的安装方法，查看&lt;a href="https://github.com/ryanoasis/nerd-fonts#font-installation"&gt;它的文档&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;简单说下 Nerd Fonts 字体。它是一系列开源字体的集合，被特别增强，它包含大量的图标和符号，如开发工具、编程语言和版本控制系统的图标。这些字体对于提高我们终端和编辑器的视觉体验和功能性有着极大帮助。&lt;/p&gt;
+&lt;p&gt;有了它，我们的终端才能显示一些复杂字体甚至是图标。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-14.png" alt="" /&gt;&lt;/p&gt;
+&lt;p&gt;MacOS 的话，可直接通过 Homebrew 快速安装：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;brew tap homebrew/cask-fonts
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;brew install font-hack-nerd-font&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。&lt;/p&gt;
+&lt;p&gt;现在，我们终端就支持 NerdFont 字体了。&lt;/p&gt;
+&lt;p&gt;如何测试？&lt;/p&gt;
+&lt;p&gt;接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。&lt;/p&gt;</description></item></channel></rss>

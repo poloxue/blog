@@ -1,109 +1,277 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>zsh on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/zsh/</link><description>Recent content in zsh on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 06 Nov 2023 15:40:41 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>本篇文章是介绍 modern-unix 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。
-系列阅读：
-我的终端环境：iTerm2 的安装与体验 我的终端环境：zsh 安装与主题，推荐 7 个提升效率的 zsh 插件 我的终端环境：6 个强大的 zsh 插件 我的终端环境：与众不同的 zsh 主题 - powerlevel10k 我的终端环境：高效 shell 命令（一）之目录文件命令 - exa、zoxide 与 bat 我的终端环境：高效 shell 命令（二）之高效查找与搜索 - fd ripgrep fzf 我的终端环境：高效 shell 命令（三）之提效 web 开发 - entr httpie jq 我的终端环境：高效 shell 命令（四）之20+1 个 modern-unix 命令 我的终端环境：终端启动消息 - ASCII art 我的终端环境：终端启动消息 - pfetch/neofetch/fastfetch 更多待续&amp;hellip;
-命令集合 第一篇文章中推荐一个 github 仓库：modern-unix，其中收录了大量的更具现代风格的命令。例如，最常用的命令，如 ls、cd、grep、find 等等命令，这个仓库都提供了合适的替代命令。</description></item><item><title>提效开发调试的三个命令</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。
-前言 对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。
-大概说明，如下所示：
-entr，它的主要作用是在当监听文件变化后，执行相应的命令； httpie，相对于 curl，一款体验更加友好的 http client 命令； jq，一款强大的 JSON 数据的解析命令，甚至可简单的编程； 这三个命令在日常的 web 开发过程中扮演着不同的角色。
-开始具体介绍。
-entr 实现 Live Reloading entry 命令的是什么？直接看演示效果，如下所示：
-大概看出，entr 是用于监听文件变化并执行指定命令。看到这，有没有想到啥？对，entr 可用于服务的热加载（Live Reloading）。
-安装 安装命令，如下所示：
-1 brew install entr 案例 最直接的示例效果，监听文件变化并发出通知，如下所示：
-1 ls test.txt | entr echo &amp;#34;test.txt changed!&amp;#34; OK, 现在想到啥了吗？这个命令对于 Web 开发人员有什么样的价值呢？
-回想一下，平时开发 web 程序时，我们是不是经常手动重启服务呢？
-如果不是，或许是你所用框架默认支持或是你通过其他工具实现了 live-reading，比如我所有的博客工具 hugo，就有内置了自动加载的能力。
-但由于这并不是框架默认能力，不同语言不同框架都要去寻找相应的实现方案。
-庆幸的是，通过 entr，可以很方便地实现这个功能。
-以一个 Go server 为例，文件名是 main.go，代码如下所示：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net/http&amp;#34; ) func main() { http.</description></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。
-我将介绍的 fd 和 ripgreap 对标的是传统 grep 和 find，它们在性能和使用体验上都有大幅提升。如果你成为 10x 程序员，强烈推荐使用它们。
-fd，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快；
-ripgrep，可用于高效的内容搜索，比默认的 grep 命令速度更快；
-fzf，命令行交互式模糊搜索工具，可与其他命令进行结合，提高使用体验；
-如上的 fd 与 ripgrep 是由 rust 编写，性能上完虐传统的 find 与 grep。
-视频版本，没有文章详细。
-fd fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。
-如何使用呢？
-安装 1 brew install fd 递归 文件系统下搜索文件名，最常见的场景是递归搜索文件名包含 pattern 的文件，不知道有你是否能立刻想起来 find 如何写呢？
-示例：遍历查找。
-1 $ fd pattern 正则 如果要正则查询，pattern 默认即支持正则表达式。
-查找文件名包含日期的文件：
-或者查找所有的 go 代码文件。
-这个表达式更加正确的表述是 fd .*\.go$，查出所有以 .go 结尾的文件。
-通配符 fd 同样是支持统配符的，通过 -g 选项指定通配符。</description></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>如下是视频版本，没有文章详细。
-类 Unix 系统发展多年，不少古董命令还在占据终端的绝大部分时间，但它们的使用体验上却是差强人意。最能说明问题的就是那个 cd 命令，无论是多么丝滑的操作，一旦遇到需要 change directory 就会变得磕磕绊绊。
-从本文开始，我计划用几篇文章介绍提升终端效率的一系列命令，它们更具现代风格，希望能让你眼前一亮。
-前言 本文是高效命令系列第一篇，将先介绍平时工作中最常用的与目录文件相关的命令，分别是替换 ls 的 exa，替换 cd 的 zoxide 和替换 cat 的 bat。它们的优势会在文章中逐步展开说明。
-特别提醒：exa 已停止维护，可用 exa 的 fork 版本 eza 替代。
-正式开始前，先推荐一个 github 仓库 - modern-unix，其中收录了大量的更具现代风格的命令，可用于替换一大波老古董命令，在这个系列的最后一篇，我将会整体过下该仓库中的所有命令。希望通过这些命令的学习，能进一步提升我们的效率。
-exa 首先是 exa，它是一款可用于替换系统默认 ls 的命令，在平时工作中 ls 几乎使用最多的命令，而 exa 在支持 ls 的基本能力基础上，提供了更丰富的特性。
-快速安装 1 brew install exa # 其他系统请查看 GithHub README.md 使用 首先，exa 默认提供了配色效果，无需 ls 要追加 --color 参数，省去了 alias 别名的设置。
-其次，exa 支持显示文件图片，通过指明 --icons 实现，显示文件类型图标；
-更复杂的命令，支持 ls -l 显示文件列表详情，添加头部说明 header，如果是 git 仓库，可显示文件的 Git 信息。</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
-在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。
-什么是 powerlevel10k? Powerlevel10 是一款 zsh 的主题，强调性能、灵活性和开箱即用，但同时自定义能力极强。前面介绍 zsh 轻量级框架 oh-my-zsh 时，提到过一些 zsh 主题，而通过 p10k（powerlevel10k 的简称）的自定义配置化能力，同样能配置出覆盖出之前主题的类似效果，当然相对而言，也更加强大。
-效果展示：
-安装依赖字体 在安装 powerlevel10k 前，要先安装它依赖的字体：NerdFont。不同系统下的安装方法，查看它的文档。
-简单说下 Nerd Fonts 字体。它是一系列开源字体的集合，被特别增强，它包含大量的图标和符号，如开发工具、编程语言和版本控制系统的图标。这些字体对于提高我们终端和编辑器的视觉体验和功能性有着极大帮助。
-有了它，我们的终端才能显示一些复杂字体甚至是图标。
-MacOS 的话，可直接通过 Homebrew 快速安装：
-1 2 brew tap homebrew/cask-fonts brew install font-hack-nerd-font 安装完成，配置终端字体，进入 iTerm2 Settings -&amp;gt; Profiles -&amp;gt; Text -&amp;gt; Font -&amp;gt; MesloLGS NF 即可。
-现在，我们终端就支持 NerdFont 字体了。
-如何测试？
-接下来安装 Powerlevel10k 时，它会提示我们检查字体是否正确安装。
-安装 powerlevel10k 先通过如下的命令下载插件源码放到指定的位置。</description></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：我的终端环境
-视频教程：
-今天，将会在 上文 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。
-快速一览 本文将会涉及的插件，如下所示：
-copypath，拷贝路径； copyfile，拷贝文件内容； copybuffer，拷贝命令行内容； sudo，快捷 sudo，命令行快捷添加 sudo 插件； zsh-history-substring-search，命令历史记录子字符串匹配； zsh-you-should-use，用于命令行 alias 别名提醒； 让我们正式开始。
-推荐一个网站 在开始前，我想先推荐一个 github 仓库，awesome-zsh-plugins，通过浏览器打开 awesome-zsh-plugins，里面提供了相当丰富的 zsh 的框架、教程、插件与主题等等，是 zsh 的资源合集。
-框架，如 oh-my-zsh，还有其他的一些框架。其中，还有关于 zsh 的教程。
-插件，上个视频介绍过的两个插件，zsh-syntax-highlighting - 命令行语法高亮插件, zsh-autosugggestions - 命令行自动建议提示插件，在这个文档里面都能找到。
-主题，除了 oh-my-zsh 内置主题，还有更多主题可选，如将在后面讲介绍的 powerlevel10k 这个 zsh 主题，在这个文档里也能找到。
-推荐插件 先说 oh-my-zsh 的内置插件。
-打开 zsh 配置文件 ~/.zshrc，将要使用的 oh-my-zsh 的内置插件提前配置。
-1 plugins=(... copypath copyfile copybuffer sudo .</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
-视频版本，没有文章详细：
-本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。
-为什么使用 zsh？ 开始前，先问为什么，知其然，要知其所以然，是个好习惯。
-所以，为什么要用 zsh 呢？
-大家最熟悉的 shell 解释器，肯定是 bash。zsh（Z Sehll）相对于 bash（Bourne Again Shell）相对有哪些优势呢？
-改进的自动补全能力 zsh 提供了更强大、更灵活的自动补全功能。它不但可以自动补全命令，设置选项、参数甚至文件名，都可自动补全。
-对于命令参数，zsh 甚至可以显示简短的帮助信息，这使得探索新命令变得更加容易。
-更好的脚本和插件支持 zsh 有一个强大的社区，提供了大量的插件和主题，如 oh-my-zsh 这个流行的 zsh 框架，允许我们轻松添加、更新插件和主题。
-这些插件可以增强 shell 的功能，提供便捷的别名、函数以及其他有用的特性。
-高级的主题和提示符定制 zsh 还允许用户对命令行提示符进行高度定制，包括颜色、内容和格式。用户可以非常容易地调整提示符来显示 git 分支、Python 虚拟环境等信息。
-我们会在后续介绍一款非常强大的 zsh 插件，名为 powerlevel10k，它支持完全的主题自定义特性，非常强大。
-更智能的命令行交互 zsh 还支持 bash 不具备的一些智能特性，如拼写校正和近似完成。如果用户输入的命令有拼写错误，zsh 可以建议正确的命令。
-如我输入 lls，会提示我 &amp;ldquo;zsh: correct &amp;rsquo;lls&amp;rsquo; to &amp;rsquo;ls&amp;rsquo; [nyae]?&amp;rdquo;
-1 2 ❯ lls zsh: correct &amp;#39;lls&amp;#39; to &amp;#39;ls&amp;#39; [nyae]?</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>视频版本，没有文章详细：
-我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
-本系列的目标是介绍如何基于 iTerm2、zsh、oh-my-zsh（包括高效插件）、高效 shell 命令，甚至将计划基于 Tmux 和 Neovim 搭建我的日常终端环境。
-本文是搭建我的终端环境系列中的第一篇，首先将介绍第一个必不可可少的工具终端 - iTerm2，Mac 上的终端神器。
-前言介绍 我将主要介绍如何安装与配置 iTerm2，安装成功后，会带着一起体验的一些能力。
-首先，iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。
-iTerm2 vs 默认 Terminal 为什么要用 iTerm2 替换默认的系统终端呢？这总要一些原因吧。
-首先，iTerm2 相较于 Terminal 的优势就是，它更加美观，相对于默认终端，iTerm2 支持真彩，而且，你可以在终端显示图片，甚至是 gif 动图。
-其他功能如分屏能力、颜色面板主题配置、搜索等肯定是基本能力，但毫无疑问，比默认终端体验更友好，更优秀。还有，快捷键的定制性更强。展示静态图片和 GIF 也不在话下。
-iTerm2 还支持如 python 编程控制，可实现自动换背景，布局管理等各种自动化能力。
-还有，与 iTerm2 与 zsh 相结合体验更佳，zsh 部分会在后面慢慢介绍。
-废话不多说，接下来，让我们进入安装使用流程。
-下载安装 首先是安装，可通过 iTerm2 官网 下载或者 MacOS 中 brew 安装，我将以 brew 安装为例。</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。
-zsh 为什么如此受欢迎？我们是否应该使用它呢？
-什么是 zsh？ “Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。
-Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。
-如今，Zsh 俨然已经是一个庞大的开源项目（非 Paul Falstad 维护），拥有一个有大量用户和贡献者的社区。而且，自 2019 年以来，它成为了 Apple macOS 的默认 Shell。
-bash vs zsh 这两个项目都还在积极开发中。这使它们在功能上越发接近，但差异不可能完全消除。默认，zsh 更强大且更容易自定义，而某些功能， Bash 需要一些额外的脚本（插件）才能实现。
-zsh 优于 Bash 的主要功能是：
-zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；</description></item><item><title>从 0 开始：教你如何配置 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description>本文将介绍如何使用 zsh 来提升命令行的操作效率。
-你是否每天都在与命令行打交道？
-如果答案是 &amp;ldquo;Yes&amp;rdquo;，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。
-zsh 是什么？ zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。
-它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。
-再者，相较于 bash，zsh 现在社区更加活跃，是一个还在成长中的项目。
-zsh 的优势 zsh 和 bash 都是非常流行的 Unix-like shell，它们有着很多相似的功能特性。但相对于 bash，zsh 有这些差异化优势：
-更优秀的命令行补全能力； 配置化能力更强； 更现代的语法； 改进的错误报告； 模拟 bash； 用户社区不断壮大，更新频繁； 体验更好的按键 支持vi模式等 安装 zsh Linux 系统下的安装非常简单。
-Debian:
-1 sudo apt install zsh Arch Linux:
-1 sudo pacman -S zsh Fedora</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zsh on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/zsh/</link><description>Recent content in Zsh on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Mon, 06 Nov 2023 15:40:41 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>&lt;div id="video-875737608d6YlNM6aMHo" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-875737608d6YlNM6aMHo')
+ data = JSON.parse(this.responseText)
+ bb_id = "875737608"
+ yt_id = "d6YlNM6aMHo"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;本篇文章是介绍 &lt;a href="https://github.com/ibraheemdev/modern-unix"&gt;modern-unix&lt;/a&gt; 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。&lt;/p&gt;</description></item><item><title>提效开发调试的三个命令</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>&lt;p&gt;本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。&lt;/p&gt;
+
+&lt;div id="video-748039783XLlYFat4chE" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-748039783XLlYFat4chE')
+ data = JSON.parse(this.responseText)
+ bb_id = "748039783"
+ yt_id = "XLlYFat4chE"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;p&gt;对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。&lt;/p&gt;</description></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-30-high-productivity-shell-commands-part2-00.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。&lt;/p&gt;
+&lt;p&gt;我将介绍的 fd 和 ripgreap 对标的是传统 grep 和 find，它们在性能和使用体验上都有大幅提升。如果你成为 10x 程序员，强烈推荐使用它们。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://github.com/sharkdp/fd"&gt;fd&lt;/a&gt;&lt;/strong&gt;，目录与文件搜索命令，比默认 find 更易于使用，而且查找速度上更快；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://github.com/BurntSushi/ripgrep"&gt;ripgrep&lt;/a&gt;&lt;/strong&gt;，可用于高效的内容搜索，比默认的 grep 命令速度更快；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://github.com/junegunn/fzf"&gt;fzf&lt;/a&gt;&lt;/strong&gt;，命令行交互式模糊搜索工具，可与其他命令进行结合，提高使用体验；&lt;/p&gt;
+&lt;p&gt;如上的 fd 与 ripgrep 是由 rust 编写，性能上完虐传统的 find 与 grep。&lt;/p&gt;
+&lt;p&gt;视频版本，没有文章详细。&lt;/p&gt;
+
+&lt;div id="video-962959372CcnmD_dHsnk" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-962959372CcnmD_dHsnk')
+ data = JSON.parse(this.responseText)
+ bb_id = "962959372"
+ yt_id = "CcnmD_dHsnk"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;h2 id="fd"&gt;&lt;a href="https://github.com/sharkdp/fd"&gt;fd&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;fd 是一款文件查找命令，可替换系统默认 find，它的体验更友好，且查询效率极高。我们在使用传统的 find 时，要经常查手册看帮助文档，但使用 fd，它的默认行为就能满足我们大部分的需求。&lt;/p&gt;</description></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-28-high-productivity-shell-commands-part1-00.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;如下是视频版本，没有文章详细。&lt;/p&gt;
+
+&lt;div id="video-2351792200yAP6ER8oGE" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-2351792200yAP6ER8oGE')
+ data = JSON.parse(this.responseText)
+ bb_id = "235179220"
+ yt_id = "0yAP6ER8oGE"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;类 Unix 系统发展多年，不少古董命令还在占据终端的绝大部分时间，但它们的使用体验上却是差强人意。最能说明问题的就是那个 cd 命令，无论是多么丝滑的操作，一旦遇到需要 change directory 就会变得磕磕绊绊。&lt;/p&gt;</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-15.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？&lt;/p&gt;
+&lt;p&gt;在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。&lt;/p&gt;
+
+&lt;div id="video-6200482573FmaWzqtWZ0" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-6200482573FmaWzqtWZ0')
+ data = JSON.parse(this.responseText)
+ bb_id = "620048257"
+ yt_id = "3FmaWzqtWZ0"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;h2 id="什么是-powerlevel10k"&gt;什么是 powerlevel10k?&lt;/h2&gt;
+&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-16.png" alt=""&gt;
+
+&lt;/p&gt;</description></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-08.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：&lt;a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&amp;amp;action=getalbum&amp;amp;album_id=3299748150420979713#wechat_redirect"&gt;我的终端环境&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;视频教程：&lt;/p&gt;
+
+&lt;div id="video-322450976RSaiddMI6Ns" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-322450976RSaiddMI6Ns')
+ data = JSON.parse(this.responseText)
+ bb_id = "322450976"
+ yt_id = "RSaiddMI6Ns"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;今天，将会在 &lt;a href="https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/"&gt;上文&lt;/a&gt; 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。&lt;/p&gt;</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-17.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。&lt;/p&gt;
+&lt;p&gt;视频版本，没有文章详细：&lt;/p&gt;
+
+&lt;div id="video-6197860971zJcH4hZW4o" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-6197860971zJcH4hZW4o')
+ data = JSON.parse(this.responseText)
+ bb_id = "619786097"
+ yt_id = "1zJcH4hZW4o"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。&lt;/p&gt;</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>&lt;p&gt;
+ &lt;img src="https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-15.png" alt=""&gt;
+
+&lt;/p&gt;
+&lt;p&gt;视频版本，没有文章详细：&lt;/p&gt;
+
+&lt;div id="video-619786097vNX_sReGZ5E" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-619786097vNX_sReGZ5E')
+ data = JSON.parse(this.responseText)
+ bb_id = "619786097"
+ yt_id = "vNX_sReGZ5E"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。&lt;/p&gt;</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>&lt;p&gt;我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。&lt;/p&gt;
+&lt;p&gt;zsh 为什么如此受欢迎？我们是否应该使用它呢？&lt;/p&gt;
+&lt;h2 id="什么是-zsh"&gt;什么是 zsh？&lt;/h2&gt;
+&lt;p&gt;“Z shell” 最初是由 Paul Falstad 在普林斯顿大学就读时开发。&lt;/p&gt;
+&lt;p&gt;Zsh 整合了绝大多数主流 Shell 中的功能，如 Bourne-Again Shell (Bash)、Korn Shell (ksh)、C-shell (csh) 和 tcsh。故而，zsh 与这些主流 shell 都有一定程度的兼容，是其更受用户欢迎。&lt;/p&gt;
+&lt;p&gt;如今，Zsh 俨然已经是一个庞大的开源项目（非 Paul Falstad 维护），拥有一个有大量用户和贡献者的社区。而且，自 2019 年以来，它成为了 Apple macOS 的默认 Shell。&lt;/p&gt;
+&lt;h2 id="bash-vs-zsh"&gt;bash vs zsh&lt;/h2&gt;
+&lt;p&gt;这两个项目都还在积极开发中。这使它们在功能上越发接近，但差异不可能完全消除。默认，zsh 更强大且更容易自定义，而某些功能， Bash 需要一些额外的脚本（插件）才能实现。&lt;/p&gt;
+&lt;p&gt;zsh 优于 Bash 的主要功能是：&lt;/p&gt;
+&lt;p&gt;zsh 的补全能力强大，bash 的 Tab 补全是从头匹配，如 mn 匹配 mnt，而非 findmn，而 zsh 可同时匹配 mnt 和 findmn；&lt;/p&gt;</description></item><item><title>从 0 开始：教你如何配置 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><guid>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description>&lt;p&gt;本文将介绍如何使用 zsh 来提升命令行的操作效率。&lt;/p&gt;
+&lt;p&gt;你是否每天都在与命令行打交道？&lt;/p&gt;
+&lt;p&gt;如果答案是 &amp;ldquo;Yes&amp;rdquo;，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。&lt;/p&gt;
+&lt;h2 id="zsh-是什么"&gt;zsh 是什么？&lt;/h2&gt;
+&lt;p&gt;zsh，或 Z Shell，是一个 Unix-Like 系统（如 macOS 或 Linux）下的 shell 命令行解释器。&lt;/p&gt;
+&lt;p&gt;它支持强大的自动补全能力，拥有丰富的插件，具有高可定制性，而且与 bash 充分兼容。虽然，它与 bash 相比，能力更加强大，但是它却依然比 bash 更快。&lt;/p&gt;
+&lt;p&gt;再者，相较于 bash，zsh 现在社区更加活跃，是一个还在成长中的项目。&lt;/p&gt;
+&lt;h2 id="zsh-的优势"&gt;zsh 的优势&lt;/h2&gt;
+&lt;p&gt;zsh 和 bash 都是非常流行的 Unix-like shell，它们有着很多相似的功能特性。但相对于 bash，zsh 有这些差异化优势：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更优秀的命令行补全能力；&lt;/li&gt;
+&lt;li&gt;配置化能力更强；&lt;/li&gt;
+&lt;li&gt;更现代的语法；&lt;/li&gt;
+&lt;li&gt;改进的错误报告；&lt;/li&gt;
+&lt;li&gt;模拟 bash；&lt;/li&gt;
+&lt;li&gt;用户社区不断壮大，更新频繁；&lt;/li&gt;
+&lt;li&gt;体验更好的按键&lt;/li&gt;
+&lt;li&gt;支持vi模式等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="安装-zsh"&gt;安装 zsh&lt;/h2&gt;
+&lt;p&gt;Linux 系统下的安装非常简单。&lt;/p&gt;
+&lt;p&gt;Debian:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sudo apt install zsh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Arch Linux:&lt;/p&gt;</description></item></channel></rss>

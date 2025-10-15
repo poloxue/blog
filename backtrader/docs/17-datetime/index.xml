@@ -1,14 +1,109 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>日期时间 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/</link><description>Recent content in 日期时间 on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/17-datetime/index.xml" rel="self" type="application/rss+xml"/><item><title>管理</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</guid><description>管理 # 在发布 1.5.0 版本之前，backtrader 对时间管理采用的是直接方式，即直接使用数据源计算出的任何日期时间。用户输入的参数，如 fromdate（或 sessionstart），也可以传递给任何数据源。
-这种方法在对冻结数据源进行回测时效果很好。可以假设输入的日期时间在进入系统之前已经经过处理。
-但在 1.5.0 版本之后，backtrader 开始支持实时数据源，这就需要考虑日期时间管理。如果以下情况总是成立，那么就不需要进行这种管理：
-纽约的交易者交易 ES-Mini。这两个的时区都是 US/Eastern（或其别名）。 柏林的交易者交易 DAX 期货。在这种情况下，两个的时区都是 CET（或 Europe/Berlin）。 上面的直接输入-输出日期时间方法可以工作，因为柏林的交易者可以始终这样做：
-class Strategy(bt.Strategy): def next(self): # DAX 期货在 CET 时间早上 08:00 开盘 if self.data.datetime.time() &amp;lt; datetime.time(8, 30): # 市场运行 30 分钟之前不操作 return # 当同一个柏林交易者决定交易 ES-Mini 时，直接方法的问题就会显现出来。因为 DST（夏令时）的变化发生在一年中的不同时间，这会导致时间差异在一年中的某些周内不同步。
-以下代码并不总是有效：
-class Strategy(bt.Strategy): def next(self): # SPX 在 US/Eastern 全年早上 09:30 开盘 # 大部分时间是 15:30 CET # 但有时是 16:30 CET 或 14:30 CET，取决于美国和欧洲的 DST 切换时间 # 因此以下代码是不可靠的 if self.</description></item><item><title>定时器</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/02-timer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/02-timer/</guid><description>定时器 # 在版本 1.9.44.116 中，backtrader 添加了定时器功能。这使得在特定时间点调用 notify_timer（在 Cerebro 和 Strategy 中可用）成为可能，用户可以进行精细控制。
-选项 # 基于绝对时间输入或相对于会话开始/结束时间的定时器。 时间规范的时区指定，可以直接通过 pytz 兼容对象或通过数据源会话结束时间进行指定。 相对于指定时间的起始偏移。 重复间隔。 工作日过滤器（带有结转选项）。 月份天数过滤器（带有结转选项）。 自定义回调过滤器。 使用模式 # 在 Cerebro 和 Strategy 子类中，定时器回调将在以下方法中接收：
-def notify_timer(self, timer, when, *args, **kwargs): &amp;#39;&amp;#39;&amp;#39;接收定时器通知，其中 `timer` 是通过 `add_timer` 返回的定时器，`when` 是调用时间。 `args` 和 `kwargs` 是传递给 `add_timer` 的额外参数。 实际的 `when` 时间可能稍后，但系统可能无法在之前调用定时器。 此值是定时器值，而不是系统时间。 &amp;#39;&amp;#39;&amp;#39; 添加定时器 - 通过 Strategy # 使用以下方法完成：
-def add_timer(self, when, offset=datetime.timedelta(), repeat=datetime.timedelta(), weekdays=[], weekcarry=False, monthdays=[], monthcarry=True, allow=None, tzdata=None, cheat=False, *args, **kwargs): &amp;#39;&amp;#39;&amp;#39; 它返回创建的 Timer 实例。下面是参数的解释。</description></item><item><title>交易日历</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/03-trading-calendars/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/03-trading-calendars/</guid><description>交易日历 # 版本 1.9.42.116 增加了对交易日历的支持。这在以下场景中的重采样时非常有用：
-从每日到每周的重采样现在可以将每周的K线与本周的最后一根K线一起交付。 这是因为交易日历可以识别下一个交易日，并且可以提前识别出本周的最后一个交易日。 当交易会话的结束时间不是常规时间（可以通过数据源来指定）时，从子日内到每日的重采样。 交易日历接口 # 有一个基类 TradingCalendarBase 用作任何交易日历的基类。它定义了两个必须被重写的方法：
-class TradingCalendarBase(with_metaclass(MetaParams, object)): def _nextday(self, day): &amp;#39;&amp;#39;&amp;#39; 返回在 `day`（datetime/date 实例）之后的下一个交易日（datetime/date 实例）以及 isocalendar 组件。 返回值是一个包含两个组件的元组：(nextday, (y, w, d))，其中 (y, w, d)。 &amp;#39;&amp;#39;&amp;#39; raise NotImplementedError def schedule(self, day): &amp;#39;&amp;#39;&amp;#39; 返回给定日期（datetime/date 实例）的开盘和收盘时间（`datetime.time`）。 &amp;#39;&amp;#39;&amp;#39; raise NotImplementedError 实现 # PandasMarketCalendar # 这个实现基于一个不错的包，这是从 Quantopian 的初始功能衍生出来的。包位于 pandas_market_calendars，可以很容易地安装：
-pip install pandas_market_calendars 实现的接口如下：
-class PandasMarketCalendar(TradingCalendarBase): &amp;#39;&amp;#39;&amp;#39; `pandas_market_calendars` 的交易日历包装器。必须安装 `pandas_market_calendar` 包。 参数： - `calendar` (默认 `None`) 参数 `calendar` 接受以下内容： - 字符串：支持的日历名称，例如 `NYSE`。包装器会尝试获取一个日历实例。 - 日历实例：由 `get_calendar(&amp;#39;NYSE&amp;#39;)` 返回。 - `cachesize` (默认 `365`) 缓存查找提前天数。 参见： - https://github.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>日期时间 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/</link><description>Recent content in 日期时间 on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/17-datetime/index.xml" rel="self" type="application/rss+xml"/><item><title>管理</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</guid><description>&lt;h1 id="管理"&gt;管理&lt;a class="anchor" href="#%e7%ae%a1%e7%90%86"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;在发布 1.5.0 版本之前，backtrader 对时间管理采用的是直接方式，即直接使用数据源计算出的任何日期时间。用户输入的参数，如 &lt;code&gt;fromdate&lt;/code&gt;（或 &lt;code&gt;sessionstart&lt;/code&gt;），也可以传递给任何数据源。&lt;/p&gt;
+&lt;p&gt;这种方法在对冻结数据源进行回测时效果很好。可以假设输入的日期时间在进入系统之前已经经过处理。&lt;/p&gt;
+&lt;p&gt;但在 1.5.0 版本之后，backtrader 开始支持实时数据源，这就需要考虑日期时间管理。如果以下情况总是成立，那么就不需要进行这种管理：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;纽约的交易者交易 ES-Mini。这两个的时区都是 US/Eastern（或其别名）。&lt;/li&gt;
+&lt;li&gt;柏林的交易者交易 DAX 期货。在这种情况下，两个的时区都是 CET（或 Europe/Berlin）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上面的直接输入-输出日期时间方法可以工作，因为柏林的交易者可以始终这样做：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Strategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# DAX 期货在 CET 时间早上 08:00 开盘&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;time() &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;time(&lt;span style="color:#ae81ff"&gt;8&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 市场运行 30 分钟之前不操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#75715e"&gt;#&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当同一个柏林交易者决定交易 ES-Mini 时，直接方法的问题就会显现出来。因为 DST（夏令时）的变化发生在一年中的不同时间，这会导致时间差异在一年中的某些周内不同步。&lt;/p&gt;
+&lt;p&gt;以下代码并不总是有效：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Strategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# SPX 在 US/Eastern 全年早上 09:30 开盘&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 大部分时间是 15:30 CET&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 但有时是 16:30 CET 或 14:30 CET，取决于美国和欧洲的 DST 切换时间&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 因此以下代码是不可靠的&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;time() &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;time(&lt;span style="color:#ae81ff"&gt;16&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 市场运行 30 分钟之前不操作&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#75715e"&gt;#&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="使用时区操作"&gt;使用时区操作&lt;a class="anchor" href="#%e4%bd%bf%e7%94%a8%e6%97%b6%e5%8c%ba%e6%93%8d%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;为了解决上述问题并仍然保持与直接输入-输出时间方法的兼容性，backtrader 为终端用户提供了以下选项：&lt;/p&gt;</description></item><item><title>定时器</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/02-timer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/02-timer/</guid><description>&lt;h1 id="定时器"&gt;定时器&lt;a class="anchor" href="#%e5%ae%9a%e6%97%b6%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;在版本 1.9.44.116 中，backtrader 添加了定时器功能。这使得在特定时间点调用 &lt;code&gt;notify_timer&lt;/code&gt;（在 Cerebro 和 Strategy 中可用）成为可能，用户可以进行精细控制。&lt;/p&gt;
+&lt;h2 id="选项"&gt;选项&lt;a class="anchor" href="#%e9%80%89%e9%a1%b9"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;基于绝对时间输入或相对于会话开始/结束时间的定时器。&lt;/li&gt;
+&lt;li&gt;时间规范的时区指定，可以直接通过 pytz 兼容对象或通过数据源会话结束时间进行指定。&lt;/li&gt;
+&lt;li&gt;相对于指定时间的起始偏移。&lt;/li&gt;
+&lt;li&gt;重复间隔。&lt;/li&gt;
+&lt;li&gt;工作日过滤器（带有结转选项）。&lt;/li&gt;
+&lt;li&gt;月份天数过滤器（带有结转选项）。&lt;/li&gt;
+&lt;li&gt;自定义回调过滤器。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="使用模式"&gt;使用模式&lt;a class="anchor" href="#%e4%bd%bf%e7%94%a8%e6%a8%a1%e5%bc%8f"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在 Cerebro 和 Strategy 子类中，定时器回调将在以下方法中接收：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_timer&lt;/span&gt;(self, timer, when, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;接收定时器通知，其中 `timer` 是通过 `add_timer` 返回的定时器，`when` 是调用时间。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; `args` 和 `kwargs` 是传递给 `add_timer` 的额外参数。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 实际的 `when` 时间可能稍后，但系统可能无法在之前调用定时器。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 此值是定时器值，而不是系统时间。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="添加定时器---通过-strategy"&gt;添加定时器 - 通过 Strategy&lt;a class="anchor" href="#%e6%b7%bb%e5%8a%a0%e5%ae%9a%e6%97%b6%e5%99%a8---%e9%80%9a%e8%bf%87-strategy"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;使用以下方法完成：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add_timer&lt;/span&gt;(self, when,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; offset&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;timedelta(), repeat&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;timedelta(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; weekdays&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[], weekcarry&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; monthdays&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[], monthcarry&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; allow&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; tzdata&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;, cheat&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;它返回创建的 Timer 实例。下面是参数的解释。&lt;/p&gt;</description></item><item><title>交易日历</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/03-trading-calendars/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/03-trading-calendars/</guid><description>&lt;h1 id="交易日历"&gt;交易日历&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e6%97%a5%e5%8e%86"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;版本 1.9.42.116 增加了对交易日历的支持。这在以下场景中的重采样时非常有用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从每日到每周的重采样现在可以将每周的K线与本周的最后一根K线一起交付。&lt;/li&gt;
+&lt;li&gt;这是因为交易日历可以识别下一个交易日，并且可以提前识别出本周的最后一个交易日。&lt;/li&gt;
+&lt;li&gt;当交易会话的结束时间不是常规时间（可以通过数据源来指定）时，从子日内到每日的重采样。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="交易日历接口"&gt;交易日历接口&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e6%97%a5%e5%8e%86%e6%8e%a5%e5%8f%a3"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;有一个基类 &lt;code&gt;TradingCalendarBase&lt;/code&gt; 用作任何交易日历的基类。它定义了两个必须被重写的方法：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TradingCalendarBase&lt;/span&gt;(with_metaclass(MetaParams, object)):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;_nextday&lt;/span&gt;(self, day):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 返回在 `day`（datetime/date 实例）之后的下一个交易日（datetime/date 实例）以及 isocalendar 组件。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 返回值是一个包含两个组件的元组：(nextday, (y, w, d))，其中 (y, w, d)。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;raise&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;NotImplementedError&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;schedule&lt;/span&gt;(self, day):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 返回给定日期（datetime/date 实例）的开盘和收盘时间（`datetime.time`）。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;raise&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;NotImplementedError&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="实现"&gt;实现&lt;a class="anchor" href="#%e5%ae%9e%e7%8e%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="pandasmarketcalendar"&gt;PandasMarketCalendar&lt;a class="anchor" href="#pandasmarketcalendar"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;这个实现基于一个不错的包，这是从 Quantopian 的初始功能衍生出来的。包位于 &lt;code&gt;pandas_market_calendars&lt;/code&gt;，可以很容易地安装：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install pandas_market_calendars&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;实现的接口如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PandasMarketCalendar&lt;/span&gt;(TradingCalendarBase):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; `pandas_market_calendars` 的交易日历包装器。必须安装 `pandas_market_calendar` 包。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 参数：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - `calendar` (默认 `None`)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 参数 `calendar` 接受以下内容：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - 字符串：支持的日历名称，例如 `NYSE`。包装器会尝试获取一个日历实例。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - 日历实例：由 `get_calendar(&amp;#39;NYSE&amp;#39;)` 返回。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - `cachesize` (默认 `365`)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 缓存查找提前天数。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; 参见：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - https://github.com/rsheftel/pandas_market_calendars
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - http://pandas-market-calendars.readthedocs.io/
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;calendar&amp;#39;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;), &lt;span style="color:#75715e"&gt;# 一个 pandas_market_calendars 实例或交易所名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;cachesize&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;365&lt;/span&gt;), &lt;span style="color:#75715e"&gt;# 缓存查找提前天数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="tradingcalendar"&gt;TradingCalendar&lt;a class="anchor" href="#tradingcalendar"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;这个实现允许通过指定假期、早市天数、非交易工作日以及开盘和收盘时间来构建一个日历：&lt;/p&gt;</description></item></channel></rss>

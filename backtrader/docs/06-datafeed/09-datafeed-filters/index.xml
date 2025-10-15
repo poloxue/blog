@@ -1,26 +1,110 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>过滤器 Filters on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/</link><description>Recent content in 过滤器 Filters on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/index.xml" rel="self" type="application/rss+xml"/><item><title>过滤器 Filters</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/</guid><description>过滤器 Filters # 该功能是较晚加入到 Backtrader 中的，且为了适应已有的内部结构进行了一些调整。因此，它在灵活性和功能完备性上可能不如预期，但在许多情况下仍然能达到目的。
-尽管实现时尝试支持即插即用的过滤器链，但由于原有内部结构的限制，始终无法保证每次都能实现。因此，有些过滤器可以链式使用，而有些则不能。
-目的 # 将数据源提供的值转换为不同的数据流。
-该实现最初是为了简化两个明显的过滤器的实现，这两个过滤器可以通过cerebro API直接使用，分别是 重采样 和 重放。
-重采样（cerebro.resampledata）：这个过滤器会改变传入数据流的时间框架和压缩比例，如：(秒，1) -&amp;gt; (天，1)。这意味着原始数据流是以1秒为周期的数据条。重采样过滤器会拦截数据并进行缓冲，直到能够提供1天的条形数据。这发生在看到第二天的1秒条形数据时。
-重放（cerebro.replaydata），在上面相同的时间框架下，过滤器会利用1秒的分辨率条形数据重建1天的条形数据。也就是说，1天的条形数据会被反复传递，直到显示出所有1秒的条形数据，并且数据内容会更新。这种方法模拟了实际交易日的发展。
-注意，在日期没有变化的情况下，数据的长度（len(data)）以及策略的长度保持不变。
-工作原理 # 给定一个已有的数据源，你可以使用addfilter方法来添加过滤器：
-data = MyDataFeed(dataname=myname) data.addfilter(filter, *args, **kwargs) cerebro.adddata(data) 即使它与重采样或重放过滤器兼容，你也可以做如下操作：
-data = MyDataFeed(dataname=myname) data.addfilter(filter, *args, **kwargs) cerebro.replaydata(data) 过滤器接口 # 过滤器必须符合以下接口要求。首先，要是一个可调用的对象，接受如下签名：
-callable(data, *args, **kwargs) 或一个可以实例化并被调用的类，在实例化时其__init__方法必须支持以下签名：
-def __init__(self, data, *args, **kwargs) __call__方法的签名为：
-def __call__(self, data, *args, **kwargs) 每当新的数据流值到来时，实例都会被调用。*args和**kwargs与__init__方法传递的参数相同。
-返回值 描述 True 表示数据流的内部数据获取循环需要重新尝试从数据源中获取数据，因为数据流的长度被修改了。 False 即使数据可能已经被编辑（例如：修改了close价格），数据流的长度保持不变。 如果是基于类的过滤器，还可以实现两个额外的方法：
-last，其签名为：
-def last(self, data, *args, **kwargs) 当数据流结束时，这个方法会被调用，允许过滤器推送它可能缓冲的数据。例如在重采样的情况下，一个条形数据会被缓冲，直到看到下一个时间段的数据。如果数据流结束，就没有新的数据可以推动缓冲的数据，last方法提供了推送缓冲数据的机会。</description></item><item><title>参考文档</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/</guid><description>Filters 参考文档 # SessionFilter # class backtrader.filters.SessionFilter(data)
-此类可作为过滤器应用于数据源，将过滤掉落在常规交易时间之外的日内数据（即盘前/盘后数据）。
-这是一个“非简单”过滤器，必须管理数据栈（在初始化和调用期间传递）。 它不需要“last”方法，因为没有需要传递的内容。 SessionFilterSimple # class backtrader.filters.SessionFilterSimple(data)
-此类可作为过滤器应用于数据源，将过滤掉落在常规交易时间之外的日内数据（即盘前/盘后数据）。
-这是一个“简单”过滤器，不需要管理数据栈（在初始化和调用期间传递）。 它不需要“last”方法，因为没有需要传递的内容。 Bar 管理将由 SimpleFilterWrapper 类处理，该类在 DataBase.addfilter_simple 调用期间添加。 SessionFiller # class backtrader.filters.SessionFiller(data)
-为声明的会话开始/结束时间内的数据源填充条。
-参数：
-fill_price (默认: None): 如果传递了 None，将使用前一个条的收盘价。为了得到一个不显示在图表中的条，可以使用 float(&amp;lsquo;NaN&amp;rsquo;)。 fill_vol (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失交易量的值。 fill_oi (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失未平仓合约的值。 skip_first_fill (默认: True): 在看到第一个有效条时，不从会话开始填充到该条。 CalendarDays # class backtrader.filters.CalendarDays(data)
-填充缺失日历日到交易日。
-参数：
-fill_price (默认: None): 0: 用给定值填充。 None: 使用上一个已知收盘价。 -1: 使用上一个条的中点（高低平均值）。 fill_vol (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失交易量的值。 fill_oi (默认: float(&amp;lsquo;NaN&amp;rsquo;)): 用于填充缺失未平仓合约的值。 BarReplayer_Open # class backtrader.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>过滤器 Filters on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/</link><description>Recent content in 过滤器 Filters on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/index.xml" rel="self" type="application/rss+xml"/><item><title>过滤器 Filters</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/</guid><description>&lt;h1 id="过滤器-filters"&gt;过滤器 Filters&lt;a class="anchor" href="#%e8%bf%87%e6%bb%a4%e5%99%a8-filters"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;该功能是较晚加入到 &lt;strong&gt;Backtrader&lt;/strong&gt; 中的，且为了适应已有的内部结构进行了一些调整。因此，它在灵活性和功能完备性上可能不如预期，但在许多情况下仍然能达到目的。&lt;/p&gt;
+&lt;p&gt;尽管实现时尝试支持即插即用的过滤器链，但由于原有内部结构的限制，始终无法保证每次都能实现。因此，有些过滤器可以链式使用，而有些则不能。&lt;/p&gt;
+&lt;h2 id="目的"&gt;目的&lt;a class="anchor" href="#%e7%9b%ae%e7%9a%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;将数据源提供的值转换为不同的数据流。&lt;/p&gt;
+&lt;p&gt;该实现最初是为了简化两个明显的过滤器的实现，这两个过滤器可以通过cerebro API直接使用，分别是 &lt;strong&gt;重采样&lt;/strong&gt; 和 &lt;strong&gt;重放&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;重采样（cerebro.resampledata）&lt;/strong&gt;：这个过滤器会改变传入数据流的时间框架和压缩比例，如：&lt;code&gt;(秒，1)&lt;/code&gt; -&amp;gt; &lt;code&gt;(天，1)&lt;/code&gt;。这意味着原始数据流是以1秒为周期的数据条。重采样过滤器会拦截数据并进行缓冲，直到能够提供1天的条形数据。这发生在看到第二天的1秒条形数据时。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;重放（cerebro.replaydata）&lt;/strong&gt;，在上面相同的时间框架下，过滤器会利用1秒的分辨率条形数据重建1天的条形数据。也就是说，1天的条形数据会被反复传递，直到显示出所有1秒的条形数据，并且数据内容会更新。这种方法模拟了实际交易日的发展。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，在日期没有变化的情况下，数据的长度（len(data)）以及策略的长度保持不变。&lt;/p&gt;
+&lt;h2 id="工作原理"&gt;工作原理&lt;a class="anchor" href="#%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;给定一个已有的数据源，你可以使用&lt;code&gt;addfilter&lt;/code&gt;方法来添加过滤器：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; MyDataFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;myname)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addfilter(filter, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;即使它与重采样或重放过滤器兼容，你也可以做如下操作：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; MyDataFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;myname)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addfilter(filter, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;replaydata(data)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="过滤器接口"&gt;过滤器接口&lt;a class="anchor" href="#%e8%bf%87%e6%bb%a4%e5%99%a8%e6%8e%a5%e5%8f%a3"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;过滤器必须符合以下接口要求。首先，要是一个可调用的对象，接受如下签名：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;callable(data, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;或一个可以实例化并被调用的类，在实例化时其&lt;code&gt;__init__&lt;/code&gt;方法必须支持以下签名：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self, data, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;__call__&lt;/code&gt;方法的签名为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__call__&lt;/span&gt;(self, data, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;每当新的数据流值到来时，实例都会被调用。&lt;code&gt;*args&lt;/code&gt;和&lt;code&gt;**kwargs&lt;/code&gt;与&lt;code&gt;__init__&lt;/code&gt;方法传递的参数相同。&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;返回值&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;True&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;表示数据流的内部数据获取循环需要重新尝试从数据源中获取数据，因为数据流的长度被修改了。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;False&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;即使数据可能已经被编辑（例如：修改了&lt;code&gt;close&lt;/code&gt;价格），数据流的长度保持不变。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;如果是基于类的过滤器，还可以实现两个额外的方法：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;last&lt;/code&gt;，其签名为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;last&lt;/span&gt;(self, data, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;当数据流结束时，这个方法会被调用，允许过滤器推送它可能缓冲的数据。例如在重采样的情况下，一个条形数据会被缓冲，直到看到下一个时间段的数据。如果数据流结束，就没有新的数据可以推动缓冲的数据，&lt;code&gt;last&lt;/code&gt;方法提供了推送缓冲数据的机会。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果过滤器没有任何参数，且在添加时没有额外的参数，签名可以简化为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self, data) &lt;span style="color:#f92672"&gt;-&amp;gt;&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self, data)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="示例过滤器"&gt;示例过滤器&lt;a class="anchor" href="#%e7%a4%ba%e4%be%8b%e8%bf%87%e6%bb%a4%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;以下是一个非常简单的过滤器实现：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;SessionFilter&lt;/span&gt;(object):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self, data):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__call__&lt;/span&gt;(self, data):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sessionstart &lt;span style="color:#f92672"&gt;&amp;lt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;time() &lt;span style="color:#f92672"&gt;&amp;lt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sessionend:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 在交易时段内&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;False&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 告诉外部数据循环，当前条形数据可以继续处理&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 在常规交易时段外&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;backwards() &lt;span style="color:#75715e"&gt;# 从数据堆栈中移除该条形数据&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;True&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 告诉外部数据循环，必须获取新的条形数据&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该过滤器：&lt;/p&gt;</description></item><item><title>参考文档</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/</guid><description>&lt;h1 id="filters-参考文档"&gt;Filters 参考文档&lt;a class="anchor" href="#filters-%e5%8f%82%e8%80%83%e6%96%87%e6%a1%a3"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="sessionfilter"&gt;SessionFilter&lt;a class="anchor" href="#sessionfilter"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.SessionFilter(data)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;此类可作为过滤器应用于数据源，将过滤掉落在常规交易时间之外的日内数据（即盘前/盘后数据）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这是一个“非简单”过滤器，必须管理数据栈（在初始化和调用期间传递）。&lt;/li&gt;
+&lt;li&gt;它不需要“last”方法，因为没有需要传递的内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sessionfiltersimple"&gt;SessionFilterSimple&lt;a class="anchor" href="#sessionfiltersimple"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.SessionFilterSimple(data)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;此类可作为过滤器应用于数据源，将过滤掉落在常规交易时间之外的日内数据（即盘前/盘后数据）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这是一个“简单”过滤器，不需要管理数据栈（在初始化和调用期间传递）。&lt;/li&gt;
+&lt;li&gt;它不需要“last”方法，因为没有需要传递的内容。&lt;/li&gt;
+&lt;li&gt;Bar 管理将由 SimpleFilterWrapper 类处理，该类在 DataBase.addfilter_simple 调用期间添加。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="sessionfiller"&gt;SessionFiller&lt;a class="anchor" href="#sessionfiller"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.SessionFiller(data)&lt;/strong&gt;&lt;br&gt;
+为声明的会话开始/结束时间内的数据源填充条。&lt;/p&gt;
+&lt;p&gt;参数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;fill_price (默认: None):&lt;/strong&gt; 如果传递了 None，将使用前一个条的收盘价。为了得到一个不显示在图表中的条，可以使用 float(&amp;lsquo;NaN&amp;rsquo;)。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fill_vol (默认: float(&amp;lsquo;NaN&amp;rsquo;)):&lt;/strong&gt; 用于填充缺失交易量的值。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fill_oi (默认: float(&amp;lsquo;NaN&amp;rsquo;)):&lt;/strong&gt; 用于填充缺失未平仓合约的值。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;skip_first_fill (默认: True):&lt;/strong&gt; 在看到第一个有效条时，不从会话开始填充到该条。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="calendardays"&gt;CalendarDays&lt;a class="anchor" href="#calendardays"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.CalendarDays(data)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;填充缺失日历日到交易日。&lt;/p&gt;
+&lt;p&gt;参数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;fill_price (默认: None):&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;0: 用给定值填充。&lt;/li&gt;
+&lt;li&gt;None: 使用上一个已知收盘价。&lt;/li&gt;
+&lt;li&gt;-1: 使用上一个条的中点（高低平均值）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fill_vol (默认: float(&amp;lsquo;NaN&amp;rsquo;)):&lt;/strong&gt; 用于填充缺失交易量的值。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;fill_oi (默认: float(&amp;lsquo;NaN&amp;rsquo;)):&lt;/strong&gt; 用于填充缺失未平仓合约的值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="barreplayer_open"&gt;BarReplayer_Open&lt;a class="anchor" href="#barreplayer_open"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.BarReplayer_Open(data)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;此过滤器将一个条分为两部分：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Open:&lt;/strong&gt; 条的开盘价将用于交付一个初始价格条，其中四个组件（OHLC）相等。
+&lt;ul&gt;
+&lt;li&gt;此初始条的交易量/未平仓合约字段为 0。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OHLC:&lt;/strong&gt; 原始条完整交付，包含原始交易量/未平仓合约。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;分割模拟重播，无需使用重播过滤器。&lt;/p&gt;</description></item></channel></rss>

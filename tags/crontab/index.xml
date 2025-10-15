@@ -1,10 +1,54 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>crontab on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/crontab/</link><description>Recent content in crontab on POLOXUE's BLOG</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 31 Dec 2016 18:01:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/crontab/index.xml" rel="self" type="application/rss+xml"/><item><title>一文精通 crontab 从入门到出坑</title><link>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</link><pubDate>Sat, 31 Dec 2016 18:01:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</guid><description>此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。
-我的理解，后台任务通常分为两种：常驻和定时。之前的文章《pm2进程管理工具使用总结》主要针对的是常驻任务。今天来谈谈 crontab，主要针对的是定时任务。
-实验环境： centos7
-介绍crontab crontab的服务进程名为crond，英文意为周期任务。顾名思义，crontab在Linux主要用于周期定时任务管理。通常安装操作系统后，默认已启动crond服务。crontab可理解为cron_table，表示cron的任务列表。类似crontab的工具还有at和anacrontab，但具体使用场景不同，可参见附录《让你学会Linux计划任务》一文了解更多。
-关于crontab的用途很多，如
-定时系统检测； 定时数据采集； 定时日志备份； 定时更新数据缓存； 定时生成报表； &amp;hellip; 等等任务 当然，更多使用场景是要以视具体情况而定了。毕竟是工具通常都是常用规则总结而成的产物。
-确认crond服务已经安装与开启之后，下面开始具体说明
-简单示例 先来个简单示例体验一下。
-目标：每分钟向/tmp/time.txt文件下写入当前时间 新建crontab任务 1 2 $ crontab -e // 打开crontab任务编辑 * * * * * date &amp;gt;&amp;gt; /tmp/time.txt 静静等待几分钟 1 2 3 4 $ cat /tmp/time.txt Do 29. Dez 22:45:01 CST 2016 Do 29. Dez 22:46:01 CST 2016 Do 29. Dez 22:47:01 CST 2016 从上面结果看出，每分钟执行了date并写入到/tmp/time.txt。 简单示例演示成功。下面从细节深入说明crontab使用。
-使用选项 上面的实验中使用了crontab命令的-e选项。我们来看看crontab命令中有哪些选项?</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Crontab on POLOXUE's BLOG</title><link>https://www.poloxue.com/tags/crontab/</link><description>Recent content in Crontab on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Sat, 31 Dec 2016 18:01:00 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/crontab/index.xml" rel="self" type="application/rss+xml"/><item><title>一文精通 crontab 从入门到出坑</title><link>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</link><pubDate>Sat, 31 Dec 2016 18:01:00 +0800</pubDate><guid>https://www.poloxue.com/posts/2016-12-31-crontab-from-scratch/</guid><description>&lt;p&gt;此篇技术博文主要介绍的是 crontab， Linux 下的计划任务管理工具。涉及内容包括 crontab 使用配置、常见坑的分析和编者总结的错误调试方法。&lt;/p&gt;
+&lt;p&gt;我的理解，后台任务通常分为两种：常驻和定时。之前的文章《pm2进程管理工具使用总结》主要针对的是常驻任务。今天来谈谈 crontab，主要针对的是定时任务。&lt;/p&gt;
+&lt;p&gt;实验环境： centos7&lt;/p&gt;
+&lt;h1 id="介绍crontab"&gt;介绍crontab&lt;/h1&gt;
+&lt;p&gt;crontab的服务进程名为crond，英文意为周期任务。顾名思义，crontab在Linux主要用于周期定时任务管理。通常安装操作系统后，默认已启动crond服务。crontab可理解为cron_table，表示cron的任务列表。类似crontab的工具还有at和anacrontab，但具体使用场景不同，可参见附录《让你学会Linux计划任务》一文了解更多。&lt;/p&gt;
+&lt;p&gt;关于crontab的用途很多，如&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;定时系统检测；&lt;/li&gt;
+&lt;li&gt;定时数据采集；&lt;/li&gt;
+&lt;li&gt;定时日志备份；&lt;/li&gt;
+&lt;li&gt;定时更新数据缓存；&lt;/li&gt;
+&lt;li&gt;定时生成报表；
+&amp;hellip;
+等等任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当然，更多使用场景是要以视具体情况而定了。毕竟是工具通常都是常用规则总结而成的产物。&lt;/p&gt;
+&lt;p&gt;确认crond服务已经安装与开启之后，下面开始具体说明&lt;/p&gt;
+&lt;h1 id="简单示例"&gt;简单示例&lt;/h1&gt;
+&lt;p&gt;先来个简单示例体验一下。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;目标：每分钟向/tmp/time.txt文件下写入当前时间&lt;/li&gt;
+&lt;li&gt;新建crontab任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ crontab -e // 打开crontab任务编辑
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;* * * * * date &amp;gt;&amp;gt; /tmp/time.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;静静等待几分钟&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;3
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ cat /tmp/time.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Do 29. Dez 22:45:01 CST &lt;span style="color:#ae81ff"&gt;2016&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Do 29. Dez 22:46:01 CST &lt;span style="color:#ae81ff"&gt;2016&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;Do 29. Dez 22:47:01 CST &lt;span style="color:#ae81ff"&gt;2016&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;从上面结果看出，每分钟执行了date并写入到/tmp/time.txt。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;简单示例演示成功。下面从细节深入说明crontab使用。&lt;/p&gt;</description></item></channel></rss>

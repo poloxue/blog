@@ -1,17 +1,96 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>平台操作 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/</link><description>Recent content in 平台操作 on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/index.xml" rel="self" type="application/rss+xml"/><item><title>Line 迭代器</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/</guid><description>Line 迭代器 # Backtrader 引入了一个独特的概念，叫做 Line 迭代器（Line Iterator）。它的核心思想是，通过迭代数据来驱动策略和指标的运作。这一点和 Python 的普通迭代器在表面上看有些相似，但实际上它们是为金融数据处理量身定制的。
-在 Backtrader 中，策略 和 指标 都是基于 Line 迭代器构建的。下面，我们会逐步拆解这个概念，让它变得简单易懂。
-什么是 Line 迭代器？ # Line 迭代器是一个控制 &amp;ldquo;数据处理节奏&amp;rdquo; 的工具，它的主要职责是：
-驱动数据流动：Line 迭代器像是一个“指挥者”，它会触发从属 Line 迭代器（如指标或策略）依次处理数据。 逐步更新数据：Line 迭代器按照声明的规则迭代数据，并在每一步设置对应的结果。 Line 迭代器如何工作？ # 三大关键方法 # prenext
-在数据不足以完成计算时被调用。 用于初始化阶段的数据处理，比如累计数据。 nextstart
-当累积到足够多的数据点，达到“最小周期”时被调用，仅触发一次。 默认会调用 next 方法。 next
-在每次迭代时调用，用于正式处理当前索引上的数据。 为什么需要这些方法？ # 为了生成有效的计算结果，某些指标需要一个“缓冲期”。如 25 周期的简单移动平均线 (SMA) 需要累积 25 个数据点才能生成第一个值。在这之前，我们需要用 prenext 来处理空白期。
-一旦累积到足够的数据点，进入“正式运行”阶段后，next 方法会被不断调用，每次处理新到达的数据。
-示例：如何实现一个简单的 SMA # 以下是一个 SimpleMovingAverage（简单移动平均线）的实现示例：
-class SimpleMovingAverage(Indicator): lines = (&amp;#39;sma&amp;#39;,) params = dict(period=25) def prenext(self): print(f&amp;#39;prenext:: 当前周期: {len(self)}&amp;#39;) def nextstart(self): print(f&amp;#39;nextstart:: 当前周期: {len(self)}&amp;#39;) self.</description></item><item><title>启动运行</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/</guid><description>启动和运行 # Backtrader 的启动和运行过程主要依赖于三个核心组件：
-数据源：提供市场数据，用于回测或实时交易。 策略：定义交易逻辑（基于类继承实现）。 Cerebro：核心管理器，负责整合数据源、策略，并启动回测或实时交易。 数据源 # 数据源是回测和策略运行的基础，它为策略提供价格数据（如开盘价、高价、低价、收盘价）及其他市场信息。
-支持的数据源 # 本地数据文件：
-支持多种 CSV 格式（如 Yahoo Finance 数据）。 支持从 Pandas DataFrame 加载数据。 在线数据提取：
-提供内置的 Yahoo Finance 在线数据提取功能。 实时数据源：
-支持 Interactive Brokers (IB)、Visual Chart 和 Oanda 等实时数据源。 平台支持通过 时间框架（如日线、5分钟线）和 压缩级别（如1天、5分钟）自定义数据，以适配不同交易策略。
-数据源设置示例 # 加载 Yahoo Finance 格式的 CSV 数据 # 以下是一个基本的 CSV 数据加载示例：
-import backtrader as bt import datetime datapath = &amp;#39;path/to/your/yahoo/data.csv&amp;#39; data = bt.feeds.YahooFinanceCSVData( dataname=datapath, reversed=True # 如果数据是从最新日期到最早日期排列，需要设置为 True ) 如果数据跨越时间范围较长，可限制按时间限制加载的数据：</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>平台操作 on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/</link><description>Recent content in 平台操作 on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/index.xml" rel="self" type="application/rss+xml"/><item><title>Line 迭代器</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/</guid><description>&lt;h1 id="line-迭代器"&gt;&lt;code&gt;Line&lt;/code&gt; 迭代器&lt;a class="anchor" href="#line-%e8%bf%ad%e4%bb%a3%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;Backtrader&lt;/code&gt; 引入了一个独特的概念，叫做 &lt;strong&gt;&lt;code&gt;Line&lt;/code&gt; 迭代器&lt;/strong&gt;（Line Iterator）。它的核心思想是，通过迭代数据来驱动策略和指标的运作。这一点和 Python 的普通迭代器在表面上看有些相似，但实际上它们是为金融数据处理量身定制的。&lt;/p&gt;
+&lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，&lt;strong&gt;策略&lt;/strong&gt; 和 &lt;strong&gt;指标&lt;/strong&gt; 都是基于 &lt;code&gt;Line&lt;/code&gt; 迭代器构建的。下面，我们会逐步拆解这个概念，让它变得简单易懂。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="什么是"&gt;&lt;strong&gt;什么是 &lt;code&gt;Line&lt;/code&gt; 迭代器？&lt;/strong&gt;&lt;a class="anchor" href="#%e4%bb%80%e4%b9%88%e6%98%af"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;Line&lt;/code&gt; 迭代器是一个控制 &amp;ldquo;数据处理节奏&amp;rdquo; 的工具，它的主要职责是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;驱动数据流动&lt;/strong&gt;：&lt;code&gt;Line&lt;/code&gt; 迭代器像是一个“指挥者”，它会触发从属 &lt;code&gt;Line&lt;/code&gt; 迭代器（如指标或策略）依次处理数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;逐步更新数据&lt;/strong&gt;：&lt;code&gt;Line&lt;/code&gt; 迭代器按照声明的规则迭代数据，并在每一步设置对应的结果。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="line"&gt;&lt;strong&gt;&lt;code&gt;Line&lt;/code&gt; 迭代器如何工作？&lt;/strong&gt;&lt;a class="anchor" href="#line"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id="三大关键方法"&gt;&lt;strong&gt;三大关键方法&lt;/strong&gt;&lt;a class="anchor" href="#%e4%b8%89%e5%a4%a7%e5%85%b3%e9%94%ae%e6%96%b9%e6%b3%95"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;prenext&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在数据不足以完成计算时被调用。&lt;/li&gt;
+&lt;li&gt;用于初始化阶段的数据处理，比如累计数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;nextstart&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当累积到足够多的数据点，达到“最小周期”时被调用，仅触发一次。&lt;/li&gt;
+&lt;li&gt;默认会调用 &lt;code&gt;next&lt;/code&gt; 方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;next&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在每次迭代时调用，用于正式处理当前索引上的数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="为什么需要这些方法"&gt;&lt;strong&gt;为什么需要这些方法？&lt;/strong&gt;&lt;a class="anchor" href="#%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81%e8%bf%99%e4%ba%9b%e6%96%b9%e6%b3%95"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;为了生成有效的计算结果，某些指标需要一个“缓冲期”。如 &lt;strong&gt;25 周期的简单移动平均线 (SMA)&lt;/strong&gt; 需要累积 25 个数据点才能生成第一个值。在这之前，我们需要用 &lt;code&gt;prenext&lt;/code&gt; 来处理空白期。&lt;/p&gt;
+&lt;p&gt;一旦累积到足够的数据点，进入“正式运行”阶段后，&lt;code&gt;next&lt;/code&gt; 方法会被不断调用，每次处理新到达的数据。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="示例如何实现一个简单的-sma"&gt;&lt;strong&gt;示例：如何实现一个简单的 SMA&lt;/strong&gt;&lt;a class="anchor" href="#%e7%a4%ba%e4%be%8b%e5%a6%82%e4%bd%95%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e7%9a%84-sma"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;以下是一个 &lt;code&gt;SimpleMovingAverage&lt;/code&gt;（简单移动平均线）的实现示例：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;SimpleMovingAverage&lt;/span&gt;(Indicator):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;sma&amp;#39;&lt;/span&gt;,)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dict(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;25&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;prenext&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;prenext:: 当前周期: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(self)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;nextstart&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;nextstart:: 当前周期: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(self)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;next() &lt;span style="color:#75715e"&gt;# 模拟默认行为&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;next:: 当前周期: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;len(self)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h3 id="实例化-sma-的过程"&gt;&lt;strong&gt;实例化 SMA 的过程&lt;/strong&gt;&lt;a class="anchor" href="#%e5%ae%9e%e4%be%8b%e5%8c%96-sma-%e7%9a%84%e8%bf%87%e7%a8%8b"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;假设我们为一个数据集创建一个 &lt;code&gt;SimpleMovingAverage&lt;/code&gt; 指标：&lt;/p&gt;</description></item><item><title>启动运行</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/</guid><description>&lt;h1 id="启动和运行"&gt;启动和运行&lt;a class="anchor" href="#%e5%90%af%e5%8a%a8%e5%92%8c%e8%bf%90%e8%a1%8c"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;Backtrader&lt;/code&gt; 的启动和运行过程主要依赖于三个核心组件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据源&lt;/strong&gt;：提供市场数据，用于回测或实时交易。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;策略&lt;/strong&gt;：定义交易逻辑（基于类继承实现）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cerebro&lt;/strong&gt;：核心管理器，负责整合数据源、策略，并启动回测或实时交易。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2 id="数据源"&gt;&lt;strong&gt;数据源&lt;/strong&gt;&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%ba%90"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;数据源是回测和策略运行的基础，它为策略提供价格数据（如开盘价、高价、低价、收盘价）及其他市场信息。&lt;/p&gt;
+&lt;h3 id="支持的数据源"&gt;&lt;strong&gt;支持的数据源&lt;/strong&gt;&lt;a class="anchor" href="#%e6%94%af%e6%8c%81%e7%9a%84%e6%95%b0%e6%8d%ae%e6%ba%90"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;本地数据文件&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持多种 CSV 格式（如 Yahoo Finance 数据）。&lt;/li&gt;
+&lt;li&gt;支持从 Pandas DataFrame 加载数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;在线数据提取&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;提供内置的 Yahoo Finance 在线数据提取功能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;实时数据源&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持 Interactive Brokers (IB)、Visual Chart 和 Oanda 等实时数据源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;平台支持通过 &lt;strong&gt;时间框架&lt;/strong&gt;（如日线、5分钟线）和 &lt;strong&gt;压缩级别&lt;/strong&gt;（如1天、5分钟）自定义数据，以适配不同交易策略。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="数据源设置示例"&gt;&lt;strong&gt;数据源设置示例&lt;/strong&gt;&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%ba%90%e8%ae%be%e7%bd%ae%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id="加载-yahoo-finance-格式的-csv-数据"&gt;&lt;strong&gt;加载 Yahoo Finance 格式的 CSV 数据&lt;/strong&gt;&lt;a class="anchor" href="#%e5%8a%a0%e8%bd%bd-yahoo-finance-%e6%a0%bc%e5%bc%8f%e7%9a%84-csv-%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;以下是一个基本的 CSV 数据加载示例：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;datapath &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;path/to/your/yahoo/data.csv&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;YahooFinanceCSVData(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datapath,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; reversed&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 如果数据是从最新日期到最早日期排列，需要设置为 True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果数据跨越时间范围较长，可限制按时间限制加载的数据：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;YahooFinanceCSVData(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datapath,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; reversed&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, &lt;span style="color:#75715e"&gt;# 如果数据是从最新日期到最早日期排列，需要设置为 True&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; fromdate&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime(&lt;span style="color:#ae81ff"&gt;2014&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;), &lt;span style="color:#75715e"&gt;# 数据起始日期&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; todate&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime(&lt;span style="color:#ae81ff"&gt;2014&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;12&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;31&lt;/span&gt;), &lt;span style="color:#75715e"&gt;# 数据结束日期&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; timeframe&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;TimeFrame&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Days, &lt;span style="color:#75715e"&gt;# 时间框架设置为日线&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; compression&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#75715e"&gt;# 每 1 天作为一个数据单位&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Yahoo Data&amp;#39;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 数据源命名（可选）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="从-pandas-dataframe-加载数据"&gt;&lt;strong&gt;从 Pandas DataFrame 加载数据&lt;/strong&gt;&lt;a class="anchor" href="#%e4%bb%8e-pandas-dataframe-%e5%8a%a0%e8%bd%bd%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;如果你的数据存储在 Pandas DataFrame 中，可以使用以下方式加载：&lt;/p&gt;</description></item></channel></rss>

@@ -1,38 +1,123 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Indicator on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/</link><description>Recent content in Indicator on Backtrader 中文</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/08-indicators/index.xml" rel="self" type="application/rss+xml"/><item><title>使用指标</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/01-using-indicators/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/01-using-indicators/</guid><description>使用指标 # 指标可以在平台中的两个地方使用：
-策略内部 其他指标内部 指标在操作中的使用 # 在策略中，指标总是在 __init__ 中实例化。在 next 中使用/检查指标值（或派生值）。有一个重要的公理需要考虑：在 __init__ 中声明的任何指标（或派生值）将在调用 next 之前预先计算。
-让我们了解操作模式的差异。
-__init__ vs next # 在 __init__ 中涉及到线条对象的任何操作都会生成另一个线条对象。在 next 中涉及到线条对象的任何操作都会生成常规的 Python 类型，如浮点数和布尔值。
-如 __init__ 中的一个操作：
-hilo_diff = self.data.high - self.data.low 变量 hilo_diff 持有一个线条对象的引用，该对象在调用 next 之前预先计算，可以使用标准数组表示法 [] 访问。
-它显然包含了数据源中每个条的高低差值。
-这在混合简单线条（如 self.data 数据源中的线条）和复杂线条（如指标）时也有效：
-sma = bt.SimpleMovingAverage(self.data.close) close_sma_diff = self.data.close - sma 现在 close_sma_diff 再次包含一个线条对象。
-使用逻辑运算符：
-close_over_sma = self.data.close &amp;gt; sma 现在生成的线条对象将包含一个布尔数组。
-在 next 中，一个操作（逻辑运算符）：
-close_over_sma = self.</description></item><item><title>指标开发</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/02-indicators-development/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/02-indicators-development/</guid><description>指标开发 # 如果需要开发任何内容（除了一个或多个获胜策略），这个内容就是自定义指标。在平台内开发此类内容很容易。
-开发要点：
-从 Indicator 类（直接或从现有子类）派生一个类； 定义它将包含的 Line； 一个指标至少要有一条线。如果从现有的类派生，线条可能已经定义好了 可选地定义可以改变行为的参数 可选地提供/自定义一些用于合理绘制指标的元素 在 __init__ 中提供一个完全定义的操作，并绑定（分配）到指标的线条，或者提供 next 方法和（可选的）once 方法 如果一个指标可以在初始化期间通过逻辑/算术操作完全定义，且结果分配给线条：完成。如果情况不是这样，至少要提供一个 next 方法，其中指标必须在索引 0 处分配一个值给线条。可以通过提供 once 方法来优化运行一次模式（批处理操作）的计算。
-重要说明：幂等性 # 指标为每个接收到的条生成一个输出。不能假设同一个条会被发送多少次。操作必须是幂等的。
-其背后的理由：
-同一个条（索引-wise）可以多次发送，并且值会变化（即变化的值是收盘价） 这使得可以“重放”一个日内会话，但使用由 5 分钟条组成的日内数据。 这也允许平台从实时数据源获取值。
-一个简单（但功能齐全）的指标 # 可以这样：
-class DummyInd(bt.Indicator): lines = (&amp;#39;dummyline&amp;#39;,) params = ((&amp;#39;value&amp;#39;, 5),) def __init__(self): self.lines.dummyline = bt.Max(0.0, self.params.value) 完成！
-该指标将始终输出相同的值：要么是 0.0，要么是 self.params.value（如果它恰好大于 0.0）。
-使用 next 方法的相同指标：
-class DummyInd(bt.Indicator): lines = (&amp;#39;dummyline&amp;#39;,) params = ((&amp;#39;value&amp;#39;, 5),) def next(self): self.</description></item><item><title>周期混合</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/03-timeframe-mixing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/03-timeframe-mixing/</guid><description>周期混合 # 如果提供值的数据源有不同的时间框架，在 Cerebro 引擎中有不同的长度，指标将会出错。
-示例计算中，data0 有天的时间框架，data1 有月的时间框架：
-pivotpoint = btind.PivotPoint(self.data1) sellsignal = self.data0.close &amp;lt; pivotpoint.s1 在这里，当收盘价低于 s1 线（第一个支撑）时，寻求卖出信号。
-注意
-PivotPoint 定义上在较大的时间框架中工作。
-过去，这会导致以下错误：
-return self.array[self.idx + ago] IndexError: array index out of range 原因很简单：self.data.close 从第一个时刻提供值，但 PivotPoint（以及 s1 线）只有在整个月过去后才会提供值，这大约相当于 22 个 self.data0.close 的值。在这 22 个收盘价期间，s1 还没有值，尝试从底层数组获取它会失败。
-线条对象支持 (ago) 操作符（Python 中的 __call__ 特殊方法）以提供其延迟版本：
-close1 = self.data.close(-1) 在这个例子中，对象 close1（通过 [0] 访问时）始终包含由 close 提供的前一个值（-1）。此语法已被重用以适应时间框架。让我们重写上述的 pivotpoint 代码片段：
-pivotpoint = btind.PivotPoint(self.data1) sellsignal = self.data0.close &amp;lt; pivotpoint.</description></item><item><title>TA-Lib</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/04-talib/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/04-talib/</guid><description>TA-Lib # 即使backtrader已经提供了大量内置指标，并且开发一个指标主要是定义输入、输出并以自然方式编写公式，但有些人仍然希望使用TA-LIB。因为，指标X在TA-LIB库中存在，但在backtrader中不存在（作者很乐意接受请求），还有，TA-LIB的行为是众所周知的，人们信赖传统的事物。
-为了满足每个人的需求，提供了TA-LIB集成。
-需求 # TA-LIB的Python封装 任何需要的依赖项（例如numpy） 安装详情在GitHub仓库中 使用TA-LIB # 与使用backtrader内置指标一样简单。以下是一个简单移动平均线的示例。首先是backtrader的示例：
-import backtrader as bt class MyStrategy(bt.Strategy): params = ((&amp;#39;period&amp;#39;, 20),) def __init__(self): self.sma = bt.indicators.SMA(self.data, period=self.p.period) ... 接下来是TA-LIB的示例：
-import backtrader as bt class MyStrategy(bt.Strategy): params = ((&amp;#39;period&amp;#39;, 20),) def __init__(self): self.sma = bt.talib.SMA(self.data, timeperiod=self.p.period) ... 注意，TA-LIB指标的参数由库本身定义，而不是backtrader。在这种情况下，TA-LIB中的SMA使用名为timeperiod的参数来定义操作窗口的大小。
-对于需要多个输入的指标，例如随机指标：
-import backtrader as bt class MyStrategy(bt.Strategy): params = ((&amp;#39;period&amp;#39;, 20),) def __init__(self): self.stoc = bt.talib.STOCH(self.data.high, self.data.low, self.data.close, fastk_period=14, slowk_period=3, slowd_period=3) .</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Indicator on Backtrader 中文</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/</link><description>Recent content in Indicator on Backtrader 中文</description><generator>Hugo</generator><language>zh-cn</language><atom:link href="https://www.poloxue.com/backtrader/docs/08-indicators/index.xml" rel="self" type="application/rss+xml"/><item><title>使用指标</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/01-using-indicators/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/01-using-indicators/</guid><description>&lt;h1 id="使用指标"&gt;使用指标&lt;a class="anchor" href="#%e4%bd%bf%e7%94%a8%e6%8c%87%e6%a0%87"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;指标可以在平台中的两个地方使用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;策略内部&lt;/li&gt;
+&lt;li&gt;其他指标内部&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="指标在操作中的使用"&gt;指标在操作中的使用&lt;a class="anchor" href="#%e6%8c%87%e6%a0%87%e5%9c%a8%e6%93%8d%e4%bd%9c%e4%b8%ad%e7%9a%84%e4%bd%bf%e7%94%a8"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在策略中，指标总是在 &lt;code&gt;__init__&lt;/code&gt; 中实例化。在 &lt;code&gt;next&lt;/code&gt; 中使用/检查指标值（或派生值）。有一个重要的公理需要考虑：在 &lt;code&gt;__init__&lt;/code&gt; 中声明的任何指标（或派生值）将在调用 &lt;code&gt;next&lt;/code&gt; 之前预先计算。&lt;/p&gt;
+&lt;p&gt;让我们了解操作模式的差异。&lt;/p&gt;
+&lt;h2 id="__init__-vs-next"&gt;&lt;code&gt;__init__&lt;/code&gt; vs &lt;code&gt;next&lt;/code&gt;&lt;a class="anchor" href="#__init__-vs-next"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在 &lt;code&gt;__init__&lt;/code&gt; 中涉及到线条对象的任何操作都会生成另一个线条对象。在 &lt;code&gt;next&lt;/code&gt; 中涉及到线条对象的任何操作都会生成常规的 Python 类型，如浮点数和布尔值。&lt;/p&gt;
+&lt;p&gt;如 &lt;code&gt;__init__&lt;/code&gt; 中的一个操作：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;hilo_diff &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;high &lt;span style="color:#f92672"&gt;-&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;low&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;变量 &lt;code&gt;hilo_diff&lt;/code&gt; 持有一个线条对象的引用，该对象在调用 &lt;code&gt;next&lt;/code&gt; 之前预先计算，可以使用标准数组表示法 &lt;code&gt;[]&lt;/code&gt; 访问。&lt;/p&gt;
+&lt;p&gt;它显然包含了数据源中每个条的高低差值。&lt;/p&gt;
+&lt;p&gt;这在混合简单线条（如 &lt;code&gt;self.data&lt;/code&gt; 数据源中的线条）和复杂线条（如指标）时也有效：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SimpleMovingAverage(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close_sma_diff &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close &lt;span style="color:#f92672"&gt;-&lt;/span&gt; sma&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现在 &lt;code&gt;close_sma_diff&lt;/code&gt; 再次包含一个线条对象。&lt;/p&gt;
+&lt;p&gt;使用逻辑运算符：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close_over_sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close &lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; sma&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;现在生成的线条对象将包含一个布尔数组。&lt;/p&gt;
+&lt;p&gt;在 &lt;code&gt;next&lt;/code&gt; 中，一个操作（逻辑运算符）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close_over_sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close &lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;使用等效数组（基于索引 0 的表示法）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close_over_sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在这种情况下，&lt;code&gt;close_over_sma&lt;/code&gt; 生成一个布尔值，这是比较两个浮点值的结果，这些值由应用于 &lt;code&gt;self.data.close&lt;/code&gt; 和 &lt;code&gt;self.sma&lt;/code&gt; 的 &lt;code&gt;[0]&lt;/code&gt; 运算符返回。&lt;/p&gt;</description></item><item><title>指标开发</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/02-indicators-development/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/02-indicators-development/</guid><description>&lt;h1 id="指标开发"&gt;指标开发&lt;a class="anchor" href="#%e6%8c%87%e6%a0%87%e5%bc%80%e5%8f%91"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;如果需要开发任何内容（除了一个或多个获胜策略），这个内容就是自定义指标。在平台内开发此类内容很容易。&lt;/p&gt;
+&lt;p&gt;开发要点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从 &lt;code&gt;Indicator&lt;/code&gt; 类（直接或从现有子类）派生一个类；&lt;/li&gt;
+&lt;li&gt;定义它将包含的 &lt;code&gt;Line&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;一个指标至少要有一条线。如果从现有的类派生，线条可能已经定义好了&lt;/li&gt;
+&lt;li&gt;可选地定义可以改变行为的参数&lt;/li&gt;
+&lt;li&gt;可选地提供/自定义一些用于合理绘制指标的元素&lt;/li&gt;
+&lt;li&gt;在 &lt;code&gt;__init__&lt;/code&gt; 中提供一个完全定义的操作，并绑定（分配）到指标的线条，或者提供 &lt;code&gt;next&lt;/code&gt; 方法和（可选的）&lt;code&gt;once&lt;/code&gt; 方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果一个指标可以在初始化期间通过逻辑/算术操作完全定义，且结果分配给线条：完成。如果情况不是这样，至少要提供一个 &lt;code&gt;next&lt;/code&gt; 方法，其中指标必须在索引 0 处分配一个值给线条。可以通过提供 &lt;code&gt;once&lt;/code&gt; 方法来优化运行一次模式（批处理操作）的计算。&lt;/p&gt;
+&lt;h2 id="重要说明幂等性"&gt;重要说明：幂等性&lt;a class="anchor" href="#%e9%87%8d%e8%a6%81%e8%af%b4%e6%98%8e%e5%b9%82%e7%ad%89%e6%80%a7"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;指标为每个接收到的条生成一个输出。不能假设同一个条会被发送多少次。操作必须是幂等的。&lt;/p&gt;
+&lt;p&gt;其背后的理由：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同一个条（索引-wise）可以多次发送，并且值会变化（即变化的值是收盘价）&lt;/li&gt;
+&lt;li&gt;这使得可以“重放”一个日内会话，但使用由 5 分钟条组成的日内数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这也允许平台从实时数据源获取值。&lt;/p&gt;
+&lt;h2 id="一个简单但功能齐全的指标"&gt;一个简单（但功能齐全）的指标&lt;a class="anchor" href="#%e4%b8%80%e4%b8%aa%e7%ae%80%e5%8d%95%e4%bd%86%e5%8a%9f%e8%83%bd%e9%bd%90%e5%85%a8%e7%9a%84%e6%8c%87%e6%a0%87"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;可以这样：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;DummyInd&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;dummyline&amp;#39;&lt;/span&gt;,)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;value&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;),)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;lines&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dummyline &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Max(&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;, self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;params&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;完成！&lt;/p&gt;
+&lt;p&gt;该指标将始终输出相同的值：要么是 0.0，要么是 &lt;code&gt;self.params.value&lt;/code&gt;（如果它恰好大于 0.0）。&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;next&lt;/code&gt; 方法的相同指标：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;DummyInd&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;dummyline&amp;#39;&lt;/span&gt;,)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;value&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;),)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;lines&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dummyline[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;=&lt;/span&gt; max(&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;, self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;params&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;完成！相同行为。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; 请注意在 &lt;code&gt;__init__&lt;/code&gt; 版本中，使用 &lt;code&gt;bt.Max&lt;/code&gt; 将值分配给线条对象 &lt;code&gt;self.lines.dummyline&lt;/code&gt;。 &lt;code&gt;bt.Max&lt;/code&gt; 返回一个线条对象，它会为传递给指标的每个条自动迭代。如果使用 &lt;code&gt;max&lt;/code&gt;，赋值将毫无意义，因为指标将有一个固定值的成员变量，而不是线条。在 &lt;code&gt;next&lt;/code&gt; 期间，直接使用浮点值进行工作，可以使用标准的 &lt;code&gt;max&lt;/code&gt; 内置函数。&lt;/p&gt;</description></item><item><title>周期混合</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/03-timeframe-mixing/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/03-timeframe-mixing/</guid><description>&lt;h1 id="周期混合"&gt;周期混合&lt;a class="anchor" href="#%e5%91%a8%e6%9c%9f%e6%b7%b7%e5%90%88"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;如果提供值的数据源有不同的时间框架，在 &lt;code&gt;Cerebro&lt;/code&gt; 引擎中有不同的长度，指标将会出错。&lt;/p&gt;
+&lt;p&gt;示例计算中，&lt;code&gt;data0&lt;/code&gt; 有天的时间框架，&lt;code&gt;data1&lt;/code&gt; 有月的时间框架：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pivotpoint &lt;span style="color:#f92672"&gt;=&lt;/span&gt; btind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;PivotPoint(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data1)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sellsignal &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data0&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; pivotpoint&lt;span style="color:#f92672"&gt;.&lt;/span&gt;s1&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在这里，当收盘价低于 s1 线（第一个支撑）时，寻求卖出信号。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;PivotPoint&lt;/code&gt; 定义上在较大的时间框架中工作。&lt;/p&gt;
+&lt;p&gt;过去，这会导致以下错误：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;return self.array[self.idx + ago]
+IndexError: array index out of range&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;原因很简单：&lt;code&gt;self.data.close&lt;/code&gt; 从第一个时刻提供值，但 &lt;code&gt;PivotPoint&lt;/code&gt;（以及 s1 线）只有在整个月过去后才会提供值，这大约相当于 22 个 &lt;code&gt;self.data0.close&lt;/code&gt; 的值。在这 22 个收盘价期间，s1 还没有值，尝试从底层数组获取它会失败。&lt;/p&gt;
+&lt;p&gt;线条对象支持 &lt;code&gt;(ago)&lt;/code&gt; 操作符（Python 中的 &lt;code&gt;__call__&lt;/code&gt; 特殊方法）以提供其延迟版本：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close1 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close(&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在这个例子中，对象 &lt;code&gt;close1&lt;/code&gt;（通过 &lt;code&gt;[0]&lt;/code&gt; 访问时）始终包含由 &lt;code&gt;close&lt;/code&gt; 提供的前一个值（-1）。此语法已被重用以适应时间框架。让我们重写上述的 &lt;code&gt;pivotpoint&lt;/code&gt; 代码片段：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pivotpoint &lt;span style="color:#f92672"&gt;=&lt;/span&gt; btind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;PivotPoint(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data1)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sellsignal &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data0&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; pivotpoint&lt;span style="color:#f92672"&gt;.&lt;/span&gt;s1()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;请注意，&lt;code&gt;()&lt;/code&gt; 无参数执行（在后台提供了一个 &lt;code&gt;None&lt;/code&gt;）。正在发生以下情况：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pivotpoint.s1()&lt;/code&gt; 返回一个内部 &lt;code&gt;LinesCoupler&lt;/code&gt; 对象，该对象遵循较大范围的节奏。该耦合器使用来自实际 s1 的最新提供的值填充自身（以 &lt;code&gt;NaN&lt;/code&gt; 为默认值开始）。&lt;/p&gt;
+&lt;p&gt;但为了实现这一魔法，还需要额外的东西。&lt;code&gt;Cerebro&lt;/code&gt; 必须这样创建：&lt;/p&gt;</description></item><item><title>TA-Lib</title><link>https://www.poloxue.com/backtrader/docs/08-indicators/04-talib/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/08-indicators/04-talib/</guid><description>&lt;h1 id="ta-lib"&gt;TA-Lib&lt;a class="anchor" href="#ta-lib"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;即使backtrader已经提供了大量内置指标，并且开发一个指标主要是定义输入、输出并以自然方式编写公式，但有些人仍然希望使用TA-LIB。因为，指标X在TA-LIB库中存在，但在backtrader中不存在（作者很乐意接受请求），还有，TA-LIB的行为是众所周知的，人们信赖传统的事物。&lt;/p&gt;
+&lt;p&gt;为了满足每个人的需求，提供了TA-LIB集成。&lt;/p&gt;
+&lt;h2 id="需求"&gt;需求&lt;a class="anchor" href="#%e9%9c%80%e6%b1%82"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;TA-LIB的Python封装&lt;/li&gt;
+&lt;li&gt;任何需要的依赖项（例如numpy）&lt;/li&gt;
+&lt;li&gt;安装详情在GitHub仓库中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="使用ta-lib"&gt;使用TA-LIB&lt;a class="anchor" href="#%e4%bd%bf%e7%94%a8ta-lib"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;与使用backtrader内置指标一样简单。以下是一个简单移动平均线的示例。首先是backtrader的示例：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;period&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;),)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;indicators&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SMA(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data, period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;period)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;接下来是TA-LIB的示例：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;period&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;),)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;talib&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SMA(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data, timeperiod&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;period)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意，TA-LIB指标的参数由库本身定义，而不是backtrader。在这种情况下，TA-LIB中的SMA使用名为&lt;code&gt;timeperiod&lt;/code&gt;的参数来定义操作窗口的大小。&lt;/p&gt;
+&lt;p&gt;对于需要多个输入的指标，例如随机指标：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;period&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;),)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;stoc &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;talib&lt;span style="color:#f92672"&gt;.&lt;/span&gt;STOCH(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;high, self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;low, self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; fastk_period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;14&lt;/span&gt;, slowk_period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;, slowd_period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意，&lt;code&gt;high&lt;/code&gt;、&lt;code&gt;low&lt;/code&gt;和&lt;code&gt;close&lt;/code&gt;分别传递。可以尝试传递&lt;code&gt;open&lt;/code&gt;而不是&lt;code&gt;low&lt;/code&gt;（或其他任何数据系列）进行实验。&lt;/p&gt;
+&lt;p&gt;TA-LIB指标文档会自动解析并添加到backtrader文档中。你也可以查看TA-LIB的源代码/文档，或者执行以下操作：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;talib&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SMA&lt;span style="color:#f92672"&gt;.&lt;/span&gt;__doc__)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出如下：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;SMA([input_arrays], [timeperiod=30])
+
+Simple Moving Average (Overlap Studies)
+
+Inputs:
+ price: (any ndarray)
+Parameters:
+ timeperiod: 30
+Outputs:
+ real&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这提供了一些信息：&lt;/p&gt;</description></item></channel></rss>

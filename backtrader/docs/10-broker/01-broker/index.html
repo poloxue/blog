@@ -1,40 +1,249 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Broker # 类 backtrader.brokers.BackBroker() # Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Broker#
+类 backtrader.brokers.BackBroker()#
+Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。
+现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。
+支持的订单类型：
+
+Market：将在下一个柱的第一个tick（即开盘价）执行
+Close：用于日内交易，订单以会话最后一个柱的收盘价执行
+Limit：如果在会话期间看到给定的限价则执行
+Stop：如果看到给定的止损价，则执行市场订单
+StopLimit：如果看到给定的止损价，则启动限价订单
+
+因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。
+要更改参数，有两种选择：
+
+手动创建带所需参数的 Broker，用 cerebro.broker = instance 将该实例设置为这个经纪商；
+使用 set_xxx 方法通过 cerebro.broker.set_xxx 设置参数，其中 xxx 代表设置参数名称；
+
+注意，cerebro.broker 是一个由 Cerebro 的 getbroker 和 setbroker 方法支持的属性。
+参数#
+
+  
+      
+          参数名
+          默认值
+          描述
+      
+  
+  
+      
+          cash
+          10000
+          起始现金
+      
+      
+          commission
+          CommInfoBase(percabs=True)
+          适用于所有资产的基础佣金方案
+      
+      
+          checksubmit
+          True
+          在将订单接受到系统之前检查保证金/现金
+      
+      
+          eosbar
+          False
+          对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖）
+      
+      
+          filler
+          None
+          一个可调用对象，签名为 callable(order, price, ago)。参数说明：- order：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（order.executed.remsize）等。- price：订单将在 ago 柱中执行的价格- ago：用于从 order.data 提取 ohlc 和成交量价格的索引。在大多数情况下，这将是 0，但在某些角落情况下，对于 Close 订单，这将是 -1。- 可调用对象必须返回执行的大小（值 >= 0）可调用对象当然可以是一个 __call__ 符合上述签名的对象。默认情况下，订单将一次性完全执行。
+      
+      
+          slip_perc
+          0.0
+          用于买卖订单上下滑动价格的绝对百分比（且为正值）。注意：0.01 是 1%，0.001 是 0.1%
+      
+      
+          slip_fixed
+          0.0
+          用于买卖订单上下滑动价格的单位百分比（且为正值）。注意：如果 slip_perc 非零，则优先于此。
+      
+      
+          slip_open
+          False
+          是否滑动专门使用下一个柱的开盘价执行的订单价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。
+      
+      
+          slip_match
+          True
+          - 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行
+      
+      
+          slip_limit
+          True
+          - 限价订单，给定确切的匹配价格请求，即使 slip_match 为 False，也会被匹配。- 此选项控制该行为。- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配- 如果为 False 且滑点超出上限，则不会有匹配
+      
+      
+          slip_out
+          False
+          即使价格超出高-低范围，也提供滑点。
+      
+      
+          coc
+          False
+          Cheat-On-Close 将其设置为 True 与 set_coc 启用，将“市场”订单与订单条的收盘价匹配。这实际上是作弊，因为柱已关闭，任何订单都应首先与下一个柱的价格匹配
+      
+      
+          coo
+          False
+          Cheat-On-Open 将其设置为 True 与 set_coo 启用，将“市场”订单与开盘价匹配，例如使用设置为 True 的计时器，因为这种计时器在经纪商评估之前执行
+      
+      
+          int2pnl
+          True
+          将生成的利息（如果有）分配给减少头寸的操作的利润和亏损（无论是多头还是空头）。在某些情况下，这可能是不希望的，因为不同的策略在竞争，利息将以不确定的方式分配给其中任何一个。
+      
+      
+          shortcash
+          True
+          如果为 True，则在卖空类似股票的资产时将增加现金，并且该资产的计算价值将为负值。- 如果为 False，则现金将作为操作成本扣除，计算的价值将为正值，以最终得到相同的金额
+      
+      
+          fundstartval
+          100.0
+          此参数控制基金式绩效测量的起始值，即：现金可以增加和扣除，增加股票数量。绩效不是使用投资组合的净资产价值来衡量，而是使用基金的价值
+      
+      
+          fundmode
+          False
+          如果设置为 True，诸如 TimeReturn 的分析器可以基于基金价值而不是总净资产价值自动计算回报
+      
+  
+
+方法#
+
+  
+      
+          签名
+          描述
+      
+  
+  
+      
+          set_cash(cash)
+          设置现金参数（别名：setcash）
+      
+      
+          get_cash()
+          返回当前现金（别名：getcash）
+      
+      
+          get_value( datas=None,  mkt=False,  lever=False)
+          返回给定数据的投资组合价值（如果数据为 None，则返回总投资组合价值）（别名：getvalue）
+      
+      
+          set_eosbar(eosbar)
+          设置 eosbar 参数（别名：seteosbar）
+      
+      
+          set_checksubmit(checksubmit)
+          设置 checksubmit 参数
+      
+      
+          set_filler(filler)
+          设置用于成交量填充执行的填充器
+      
+      
+          set_coc(coc)
+          配置 Cheat-On-Close 方法以在订单柱上买入收盘价
+      
+      
+          set_coo(coo)
+          配置 Cheat-On-Open 方法以在订单柱上买入收盘价
+      
+      
+          set_int2pnl(int2pnl)
+          配置将利息分配给利润和亏损
+      
+      
+          set_fundstartval(fundstartval)
+          设置基金式绩效跟踪器的起始值
+      
+      
+          set_slippage_perc( perc,  slip_open=True,  slip_limit=True,  slip_match=True, &amp;emspslip_out=False)
+          配置滑点为基于百分比
+      
+      
+          set_slippage_fixed( fixed,  slip_open=True,  slip_limit=True,  slip_match=True,  slip_out=False)
+          配置滑点为固定点数
+      
+      
+          get_orders_open(safe=False)
+          返回仍然打开的订单（未执行或部分执行）的可迭代对象。返回的订单不得被触摸。如果需要订单操作，请将参数 safe 设置为 True
+      
+      
+          getcommissioninfo(data)
+          检索与给定数据相关的 CommissionInfo 方案
+      
+      
+          setcommission( commission=0.0,  margin=None,  mult=1.0,  commtype=None,  percabs=True,  stocklike=False,  interest=0.0,  interest_long=False,  leverage=1.0,  automargin=False,  name=None)
+          为 Broker 设置 CommissionInfo 对象，参考 CommInfoBase 文档介绍。如果 name 为 None，这将是没有找到其他 CommissionInfo 方案的资产的默认设置
+      
+      
+          addcommissioninfo( comminfo, name=None)
+          添加 CommissionInfo 对象，如果 name 为 None，将成为所有资产的默认设置
+      
+      
+          getposition(data)
+          返回给定数据的当前头寸状态（一个 Position 实例）
+      
+      
+          get_fundshares()
+          返回基金模式中的当前股票数量
+      
+      
+          get_fundvalue()
+          返回基金式的股票价值
+      
+      
+          add_cash(cash)
+          添加/移除系统现金（使用负值移除）
+      
+  
+"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/10-broker/01-broker/"><meta property="og:site_name" content="Backtrader 中文"><meta property="og:title" content="Broker"><meta property="og:description" content="Broker# 类 backtrader.brokers.BackBroker()# Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。
 现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。 支持的订单类型：
 Market：将在下一个柱的第一个tick（即开盘价）执行 Close：用于日内交易，订单以会话最后一个柱的收盘价执行 Limit：如果在会话期间看到给定的限价则执行 Stop：如果看到给定的止损价，则执行市场订单 StopLimit：如果看到给定的止损价，则启动限价订单 因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。
 要更改参数，有两种选择：
 手动创建带所需参数的 Broker，用 cerebro.broker = instance 将该实例设置为这个经纪商； 使用 set_xxx 方法通过 cerebro.broker.set_xxx 设置参数，其中 xxx 代表设置参数名称； 注意，cerebro.broker 是一个由 Cerebro 的 getbroker 和 setbroker 方法支持的属性。
-参数 # 参数名 默认值 描述 cash 10000 起始现金 commission CommInfoBase(percabs=True) 适用于所有资产的基础佣金方案 checksubmit True 在将订单接受到系统之前检查保证金/现金 eosbar False 对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖） filler None 一个可调用对象，签名为 callable(order, price, ago)。参数说明：- order：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（order.executed.remsize）等。- price：订单将在 ago 柱中执行的价格- ago：用于从 order."><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:title" content="Broker"><meta property="og:description" content="Broker # 类 backtrader.brokers.BackBroker() # Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。
-现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。 支持的订单类型：
-Market：将在下一个柱的第一个tick（即开盘价）执行 Close：用于日内交易，订单以会话最后一个柱的收盘价执行 Limit：如果在会话期间看到给定的限价则执行 Stop：如果看到给定的止损价，则执行市场订单 StopLimit：如果看到给定的止损价，则启动限价订单 因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。
-要更改参数，有两种选择：
-手动创建带所需参数的 Broker，用 cerebro.broker = instance 将该实例设置为这个经纪商； 使用 set_xxx 方法通过 cerebro.broker.set_xxx 设置参数，其中 xxx 代表设置参数名称； 注意，cerebro.broker 是一个由 Cerebro 的 getbroker 和 setbroker 方法支持的属性。
-参数 # 参数名 默认值 描述 cash 10000 起始现金 commission CommInfoBase(percabs=True) 适用于所有资产的基础佣金方案 checksubmit True 在将订单接受到系统之前检查保证金/现金 eosbar False 对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖） filler None 一个可调用对象，签名为 callable(order, price, ago)。参数说明：- order：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（order.executed.remsize）等。- price：订单将在 ago 柱中执行的价格- ago：用于从 order."><meta property="og:type" content="article"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/10-broker/01-broker/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-01-03T18:28:35+08:00"><title>Broker | Backtrader 中文</title><link rel=manifest href=/backtrader/manifest.json><link rel=icon href=/backtrader/favicon.png><link rel=canonical href=https://www.poloxue.com/backtrader/docs/10-broker/01-broker/><link rel=stylesheet href=/backtrader/book.min.76e6146e9e8f93e877ba51d0a79fef85faf41d4eae91f7d6e526426b06e3b129.css integrity="sha256-duYUbp6Pk+h3ulHQp5/vhfr0HU6ukffW5SZCawbjsSk=" crossorigin=anonymous><script defer src=/backtrader/flexsearch.min.js></script>
-<script defer src=/backtrader/en.search.min.3915da9a91c6b4ff6edc12a99d69d853ec999a339663fcdbb1fa832ddcf582b8.js integrity="sha256-ORXampHGtP9u3BKpnWnYU+yZmjOWY/zbsfqDLdz1grg=" crossorigin=anonymous></script>
-<script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script>
-<script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
-<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/backtrader/><img src=/backtrader/logo.png alt=Logo><span>Backtrader 中文</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=/backtrader/docs/01-introduction/>介绍</a><ul></ul></li><li><a href=/backtrader/docs/02-installation/>安装指南</a><ul></ul></li><li><input type=checkbox id=section-95668ec101c39e63e3d5df6c80dde0f6 class=toggle>
-<label for=section-95668ec101c39e63e3d5df6c80dde0f6 class="flex justify-between"><a href=/backtrader/docs/03-quickstart/>快速开始</a></label><ul><li><a href=/backtrader/docs/03-quickstart/01-setup/>环境设置</a></li><li><a href=/backtrader/docs/03-quickstart/02-cash/>账户资金</a></li><li><a href=/backtrader/docs/03-quickstart/03-datafeed/>配置数据</a></li><li><a href=/backtrader/docs/03-quickstart/04-first-strategy/>第一个策略</a></li><li><a href=/backtrader/docs/03-quickstart/05-strategy-logic/>开始交易</a></li><li><a href=/backtrader/docs/03-quickstart/06-sell/>卖出操作</a></li><li><a href=/backtrader/docs/03-quickstart/07-commission/>交易监控</a></li><li><a href=/backtrader/docs/03-quickstart/08-parameters/>参数定义</a></li><li><a href=/backtrader/docs/03-quickstart/09-indicators/>技术指标</a></li><li><a href=/backtrader/docs/03-quickstart/10-plotting/>可视化</a></li><li><a href=/backtrader/docs/03-quickstart/11-optimization/>策略优化</a></li></ul></li><li><input type=checkbox id=section-bb9677043509e3b068956c8c9ed9898b class=toggle>
-<label for=section-bb9677043509e3b068956c8c9ed9898b class="flex justify-between"><a href=/backtrader/docs/04-concepts/>核心概念</a></label><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/>平台概念</a><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/01-datafeed/>数据源 DataFeed</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/02-params/>策略参数</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/03-line/>线 Line 类</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/04-index/>索引和切片</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/05-operator/>运算符</a></li></ul></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/>平台操作</a><ul><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/>Line 迭代器</a></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/>启动运行</a></li></ul></li></ul></li><li><input type=checkbox id=section-2dbf38c024ccf07a4139869f080cac43 class=toggle>
-<label for=section-2dbf38c024ccf07a4139869f080cac43 class="flex justify-between"><a href=/backtrader/docs/05-cerebro/>Cerebro</a></label><ul><li><a href=/backtrader/docs/05-cerebro/01-cerebro/>Cerebro</a></li><li><a href=/backtrader/docs/05-cerebro/02-reference/>参数说明</a></li><li><a href=/backtrader/docs/05-cerebro/03-saving-memory/>节省内存</a></li><li><a href=/backtrader/docs/05-cerebro/04-optimization-improvements/>优化改进</a></li><li><a href=/backtrader/docs/05-cerebro/05-exceptions/>异常 Exceptions</a></li><li><a href=/backtrader/docs/05-cerebro/06-logging-writer/>日志 Logging - Writter</a></li></ul></li><li><input type=checkbox id=section-843b6ed139743e2982aebf2306cbe4ce class=toggle>
-<label for=section-843b6ed139743e2982aebf2306cbe4ce class="flex justify-between"><a role=button>DataFeed</a></label><ul><li><a href=/backtrader/docs/06-datafeed/01-datafeeds/>Data Feeds</a></li><li><a href=/backtrader/docs/06-datafeed/02-datafeed-extending/>扩展数据源</a></li><li><a href=/backtrader/docs/06-datafeed/03-datafeed-development-csv/>开发 CSV 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/04-datafeed-development-general/>开发 Binary 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/05-datafeed-multiple-timeframes/>多时间框架</a></li><li><a href=/backtrader/docs/06-datafeed/06-datafeed-resampling/>重采样</a></li><li><a href=/backtrader/docs/06-datafeed/07-datafeed-replay/>数据回放</a></li><li><a href=/backtrader/docs/06-datafeed/08-datafeed-rollover/>数据滚动</a></li><li><span>过滤器 Filters</span><ul><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/>过滤器 Filters</a></li><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/>参考文档</a></li></ul></li><li><a href=/backtrader/docs/06-datafeed/10-datafeed-yahoo/>Yahoo 数据源说明</a></li><li><a href=/backtrader/docs/06-datafeed/11-datafeed-pandas/>Pandas 数据源示例</a></li><li><a href=/backtrader/docs/06-datafeed/12-datafeed-reference/>数据源参考</a></li></ul></li><li><input type=checkbox id=section-bcbccbe8e26b18858f97ca31830953b1 class=toggle>
-<label for=section-bcbccbe8e26b18858f97ca31830953b1 class="flex justify-between"><a role=button>Strategy</a></label><ul><li><a href=/backtrader/docs/07-strategy/01-strategy/>Strategy</a></li><li><a href=/backtrader/docs/07-strategy/02-strategy-with-signals/>信号策略</a></li><li><a href=/backtrader/docs/07-strategy/03-strategy-references/>策略参考</a></li></ul></li><li><input type=checkbox id=section-9740d452082ecac05becbac5e45e18d6 class=toggle>
-<label for=section-9740d452082ecac05becbac5e45e18d6 class="flex justify-between"><a role=button>Indicator</a></label><ul><li><a href=/backtrader/docs/08-indicators/01-using-indicators/>使用指标</a></li><li><a href=/backtrader/docs/08-indicators/02-indicators-development/>指标开发</a></li><li><a href=/backtrader/docs/08-indicators/03-timeframe-mixing/>周期混合</a></li><li><a href=/backtrader/docs/08-indicators/04-talib/>TA-Lib</a></li></ul></li><li><input type=checkbox id=section-59e40579f5dd90c6bfa3a78686223f8d class=toggle>
-<label for=section-59e40579f5dd90c6bfa3a78686223f8d class="flex justify-between"><a role=button>Order</a></label><ul><li><a href=/backtrader/docs/09-orders/01-general/>订单</a></li><li><a href=/backtrader/docs/09-orders/02-creation-execution/>创建/执行</a></li><li><a href=/backtrader/docs/09-orders/03-target-orders/>目标订单</a></li><li><a href=/backtrader/docs/09-orders/04-oco-orders/>OCO 订单</a></li><li><a href=/backtrader/docs/09-orders/05-bracket-orders/>Bracket Orders</a></li><li><a href=/backtrader/docs/09-orders/06-future-spot-compensation/>期货和现货补偿</a></li><li><a href=/backtrader/docs/09-orders/07-stop-trails/>跟踪止损（限价）</a></li></ul></li><li><input type=checkbox id=section-a2ec82415885a0ff6263ba256d3c484b class=toggle checked>
-<label for=section-a2ec82415885a0ff6263ba256d3c484b class="flex justify-between"><a role=button>Broker</a></label><ul><li><a href=/backtrader/docs/10-broker/01-broker/ class=active>Broker</a></li><li><a href=/backtrader/docs/10-broker/02-slippage/>滑点</a></li><li><a href=/backtrader/docs/10-broker/03-cheat-on-open/>开盘作弊</a></li><li><a href=/backtrader/docs/10-broker/04-volume-filling-filler/>填充器</a></li><li><a href=/backtrader/docs/10-broker/05-position/>Position</a></li><li><a href=/backtrader/docs/10-broker/06-trade/>Trade</a></li></ul></li><li><input type=checkbox id=section-93412194d6a690077dd9b0fce5dc50b8 class=toggle>
-<label for=section-93412194d6a690077dd9b0fce5dc50b8 class="flex justify-between"><a role=button>Commission</a></label><ul><li><a href=/backtrader/docs/11-commission-schemes/01-commission-schemes/>佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/02-commission-schemes-extending/>扩展</a></li><li><a href=/backtrader/docs/11-commission-schemes/03-customization/>自定义佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/04-credit-interests/>利息</a></li></ul></li><li><input type=checkbox id=section-7ee30e1f85261a5ddc0f8b492d792a0e class=toggle>
-<label for=section-7ee30e1f85261a5ddc0f8b492d792a0e class="flex justify-between"><a role=button>Analyzer</a></label><ul><li><a href=/backtrader/docs/12-analyzers/01-analyzers/>Analyzers</a></li><li><a href=/backtrader/docs/12-analyzers/02-pyfolio/>Pyfolio</a></li><li><a href=/backtrader/docs/12-analyzers/03-pyfolio-integration/>Pyfolio 集成</a></li><li><a href=/backtrader/docs/12-analyzers/04-reference/>Reference</a></li></ul></li><li><input type=checkbox id=section-c3d8936c432abd68dd8d40624a1e9ecd class=toggle>
-<label for=section-c3d8936c432abd68dd8d40624a1e9ecd class="flex justify-between"><a role=button>Observer</a></label><ul><li><a href=/backtrader/docs/13-observers/01-statistics/>统计</a></li><li><a href=/backtrader/docs/13-observers/02-benchmarking/>基准测试</a></li><li><a href=/backtrader/docs/13-observers/03-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-bf5851d3ea7d78f072d49c32fbc0116a class=toggle>
-<label for=section-bf5851d3ea7d78f072d49c32fbc0116a class="flex justify-between"><a role=button>Sizer</a></label><ul><li><a href=/backtrader/docs/14-sizers/01-sizers/>sizers</a></li><li><a href=/backtrader/docs/14-sizers/02-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-d914bc0b766cee7bc235dc30c39c783c class=toggle>
-<label for=section-d914bc0b766cee7bc235dc30c39c783c class="flex justify-between"><a href=/backtrader/docs/15-livetrading/>实盘</a></label><ul><li><a href=/backtrader/docs/15-livetrading/01-interactive-brokers/>Interactive Brokers</a></li><li><a href=/backtrader/docs/15-livetrading/02-qanda-v1-0/>Qanda</a></li><li><a href=/backtrader/docs/15-livetrading/03-visual-chart/>Visual Chart</a></li></ul></li><li><input type=checkbox id=section-b0ac2f58c2fd8f0b64f94dbeb60a370a class=toggle>
-<label for=section-b0ac2f58c2fd8f0b64f94dbeb60a370a class="flex justify-between"><a role=button>绘图</a></label><ul><li><a href=/backtrader/docs/16-plotting/01-plotting/>Plotting</a></li><li><a href=/backtrader/docs/16-plotting/02-ploting-date-ranges/>绘制日期范围</a></li><li><a href=/backtrader/docs/16-plotting/03-plotting-same-axis/>同轴绘图</a></li></ul></li><li><input type=checkbox id=section-696d63c91cb92679438b7f84ef95709e class=toggle>
-<label for=section-696d63c91cb92679438b7f84ef95709e class="flex justify-between"><a role=button>日期时间</a></label><ul><li><a href=/backtrader/docs/17-datetime/01-management/>管理</a></li><li><a href=/backtrader/docs/17-datetime/02-timer/>定时器</a></li><li><a href=/backtrader/docs/17-datetime/03-trading-calendars/>交易日历</a></li></ul></li><li><a href=/backtrader/docs/18-automated-running/>自动运行</a><ul></ul></li><li><input type=checkbox id=section-d46c60132a1fb9ab45ebe733d651e644 class=toggle>
-<label for=section-d46c60132a1fb9ab45ebe733d651e644 class="flex justify-between"><a role=button>官方文章</a></label><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/svg/menu.svg class=book-icon alt=Menu></label>
-<strong>Broker</strong>
-<label for=toc-control><img src=/backtrader/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#类-backtraderbrokersbackbroker>类 <code>backtrader.brokers.BackBroker()</code></a></li><li><a href=#参数>参数</a></li><li><a href=#方法>方法</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=broker>Broker
-<a class=anchor href=#broker>#</a></h1><h2 id=类-backtraderbrokersbackbroker>类 <code>backtrader.brokers.BackBroker()</code>
-<a class=anchor href=#%e7%b1%bb-backtraderbrokersbackbroker>#</a></h2><p>Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。</p><p>现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。
-支持的订单类型：</p><ul><li><code>Market</code>：将在下一个柱的第一个tick（即开盘价）执行</li><li><code>Close</code>：用于日内交易，订单以会话最后一个柱的收盘价执行</li><li><code>Limit</code>：如果在会话期间看到给定的限价则执行</li><li><code>Stop</code>：如果看到给定的止损价，则执行市场订单</li><li><code>StopLimit</code>：如果看到给定的止损价，则启动限价订单</li></ul><p>因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。</p><p>要更改参数，有两种选择：</p><ol><li>手动创建带所需参数的 Broker，用 <code>cerebro.broker = instance</code> 将该实例设置为这个经纪商；</li><li>使用 <code>set_xxx</code> 方法通过 <code>cerebro.broker.set_xxx</code> 设置参数，其中 <code>xxx</code> 代表设置参数名称；</li></ol><p><strong>注意</strong>，<code>cerebro.broker</code> 是一个由 Cerebro 的 <code>getbroker</code> 和 <code>setbroker</code> 方法支持的属性。</p><h2 id=参数>参数
-<a class=anchor href=#%e5%8f%82%e6%95%b0>#</a></h2><table><thead><tr><th>参数名</th><th>默认值</th><th>描述</th></tr></thead><tbody><tr><td><code>cash</code></td><td>10000</td><td>起始现金</td></tr><tr><td><code>commission</code></td><td><code>CommInfoBase(percabs=True)</code></td><td>适用于所有资产的基础佣金方案</td></tr><tr><td><code>checksubmit</code></td><td>True</td><td>在将订单接受到系统之前检查保证金/现金</td></tr><tr><td><code>eosbar</code></td><td>False</td><td>对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖）</td></tr><tr><td><code>filler</code></td><td>None</td><td>一个可调用对象，签名为 <code>callable(order, price, ago)</code>。<br><br>参数说明：<ul style=list-style-type:none;padding-left:0;margin-left:0><li>- <code>order</code>：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（<code>order.executed.remsize</code>）等。</li><li>- <code>price</code>：订单将在 <code>ago</code> 柱中执行的价格</li><li>- <code>ago</code>：用于从 <code>order.data</code> 提取 ohlc 和成交量价格的索引。在大多数情况下，这将是 0，但在某些角落情况下，对于 <code>Close</code> 订单，这将是 -1。</li><li>- 可调用对象必须返回执行的大小（值 >= 0）</li></ul>可调用对象当然可以是一个 <code>__call__</code> 符合上述签名的对象。默认情况下，订单将一次性完全执行。</td></tr><tr><td><code>slip_perc</code></td><td>0.0</td><td>用于买卖订单上下滑动价格的绝对百分比（且为正值）。<br>注意：0.01 是 1%，0.001 是 0.1%</td></tr><tr><td><code>slip_fixed</code></td><td>0.0</td><td>用于买卖订单上下滑动价格的单位百分比（且为正值）。<br>注意：如果 <code>slip_perc</code> 非零，则优先于此。</td></tr><tr><td><code>slip_open</code></td><td>False</td><td>是否滑动专门使用下一个柱的开盘价执行的订单价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。</td></tr><tr><td><code>slip_match</code></td><td>True</td><td>- 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。<br><br>- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行</td></tr><tr><td><code>slip_limit</code></td><td>True</td><td>- 限价订单，给定确切的匹配价格请求，即使 <code>slip_match</code> 为 False，也会被匹配。<br>- 此选项控制该行为。<br>- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配<br>- 如果为 False 且滑点超出上限，则不会有匹配<br></td></tr><tr><td><code>slip_out</code></td><td>False</td><td>即使价格超出高-低范围，也提供滑点。</td></tr><tr><td><code>coc</code></td><td>False</td><td>Cheat-On-Close 将其设置为 True 与 <code>set_coc</code> 启用，将“市场”订单与订单条的收盘价匹配。这实际上是作弊，因为柱已关闭，任何订单都应首先与下一个柱的价格匹配</td></tr><tr><td><code>coo</code></td><td>False</td><td>Cheat-On-Open 将其设置为 True 与 <code>set_coo</code> 启用，将“市场”订单与开盘价匹配，例如使用设置为 True 的计时器，因为这种计时器在经纪商评估之前执行</td></tr><tr><td><code>int2pnl</code></td><td>True</td><td>将生成的利息（如果有）分配给减少头寸的操作的利润和亏损（无论是多头还是空头）。在某些情况下，这可能是不希望的，因为不同的策略在竞争，利息将以不确定的方式分配给其中任何一个。</td></tr><tr><td><code>shortcash</code></td><td>True</td><td>如果为 True，则在卖空类似股票的资产时将增加现金，并且该资产的计算价值将为负值。<br>- 如果为 False，则现金将作为操作成本扣除，计算的价值将为正值，以最终得到相同的金额</td></tr><tr><td><code>fundstartval</code></td><td>100.0</td><td>此参数控制基金式绩效测量的起始值，即：现金可以增加和扣除，增加股票数量。绩效不是使用投资组合的净资产价值来衡量，而是使用基金的价值</td></tr><tr><td><code>fundmode</code></td><td>False</td><td>如果设置为 True，诸如 TimeReturn 的分析器可以基于基金价值而不是总净资产价值自动计算回报</td></tr></tbody></table><h2 id=方法>方法
-<a class=anchor href=#%e6%96%b9%e6%b3%95>#</a></h2><table><thead><tr><th>签名</th><th>描述</th></tr></thead><tbody><tr><td>set_cash(cash)</td><td>设置现金参数（别名：setcash）</td></tr><tr><td>get_cash()</td><td>返回当前现金（别名：getcash）</td></tr><tr><td>get_value(<br> datas=None,<br> mkt=False,<br> lever=False<br>)</td><td>返回给定数据的投资组合价值（如果数据为 None，则返回总投资组合价值）（别名：getvalue）</td></tr><tr><td>set_eosbar(eosbar)</td><td>设置 eosbar 参数（别名：seteosbar）</td></tr><tr><td>set_checksubmit(checksubmit)</td><td>设置 checksubmit 参数</td></tr><tr><td>set_filler(filler)</td><td>设置用于成交量填充执行的填充器</td></tr><tr><td>set_coc(coc)</td><td>配置 Cheat-On-Close 方法以在订单柱上买入收盘价</td></tr><tr><td>set_coo(coo)</td><td>配置 Cheat-On-Open 方法以在订单柱上买入收盘价</td></tr><tr><td>set_int2pnl(int2pnl)</td><td>配置将利息分配给利润和亏损</td></tr><tr><td>set_fundstartval(fundstartval)</td><td>设置基金式绩效跟踪器的起始值</td></tr><tr><td>set_slippage_perc(<br> perc,<br> slip_open=True,<br> slip_limit=True,<br> slip_match=True,<br>&amp;emspslip_out=False<br>)</td><td>配置滑点为基于百分比</td></tr><tr><td>set_slippage_fixed(<br> fixed,<br> slip_open=True,<br> slip_limit=True,<br> slip_match=True,<br> slip_out=False<br>)</td><td>配置滑点为固定点数</td></tr><tr><td>get_orders_open(safe=False)</td><td>返回仍然打开的订单（未执行或部分执行）的可迭代对象。返回的订单不得被触摸。如果需要订单操作，请将参数 safe 设置为 True</td></tr><tr><td>getcommissioninfo(data)</td><td>检索与给定数据相关的 <code>CommissionInfo</code> 方案</td></tr><tr><td>setcommission(<br> commission=0.0,<br> margin=None,<br> mult=1.0,<br> commtype=None,<br> percabs=True,<br> stocklike=False,<br> interest=0.0,<br> interest_long=False,<br> leverage=1.0,<br> automargin=False,<br> name=None<br>)</td><td>为 Broker 设置 <code>CommissionInfo</code> 对象，参考 <code>CommInfoBase</code> 文档介绍。<br><br>如果 name 为 None，这将是没有找到其他 <code>CommissionInfo</code> 方案的资产的默认设置</td></tr><tr><td>addcommissioninfo(<br> comminfo, name=None<br>)</td><td>添加 <code>CommissionInfo</code> 对象，如果 name 为 None，将成为所有资产的默认设置</td></tr><tr><td>getposition(data)</td><td>返回给定数据的当前头寸状态（一个 <code>Position</code> 实例）</td></tr><tr><td>get_fundshares()</td><td>返回基金模式中的当前股票数量</td></tr><tr><td>get_fundvalue()</td><td>返回基金式的股票价值</td></tr><tr><td>add_cash(cash)</td><td>添加/移除系统现金（使用负值移除）</td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/poloxue/docs.backtrader/commit/021cd32ab1da9a7977b58538540e5f5e2e063e06 title='Last modified by poloxue.xue | Jan 3, 2025' target=_blank rel=noopener><img src=/backtrader/svg/calendar.svg class=book-icon alt=Calendar>
-<span>Jan 3, 2025</span></a></div><div><a class="flex align-center" href=https://github.com/poloxue/docs.backtrader/blob/master/content/docs/10-broker/01-broker.md target=_blank rel=noopener><img src=/backtrader/svg/edit.svg class=book-icon alt=Edit>
-<span>Edit this page</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#类-backtraderbrokersbackbroker>类 <code>backtrader.brokers.BackBroker()</code></a></li><li><a href=#参数>参数</a></li><li><a href=#方法>方法</a></li></ul></nav></div></aside></main></body></html>
+参数# 参数名 默认值 描述 cash 10000 起始现金 commission CommInfoBase(percabs=True) 适用于所有资产的基础佣金方案 checksubmit True 在将订单接受到系统之前检查保证金/现金 eosbar False 对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖） filler None 一个可调用对象，签名为 callable(order, price, ago)。参数说明：- order：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（order.executed.remsize）等。- price：订单将在 ago 柱中执行的价格- ago：用于从 order.data 提取 ohlc 和成交量价格的索引。在大多数情况下，这将是 0，但在某些角落情况下，对于 Close 订单，这将是 -1。- 可调用对象必须返回执行的大小（值 >= 0）可调用对象当然可以是一个 __call__ 符合上述签名的对象。默认情况下，订单将一次性完全执行。 slip_perc 0.0 用于买卖订单上下滑动价格的绝对百分比（且为正值）。注意：0.01 是 1%，0.001 是 0.1% slip_fixed 0.0 用于买卖订单上下滑动价格的单位百分比（且为正值）。注意：如果 slip_perc 非零，则优先于此。 slip_open False 是否滑动专门使用下一个柱的开盘价执行的订单价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。 slip_match True - 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行 slip_limit True - 限价订单，给定确切的匹配价格请求，即使 slip_match 为 False，也会被匹配。- 此选项控制该行为。- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配- 如果为 False 且滑点超出上限，则不会有匹配 slip_out False 即使价格超出高-低范围，也提供滑点。 coc False Cheat-On-Close 将其设置为 True 与 set_coc 启用，将“市场”订单与订单条的收盘价匹配。这实际上是作弊，因为柱已关闭，任何订单都应首先与下一个柱的价格匹配 coo False Cheat-On-Open 将其设置为 True 与 set_coo 启用，将“市场”订单与开盘价匹配，例如使用设置为 True 的计时器，因为这种计时器在经纪商评估之前执行 int2pnl True 将生成的利息（如果有）分配给减少头寸的操作的利润和亏损（无论是多头还是空头）。在某些情况下，这可能是不希望的，因为不同的策略在竞争，利息将以不确定的方式分配给其中任何一个。 shortcash True 如果为 True，则在卖空类似股票的资产时将增加现金，并且该资产的计算价值将为负值。- 如果为 False，则现金将作为操作成本扣除，计算的价值将为正值，以最终得到相同的金额 fundstartval 100.0 此参数控制基金式绩效测量的起始值，即：现金可以增加和扣除，增加股票数量。绩效不是使用投资组合的净资产价值来衡量，而是使用基金的价值 fundmode False 如果设置为 True，诸如 TimeReturn 的分析器可以基于基金价值而不是总净资产价值自动计算回报 方法# 签名 描述 set_cash(cash) 设置现金参数（别名：setcash） get_cash() 返回当前现金（别名：getcash） get_value( datas=None, mkt=False, lever=False) 返回给定数据的投资组合价值（如果数据为 None，则返回总投资组合价值）（别名：getvalue） set_eosbar(eosbar) 设置 eosbar 参数（别名：seteosbar） set_checksubmit(checksubmit) 设置 checksubmit 参数 set_filler(filler) 设置用于成交量填充执行的填充器 set_coc(coc) 配置 Cheat-On-Close 方法以在订单柱上买入收盘价 set_coo(coo) 配置 Cheat-On-Open 方法以在订单柱上买入收盘价 set_int2pnl(int2pnl) 配置将利息分配给利润和亏损 set_fundstartval(fundstartval) 设置基金式绩效跟踪器的起始值 set_slippage_perc( perc, slip_open=True, slip_limit=True, slip_match=True, &amp;emspslip_out=False) 配置滑点为基于百分比 set_slippage_fixed( fixed, slip_open=True, slip_limit=True, slip_match=True, slip_out=False) 配置滑点为固定点数 get_orders_open(safe=False) 返回仍然打开的订单（未执行或部分执行）的可迭代对象。返回的订单不得被触摸。如果需要订单操作，请将参数 safe 设置为 True getcommissioninfo(data) 检索与给定数据相关的 CommissionInfo 方案 setcommission( commission=0.0, margin=None, mult=1.0, commtype=None, percabs=True, stocklike=False, interest=0.0, interest_long=False, leverage=1.0, automargin=False, name=None) 为 Broker 设置 CommissionInfo 对象，参考 CommInfoBase 文档介绍。如果 name 为 None，这将是没有找到其他 CommissionInfo 方案的资产的默认设置 addcommissioninfo( comminfo, name=None) 添加 CommissionInfo 对象，如果 name 为 None，将成为所有资产的默认设置 getposition(data) 返回给定数据的当前头寸状态（一个 Position 实例） get_fundshares() 返回基金模式中的当前股票数量 get_fundvalue() 返回基金式的股票价值 add_cash(cash) 添加/移除系统现金（使用负值移除）"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-01-03T18:28:35+08:00"><title>Broker | Backtrader 中文</title><link rel=icon href=/backtrader/favicon.png><link rel=manifest href=/backtrader/manifest.json><link rel=canonical href=https://www.poloxue.com/backtrader/docs/10-broker/01-broker/><link rel=stylesheet href=/backtrader/book.min.f079ea268834b2e0459e63011be648e8a3cc0e4819a71206873f891528fbfdf6.css integrity="sha256-8HnqJog0suBFnmMBG+ZI6KPMDkgZpxIGhz+JFSj7/fY=" crossorigin=anonymous><script defer src=/backtrader/fuse.min.js></script><script defer src=/backtrader/en.search.min.28c0072bcb426eba2da739aceed7cf13edcc133474c849dae0ba197d767c4d54.js integrity="sha256-KMAHK8tCbrotpzms7tfPE+3MEzR0yEna4LoZfXZ8TVQ=" crossorigin=anonymous></script><script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/backtrader/><img src=/backtrader/logo.png alt=Logo><span>Backtrader 中文</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/backtrader/docs/01-introduction/>介绍</a><ul></ul></li><li><a href=/backtrader/docs/02-installation/>安装指南</a><ul></ul></li><li><input type=checkbox id=section-ef1b0f3b48f1accf5a8e12976586a132 class=toggle>
+<label for=section-ef1b0f3b48f1accf5a8e12976586a132 class=flex><a href=/backtrader/docs/03-quickstart/>快速开始</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/03-quickstart/01-setup/>环境设置</a></li><li><a href=/backtrader/docs/03-quickstart/02-cash/>账户资金</a></li><li><a href=/backtrader/docs/03-quickstart/03-datafeed/>配置数据</a></li><li><a href=/backtrader/docs/03-quickstart/04-first-strategy/>第一个策略</a></li><li><a href=/backtrader/docs/03-quickstart/05-strategy-logic/>开始交易</a></li><li><a href=/backtrader/docs/03-quickstart/06-sell/>卖出操作</a></li><li><a href=/backtrader/docs/03-quickstart/07-commission/>交易监控</a></li><li><a href=/backtrader/docs/03-quickstart/08-parameters/>参数定义</a></li><li><a href=/backtrader/docs/03-quickstart/09-indicators/>技术指标</a></li><li><a href=/backtrader/docs/03-quickstart/10-plotting/>可视化</a></li><li><a href=/backtrader/docs/03-quickstart/11-optimization/>策略优化</a></li></ul></li><li><input type=checkbox id=section-8b6cc0ccf66e33ea233e54e3e1c71bd0 class=toggle>
+<label for=section-8b6cc0ccf66e33ea233e54e3e1c71bd0 class=flex><a href=/backtrader/docs/04-concepts/>核心概念</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/>平台概念</a><ul><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/01-datafeed/>数据源 DataFeed</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/02-params/>策略参数</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/03-line/>线 Line 类</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/04-index/>索引和切片</a></li><li><a href=/backtrader/docs/04-concepts/01-platform-concepts/05-operator/>运算符</a></li></ul></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/>平台操作</a><ul><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/01-iteration/>Line 迭代器</a></li><li><a href=/backtrader/docs/04-concepts/02-operate-the-platform/02-startup/>启动运行</a></li></ul></li></ul></li><li><input type=checkbox id=section-1d25046da157a996ab4b83cedd86be47 class=toggle>
+<label for=section-1d25046da157a996ab4b83cedd86be47 class=flex><a href=/backtrader/docs/05-cerebro/>Cerebro</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/05-cerebro/01-cerebro/>Cerebro</a></li><li><a href=/backtrader/docs/05-cerebro/02-reference/>参数说明</a></li><li><a href=/backtrader/docs/05-cerebro/03-saving-memory/>节省内存</a></li><li><a href=/backtrader/docs/05-cerebro/04-optimization-improvements/>优化改进</a></li><li><a href=/backtrader/docs/05-cerebro/05-exceptions/>异常 Exceptions</a></li><li><a href=/backtrader/docs/05-cerebro/06-logging-writer/>日志 Logging - Writter</a></li></ul></li><li><input type=checkbox id=section-b39bf4495a5a92ed51fcc77b0cf4545f class=toggle>
+<label for=section-b39bf4495a5a92ed51fcc77b0cf4545f class=flex><a role=button>DataFeed</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/06-datafeed/01-datafeeds/>Data Feeds</a></li><li><a href=/backtrader/docs/06-datafeed/02-datafeed-extending/>扩展数据源</a></li><li><a href=/backtrader/docs/06-datafeed/03-datafeed-development-csv/>开发 CSV 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/04-datafeed-development-general/>开发 Binary 数据源</a></li><li><a href=/backtrader/docs/06-datafeed/05-datafeed-multiple-timeframes/>多时间框架</a></li><li><a href=/backtrader/docs/06-datafeed/06-datafeed-resampling/>重采样</a></li><li><a href=/backtrader/docs/06-datafeed/07-datafeed-replay/>数据回放</a></li><li><a href=/backtrader/docs/06-datafeed/08-datafeed-rollover/>数据滚动</a></li><li><a>过滤器 Filters</a><ul><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/01-datafeed-filters/>过滤器 Filters</a></li><li><a href=/backtrader/docs/06-datafeed/09-datafeed-filters/02-datafeed-filters-referrence/>参考文档</a></li></ul></li><li><a href=/backtrader/docs/06-datafeed/10-datafeed-yahoo/>Yahoo 数据源说明</a></li><li><a href=/backtrader/docs/06-datafeed/11-datafeed-pandas/>Pandas 数据源示例</a></li><li><a href=/backtrader/docs/06-datafeed/12-datafeed-reference/>数据源参考</a></li></ul></li><li><input type=checkbox id=section-e3fe58eaef3418b317102036dce25013 class=toggle>
+<label for=section-e3fe58eaef3418b317102036dce25013 class=flex><a role=button>Strategy</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/07-strategy/01-strategy/>Strategy</a></li><li><a href=/backtrader/docs/07-strategy/02-strategy-with-signals/>信号策略</a></li><li><a href=/backtrader/docs/07-strategy/03-strategy-references/>策略参考</a></li></ul></li><li><input type=checkbox id=section-cad109a715fc3bbeef472f4f0cad4358 class=toggle>
+<label for=section-cad109a715fc3bbeef472f4f0cad4358 class=flex><a role=button>Indicator</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/08-indicators/01-using-indicators/>使用指标</a></li><li><a href=/backtrader/docs/08-indicators/02-indicators-development/>指标开发</a></li><li><a href=/backtrader/docs/08-indicators/03-timeframe-mixing/>周期混合</a></li><li><a href=/backtrader/docs/08-indicators/04-talib/>TA-Lib</a></li></ul></li><li><input type=checkbox id=section-56aaa6caa9d538f335a48813aa684f48 class=toggle>
+<label for=section-56aaa6caa9d538f335a48813aa684f48 class=flex><a role=button>Order</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/09-orders/01-general/>订单</a></li><li><a href=/backtrader/docs/09-orders/02-creation-execution/>创建/执行</a></li><li><a href=/backtrader/docs/09-orders/03-target-orders/>目标订单</a></li><li><a href=/backtrader/docs/09-orders/04-oco-orders/>OCO 订单</a></li><li><a href=/backtrader/docs/09-orders/05-bracket-orders/>Bracket Orders</a></li><li><a href=/backtrader/docs/09-orders/06-future-spot-compensation/>期货和现货补偿</a></li><li><a href=/backtrader/docs/09-orders/07-stop-trails/>跟踪止损（限价）</a></li></ul></li><li><input type=checkbox id=section-44410e36d2de519599cb0e5e09a3b2ed class=toggle checked>
+<label for=section-44410e36d2de519599cb0e5e09a3b2ed class=flex><a role=button>Broker</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/10-broker/01-broker/ class=active>Broker</a></li><li><a href=/backtrader/docs/10-broker/02-slippage/>滑点</a></li><li><a href=/backtrader/docs/10-broker/03-cheat-on-open/>开盘作弊</a></li><li><a href=/backtrader/docs/10-broker/04-volume-filling-filler/>填充器</a></li><li><a href=/backtrader/docs/10-broker/05-position/>Position</a></li><li><a href=/backtrader/docs/10-broker/06-trade/>Trade</a></li></ul></li><li><input type=checkbox id=section-ae52187dba190ff9aaf14da3856b7cd3 class=toggle>
+<label for=section-ae52187dba190ff9aaf14da3856b7cd3 class=flex><a role=button>Commission</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/11-commission-schemes/01-commission-schemes/>佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/02-commission-schemes-extending/>扩展</a></li><li><a href=/backtrader/docs/11-commission-schemes/03-customization/>自定义佣金</a></li><li><a href=/backtrader/docs/11-commission-schemes/04-credit-interests/>利息</a></li></ul></li><li><input type=checkbox id=section-c06d50c5f364fda6157cd2e0322dd59c class=toggle>
+<label for=section-c06d50c5f364fda6157cd2e0322dd59c class=flex><a role=button>Analyzer</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/12-analyzers/01-analyzers/>Analyzers</a></li><li><a href=/backtrader/docs/12-analyzers/02-pyfolio/>Pyfolio</a></li><li><a href=/backtrader/docs/12-analyzers/03-pyfolio-integration/>Pyfolio 集成</a></li><li><a href=/backtrader/docs/12-analyzers/04-reference/>Reference</a></li></ul></li><li><input type=checkbox id=section-c8768af388a3e3ade998ccab1da7af20 class=toggle>
+<label for=section-c8768af388a3e3ade998ccab1da7af20 class=flex><a role=button>Observer</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/13-observers/01-statistics/>统计</a></li><li><a href=/backtrader/docs/13-observers/02-benchmarking/>基准测试</a></li><li><a href=/backtrader/docs/13-observers/03-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-71aa242f05842258d04bb7390059ae0c class=toggle>
+<label for=section-71aa242f05842258d04bb7390059ae0c class=flex><a role=button>Sizer</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/14-sizers/01-sizers/>sizers</a></li><li><a href=/backtrader/docs/14-sizers/02-reference/>参考</a></li></ul></li><li><input type=checkbox id=section-5787874ab2a916d11389152b4141fa73 class=toggle>
+<label for=section-5787874ab2a916d11389152b4141fa73 class=flex><a href=/backtrader/docs/15-livetrading/>实盘</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/15-livetrading/01-interactive-brokers/>Interactive Brokers</a></li><li><a href=/backtrader/docs/15-livetrading/02-qanda-v1-0/>Qanda</a></li><li><a href=/backtrader/docs/15-livetrading/03-visual-chart/>Visual Chart</a></li></ul></li><li><input type=checkbox id=section-3dcf1c9f08afe4d22a0a825dccbf62c9 class=toggle>
+<label for=section-3dcf1c9f08afe4d22a0a825dccbf62c9 class=flex><a role=button>绘图</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/16-plotting/01-plotting/>Plotting</a></li><li><a href=/backtrader/docs/16-plotting/02-ploting-date-ranges/>绘制日期范围</a></li><li><a href=/backtrader/docs/16-plotting/03-plotting-same-axis/>同轴绘图</a></li></ul></li><li><input type=checkbox id=section-b6e31488b3e951ce956583dfc7ccd8a2 class=toggle>
+<label for=section-b6e31488b3e951ce956583dfc7ccd8a2 class=flex><a role=button>日期时间</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/17-datetime/01-management/>管理</a></li><li><a href=/backtrader/docs/17-datetime/02-timer/>定时器</a></li><li><a href=/backtrader/docs/17-datetime/03-trading-calendars/>交易日历</a></li></ul></li><li><a href=/backtrader/docs/18-automated-running/>自动运行</a><ul></ul></li><li><input type=checkbox id=section-1c57bab4ff24bdea61d636c257658085 class=toggle>
+<label for=section-1c57bab4ff24bdea61d636c257658085 class=flex><a role=button>官方文章</a>
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/icons/menu.svg class=book-icon alt=Menu></label><h3>Broker</h3><label for=toc-control><img src=/backtrader/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#类-backtraderbrokersbackbroker>类 <code>backtrader.brokers.BackBroker()</code></a></li><li><a href=#参数>参数</a></li><li><a href=#方法>方法</a></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=broker>Broker<a class=anchor href=#broker>#</a></h1><h2 id=类-backtraderbrokersbackbroker>类 <code>backtrader.brokers.BackBroker()</code><a class=anchor href=#%e7%b1%bb-backtraderbrokersbackbroker>#</a></h2><p>Broker 经纪商模拟器，该模拟支持不同的订单类型，检查提交订单的现金需求与当前现金的对比，跟踪每次 Cerebro 迭代的现金和价值，并保持不同数据的当前头寸。</p><p>现金在每次迭代中调整，对于期货等工具来说，当价格变化时，会在实际经纪商中增加或减少现金。
+支持的订单类型：</p><ul><li><code>Market</code>：将在下一个柱的第一个tick（即开盘价）执行</li><li><code>Close</code>：用于日内交易，订单以会话最后一个柱的收盘价执行</li><li><code>Limit</code>：如果在会话期间看到给定的限价则执行</li><li><code>Stop</code>：如果看到给定的止损价，则执行市场订单</li><li><code>StopLimit</code>：如果看到给定的止损价，则启动限价订单</li></ul><p>因为经纪商由 Cerebro 实例化，用户通常不需要替换经纪商实例，因此参数不受用户控制。</p><p>要更改参数，有两种选择：</p><ol><li>手动创建带所需参数的 Broker，用 <code>cerebro.broker = instance</code> 将该实例设置为这个经纪商；</li><li>使用 <code>set_xxx</code> 方法通过 <code>cerebro.broker.set_xxx</code> 设置参数，其中 <code>xxx</code> 代表设置参数名称；</li></ol><p><strong>注意</strong>，<code>cerebro.broker</code> 是一个由 Cerebro 的 <code>getbroker</code> 和 <code>setbroker</code> 方法支持的属性。</p><h2 id=参数>参数<a class=anchor href=#%e5%8f%82%e6%95%b0>#</a></h2><table><thead><tr><th>参数名</th><th>默认值</th><th>描述</th></tr></thead><tbody><tr><td><code>cash</code></td><td>10000</td><td>起始现金</td></tr><tr><td><code>commission</code></td><td><code>CommInfoBase(percabs=True)</code></td><td>适用于所有资产的基础佣金方案</td></tr><tr><td><code>checksubmit</code></td><td>True</td><td>在将订单接受到系统之前检查保证金/现金</td></tr><tr><td><code>eosbar</code></td><td>False</td><td>对于日内 Bar，考虑与会话结束时间相同的柱为会话结束。通常不会这样，因为许多交易所会在会话结束后几分钟内为许多产品生成一些柱（最终拍卖）</td></tr><tr><td><code>filler</code></td><td>None</td><td>一个可调用对象，签名为 <code>callable(order, price, ago)</code>。<br><br>参数说明：<ul style=list-style-type:none;padding-left:0;margin-left:0><li>- <code>order</code>：显然是执行中的订单。这提供了对数据的访问（包括 ohlc 和成交量值）、执行类型、剩余大小（<code>order.executed.remsize</code>）等。</li><li>- <code>price</code>：订单将在 <code>ago</code> 柱中执行的价格</li><li>- <code>ago</code>：用于从 <code>order.data</code> 提取 ohlc 和成交量价格的索引。在大多数情况下，这将是 0，但在某些角落情况下，对于 <code>Close</code> 订单，这将是 -1。</li><li>- 可调用对象必须返回执行的大小（值 >= 0）</li></ul>可调用对象当然可以是一个 <code>__call__</code> 符合上述签名的对象。默认情况下，订单将一次性完全执行。</td></tr><tr><td><code>slip_perc</code></td><td>0.0</td><td>用于买卖订单上下滑动价格的绝对百分比（且为正值）。<br>注意：0.01 是 1%，0.001 是 0.1%</td></tr><tr><td><code>slip_fixed</code></td><td>0.0</td><td>用于买卖订单上下滑动价格的单位百分比（且为正值）。<br>注意：如果 <code>slip_perc</code> 非零，则优先于此。</td></tr><tr><td><code>slip_open</code></td><td>False</td><td>是否滑动专门使用下一个柱的开盘价执行的订单价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。</td></tr><tr><td><code>slip_match</code></td><td>True</td><td>- 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。<br><br>- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行</td></tr><tr><td><code>slip_limit</code></td><td>True</td><td>- 限价订单，给定确切的匹配价格请求，即使 <code>slip_match</code> 为 False，也会被匹配。<br>- 此选项控制该行为。<br>- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配<br>- 如果为 False 且滑点超出上限，则不会有匹配<br></td></tr><tr><td><code>slip_out</code></td><td>False</td><td>即使价格超出高-低范围，也提供滑点。</td></tr><tr><td><code>coc</code></td><td>False</td><td>Cheat-On-Close 将其设置为 True 与 <code>set_coc</code> 启用，将“市场”订单与订单条的收盘价匹配。这实际上是作弊，因为柱已关闭，任何订单都应首先与下一个柱的价格匹配</td></tr><tr><td><code>coo</code></td><td>False</td><td>Cheat-On-Open 将其设置为 True 与 <code>set_coo</code> 启用，将“市场”订单与开盘价匹配，例如使用设置为 True 的计时器，因为这种计时器在经纪商评估之前执行</td></tr><tr><td><code>int2pnl</code></td><td>True</td><td>将生成的利息（如果有）分配给减少头寸的操作的利润和亏损（无论是多头还是空头）。在某些情况下，这可能是不希望的，因为不同的策略在竞争，利息将以不确定的方式分配给其中任何一个。</td></tr><tr><td><code>shortcash</code></td><td>True</td><td>如果为 True，则在卖空类似股票的资产时将增加现金，并且该资产的计算价值将为负值。<br>- 如果为 False，则现金将作为操作成本扣除，计算的价值将为正值，以最终得到相同的金额</td></tr><tr><td><code>fundstartval</code></td><td>100.0</td><td>此参数控制基金式绩效测量的起始值，即：现金可以增加和扣除，增加股票数量。绩效不是使用投资组合的净资产价值来衡量，而是使用基金的价值</td></tr><tr><td><code>fundmode</code></td><td>False</td><td>如果设置为 True，诸如 TimeReturn 的分析器可以基于基金价值而不是总净资产价值自动计算回报</td></tr></tbody></table><h2 id=方法>方法<a class=anchor href=#%e6%96%b9%e6%b3%95>#</a></h2><table><thead><tr><th>签名</th><th>描述</th></tr></thead><tbody><tr><td>set_cash(cash)</td><td>设置现金参数（别名：setcash）</td></tr><tr><td>get_cash()</td><td>返回当前现金（别名：getcash）</td></tr><tr><td>get_value(<br> datas=None,<br> mkt=False,<br> lever=False<br>)</td><td>返回给定数据的投资组合价值（如果数据为 None，则返回总投资组合价值）（别名：getvalue）</td></tr><tr><td>set_eosbar(eosbar)</td><td>设置 eosbar 参数（别名：seteosbar）</td></tr><tr><td>set_checksubmit(checksubmit)</td><td>设置 checksubmit 参数</td></tr><tr><td>set_filler(filler)</td><td>设置用于成交量填充执行的填充器</td></tr><tr><td>set_coc(coc)</td><td>配置 Cheat-On-Close 方法以在订单柱上买入收盘价</td></tr><tr><td>set_coo(coo)</td><td>配置 Cheat-On-Open 方法以在订单柱上买入收盘价</td></tr><tr><td>set_int2pnl(int2pnl)</td><td>配置将利息分配给利润和亏损</td></tr><tr><td>set_fundstartval(fundstartval)</td><td>设置基金式绩效跟踪器的起始值</td></tr><tr><td>set_slippage_perc(<br> perc,<br> slip_open=True,<br> slip_limit=True,<br> slip_match=True,<br>&amp;emspslip_out=False<br>)</td><td>配置滑点为基于百分比</td></tr><tr><td>set_slippage_fixed(<br> fixed,<br> slip_open=True,<br> slip_limit=True,<br> slip_match=True,<br> slip_out=False<br>)</td><td>配置滑点为固定点数</td></tr><tr><td>get_orders_open(safe=False)</td><td>返回仍然打开的订单（未执行或部分执行）的可迭代对象。返回的订单不得被触摸。如果需要订单操作，请将参数 safe 设置为 True</td></tr><tr><td>getcommissioninfo(data)</td><td>检索与给定数据相关的 <code>CommissionInfo</code> 方案</td></tr><tr><td>setcommission(<br> commission=0.0,<br> margin=None,<br> mult=1.0,<br> commtype=None,<br> percabs=True,<br> stocklike=False,<br> interest=0.0,<br> interest_long=False,<br> leverage=1.0,<br> automargin=False,<br> name=None<br>)</td><td>为 Broker 设置 <code>CommissionInfo</code> 对象，参考 <code>CommInfoBase</code> 文档介绍。<br><br>如果 name 为 None，这将是没有找到其他 <code>CommissionInfo</code> 方案的资产的默认设置</td></tr><tr><td>addcommissioninfo(<br> comminfo, name=None<br>)</td><td>添加 <code>CommissionInfo</code> 对象，如果 name 为 None，将成为所有资产的默认设置</td></tr><tr><td>getposition(data)</td><td>返回给定数据的当前头寸状态（一个 <code>Position</code> 实例）</td></tr><tr><td>get_fundshares()</td><td>返回基金模式中的当前股票数量</td></tr><tr><td>get_fundvalue()</td><td>返回基金式的股票价值</td></tr><tr><td>add_cash(cash)</td><td>添加/移除系统现金（使用负值移除）</td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/backtrader/docs/09-orders/07-stop-trails/ class="flex align-center"><img src=/backtrader/icons/backward.svg class=book-icon alt=Previous title=跟踪止损（限价）>
+<span>跟踪止损（限价）</span>
+</a></span><span><a href=/backtrader/docs/10-broker/02-slippage/ class="flex align-center"><span>滑点</span>
+<img src=/backtrader/icons/forward.svg class=book-icon alt=Next title=滑点></a></span></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script><div class=book-comments><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#类-backtraderbrokersbackbroker>类 <code>backtrader.brokers.BackBroker()</code></a></li><li><a href=#参数>参数</a></li><li><a href=#方法>方法</a></li></ul></nav></div></aside></main></body></html>
