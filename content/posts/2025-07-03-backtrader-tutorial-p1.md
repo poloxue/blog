@@ -5,9 +5,7 @@ draft: false
 comment: true
 ---
 
-—— 从“策略实现”迈向“系统化开发”
-
-在量化交易的执行过程中，策略开发只是开始，如果我们只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。
+在量化交易的执行过程中，策略开发只是开始，如果只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。
 
 ## 为什么选择 backtrader？
 
