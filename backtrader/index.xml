@@ -2651,7 +2651,29 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; - ``dt1``：上次计算日期时间（datetime.datetime）
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; ``dt0`` 和 ``dt1`` 在默认实现中未使用，并作为重写方法的额外输入提供
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可能经纪商在计算利率时不考虑周末或银行假日。在这种情况下，子类如下：&lt;/p&gt;</description></item><item><title>填充器</title><link>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</guid><description>&lt;h1 id="填充器"&gt;填充器&lt;a class="anchor" href="#%e5%a1%ab%e5%85%85%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;可能经纪商在计算利率时不考虑周末或银行假日。在这种情况下，子类如下：&lt;/p&gt;</description></item><item><title>基础概念</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/0301-basic-concept/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/0301-basic-concept/</guid><description>&lt;h1 id="基础概念"&gt;基础概念&lt;a class="anchor" href="#%e5%9f%ba%e7%a1%80%e6%a6%82%e5%bf%b5"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;在正式动手前，我们需要先理解两个极其关键的概念：Line（线） 和 索引 0（Index 0）。&lt;/p&gt;
+&lt;h2 id="line"&gt;Line&lt;a class="anchor" href="#line"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在 Backtrader 的世界中，几乎一切都由 线（Line） 构成。无论是价格数据、指标还是策略内部变量，它们都以 Line 的形式存在。&lt;/p&gt;
+&lt;p&gt;你可以把 Line 理解为一条随时间变化的数据序列，就像价格走势图上的那条曲线。一条 Line 是由一系列点（即时间序列数据）构成的，例如收盘价随时间变化的轨迹。&lt;/p&gt;
+&lt;p&gt;对于一个典型的行情数据源（DataFeed），每天包含以下几个关键数据点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开盘价（Open）&lt;/li&gt;
+&lt;li&gt;最高价（High）&lt;/li&gt;
+&lt;li&gt;最低价（Low）&lt;/li&gt;
+&lt;li&gt;收盘价（Close）&lt;/li&gt;
+&lt;li&gt;成交量（Volume）&lt;/li&gt;
+&lt;li&gt;未平仓量（OpenInterest）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;沿着时间轴看，这些数据点各自形成一条独立的“线”：如所有的收盘价构成了 Close Line，所有的开盘价构成了 Open Line。&lt;/p&gt;
+&lt;p&gt;例如，沿时间轴上的“开盘价”形成了一条线（Line）。因此，一个数据源通常包含6条线。如果再考虑“日期时间” (DateTime)（作为单个点的实际参考），就可以得到7条线（Line）。&lt;/p&gt;
+&lt;p&gt;因此，一个完整的数据源通常包含 6 条线。如果再加上用于标识时间的 DateTime，那么一共就是 7 条线。&lt;/p&gt;
+&lt;p&gt;在指标（Indicator）中，这一概念同样适用。如简单移动平均线（SMA） 会根据收盘价计算一个平均值序列，这个序列同样是一条 Line。再如布林带、RSI、MACD 等指标，都会在内部生成若干条 Line，分别表示不同的计算结果。&lt;/p&gt;
+&lt;p&gt;在 Backtrader 中，Line 是一切的基础结构单位。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;数据 → Line&amp;lt;br/&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;指标 → Line 的运算结果&amp;lt;br/&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;策略 → 对多条 Line 的逻辑组合与判断&amp;lt;br/&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="索引0"&gt;索引0&lt;a class="anchor" href="#%e7%b4%a2%e5%bc%950"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;理解 Line 之后，另一个必须掌握的核心概念是 索引（Index）。在 Python 中，索引 [0] 通常表示第一个元素，而 [-1] 表示最后一个元素。但 Backtrader 中，索引的语义稍有不同：&lt;/p&gt;</description></item><item><title>填充器</title><link>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/10-broker/04-volume-filling-filler/</guid><description>&lt;h1 id="填充器"&gt;填充器&lt;a class="anchor" href="#%e5%a1%ab%e5%85%85%e5%99%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;Backtrader 的经纪模拟在订单执行时有一个默认策略：忽略交易量。这是基于两个前提：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;交易在流动性足够高的市场中，可以一次性完全吸收买/卖订单&lt;/li&gt;
@@ -2784,34 +2806,7 @@ Outputs:
 &lt;li&gt;每个tick的费用：10美元&lt;/li&gt;
 &lt;li&gt;因此，乘数为1000美元/点（100 ticks/点 x 10美元/tick = 1000美元）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;佣金&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>第一个策略</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</guid><description>&lt;h1 id="第一个策略"&gt;第一个策略&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;本节我们将学习如何开发策略。&lt;/p&gt;
-&lt;p&gt;第一个策略不涉及交易，我们将通过它打印每一天（bar）的 &amp;ldquo;收盘价（Close）&amp;rdquo; 。&lt;/p&gt;
-&lt;p&gt;策略类（Strategy）继承自 &lt;code&gt;bt.Strategy&lt;/code&gt;。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;它最重要的两个方法是 &lt;code&gt;__init__&lt;/code&gt;（策略初始化）和 &lt;code&gt;next&lt;/code&gt;（每个 OHLC，即bar，执行一次该方法）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(self, txt, dt&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dt &lt;span style="color:#f92672"&gt;or&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;date(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; (dt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isoformat(), txt))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如上代码中的 &lt;code&gt;self.datas[0].close&lt;/code&gt; 访问的就是 &lt;code&gt;cerebro.broker.adddata&lt;/code&gt; 方法添加的第一个数据源 DataFeed。&lt;/p&gt;
-&lt;p&gt;数据列表（&lt;code&gt;self.datas&lt;/code&gt;）是一个标准的Python列表，如添加多个数据源，数据按插入顺序存储。列表中的第一个数据项&lt;code&gt;self.datas[0]&lt;/code&gt;是默认交易数据，用于同步所有策略元素（它作为系统时钟）。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;self.datas&lt;/code&gt; 的列表元素 data 底层类是 DataSeries，它有别名访问众所周知的 OHLC（开盘、高、低、收盘）每日值。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;open &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;open
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;low &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;low
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;high &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;high
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为了便于使用，我们将其赋值到 &lt;code&gt;self.dataclose&lt;/code&gt;，这将简化打印逻辑的创建。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;接着，在 &lt;code&gt;next&lt;/code&gt; 方法中打印 &lt;code&gt;self.dataclose[0]&lt;/code&gt; 最新收盘价即可。策略的 &lt;code&gt;next&lt;/code&gt; 方法会在每个新的bar上调用，使用系统时钟（即&lt;code&gt;self.datas[0]&lt;/code&gt;）作为参考。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们有了策略类 &lt;code&gt;TestStrategy&lt;/code&gt;，还要通过 &lt;code&gt;cerebro.addstrategy&lt;/code&gt; 将其添加交易系统中。&lt;/p&gt;</description></item><item><title>索引和切片</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/04-index/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/04-index/</guid><description>&lt;h1 id="索引和切片"&gt;索引和切片&lt;a class="anchor" href="#%e7%b4%a2%e5%bc%95%e5%92%8c%e5%88%87%e7%89%87"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;佣金&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>索引和切片</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/04-index/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/04-index/</guid><description>&lt;h1 id="索引和切片"&gt;索引和切片&lt;a class="anchor" href="#%e7%b4%a2%e5%bc%95%e5%92%8c%e5%88%87%e7%89%87"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;h2 id="索引0-和--1"&gt;&lt;strong&gt;索引：0 和 -1&lt;/strong&gt;&lt;a class="anchor" href="#%e7%b4%a2%e5%bc%950-%e5%92%8c--1"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，&lt;code&gt;Line&lt;/code&gt; 代表着一组按时间顺序排列的点。这些点在策略执行期间动态生成，可以通过索引来访问。&lt;/p&gt;
 &lt;h3 id="使用索引访问"&gt;&lt;strong&gt;使用索引访问 &lt;code&gt;Line&lt;/code&gt;&lt;/strong&gt;&lt;a class="anchor" href="#%e4%bd%bf%e7%94%a8%e7%b4%a2%e5%bc%95%e8%ae%bf%e9%97%ae"&gt;#&lt;/a&gt;&lt;/h3&gt;
@@ -3063,65 +3058,7 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; runstrat()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="结论"&gt;结论&lt;a class="anchor" href="#%e7%bb%93%e8%ae%ba"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;通过Backtrader的多时间框架支持，您可以轻松地将不同时间框架的数据结合在一起，从而实现更加灵活的交易策略。只需遵循上述规则，就能在多个时间框架中应用不同的指标，并根据数据的不同粒度调整策略的执行逻辑。&lt;/p&gt;</description></item><item><title>开始交易</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/05-strategy-logic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/05-strategy-logic/</guid><description>&lt;h1 id="开始交易"&gt;开始交易&lt;a class="anchor" href="#%e5%bc%80%e5%a7%8b%e4%ba%a4%e6%98%93"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;本节，我们将演示一个简单的策略，让策略执行交易操作，如果出现连续两个交易日下跌即 - 买入！买入！买入！&lt;/p&gt;
-&lt;p&gt;我们将基于上节的策略类 TestStrategy 继续开发，策略逻辑部分要在 &lt;code&gt;next&lt;/code&gt; 方法中实现。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(self, txt, dt&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dt &lt;span style="color:#f92672"&gt;or&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;date(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; (dt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isoformat(), txt))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;首先是买入条件，如何判断两日连续下跌呢？&lt;/p&gt;
-&lt;p&gt;简单而言，就是 &lt;code&gt;close[0] &amp;lt; close[-1]&lt;/code&gt; 和 &lt;code&gt;close[-1] &amp;lt; close[-2]&lt;/code&gt;，即当前收盘价小于昨日收盘价，昨日收盘价小于大前日收盘价。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;] &lt;span style="color:#f92672"&gt;and&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;而买入操作使用 &lt;code&gt;self.buy&lt;/code&gt; 皆可。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;默认情况下，如果存在多个数据源，&lt;code&gt;self.buy&lt;/code&gt; 买入的是第一个数据资产。&lt;/p&gt;
-&lt;h2 id="完整示例"&gt;完整示例&lt;a class="anchor" href="#%e5%ae%8c%e6%95%b4%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime &lt;span style="color:#75715e"&gt;# For datetime objects&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os.path &lt;span style="color:#75715e"&gt;# To manage paths&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; sys &lt;span style="color:#75715e"&gt;# To find out the script name (in argv[0])&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(self, txt, dt&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dt &lt;span style="color:#f92672"&gt;or&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;date(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; (dt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isoformat(), txt))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;BUY CREATE, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addstrategy(TestStrategy)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; modpath &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dirname(os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;abspath(sys&lt;span style="color:#f92672"&gt;.&lt;/span&gt;argv[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; datapath &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(modpath, &lt;span style="color:#e6db74"&gt;&amp;#39;./orcl-1995-2014.txt&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;YahooFinanceCSVData(
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datapath,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; fromdate&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime(&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; todate&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime(&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;12&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;31&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; reverse&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;setcash(&lt;span style="color:#ae81ff"&gt;100000.0&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;Starting Portfolio Value: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue())
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;Final Portfolio Value: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出：&lt;/p&gt;</description></item><item><title>异常 Exceptions</title><link>https://www.poloxue.com/backtrader/docs/05-cerebro/05-exceptions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/05-cerebro/05-exceptions/</guid><description>&lt;h1 id="异常"&gt;异常&lt;a class="anchor" href="#%e5%bc%82%e5%b8%b8"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;通过Backtrader的多时间框架支持，您可以轻松地将不同时间框架的数据结合在一起，从而实现更加灵活的交易策略。只需遵循上述规则，就能在多个时间框架中应用不同的指标，并根据数据的不同粒度调整策略的执行逻辑。&lt;/p&gt;</description></item><item><title>异常 Exceptions</title><link>https://www.poloxue.com/backtrader/docs/05-cerebro/05-exceptions/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/05-cerebro/05-exceptions/</guid><description>&lt;h1 id="异常"&gt;异常&lt;a class="anchor" href="#%e5%bc%82%e5%b8%b8"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;设计目标之一是尽早退出并让用户完全透明地了解错误发生的情况。目的是强制自己编写在异常情况下会中断的代码，并强制重新审视受影响的部分。&lt;/p&gt;
 &lt;p&gt;但现在是时候了，某些异常可能会慢慢添加到平台中。&lt;/p&gt;
 &lt;h2 id="继承层次结构"&gt;继承层次结构&lt;a class="anchor" href="#%e7%bb%a7%e6%89%bf%e5%b1%82%e6%ac%a1%e7%bb%93%e6%9e%84"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -3142,7 +3079,34 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; something_goes_wrong():
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;raise&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;StrategySkipError&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="异常-1"&gt;异常&lt;a class="anchor" href="#%e5%bc%82%e5%b8%b8-1"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;StrategySkipError&lt;/code&gt;，请求平台跳过该策略的回测。应在实例的初始化（&lt;code&gt;__init__&lt;/code&gt;）阶段引发。&lt;/p&gt;</description></item><item><title>运算符</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/05-operator/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/05-operator/</guid><description>&lt;h1 id="运算符"&gt;运算符&lt;a class="anchor" href="#%e8%bf%90%e7%ae%97%e7%ac%a6"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;StrategySkipError&lt;/code&gt;，请求平台跳过该策略的回测。应在实例的初始化（&lt;code&gt;__init__&lt;/code&gt;）阶段引发。&lt;/p&gt;</description></item><item><title>第一个策略</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</guid><description>&lt;h1 id="第一个策略"&gt;第一个策略&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;本节我们将学习如何开发策略。&lt;/p&gt;
+&lt;p&gt;第一个策略不涉及交易，我们将通过它打印每一天（bar）的 &amp;ldquo;收盘价（Close）&amp;rdquo; 。&lt;/p&gt;
+&lt;p&gt;策略类（Strategy）继承自 &lt;code&gt;bt.Strategy&lt;/code&gt;。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;pass&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;它最重要的两个方法是 &lt;code&gt;__init__&lt;/code&gt;（策略初始化）和 &lt;code&gt;next&lt;/code&gt;（每个 OHLC，即bar，执行一次该方法）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(self, txt, dt&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dt &lt;span style="color:#f92672"&gt;or&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;date(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; (dt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isoformat(), txt))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如上代码中的 &lt;code&gt;self.datas[0].close&lt;/code&gt; 访问的就是 &lt;code&gt;cerebro.broker.adddata&lt;/code&gt; 方法添加的第一个数据源 DataFeed。&lt;/p&gt;
+&lt;p&gt;数据列表（&lt;code&gt;self.datas&lt;/code&gt;）是一个标准的Python列表，如添加多个数据源，数据按插入顺序存储。列表中的第一个数据项&lt;code&gt;self.datas[0]&lt;/code&gt;是默认交易数据，用于同步所有策略元素（它作为系统时钟）。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;self.datas&lt;/code&gt; 的列表元素 data 底层类是 DataSeries，它有别名访问众所周知的 OHLC（开盘、高、低、收盘）每日值。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;open &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;open
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;low &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;low
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;high &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;high
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;为了便于使用，我们将其赋值到 &lt;code&gt;self.dataclose&lt;/code&gt;，这将简化打印逻辑的创建。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;接着，在 &lt;code&gt;next&lt;/code&gt; 方法中打印 &lt;code&gt;self.dataclose[0]&lt;/code&gt; 最新收盘价即可。策略的 &lt;code&gt;next&lt;/code&gt; 方法会在每个新的bar上调用，使用系统时钟（即&lt;code&gt;self.datas[0]&lt;/code&gt;）作为参考。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;我们有了策略类 &lt;code&gt;TestStrategy&lt;/code&gt;，还要通过 &lt;code&gt;cerebro.addstrategy&lt;/code&gt; 将其添加交易系统中。&lt;/p&gt;</description></item><item><title>运算符</title><link>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/05-operator/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/04-concepts/01-platform-concepts/05-operator/</guid><description>&lt;h1 id="运算符"&gt;运算符&lt;a class="anchor" href="#%e8%bf%90%e7%ae%97%e7%ac%a6"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，运算符不仅用于常规的数学运算，还能构建复杂的策略逻辑。&lt;code&gt;Backtrader&lt;/code&gt; 的自定义运算符让策略的数学和逻辑运算更自然和简洁。&lt;/p&gt;
 &lt;h2 id="如何使用运算符"&gt;&lt;strong&gt;如何使用运算符&lt;/strong&gt;&lt;a class="anchor" href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e8%bf%90%e7%ae%97%e7%ac%a6"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;backtrader&lt;/code&gt; 支持基于运算符创建新的对象，如在 &lt;code&gt;__init__&lt;/code&gt; 中通过运算符计算多个指标，得到一个新的操作对象。&lt;/p&gt;
@@ -3286,32 +3250,65 @@ Outputs:
  &lt;td&gt;包含每次“更新”事件更新后的状态和使用的参数的列表，历史记录的第一个条目是开启事件，最后一个条目是关闭事件&lt;/td&gt;
  &lt;/tr&gt;
  &lt;/tbody&gt;
-&lt;/table&gt;</description></item><item><title>卖出操作</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/06-sell/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/06-sell/</guid><description>&lt;h1 id="卖出操作"&gt;卖出操作&lt;a class="anchor" href="#%e5%8d%96%e5%87%ba%e6%93%8d%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;了解如何进入市场（多头，&lt;code&gt;self.buy&lt;/code&gt;）后，还要一个“退出概念”，以及了解策略是否在市场中。&lt;/p&gt;
-&lt;p&gt;本节将演示入场后如何退出市场。&lt;/p&gt;
-&lt;p&gt;退出逻辑很简单，入场持有 5 根 bar 后（在第 6 根 bar 上）退出，无论是盈利还是亏损。另外，为了简化逻辑，仅在未入场时允许买入订单，即如果有持仓或者进行中的订单都不可买入。&lt;/p&gt;
-&lt;h2 id="逻辑逻辑"&gt;逻辑逻辑&lt;a class="anchor" href="#%e9%80%bb%e8%be%91%e9%80%bb%e8%be%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;要完成这个逻辑，要能确认订单成交时间、成交所在位置、当前是否有进行中的订单以及是否有持仓。&lt;/p&gt;
-&lt;h3 id="订单状态"&gt;订单状态&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e7%8a%b6%e6%80%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;订单确认状态通过 &lt;code&gt;Strategy&lt;/code&gt; 的订单状态变化 &lt;code&gt;notify_order&lt;/code&gt; 方法监听。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_order&lt;/span&gt;(self, order):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;订单状态有 &lt;code&gt;Accepted&lt;/code&gt;（已接受）、&lt;code&gt;Submitted&lt;/code&gt;（已提交）、&lt;code&gt;Completed&lt;/code&gt;（已成交）、&lt;code&gt;Margin&lt;/code&gt;（保证金不足）、&lt;code&gt;Rejected&lt;/code&gt;（已拒绝）。&lt;/p&gt;
-&lt;p&gt;订单类中除了状态，还包括订单的其他信息，如执行价格 - &lt;code&gt;order.executed.price&lt;/code&gt;，已执行价值 - &lt;code&gt;order.executed.value&lt;/code&gt;，订单手续费 - &lt;code&gt;order.executed.comm&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;更多订单的信息，可查看 &lt;a href="https://www.poloxue.com/backtrader/docs/09-orders/01-general/"&gt;订单- Orders&lt;/a&gt;。&lt;/p&gt;
-&lt;h3 id="成交位置"&gt;成交位置&lt;a class="anchor" href="#%e6%88%90%e4%ba%a4%e4%bd%8d%e7%bd%ae"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;策略对象提供了对默认数据源位置的访问，通过 &lt;code&gt;len(self)&lt;/code&gt; 即可获得。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;len(self)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;next 方法没有提供 &amp;ldquo;bar索引&amp;rdquo;，因此很难理解何时经过了 5 根bar，但调用对象的 len 方法，它会告诉你线的长度。&lt;/p&gt;
-&lt;p&gt;我们只需记下订单完成时的长度，并查看当前长度是否距离其5根bar。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_order&lt;/span&gt;(self, order):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status &lt;span style="color:#f92672"&gt;in&lt;/span&gt; [order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Completed]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;bar_executed &lt;span style="color:#f92672"&gt;=&lt;/span&gt; len(self)
+&lt;/table&gt;</description></item><item><title>开始交易</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/05-strategy-logic/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/05-strategy-logic/</guid><description>&lt;h1 id="开始交易"&gt;开始交易&lt;a class="anchor" href="#%e5%bc%80%e5%a7%8b%e4%ba%a4%e6%98%93"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;本节，我们将演示一个简单的策略，让策略执行交易操作，如果出现连续两个交易日下跌即 - 买入！买入！买入！&lt;/p&gt;
+&lt;p&gt;我们将基于上节的策略类 TestStrategy 继续开发，策略逻辑部分要在 &lt;code&gt;next&lt;/code&gt; 方法中实现。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(self, txt, dt&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dt &lt;span style="color:#f92672"&gt;or&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;date(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; (dt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isoformat(), txt))
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 其他代码&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; len(self) &lt;span style="color:#f92672"&gt;&amp;gt;=&lt;/span&gt; (self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;bar_executed &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 卖出退场&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此处无 &amp;ldquo;时间&amp;rdquo; 或 &amp;ldquo;时间框架&amp;rdquo; 含义，仅仅是 bar 的数量。bar可以代表1分钟、1小时、1天、1周或任何其他时间周期。尽管我们知道数据源是每日的，但策略不对其做任何假设。&lt;/p&gt;
-&lt;h3 id="进行中的订单"&gt;进行中的订单&lt;a class="anchor" href="#%e8%bf%9b%e8%a1%8c%e4%b8%ad%e7%9a%84%e8%ae%a2%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;是否有进行中的订单如何判断？&lt;/p&gt;</description></item><item><title>日志 Logging - Writter</title><link>https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/</guid><description>&lt;h1 id="writer"&gt;Writer&lt;a class="anchor" href="#writer"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;首先是买入条件，如何判断两日连续下跌呢？&lt;/p&gt;
+&lt;p&gt;简单而言，就是 &lt;code&gt;close[0] &amp;lt; close[-1]&lt;/code&gt; 和 &lt;code&gt;close[-1] &amp;lt; close[-2]&lt;/code&gt;，即当前收盘价小于昨日收盘价，昨日收盘价小于大前日收盘价。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;] &lt;span style="color:#f92672"&gt;and&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;而买入操作使用 &lt;code&gt;self.buy&lt;/code&gt; 皆可。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;默认情况下，如果存在多个数据源，&lt;code&gt;self.buy&lt;/code&gt; 买入的是第一个数据资产。&lt;/p&gt;
+&lt;h2 id="完整示例"&gt;完整示例&lt;a class="anchor" href="#%e5%ae%8c%e6%95%b4%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime &lt;span style="color:#75715e"&gt;# For datetime objects&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os.path &lt;span style="color:#75715e"&gt;# To manage paths&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; sys &lt;span style="color:#75715e"&gt;# To find out the script name (in argv[0])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;log&lt;/span&gt;(self, txt, dt&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dt &lt;span style="color:#f92672"&gt;or&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;date(&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%s&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; (dt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isoformat(), txt))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;Close, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;BUY CREATE, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addstrategy(TestStrategy)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; modpath &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dirname(os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;abspath(sys&lt;span style="color:#f92672"&gt;.&lt;/span&gt;argv[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; datapath &lt;span style="color:#f92672"&gt;=&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;join(modpath, &lt;span style="color:#e6db74"&gt;&amp;#39;./orcl-1995-2014.txt&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;YahooFinanceCSVData(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datapath,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; fromdate&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime(&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; todate&lt;span style="color:#f92672"&gt;=&lt;/span&gt;datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datetime(&lt;span style="color:#ae81ff"&gt;2000&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;12&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;31&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; reverse&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;setcash(&lt;span style="color:#ae81ff"&gt;100000.0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;Starting Portfolio Value: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue())
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;Final Portfolio Value: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue())&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出：&lt;/p&gt;</description></item><item><title>日志 Logging - Writter</title><link>https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/</guid><description>&lt;h1 id="writer"&gt;Writer&lt;a class="anchor" href="#writer"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;Writer类负责将以下内容写入流：&lt;/p&gt;
 &lt;p&gt;数据源、策略、指标和观察者的CSV流。可以通过每个对象的&lt;code&gt;csv&lt;/code&gt;属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。&lt;/p&gt;
 &lt;p&gt;属性摘要：&lt;/p&gt;
@@ -3484,35 +3481,32 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;resampledata(data,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; timeframe&lt;span style="color:#f92672"&gt;=&lt;/span&gt;tframes[args&lt;span style="color:#f92672"&gt;.&lt;/span&gt;timeframe],
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; compression&lt;span style="color:#f92672"&gt;=&lt;/span&gt;args&lt;span style="color:#f92672"&gt;.&lt;/span&gt;compression)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;假设，将时间框架从每日更改为每周，然后将 3 条压缩为 1 条。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ ./resampling-example.py --timeframe weekly --compression &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从原始的 256 个每日 Bar 中，最终得到 18 个 3 周的 Bar。因为一年是 52 周，而 52 / 3 = 17.33，因此有18个 Bar。&lt;/p&gt;</description></item><item><title>交易监控</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/07-commission/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/07-commission/</guid><description>&lt;h1 id="交易监控"&gt;交易监控&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e7%9b%91%e6%8e%a7"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;我们已经知道如何使用 backtrader 买卖交易了。本节将介绍 backtrader 如何监控它每笔交易，如成本、利润和佣金。由于佣金的存在，利润还分为毛利润和净利润&lt;/p&gt;
-&lt;h2 id="设置佣金"&gt;设置佣金&lt;a class="anchor" href="#%e8%ae%be%e7%bd%ae%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;让我们先设置一个合理佣金率 - 0.1% （买入和卖出都要收取的），一行代码即可。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 0.1% ... 除以 100 以去掉百分号&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;setcommission(commission&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.001&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="订单的成本和佣金"&gt;订单的成本和佣金&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e7%9a%84%e6%88%90%e6%9c%ac%e5%92%8c%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;订单的成本和佣金可从订单回调 &lt;code&gt;notify_order&lt;/code&gt; 中获取，它的 Order 参数 &lt;code&gt;order.executed.comm&lt;/code&gt; 即为订单的已执行佣金，&lt;code&gt;order.executed.value&lt;/code&gt; 即投入的成本。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_order&lt;/span&gt;(self, order):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ ./resampling-example.py --timeframe weekly --compression &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;从原始的 256 个每日 Bar 中，最终得到 18 个 3 周的 Bar。因为一年是 52 周，而 52 / 3 = 17.33，因此有18个 Bar。&lt;/p&gt;</description></item><item><title>卖出操作</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/06-sell/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/06-sell/</guid><description>&lt;h1 id="卖出操作"&gt;卖出操作&lt;a class="anchor" href="#%e5%8d%96%e5%87%ba%e6%93%8d%e4%bd%9c"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;了解如何进入市场（多头，&lt;code&gt;self.buy&lt;/code&gt;）后，还要一个“退出概念”，以及了解策略是否在市场中。&lt;/p&gt;
+&lt;p&gt;本节将演示入场后如何退出市场。&lt;/p&gt;
+&lt;p&gt;退出逻辑很简单，入场持有 5 根 bar 后（在第 6 根 bar 上）退出，无论是盈利还是亏损。另外，为了简化逻辑，仅在未入场时允许买入订单，即如果有持仓或者进行中的订单都不可买入。&lt;/p&gt;
+&lt;h2 id="逻辑逻辑"&gt;逻辑逻辑&lt;a class="anchor" href="#%e9%80%bb%e8%be%91%e9%80%bb%e8%be%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;要完成这个逻辑，要能确认订单成交时间、成交所在位置、当前是否有进行中的订单以及是否有持仓。&lt;/p&gt;
+&lt;h3 id="订单状态"&gt;订单状态&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e7%8a%b6%e6%80%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;订单确认状态通过 &lt;code&gt;Strategy&lt;/code&gt; 的订单状态变化 &lt;code&gt;notify_order&lt;/code&gt; 方法监听。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_order&lt;/span&gt;(self, order):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;订单状态有 &lt;code&gt;Accepted&lt;/code&gt;（已接受）、&lt;code&gt;Submitted&lt;/code&gt;（已提交）、&lt;code&gt;Completed&lt;/code&gt;（已成交）、&lt;code&gt;Margin&lt;/code&gt;（保证金不足）、&lt;code&gt;Rejected&lt;/code&gt;（已拒绝）。&lt;/p&gt;
+&lt;p&gt;订单类中除了状态，还包括订单的其他信息，如执行价格 - &lt;code&gt;order.executed.price&lt;/code&gt;，已执行价值 - &lt;code&gt;order.executed.value&lt;/code&gt;，订单手续费 - &lt;code&gt;order.executed.comm&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;更多订单的信息，可查看 &lt;a href="https://www.poloxue.com/backtrader/docs/09-orders/01-general/"&gt;订单- Orders&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id="成交位置"&gt;成交位置&lt;a class="anchor" href="#%e6%88%90%e4%ba%a4%e4%bd%8d%e7%bd%ae"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;策略对象提供了对默认数据源位置的访问，通过 &lt;code&gt;len(self)&lt;/code&gt; 即可获得。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;len(self)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;next 方法没有提供 &amp;ldquo;bar索引&amp;rdquo;，因此很难理解何时经过了 5 根bar，但调用对象的 len 方法，它会告诉你线的长度。&lt;/p&gt;
+&lt;p&gt;我们只需记下订单完成时的长度，并查看当前长度是否距离其5根bar。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_order&lt;/span&gt;(self, order):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status &lt;span style="color:#f92672"&gt;in&lt;/span&gt; [order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Completed]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isbuy():
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;买入执行，价格：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，成本：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，佣金 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;price,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;comm))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;卖出执行，价格：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，成本：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，佣金 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;price,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;comm))&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="交易记录计算利润"&gt;交易记录计算利润&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e8%ae%b0%e5%bd%95%e8%ae%a1%e7%ae%97%e5%88%a9%e6%b6%a6"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;对于利润的计算，使用交易记录会更简单，所谓成交记录，即成交撮合一笔记录一次。与订单类似，我们可通过 &lt;code&gt;notify_trade&lt;/code&gt; 获取成交记录。它的回调参数是 Trade 类对象，利润相关属性有 &lt;code&gt;trade.pnl&lt;/code&gt;（毛利润）和 &lt;code&gt;trade.pnlcomm&lt;/code&gt;（净利润）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_trade&lt;/span&gt;(self, trade):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isclosed:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;bar_executed &lt;span style="color:#f92672"&gt;=&lt;/span&gt; len(self)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;利润记录，毛利润 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，净利润 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pnl, trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pnlcomm))&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因为只有是平仓交易，才有利润的说法，故通过 &lt;code&gt;trade.isclosed&lt;/code&gt; 判断在平仓交易的情况才输出利润信息。&lt;/p&gt;</description></item><item><title>数据回放</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/07-datafeed-replay/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/07-datafeed-replay/</guid><description>&lt;h1 id="数据回放"&gt;数据回放&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e5%9b%9e%e6%94%be"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 其他代码&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; len(self) &lt;span style="color:#f92672"&gt;&amp;gt;=&lt;/span&gt; (self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;bar_executed &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 卖出退场&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此处无 &amp;ldquo;时间&amp;rdquo; 或 &amp;ldquo;时间框架&amp;rdquo; 含义，仅仅是 bar 的数量。bar可以代表1分钟、1小时、1天、1周或任何其他时间周期。尽管我们知道数据源是每日的，但策略不对其做任何假设。&lt;/p&gt;
+&lt;h3 id="进行中的订单"&gt;进行中的订单&lt;a class="anchor" href="#%e8%bf%9b%e8%a1%8c%e4%b8%ad%e7%9a%84%e8%ae%a2%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;是否有进行中的订单如何判断？&lt;/p&gt;</description></item><item><title>数据回放</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/07-datafeed-replay/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/07-datafeed-replay/</guid><description>&lt;h1 id="数据回放"&gt;数据回放&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e5%9b%9e%e6%94%be"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;随着时间的推移，单纯对已经完成关闭的 Bar 进行策略测试已不再足够，数据回放应运而生。假设，策略在时间框架X上操作（例如：每日），数据在更小的时间框架Y（例如：1分钟）可用。&lt;/p&gt;
 &lt;p&gt;数据回放的作用正如其名，使用1分钟数据回放每日条。虽然，这并不能完全再现市场发展，但比单独观察每日完成关闭的 Bar 要好得多。如果策略在每日 Bar 形成期间实时操作，那么近似 Bar 形成过程模拟策略在实际条件下的表现。&lt;/p&gt;
 &lt;p&gt;要实现数据回放，只按常规使用 backtrader 即可。&lt;/p&gt;
@@ -3613,7 +3607,106 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 将使用最后价格作为参考&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell(size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, exectype&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;StopTrail, trailamount&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.25&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell(size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, exectype&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;StopTrail, price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10.50&lt;/span&gt;, trailamount&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.25&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;也可以指定 &lt;code&gt;trailpercent&lt;/code&gt; 而不是 &lt;code&gt;trailamount&lt;/code&gt;，并将距离价格的距离计算为价格的百分比&lt;/p&gt;</description></item><item><title>参数定义</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/08-parameters/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/08-parameters/</guid><description>&lt;h1 id="参数定义"&gt;参数定义&lt;a class="anchor" href="#%e5%8f%82%e6%95%b0%e5%ae%9a%e4%b9%89"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell(size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, exectype&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;StopTrail, price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10.50&lt;/span&gt;, trailamount&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.25&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;也可以指定 &lt;code&gt;trailpercent&lt;/code&gt; 而不是 &lt;code&gt;trailamount&lt;/code&gt;，并将距离价格的距离计算为价格的百分比&lt;/p&gt;</description></item><item><title>交易监控</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/07-commission/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/07-commission/</guid><description>&lt;h1 id="交易监控"&gt;交易监控&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e7%9b%91%e6%8e%a7"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;我们已经知道如何使用 backtrader 买卖交易了。本节将介绍 backtrader 如何监控它每笔交易，如成本、利润和佣金。由于佣金的存在，利润还分为毛利润和净利润&lt;/p&gt;
+&lt;h2 id="设置佣金"&gt;设置佣金&lt;a class="anchor" href="#%e8%ae%be%e7%bd%ae%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;让我们先设置一个合理佣金率 - 0.1% （买入和卖出都要收取的），一行代码即可。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 0.1% ... 除以 100 以去掉百分号&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;setcommission(commission&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.001&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="订单的成本和佣金"&gt;订单的成本和佣金&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e7%9a%84%e6%88%90%e6%9c%ac%e5%92%8c%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;订单的成本和佣金可从订单回调 &lt;code&gt;notify_order&lt;/code&gt; 中获取，它的 Order 参数 &lt;code&gt;order.executed.comm&lt;/code&gt; 即为订单的已执行佣金，&lt;code&gt;order.executed.value&lt;/code&gt; 即投入的成本。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_order&lt;/span&gt;(self, order):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status &lt;span style="color:#f92672"&gt;in&lt;/span&gt; [order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Completed]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isbuy():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;买入执行，价格：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，成本：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，佣金 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;price,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;comm))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;卖出执行，价格：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，成本：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，佣金 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;price,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;comm))&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="交易记录计算利润"&gt;交易记录计算利润&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e8%ae%b0%e5%bd%95%e8%ae%a1%e7%ae%97%e5%88%a9%e6%b6%a6"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;对于利润的计算，使用交易记录会更简单，所谓成交记录，即成交撮合一笔记录一次。与订单类似，我们可通过 &lt;code&gt;notify_trade&lt;/code&gt; 获取成交记录。它的回调参数是 Trade 类对象，利润相关属性有 &lt;code&gt;trade.pnl&lt;/code&gt;（毛利润）和 &lt;code&gt;trade.pnlcomm&lt;/code&gt;（净利润）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;TestStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;notify_trade&lt;/span&gt;(self, trade):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;isclosed:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;利润记录，毛利润 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;，净利润 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pnl, trade&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pnlcomm))&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因为只有是平仓交易，才有利润的说法，故通过 &lt;code&gt;trade.isclosed&lt;/code&gt; 判断在平仓交易的情况才输出利润信息。&lt;/p&gt;</description></item><item><title>数据滚动</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/08-datafeed-rollover/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/08-datafeed-rollover/</guid><description>&lt;h1 id="滚动"&gt;滚动&lt;a class="anchor" href="#%e6%bb%9a%e5%8a%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;并非所有提供商都提供连续期货合约数据。有时提供的数据是仍在交易的到期合约的有效数据。这种情况下，进行回测会变得很不方便，因为数据分散在多个不同的合约上，并且这些合约还会在时间上重叠。&lt;/p&gt;
+&lt;p&gt;如果能够正确地将这些过去的合约数据连接成一个连续的数据流，可以缓解这种痛苦。问题在于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;没有一种最佳方法将不同到期日期的数据连接成一个连续的期货数据&lt;/li&gt;
+&lt;li&gt;有些文献，如 &lt;a href="http://www.sierrachart.com/index.php?page=doc/ChangingFuturesContract.html"&gt;SierraChart的文章&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="滚动数据源"&gt;滚动数据源&lt;a class="anchor" href="#%e6%bb%9a%e5%8a%a8%e6%95%b0%e6%8d%ae%e6%ba%90"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;从backtrader 1.8.10.99开始，增加了将不同到期日期的期货数据连接成连续期货的功能：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data0 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry0&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data1 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry1&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataN &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;ExpiryN&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;drollover &lt;span style="color:#f92672"&gt;=&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;rolloverdata(data0, data1, &lt;span style="color:#f92672"&gt;...&lt;/span&gt;, dataN, name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;MyRoll&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;**kwargs&lt;/code&gt;将在下文解释&lt;/li&gt;
+&lt;li&gt;也可以直接访问RollOver数据源（如果需要子类化，这是很有帮助的）：&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data0 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry0&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data1 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry1&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataN &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;ExpiryN&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;drollover &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;RollOver(data0, data1, &lt;span style="color:#f92672"&gt;...&lt;/span&gt;, dataN, dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;MyRoll&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(drollover)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用RollOver时，使用&lt;code&gt;dataname&lt;/code&gt;参数分配名称，这是所有数据源用于传递名称/代码的标准参数。在这种情况下，它被重用以给整个滚动的期货集分配一个通用名称。&lt;/li&gt;
+&lt;li&gt;对于&lt;code&gt;cerebro.rolloverdata&lt;/code&gt;，使用&lt;code&gt;name&lt;/code&gt;参数为数据源分配名称，这是该方法的一个命名参数。&lt;/li&gt;
+&lt;/ul&gt;&lt;/blockquote&gt;&lt;p&gt;Rollover 的使用可概括为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;按通常方式创建数据源，但&lt;strong&gt;不要&lt;/strong&gt;将它们添加到cerebro&lt;/li&gt;
+&lt;li&gt;将这些数据源作为输入传递给&lt;code&gt;bt.feeds.RollOver&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;也传递一个&lt;code&gt;dataname&lt;/code&gt;，主要用于识别目的&lt;/li&gt;
+&lt;li&gt;然后将这个滚动的数据源添加到cerebro&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="滚动的选项"&gt;滚动的选项&lt;a class="anchor" href="#%e6%bb%9a%e5%8a%a8%e7%9a%84%e9%80%89%e9%a1%b9"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;提供两个参数来控制滚动过程：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;参数名&lt;/th&gt;
+ &lt;th&gt;默认值&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;checkdate&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;None&lt;/td&gt;
+ &lt;td&gt;必须是一个可调用对象，签名：&lt;code&gt;checkdate(dt, d)&lt;/code&gt;&lt;ul style="list-style-type: none;padding-left: 0; margin-left: 0;"&gt;&lt;li&gt;- &lt;code&gt;dt&lt;/code&gt; 一个&lt;code&gt;datetime.datetime&lt;/code&gt;对象&lt;/li&gt; &lt;li&gt;- &lt;code&gt;d&lt;/code&gt;，当前活跃期货的数据源&lt;/li&gt;&lt;/ul&gt; 预期返回值&lt;ul style="list-style-type: none;padding-left: 0; margin-left: 0;"&gt;&lt;li&gt;- &lt;code&gt;True&lt;/code&gt;：只要可调用对象返回此值，就可以切换到下一个期货 &lt;/li&gt;&lt;li&gt;- &lt;code&gt;False&lt;/code&gt;：不能进行到期转换&lt;/li&gt;&lt;/ul&gt;例如，如果某商品在3月的第三个星期五到期，&lt;code&gt;checkdate&lt;/code&gt;可以在到期所在的一整周内返回&lt;code&gt;True&lt;/code&gt;。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;checkcondition&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;None&lt;/td&gt;
+ &lt;td&gt;仅当&lt;code&gt;checkdate&lt;/code&gt;返回&lt;code&gt;True&lt;/code&gt;时才会调用此参数。如果为&lt;code&gt;None&lt;/code&gt;，则内部评估为&lt;code&gt;True&lt;/code&gt;（执行滚动）。否则，它必须是一个可调用对象，签名是 &lt;code&gt;checkcondition(d0, d1)&lt;/code&gt; &lt;ul&gt;&lt;li/&gt;- &lt;code&gt;d0&lt;/code&gt;是当前活跃期货的数据源&lt;/li&gt;&lt;li&gt;- &lt;code&gt;d1&lt;/code&gt;是下一个到期的数据源&lt;/li&gt;&lt;/ul&gt;预期返回值：&lt;ul&gt;&lt;li&gt;- &lt;code&gt;True&lt;/code&gt;：滚动到下一个期货&lt;/li&gt;&lt;li&gt;- &lt;code&gt;False&lt;/code&gt;：不能进行到期转换&lt;/li&gt;&lt;/ul&gt;例如，可以通过&lt;code&gt;checkcondition&lt;/code&gt;判断，如果&lt;code&gt;d0&lt;/code&gt;的交易量小于&lt;code&gt;d1&lt;/code&gt;，则进行到期转换。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="子类化rollover"&gt;子类化RollOver&lt;a class="anchor" href="#%e5%ad%90%e7%b1%bb%e5%8c%96rollover"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;如果指定的可调用对象还不够用，可以子类化&lt;code&gt;RollOver&lt;/code&gt;。需要子类化的方法有：&lt;/p&gt;</description></item><item><title>参数定义</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/08-parameters/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/08-parameters/</guid><description>&lt;h1 id="参数定义"&gt;参数定义&lt;a class="anchor" href="#%e5%8f%82%e6%95%b0%e5%ae%9a%e4%b9%89"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;前面的案例中，参数都是硬编码在策略中。本节将介绍如何在 backtrader 自定义参数。&lt;/p&gt;
 &lt;h2 id="定义参数"&gt;定义参数&lt;a class="anchor" href="#%e5%ae%9a%e4%b9%89%e5%8f%82%e6%95%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;策略参数的定义非常简单，如在策略中定义两个参数：&lt;code&gt;myparam&lt;/code&gt; 和 &lt;code&gt;exitbars&lt;/code&gt;。&lt;/p&gt;
@@ -3689,101 +3782,7 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; len(self) &lt;span style="color:#f92672"&gt;&amp;gt;=&lt;/span&gt; (self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;bar_executed &lt;span style="color:#f92672"&gt;+&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;params&lt;span style="color:#f92672"&gt;.&lt;/span&gt;exitbars):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;log(&lt;span style="color:#e6db74"&gt;&amp;#39;SELL CREATE, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;order &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>数据滚动</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/08-datafeed-rollover/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/08-datafeed-rollover/</guid><description>&lt;h1 id="滚动"&gt;滚动&lt;a class="anchor" href="#%e6%bb%9a%e5%8a%a8"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;并非所有提供商都提供连续期货合约数据。有时提供的数据是仍在交易的到期合约的有效数据。这种情况下，进行回测会变得很不方便，因为数据分散在多个不同的合约上，并且这些合约还会在时间上重叠。&lt;/p&gt;
-&lt;p&gt;如果能够正确地将这些过去的合约数据连接成一个连续的数据流，可以缓解这种痛苦。问题在于：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;没有一种最佳方法将不同到期日期的数据连接成一个连续的期货数据&lt;/li&gt;
-&lt;li&gt;有些文献，如 &lt;a href="http://www.sierrachart.com/index.php?page=doc/ChangingFuturesContract.html"&gt;SierraChart的文章&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="滚动数据源"&gt;滚动数据源&lt;a class="anchor" href="#%e6%bb%9a%e5%8a%a8%e6%95%b0%e6%8d%ae%e6%ba%90"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;从backtrader 1.8.10.99开始，增加了将不同到期日期的期货数据连接成连续期货的功能：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data0 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry0&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data1 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry1&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataN &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;ExpiryN&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;drollover &lt;span style="color:#f92672"&gt;=&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;rolloverdata(data0, data1, &lt;span style="color:#f92672"&gt;...&lt;/span&gt;, dataN, name&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;MyRoll&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;**kwargs&lt;/code&gt;将在下文解释&lt;/li&gt;
-&lt;li&gt;也可以直接访问RollOver数据源（如果需要子类化，这是很有帮助的）：&lt;/li&gt;
-&lt;/ul&gt;&lt;/blockquote&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data0 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry0&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data1 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;Expiry1&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;dataN &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MyFeed(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;ExpiryN&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;drollover &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;RollOver(data0, data1, &lt;span style="color:#f92672"&gt;...&lt;/span&gt;, dataN, dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;MyRoll&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(drollover)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;使用RollOver时，使用&lt;code&gt;dataname&lt;/code&gt;参数分配名称，这是所有数据源用于传递名称/代码的标准参数。在这种情况下，它被重用以给整个滚动的期货集分配一个通用名称。&lt;/li&gt;
-&lt;li&gt;对于&lt;code&gt;cerebro.rolloverdata&lt;/code&gt;，使用&lt;code&gt;name&lt;/code&gt;参数为数据源分配名称，这是该方法的一个命名参数。&lt;/li&gt;
-&lt;/ul&gt;&lt;/blockquote&gt;&lt;p&gt;Rollover 的使用可概括为：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;按通常方式创建数据源，但&lt;strong&gt;不要&lt;/strong&gt;将它们添加到cerebro&lt;/li&gt;
-&lt;li&gt;将这些数据源作为输入传递给&lt;code&gt;bt.feeds.RollOver&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;也传递一个&lt;code&gt;dataname&lt;/code&gt;，主要用于识别目的&lt;/li&gt;
-&lt;li&gt;然后将这个滚动的数据源添加到cerebro&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="滚动的选项"&gt;滚动的选项&lt;a class="anchor" href="#%e6%bb%9a%e5%8a%a8%e7%9a%84%e9%80%89%e9%a1%b9"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;提供两个参数来控制滚动过程：&lt;/p&gt;
-&lt;table&gt;
- &lt;thead&gt;
- &lt;tr&gt;
- &lt;th&gt;参数名&lt;/th&gt;
- &lt;th&gt;默认值&lt;/th&gt;
- &lt;th&gt;描述&lt;/th&gt;
- &lt;/tr&gt;
- &lt;/thead&gt;
- &lt;tbody&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;checkdate&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;None&lt;/td&gt;
- &lt;td&gt;必须是一个可调用对象，签名：&lt;code&gt;checkdate(dt, d)&lt;/code&gt;&lt;ul style="list-style-type: none;padding-left: 0; margin-left: 0;"&gt;&lt;li&gt;- &lt;code&gt;dt&lt;/code&gt; 一个&lt;code&gt;datetime.datetime&lt;/code&gt;对象&lt;/li&gt; &lt;li&gt;- &lt;code&gt;d&lt;/code&gt;，当前活跃期货的数据源&lt;/li&gt;&lt;/ul&gt; 预期返回值&lt;ul style="list-style-type: none;padding-left: 0; margin-left: 0;"&gt;&lt;li&gt;- &lt;code&gt;True&lt;/code&gt;：只要可调用对象返回此值，就可以切换到下一个期货 &lt;/li&gt;&lt;li&gt;- &lt;code&gt;False&lt;/code&gt;：不能进行到期转换&lt;/li&gt;&lt;/ul&gt;例如，如果某商品在3月的第三个星期五到期，&lt;code&gt;checkdate&lt;/code&gt;可以在到期所在的一整周内返回&lt;code&gt;True&lt;/code&gt;。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
- &lt;td&gt;&lt;code&gt;checkcondition&lt;/code&gt;&lt;/td&gt;
- &lt;td&gt;None&lt;/td&gt;
- &lt;td&gt;仅当&lt;code&gt;checkdate&lt;/code&gt;返回&lt;code&gt;True&lt;/code&gt;时才会调用此参数。如果为&lt;code&gt;None&lt;/code&gt;，则内部评估为&lt;code&gt;True&lt;/code&gt;（执行滚动）。否则，它必须是一个可调用对象，签名是 &lt;code&gt;checkcondition(d0, d1)&lt;/code&gt; &lt;ul&gt;&lt;li/&gt;- &lt;code&gt;d0&lt;/code&gt;是当前活跃期货的数据源&lt;/li&gt;&lt;li&gt;- &lt;code&gt;d1&lt;/code&gt;是下一个到期的数据源&lt;/li&gt;&lt;/ul&gt;预期返回值：&lt;ul&gt;&lt;li&gt;- &lt;code&gt;True&lt;/code&gt;：滚动到下一个期货&lt;/li&gt;&lt;li&gt;- &lt;code&gt;False&lt;/code&gt;：不能进行到期转换&lt;/li&gt;&lt;/ul&gt;例如，可以通过&lt;code&gt;checkcondition&lt;/code&gt;判断，如果&lt;code&gt;d0&lt;/code&gt;的交易量小于&lt;code&gt;d1&lt;/code&gt;，则进行到期转换。&lt;/td&gt;
- &lt;/tr&gt;
- &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h2 id="子类化rollover"&gt;子类化RollOver&lt;a class="anchor" href="#%e5%ad%90%e7%b1%bb%e5%8c%96rollover"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;如果指定的可调用对象还不够用，可以子类化&lt;code&gt;RollOver&lt;/code&gt;。需要子类化的方法有：&lt;/p&gt;</description></item><item><title>技术指标</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/09-indicators/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/09-indicators/</guid><description>&lt;h1 id="技术指标indicators"&gt;技术指标（Indicators）&lt;a class="anchor" href="#%e6%8a%80%e6%9c%af%e6%8c%87%e6%a0%87indicators"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;本节将介绍如何使用技术指标，将技术指标作为入场和出场信号。我们将用简单移动平均线（Simple Moving Average），或称 SMA，作为演示指标。SMA 是一个非常简单的技术指标，计算一定周期的价格均值。&lt;/p&gt;
-&lt;h2 id="交易规则"&gt;交易规则&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;基于 SMA 交易规则，定义如下所示：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;入场条件：&lt;/strong&gt; 当收盘价大于最新的 SMA，则入场买入。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;出场条件：&lt;/strong&gt; 当持有头寸，当收盘价小于 SMA，则出场卖出。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;前面章节的策略代码大部分可复用，现在重点关注如何计算技术指标。&lt;/p&gt;
-&lt;h2 id="指标计算"&gt;指标计算&lt;a class="anchor" href="#%e6%8c%87%e6%a0%87%e8%ae%a1%e7%ae%97"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;backtrader 下的 &lt;code&gt;indicators&lt;/code&gt; 模块内置了大量技术指标的计算方法，如 SMA 简单移动均线的计算。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;indicators&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MovingAverageSimple(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;], period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;params&lt;span style="color:#f92672"&gt;.&lt;/span&gt;maperiod)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如上代码中参数 &lt;code&gt;self.params.maperiod&lt;/code&gt; 就是 SMA 的均线周期。&lt;/p&gt;
-&lt;p&gt;注：如果安装了 talib，backtrader 也集成了 talib 的支持，详情文档 &lt;a href="https://www.poloxue.com/backtrader/docs/08-indicators/04-talib/"&gt;指标-TALib&lt;/a&gt;。&lt;/p&gt;
-&lt;h2 id="条件判断"&gt;条件判断&lt;a class="anchor" href="#%e6%9d%a1%e4%bb%b6%e5%88%a4%e6%96%ad"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;现在基于 &lt;code&gt;self.sma&lt;/code&gt; 判断进出场条件。&lt;/p&gt;
-&lt;p&gt;为了简化代码，这里只考虑 SMA 的判断逻辑，在完整实例中会包含所有情况。&lt;/p&gt;
-&lt;p&gt;入场判断：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;出场判断：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="策略代码"&gt;策略代码&lt;a class="anchor" href="#%e7%ad%96%e7%95%a5%e4%bb%a3%e7%a0%81"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;起始现金 1000 货币单位。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime &lt;span style="color:#75715e"&gt;# For datetime objects&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os.path &lt;span style="color:#75715e"&gt;# To manage paths&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; sys &lt;span style="color:#75715e"&gt;# To find out the script name (in argv[0])&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;策略部分：&lt;/p&gt;</description></item><item><title>Yahoo 数据源说明</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/10-datafeed-yahoo/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/10-datafeed-yahoo/</guid><description>&lt;h1 id="yahoo-数据源说明"&gt;Yahoo 数据源说明&lt;a class="anchor" href="#yahoo-%e6%95%b0%e6%8d%ae%e6%ba%90%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;order &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item><item><title>Yahoo 数据源说明</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/10-datafeed-yahoo/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/10-datafeed-yahoo/</guid><description>&lt;h1 id="yahoo-数据源说明"&gt;Yahoo 数据源说明&lt;a class="anchor" href="#yahoo-%e6%95%b0%e6%8d%ae%e6%ba%90%e8%af%b4%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;在 2017 年 5 月，Yahoo 停用了现有的 CSV 格式的历史数据下载 API。&lt;/p&gt;
 &lt;p&gt;很快，新 API（这里称为 v7）被标准化并已实现。&lt;/p&gt;
 &lt;p&gt;这也带来了实际 CSV 下载格式的变化。&lt;/p&gt;
@@ -3811,7 +3810,59 @@ Outputs:
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;YahooLegacyCSV(
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;新的 &lt;strong&gt;YahooLegacyCSV&lt;/strong&gt; 简化了使用 &lt;code&gt;version=''&lt;/code&gt; 的操作。&lt;/p&gt;</description></item><item><title>可视化</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/10-plotting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/10-plotting/</guid><description>&lt;h1 id="可视化"&gt;可视化&lt;a class="anchor" href="#%e5%8f%af%e8%a7%86%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;新的 &lt;strong&gt;YahooLegacyCSV&lt;/strong&gt; 简化了使用 &lt;code&gt;version=''&lt;/code&gt; 的操作。&lt;/p&gt;</description></item><item><title>技术指标</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/09-indicators/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/09-indicators/</guid><description>&lt;h1 id="技术指标indicators"&gt;技术指标（Indicators）&lt;a class="anchor" href="#%e6%8a%80%e6%9c%af%e6%8c%87%e6%a0%87indicators"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;本节将介绍如何使用技术指标，将技术指标作为入场和出场信号。我们将用简单移动平均线（Simple Moving Average），或称 SMA，作为演示指标。SMA 是一个非常简单的技术指标，计算一定周期的价格均值。&lt;/p&gt;
+&lt;h2 id="交易规则"&gt;交易规则&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e8%a7%84%e5%88%99"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;基于 SMA 交易规则，定义如下所示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;入场条件：&lt;/strong&gt; 当收盘价大于最新的 SMA，则入场买入。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;出场条件：&lt;/strong&gt; 当持有头寸，当收盘价小于 SMA，则出场卖出。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;前面章节的策略代码大部分可复用，现在重点关注如何计算技术指标。&lt;/p&gt;
+&lt;h2 id="指标计算"&gt;指标计算&lt;a class="anchor" href="#%e6%8c%87%e6%a0%87%e8%ae%a1%e7%ae%97"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;backtrader 下的 &lt;code&gt;indicators&lt;/code&gt; 模块内置了大量技术指标的计算方法，如 SMA 简单移动均线的计算。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;indicators&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MovingAverageSimple(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;], period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;params&lt;span style="color:#f92672"&gt;.&lt;/span&gt;maperiod)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如上代码中参数 &lt;code&gt;self.params.maperiod&lt;/code&gt; 就是 SMA 的均线周期。&lt;/p&gt;
+&lt;p&gt;注：如果安装了 talib，backtrader 也集成了 talib 的支持，详情文档 &lt;a href="https://www.poloxue.com/backtrader/docs/08-indicators/04-talib/"&gt;指标-TALib&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="条件判断"&gt;条件判断&lt;a class="anchor" href="#%e6%9d%a1%e4%bb%b6%e5%88%a4%e6%96%ad"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;现在基于 &lt;code&gt;self.sma&lt;/code&gt; 判断进出场条件。&lt;/p&gt;
+&lt;p&gt;为了简化代码，这里只考虑 SMA 的判断逻辑，在完整实例中会包含所有情况。&lt;/p&gt;
+&lt;p&gt;入场判断：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;gt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;出场判断：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;dataclose[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;&amp;lt;&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="策略代码"&gt;策略代码&lt;a class="anchor" href="#%e7%ad%96%e7%95%a5%e4%bb%a3%e7%a0%81"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;起始现金 1000 货币单位。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime &lt;span style="color:#75715e"&gt;# For datetime objects&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os.path &lt;span style="color:#75715e"&gt;# To manage paths&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; sys &lt;span style="color:#75715e"&gt;# To find out the script name (in argv[0])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;策略部分：&lt;/p&gt;</description></item><item><title>Pandas 数据源示例</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/11-datafeed-pandas/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/11-datafeed-pandas/</guid><description>&lt;h1 id="pandas-数据源示例"&gt;Pandas 数据源示例&lt;a class="anchor" href="#pandas-%e6%95%b0%e6%8d%ae%e6%ba%90%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，需要安装 pandas 及其依赖项。支持 Pandas Dataframe 对很多人来说很重要，他们依赖于 Pandas 提供的不同数据源（包括 CSV）的解析代码及其他功能。&lt;/p&gt;
+&lt;h2 id="数据源的重要声明"&gt;数据源的重要声明&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%ba%90%e7%9a%84%e9%87%8d%e8%a6%81%e5%a3%b0%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这些只是声明。不要盲目复制此代码。请参见下面的实际用法示例：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PandasData&lt;/span&gt;(feed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;DataBase):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; ``dataname`` 参数继承自 ``feed.DataBase`` 是 pandas DataFrame
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# datetime 的可能值（必须始终存在）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# None : datetime 是 Pandas Dataframe 中的 &amp;#34;index&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# -1 : 自动检测位置或大小写相同的名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# &amp;gt;= 0 : pandas dataframe 中列的数值索引&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# string : pandas dataframe 中的列名（作为索引）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;datetime&amp;#39;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 下面是可能的值：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# None : 列不存在&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# -1 : 自动检测位置或大小写相同的名称&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# &amp;gt;= 0 : pandas dataframe 中列的数值索引&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# string : pandas dataframe 中的列名（作为索引）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;open&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;high&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;low&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;close&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;volume&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;openinterest&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上述 PandasData 类的片段展示了关键点：&lt;/p&gt;</description></item><item><title>可视化</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/10-plotting/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/10-plotting/</guid><description>&lt;h1 id="可视化"&gt;可视化&lt;a class="anchor" href="#%e5%8f%af%e8%a7%86%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;通过 &lt;code&gt;print&lt;/code&gt; 输出每个 bar 的信息不利于我们阅读，我们还是更倾向于图表的视觉效果。backtrader 内置了图表绘制的能力，一行代码即可绘图。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;plot()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;请确保在调用&lt;code&gt;cerebro.run()&lt;/code&gt;之后执行，还有，&lt;code&gt;backtrader&lt;/code&gt; 的绘图能力依赖 matplotlib。&lt;/p&gt;
 &lt;h2 id="演示"&gt;演示&lt;a class="anchor" href="#%e6%bc%94%e7%a4%ba"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -3939,36 +3990,72 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#39;Final Portfolio Value: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;%.2f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;%&lt;/span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue())
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# Plot the result&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;plot()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行后的输出：&lt;/p&gt;</description></item><item><title>Pandas 数据源示例</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/11-datafeed-pandas/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/11-datafeed-pandas/</guid><description>&lt;h1 id="pandas-数据源示例"&gt;Pandas 数据源示例&lt;a class="anchor" href="#pandas-%e6%95%b0%e6%8d%ae%e6%ba%90%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，需要安装 pandas 及其依赖项。支持 Pandas Dataframe 对很多人来说很重要，他们依赖于 Pandas 提供的不同数据源（包括 CSV）的解析代码及其他功能。&lt;/p&gt;
-&lt;h2 id="数据源的重要声明"&gt;数据源的重要声明&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%ba%90%e7%9a%84%e9%87%8d%e8%a6%81%e5%a3%b0%e6%98%8e"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;这些只是声明。不要盲目复制此代码。请参见下面的实际用法示例：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;PandasData&lt;/span&gt;(feed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;DataBase):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; ``dataname`` 参数继承自 ``feed.DataBase`` 是 pandas DataFrame
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# datetime 的可能值（必须始终存在）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# None : datetime 是 Pandas Dataframe 中的 &amp;#34;index&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# -1 : 自动检测位置或大小写相同的名称&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# &amp;gt;= 0 : pandas dataframe 中列的数值索引&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# string : pandas dataframe 中的列名（作为索引）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;datetime&amp;#39;&lt;/span&gt;, &lt;span style="color:#66d9ef"&gt;None&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 下面是可能的值：&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# None : 列不存在&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# -1 : 自动检测位置或大小写相同的名称&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# &amp;gt;= 0 : pandas dataframe 中列的数值索引&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# string : pandas dataframe 中的列名（作为索引）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;open&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;high&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;low&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;close&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;volume&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;openinterest&amp;#39;&lt;/span&gt;, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;),
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上述 PandasData 类的片段展示了关键点：&lt;/p&gt;</description></item><item><title>策略优化</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/11-optimization/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/11-optimization/</guid><description>&lt;h1 id="策略优化"&gt;策略优化&lt;a class="anchor" href="#%e7%ad%96%e7%95%a5%e4%bc%98%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;plot()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行后的输出：&lt;/p&gt;</description></item><item><title>数据源参考</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/12-datafeed-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/12-datafeed-reference/</guid><description>&lt;h3 id="数据源参考"&gt;数据源参考&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%ba%90%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id="abstractdatabase"&gt;AbstractDataBase&lt;a class="anchor" href="#abstractdatabase"&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;数据行（Lines）:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;close&lt;/li&gt;
+&lt;li&gt;low&lt;/li&gt;
+&lt;li&gt;high&lt;/li&gt;
+&lt;li&gt;open&lt;/li&gt;
+&lt;li&gt;volume&lt;/li&gt;
+&lt;li&gt;openinterest&lt;/li&gt;
+&lt;li&gt;datetime&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;参数（Params）:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dataname (None)&lt;/li&gt;
+&lt;li&gt;name ()&lt;/li&gt;
+&lt;li&gt;compression (1)&lt;/li&gt;
+&lt;li&gt;timeframe (5)&lt;/li&gt;
+&lt;li&gt;fromdate (None)&lt;/li&gt;
+&lt;li&gt;todate (None)&lt;/li&gt;
+&lt;li&gt;sessionstart (None)&lt;/li&gt;
+&lt;li&gt;sessionend (None)&lt;/li&gt;
+&lt;li&gt;filters ([])&lt;/li&gt;
+&lt;li&gt;tz (None)&lt;/li&gt;
+&lt;li&gt;tzinput (None)&lt;/li&gt;
+&lt;li&gt;qcheck (0.0)&lt;/li&gt;
+&lt;li&gt;calendar (None)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4 id="backtradercsvdata"&gt;BacktraderCSVData&lt;a class="anchor" href="#backtradercsvdata"&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;解析用于测试的自定义 CSV 数据。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;特定参数：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dataname: 要解析的文件名或类文件对象&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;数据行：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;close&lt;/li&gt;
+&lt;li&gt;low&lt;/li&gt;
+&lt;li&gt;high&lt;/li&gt;
+&lt;li&gt;open&lt;/li&gt;
+&lt;li&gt;volume&lt;/li&gt;
+&lt;li&gt;openinterest&lt;/li&gt;
+&lt;li&gt;datetime&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;参数：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dataname (None)&lt;/li&gt;
+&lt;li&gt;name ()&lt;/li&gt;
+&lt;li&gt;compression (1)&lt;/li&gt;
+&lt;li&gt;timeframe (5)&lt;/li&gt;
+&lt;li&gt;fromdate (None)&lt;/li&gt;
+&lt;li&gt;todate (None)&lt;/li&gt;
+&lt;li&gt;sessionstart (None)&lt;/li&gt;
+&lt;li&gt;sessionend (None)&lt;/li&gt;
+&lt;li&gt;filters ([])&lt;/li&gt;
+&lt;li&gt;tz (None)&lt;/li&gt;
+&lt;li&gt;tzinput (None)&lt;/li&gt;
+&lt;li&gt;qcheck (0.0)&lt;/li&gt;
+&lt;li&gt;calendar (None)&lt;/li&gt;
+&lt;li&gt;headers (True)&lt;/li&gt;
+&lt;li&gt;separator (,)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h4 id="csvdatabase"&gt;CSVDataBase&lt;a class="anchor" href="#csvdatabase"&gt;#&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;用于实现 CSV 数据源的基类。&lt;/p&gt;</description></item><item><title>策略优化</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/11-optimization/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/11-optimization/</guid><description>&lt;h1 id="策略优化"&gt;策略优化&lt;a class="anchor" href="#%e7%ad%96%e7%95%a5%e4%bc%98%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;许多交易书籍中提到，每个市场和每个交易的股票（或商品等）都有不同的节奏，没有一种适合所有的策略。&lt;/p&gt;
 &lt;p&gt;在绘图示例前，当策略开始使用一个指标，周期默认值为 15 个 bar。这是一个策略参数，可以用于优化，改变参数值以找出哪个更适合你的市场。&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
@@ -4050,70 +4137,5 @@ Outputs:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;addsizer(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sizers&lt;span style="color:#f92672"&gt;.&lt;/span&gt;FixedSize, stake&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;setcommission(commission&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.0&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(maxcpus&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;策略优化调用不再是 &lt;code&gt;addstrategy&lt;/code&gt;，而是 &lt;code&gt;optstrategy&lt;/code&gt;，且传递的是值的范围，而非单一值。&lt;/p&gt;</description></item><item><title>数据源参考</title><link>https://www.poloxue.com/backtrader/docs/06-datafeed/12-datafeed-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/06-datafeed/12-datafeed-reference/</guid><description>&lt;h3 id="数据源参考"&gt;数据源参考&lt;a class="anchor" href="#%e6%95%b0%e6%8d%ae%e6%ba%90%e5%8f%82%e8%80%83"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;h4 id="abstractdatabase"&gt;AbstractDataBase&lt;a class="anchor" href="#abstractdatabase"&gt;#&lt;/a&gt;&lt;/h4&gt;
-&lt;p&gt;&lt;strong&gt;数据行（Lines）:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;close&lt;/li&gt;
-&lt;li&gt;low&lt;/li&gt;
-&lt;li&gt;high&lt;/li&gt;
-&lt;li&gt;open&lt;/li&gt;
-&lt;li&gt;volume&lt;/li&gt;
-&lt;li&gt;openinterest&lt;/li&gt;
-&lt;li&gt;datetime&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;参数（Params）:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;dataname (None)&lt;/li&gt;
-&lt;li&gt;name ()&lt;/li&gt;
-&lt;li&gt;compression (1)&lt;/li&gt;
-&lt;li&gt;timeframe (5)&lt;/li&gt;
-&lt;li&gt;fromdate (None)&lt;/li&gt;
-&lt;li&gt;todate (None)&lt;/li&gt;
-&lt;li&gt;sessionstart (None)&lt;/li&gt;
-&lt;li&gt;sessionend (None)&lt;/li&gt;
-&lt;li&gt;filters ([])&lt;/li&gt;
-&lt;li&gt;tz (None)&lt;/li&gt;
-&lt;li&gt;tzinput (None)&lt;/li&gt;
-&lt;li&gt;qcheck (0.0)&lt;/li&gt;
-&lt;li&gt;calendar (None)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h4 id="backtradercsvdata"&gt;BacktraderCSVData&lt;a class="anchor" href="#backtradercsvdata"&gt;#&lt;/a&gt;&lt;/h4&gt;
-&lt;p&gt;解析用于测试的自定义 CSV 数据。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;特定参数：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;dataname: 要解析的文件名或类文件对象&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;数据行：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;close&lt;/li&gt;
-&lt;li&gt;low&lt;/li&gt;
-&lt;li&gt;high&lt;/li&gt;
-&lt;li&gt;open&lt;/li&gt;
-&lt;li&gt;volume&lt;/li&gt;
-&lt;li&gt;openinterest&lt;/li&gt;
-&lt;li&gt;datetime&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;参数：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;dataname (None)&lt;/li&gt;
-&lt;li&gt;name ()&lt;/li&gt;
-&lt;li&gt;compression (1)&lt;/li&gt;
-&lt;li&gt;timeframe (5)&lt;/li&gt;
-&lt;li&gt;fromdate (None)&lt;/li&gt;
-&lt;li&gt;todate (None)&lt;/li&gt;
-&lt;li&gt;sessionstart (None)&lt;/li&gt;
-&lt;li&gt;sessionend (None)&lt;/li&gt;
-&lt;li&gt;filters ([])&lt;/li&gt;
-&lt;li&gt;tz (None)&lt;/li&gt;
-&lt;li&gt;tzinput (None)&lt;/li&gt;
-&lt;li&gt;qcheck (0.0)&lt;/li&gt;
-&lt;li&gt;calendar (None)&lt;/li&gt;
-&lt;li&gt;headers (True)&lt;/li&gt;
-&lt;li&gt;separator (,)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h4 id="csvdatabase"&gt;CSVDataBase&lt;a class="anchor" href="#csvdatabase"&gt;#&lt;/a&gt;&lt;/h4&gt;
-&lt;p&gt;用于实现 CSV 数据源的基类。&lt;/p&gt;</description></item><item><title/><link>https://www.poloxue.com/backtrader/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/readme/</guid><description>&lt;h1 id="fyne-中文文档"&gt;Fyne 中文文档&lt;a class="anchor" href="#fyne-%e4%b8%ad%e6%96%87%e6%96%87%e6%a1%a3"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(maxcpus&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;策略优化调用不再是 &lt;code&gt;addstrategy&lt;/code&gt;，而是 &lt;code&gt;optstrategy&lt;/code&gt;，且传递的是值的范围，而非单一值。&lt;/p&gt;</description></item><item><title/><link>https://www.poloxue.com/backtrader/readme/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/readme/</guid><description>&lt;h1 id="fyne-中文文档"&gt;Fyne 中文文档&lt;a class="anchor" href="#fyne-%e4%b8%ad%e6%96%87%e6%96%87%e6%a1%a3"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;Backtrader 是一款 Python 实现量化回测框架，本文档是基于 Backtrader4的官方文档中文翻译版。英文原版，请异步 &lt;a href="https://www.backtrader.com"&gt;backtrader.com&lt;/a&gt;。&lt;/p&gt;</description></item></channel></rss>
