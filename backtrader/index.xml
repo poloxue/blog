@@ -626,6 +626,10 @@
 &lt;li&gt;&lt;code&gt;self.dataX&lt;/code&gt; 对应的是 &lt;code&gt;self.datas[X]&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;示例：&lt;/p&gt;</description></item><item><title>环境设置</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/01-setup/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/01-setup/</guid><description>&lt;h1 id="初始配置"&gt;初始配置&lt;a class="anchor" href="#%e5%88%9d%e5%a7%8b%e9%85%8d%e7%bd%ae"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;
+ &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/Li6h94v3zYg?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
 &lt;p&gt;在写复杂策略前，先搭好运行环境很重要。Backtrader 的核心是 Cerebro，它负责管理数据、策略和资金，就像系统的大脑。&lt;/p&gt;
 &lt;p&gt;如下所示是最简单的初始配置代码：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
@@ -642,10 +646,7 @@
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;最终资金: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue()&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出如下：&lt;/p&gt;
 &lt;pre tabindex="0"&gt;&lt;code&gt;初始资金: 10000.00
-最终资金: 10000.00&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个基础设置是构建复杂交易策略的基础。&lt;/p&gt;
-&lt;p&gt;这一简单的示例中，Cerebro 引擎在后台创建了一个 broker 实例，并自动分配了一些初始资金。这种 broker 实例化是 backtrader 的常规特性，旨在简化用户操作。&lt;/p&gt;
-&lt;p&gt;如未明确设置 broker，系统会使用默认 broker，默认初始资金通常是 10,000 货币单位。&lt;/p&gt;
-&lt;p&gt;接下来的章节，会对 broker 进行更对的配置，继续添加数据源（DataFeed）、策略（Strategy）、指标（Indicator）等，逐步完善这个交易系统。&lt;/p&gt;</description></item><item><title>管理</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</guid><description>&lt;h1 id="管理"&gt;管理&lt;a class="anchor" href="#%e7%ae%a1%e7%90%86"&gt;#&lt;/a&gt;&lt;/h1&gt;
+最终资金: 10000.00&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个基础设置是构建复杂交易策略的基础。&lt;/p&gt;</description></item><item><title>管理</title><link>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/17-datetime/01-management/</guid><description>&lt;h1 id="管理"&gt;管理&lt;a class="anchor" href="#%e7%ae%a1%e7%90%86"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;在发布 1.5.0 版本之前，backtrader 对时间管理采用的是直接方式，即直接使用数据源计算出的任何日期时间。用户输入的参数，如 &lt;code&gt;fromdate&lt;/code&gt;（或 &lt;code&gt;sessionstart&lt;/code&gt;），也可以传递给任何数据源。&lt;/p&gt;
 &lt;p&gt;这种方法在对冻结数据源进行回测时效果很好。可以假设输入的日期时间在进入系统之前已经经过处理。&lt;/p&gt;
 &lt;p&gt;但在 1.5.0 版本之后，backtrader 开始支持实时数据源，这就需要考虑日期时间管理。如果以下情况总是成立，那么就不需要进行这种管理：&lt;/p&gt;
