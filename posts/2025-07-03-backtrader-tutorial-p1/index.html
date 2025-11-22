@@ -1,122 +1,100 @@
-<!doctype html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>Backtrader 教程一：为什么选择 Backtrader？ - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="Backtrader 教程一：为什么选择 Backtrader？"><meta itemprop=description content="—— 从“策略实现”迈向“系统化开发”
-在量化交易的执行过程中，策略开发只是开始，如果我们只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。
-为什么选择 backtrader？ 真正构建起一个稳健的交易系统，还需要有结构化的架构支持、可扩展的功能设计以及模块化的实现能力。Backtrader，正是这样一款以策略回测为核心，同时具备系统构建能力的 Python 框架。
-本文介绍一个著名的回测框架 backtrader，或者也可称作交易框架。我将尝试解释选择 backtrader 的原因，介绍它有哪些优势。
-Backtrader 是什么？ Backtrader 是一个用 Python 编写的量化交易回测框架，专为个人交易者与量化研究者设计，它提供了丰富的接口来支持策略开发、历史回测、结果可视化，甚至可以扩展到实盘接入。
-与其说 Backtrader 是一个回测工具，不如说它是一个轻量级的交易系统骨架。
-通过 Backtrader，可以把自己的策略逻辑、数据输入、订单执行、仓位管理、绩效分析等模块，有条不紊地组织起来。不再需要将所有的逻辑硬编码到一个脚本中，而是用清晰的类与对象去描述一个完整的交易系统流程。
-还有，Backtrader 天然支持面向对象的设计思想，策略与数据、下单逻辑、资金账户是彼此解耦的。
-接下来，先具体看看 Backtrader 的核心架构设计，为什么说它是一个轻量级的交易系统骨架吧！
-核心架构 Backtrader 的架构划分清晰，整个系统由多个独立但协同工作的模块构成：
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>Backtrader 教程一：为什么选择 Backtrader？ - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="Backtrader 教程一：为什么选择 Backtrader？"><meta itemprop=description content="今天想跟大家聊一个量化交易中非常实用的工具——Backtrader。
+如果你对量化交易感兴趣，可能已经听说过策略回测。简单说，就是用历史数据去验证一个交易策略有没有效。在Python里，其实有不少回测框架可以用，比如backtesting.py、vectorbt，还有已经不更新的 zipline。
+但今天，我要重点介绍的是——Backtrader。
+🤔 为什么选Backtrader？ 因为构建一个稳健的交易系统，光有策略还不够，还需要有清晰的架构、可扩展的功能，以及模块化的设计。而Backtrader，就是一个以策略回测为核心，同时帮你搭建交易系统骨架的Python框架。
+它不只是回测工具，更是一个轻量级的“交易系统骨架”。
+🔍 Backtrader是什么？ Backtrader是一个用Python写的量化回测框架，专门为个人交易者和研究者设计。它支持策略开发、历史回测、可视化分析，甚至还能接入实盘交易。
+更重要的是，它采用面向对象的设计，把策略、数据、订单、资金账户这些模块分得清清楚楚，你不用把所有代码都塞在一个脚本里，而是像搭积木一样，有条不紊地搭建系统。
+🧱 核心架构：五大模块 Backtrader的架构非常清晰，主要由五个模块组成：
 策略逻辑（Strategy）
-所有交易信号的生成逻辑都封装在 Strategy 类中。你只需要关注买卖条件的判断和信号的发出，完全不必关心订单执行的具体细节。
+你把买卖信号的判断写在这里，框架自动帮你执行订单，你不用操心具体怎么成交。
 数据输入（DataFeed）
-通过统一的数据接口（如 PandasData、GenericCSVData、或实时数据源），Backtrader 可以轻松接入不同来源的数据。无论是日线、分钟线，还是多个标的，都能在同一回测环境中运行。
-交易撮合与资金管理（Broker）
-模拟真实市场的成交环境，包括市价单、限价单、滑点模型、佣金结构等。所有下单操作（如 self.buy()、self.sell()）都会由 Broker 模拟执行，并自动更新账户状态。
+支持从CSV、Pandas、甚至实时API导入数据，不管是日线、分钟线，还是多个股票，都能一起回测。
+交易与资金管理（Broker）
+模拟真实市场的成交，支持市价单、限价单、滑点、佣金计算，自动更新你的账户余额和持仓。
 绩效分析（Analyzer）
-用于生成收益率、最大回撤、夏普比率等各类绩效指标。你可以组合多个分析器，一键获取回测表现的完整评估。
+回测结束后，自动计算收益率、最大回撤、夏普比率等指标，帮你全面评估策略表现。
 图形展示（Observer）
-自动生成策略运行过程的图形，包括买卖点、资金曲线、技术指标等，便于快速理解策略行为。
-这样的模块划分提升了策略开发的效率，也为后续的调试、测试、扩展提供了支撑。我可以像搭积木一样构建自己的系统，轻松对其中某个模块进行替换或优化。
-我可以专注于研究交易逻辑，而不必重新造轮子处理仓位、画图、分析收益率。这种结构也使得策略迁移到实盘平台（如 Interactive Brokers、CCXT 等）变得更加自然。
-回测流程图与模块关系 下面是 Backtrader 在回测过程中各模块的交互流程图，展示了从数据流入、策略判断、订单生成、成交撮合，到结果展示和分析的全过程。
-如下是各部分的简要说明：
-数据流入：通过 DataFeed 加载行情数据（External Data）（CSV、Pandas、API 等）进入 Cerebro。 策略运行：Cerebro 在每个 bar 推进时调用 Strategy.next()，用技术指标（如 MA、RSI）判断； 下单撮合：策略中发出 self.buy() / self.sell() 指令，由 Broker 模拟撮合并更新账户状态； 分析观察：回测完成后，Analyzer 模块汇总指标（如收益率、回撤等），Observer 模块负责绘图。 这张图帮助理解 Backtrader 如何将策略、数据、订单、账户、指标和分析模块有机地组织起来，每一步都有明确的责任分工，而所有的调度都交由 Cerebro 统一管理，结构清晰、易于扩展。"><meta itemprop=datePublished content="2025-07-03T15:18:08+08:00"><meta itemprop=dateModified content="2025-07-03T15:18:08+08:00"><meta itemprop=wordCount content="260"><meta property="og:url" content="https://www.poloxue.com/posts/2025-07-03-backtrader-tutorial-p1/"><meta property="og:site_name" content="POLOXUE's BLOG"><meta property="og:title" content="Backtrader 教程一：为什么选择 Backtrader？"><meta property="og:description" content="—— 从“策略实现”迈向“系统化开发”
-在量化交易的执行过程中，策略开发只是开始，如果我们只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。
-为什么选择 backtrader？ 真正构建起一个稳健的交易系统，还需要有结构化的架构支持、可扩展的功能设计以及模块化的实现能力。Backtrader，正是这样一款以策略回测为核心，同时具备系统构建能力的 Python 框架。
-本文介绍一个著名的回测框架 backtrader，或者也可称作交易框架。我将尝试解释选择 backtrader 的原因，介绍它有哪些优势。
-Backtrader 是什么？ Backtrader 是一个用 Python 编写的量化交易回测框架，专为个人交易者与量化研究者设计，它提供了丰富的接口来支持策略开发、历史回测、结果可视化，甚至可以扩展到实盘接入。
-与其说 Backtrader 是一个回测工具，不如说它是一个轻量级的交易系统骨架。
-通过 Backtrader，可以把自己的策略逻辑、数据输入、订单执行、仓位管理、绩效分析等模块，有条不紊地组织起来。不再需要将所有的逻辑硬编码到一个脚本中，而是用清晰的类与对象去描述一个完整的交易系统流程。
-还有，Backtrader 天然支持面向对象的设计思想，策略与数据、下单逻辑、资金账户是彼此解耦的。
-接下来，先具体看看 Backtrader 的核心架构设计，为什么说它是一个轻量级的交易系统骨架吧！
-核心架构 Backtrader 的架构划分清晰，整个系统由多个独立但协同工作的模块构成：
+自动画出买卖点、资金曲线、技术指标，一眼看懂策略行为。
+这五个模块各司其职，而你只需要专注在策略逻辑上。
+🔄 一张图看懂回测流程 从数据加载 → 策略判断 → 订单生成 → 成交撮合 → 绩效分析 → 图形输出，整个过程都由一个叫Cerebro的引擎统一调度。你只需要写策略，其它交给Backtrader。
+📊 和其它框架比，Backtrader强在哪？ ✅ 完全本地运行，不依赖网络，数据更安全
+✅ 支持多策略并行运行，方便组合对比
+✅ 支持多股票、多周期数据一起分析
+✅ 自带可视化，不用另外画图
+✅ 结构清晰，组件解耦，易扩展维护
+💡 和手写回测的对比 很多人一开始学量化，会用Pandas写循环来回测，比如：
+1 2 3 4 for i in range(1, len(data)): if data['close'][i] > data['close'][i-1] and position == 0: # 买入... elif ... 这样写虽然直接，但策略一复杂，代码就变得又乱又难维护。"><meta itemprop=datePublished content="2025-07-03T15:18:08+08:00"><meta itemprop=dateModified content="2025-07-03T15:18:08+08:00"><meta itemprop=wordCount content="103"><meta property="og:url" content="https://www.poloxue.com/posts/2025-07-03-backtrader-tutorial-p1/"><meta property="og:site_name" content="POLOXUE's BLOG"><meta property="og:title" content="Backtrader 教程一：为什么选择 Backtrader？"><meta property="og:description" content="今天想跟大家聊一个量化交易中非常实用的工具——Backtrader。
+如果你对量化交易感兴趣，可能已经听说过策略回测。简单说，就是用历史数据去验证一个交易策略有没有效。在Python里，其实有不少回测框架可以用，比如backtesting.py、vectorbt，还有已经不更新的 zipline。
+但今天，我要重点介绍的是——Backtrader。
+🤔 为什么选Backtrader？ 因为构建一个稳健的交易系统，光有策略还不够，还需要有清晰的架构、可扩展的功能，以及模块化的设计。而Backtrader，就是一个以策略回测为核心，同时帮你搭建交易系统骨架的Python框架。
+它不只是回测工具，更是一个轻量级的“交易系统骨架”。
+🔍 Backtrader是什么？ Backtrader是一个用Python写的量化回测框架，专门为个人交易者和研究者设计。它支持策略开发、历史回测、可视化分析，甚至还能接入实盘交易。
+更重要的是，它采用面向对象的设计，把策略、数据、订单、资金账户这些模块分得清清楚楚，你不用把所有代码都塞在一个脚本里，而是像搭积木一样，有条不紊地搭建系统。
+🧱 核心架构：五大模块 Backtrader的架构非常清晰，主要由五个模块组成：
 策略逻辑（Strategy）
-所有交易信号的生成逻辑都封装在 Strategy 类中。你只需要关注买卖条件的判断和信号的发出，完全不必关心订单执行的具体细节。
+你把买卖信号的判断写在这里，框架自动帮你执行订单，你不用操心具体怎么成交。
 数据输入（DataFeed）
-通过统一的数据接口（如 PandasData、GenericCSVData、或实时数据源），Backtrader 可以轻松接入不同来源的数据。无论是日线、分钟线，还是多个标的，都能在同一回测环境中运行。
-交易撮合与资金管理（Broker）
-模拟真实市场的成交环境，包括市价单、限价单、滑点模型、佣金结构等。所有下单操作（如 self.buy()、self.sell()）都会由 Broker 模拟执行，并自动更新账户状态。
+支持从CSV、Pandas、甚至实时API导入数据，不管是日线、分钟线，还是多个股票，都能一起回测。
+交易与资金管理（Broker）
+模拟真实市场的成交，支持市价单、限价单、滑点、佣金计算，自动更新你的账户余额和持仓。
 绩效分析（Analyzer）
-用于生成收益率、最大回撤、夏普比率等各类绩效指标。你可以组合多个分析器，一键获取回测表现的完整评估。
+回测结束后，自动计算收益率、最大回撤、夏普比率等指标，帮你全面评估策略表现。
 图形展示（Observer）
-自动生成策略运行过程的图形，包括买卖点、资金曲线、技术指标等，便于快速理解策略行为。
-这样的模块划分提升了策略开发的效率，也为后续的调试、测试、扩展提供了支撑。我可以像搭积木一样构建自己的系统，轻松对其中某个模块进行替换或优化。
-我可以专注于研究交易逻辑，而不必重新造轮子处理仓位、画图、分析收益率。这种结构也使得策略迁移到实盘平台（如 Interactive Brokers、CCXT 等）变得更加自然。
-回测流程图与模块关系 下面是 Backtrader 在回测过程中各模块的交互流程图，展示了从数据流入、策略判断、订单生成、成交撮合，到结果展示和分析的全过程。
-如下是各部分的简要说明：
-数据流入：通过 DataFeed 加载行情数据（External Data）（CSV、Pandas、API 等）进入 Cerebro。 策略运行：Cerebro 在每个 bar 推进时调用 Strategy.next()，用技术指标（如 MA、RSI）判断； 下单撮合：策略中发出 self.buy() / self.sell() 指令，由 Broker 模拟撮合并更新账户状态； 分析观察：回测完成后，Analyzer 模块汇总指标（如收益率、回撤等），Observer 模块负责绘图。 这张图帮助理解 Backtrader 如何将策略、数据、订单、账户、指标和分析模块有机地组织起来，每一步都有明确的责任分工，而所有的调度都交由 Cerebro 统一管理，结构清晰、易于扩展。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-07-03T15:18:08+08:00"><meta property="article:modified_time" content="2025-07-03T15:18:08+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Backtrader 教程一：为什么选择 Backtrader？"><meta name=twitter:description content="—— 从“策略实现”迈向“系统化开发”
-在量化交易的执行过程中，策略开发只是开始，如果我们只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。
-为什么选择 backtrader？ 真正构建起一个稳健的交易系统，还需要有结构化的架构支持、可扩展的功能设计以及模块化的实现能力。Backtrader，正是这样一款以策略回测为核心，同时具备系统构建能力的 Python 框架。
-本文介绍一个著名的回测框架 backtrader，或者也可称作交易框架。我将尝试解释选择 backtrader 的原因，介绍它有哪些优势。
-Backtrader 是什么？ Backtrader 是一个用 Python 编写的量化交易回测框架，专为个人交易者与量化研究者设计，它提供了丰富的接口来支持策略开发、历史回测、结果可视化，甚至可以扩展到实盘接入。
-与其说 Backtrader 是一个回测工具，不如说它是一个轻量级的交易系统骨架。
-通过 Backtrader，可以把自己的策略逻辑、数据输入、订单执行、仓位管理、绩效分析等模块，有条不紊地组织起来。不再需要将所有的逻辑硬编码到一个脚本中，而是用清晰的类与对象去描述一个完整的交易系统流程。
-还有，Backtrader 天然支持面向对象的设计思想，策略与数据、下单逻辑、资金账户是彼此解耦的。
-接下来，先具体看看 Backtrader 的核心架构设计，为什么说它是一个轻量级的交易系统骨架吧！
-核心架构 Backtrader 的架构划分清晰，整个系统由多个独立但协同工作的模块构成：
+自动画出买卖点、资金曲线、技术指标，一眼看懂策略行为。
+这五个模块各司其职，而你只需要专注在策略逻辑上。
+🔄 一张图看懂回测流程 从数据加载 → 策略判断 → 订单生成 → 成交撮合 → 绩效分析 → 图形输出，整个过程都由一个叫Cerebro的引擎统一调度。你只需要写策略，其它交给Backtrader。
+📊 和其它框架比，Backtrader强在哪？ ✅ 完全本地运行，不依赖网络，数据更安全
+✅ 支持多策略并行运行，方便组合对比
+✅ 支持多股票、多周期数据一起分析
+✅ 自带可视化，不用另外画图
+✅ 结构清晰，组件解耦，易扩展维护
+💡 和手写回测的对比 很多人一开始学量化，会用Pandas写循环来回测，比如：
+1 2 3 4 for i in range(1, len(data)): if data['close'][i] > data['close'][i-1] and position == 0: # 买入... elif ... 这样写虽然直接，但策略一复杂，代码就变得又乱又难维护。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-07-03T15:18:08+08:00"><meta property="article:modified_time" content="2025-07-03T15:18:08+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Backtrader 教程一：为什么选择 Backtrader？"><meta name=twitter:description content="今天想跟大家聊一个量化交易中非常实用的工具——Backtrader。
+如果你对量化交易感兴趣，可能已经听说过策略回测。简单说，就是用历史数据去验证一个交易策略有没有效。在Python里，其实有不少回测框架可以用，比如backtesting.py、vectorbt，还有已经不更新的 zipline。
+但今天，我要重点介绍的是——Backtrader。
+🤔 为什么选Backtrader？ 因为构建一个稳健的交易系统，光有策略还不够，还需要有清晰的架构、可扩展的功能，以及模块化的设计。而Backtrader，就是一个以策略回测为核心，同时帮你搭建交易系统骨架的Python框架。
+它不只是回测工具，更是一个轻量级的“交易系统骨架”。
+🔍 Backtrader是什么？ Backtrader是一个用Python写的量化回测框架，专门为个人交易者和研究者设计。它支持策略开发、历史回测、可视化分析，甚至还能接入实盘交易。
+更重要的是，它采用面向对象的设计，把策略、数据、订单、资金账户这些模块分得清清楚楚，你不用把所有代码都塞在一个脚本里，而是像搭积木一样，有条不紊地搭建系统。
+🧱 核心架构：五大模块 Backtrader的架构非常清晰，主要由五个模块组成：
 策略逻辑（Strategy）
-所有交易信号的生成逻辑都封装在 Strategy 类中。你只需要关注买卖条件的判断和信号的发出，完全不必关心订单执行的具体细节。
+你把买卖信号的判断写在这里，框架自动帮你执行订单，你不用操心具体怎么成交。
 数据输入（DataFeed）
-通过统一的数据接口（如 PandasData、GenericCSVData、或实时数据源），Backtrader 可以轻松接入不同来源的数据。无论是日线、分钟线，还是多个标的，都能在同一回测环境中运行。
-交易撮合与资金管理（Broker）
-模拟真实市场的成交环境，包括市价单、限价单、滑点模型、佣金结构等。所有下单操作（如 self.buy()、self.sell()）都会由 Broker 模拟执行，并自动更新账户状态。
+支持从CSV、Pandas、甚至实时API导入数据，不管是日线、分钟线，还是多个股票，都能一起回测。
+交易与资金管理（Broker）
+模拟真实市场的成交，支持市价单、限价单、滑点、佣金计算，自动更新你的账户余额和持仓。
 绩效分析（Analyzer）
-用于生成收益率、最大回撤、夏普比率等各类绩效指标。你可以组合多个分析器，一键获取回测表现的完整评估。
+回测结束后，自动计算收益率、最大回撤、夏普比率等指标，帮你全面评估策略表现。
 图形展示（Observer）
-自动生成策略运行过程的图形，包括买卖点、资金曲线、技术指标等，便于快速理解策略行为。
-这样的模块划分提升了策略开发的效率，也为后续的调试、测试、扩展提供了支撑。我可以像搭积木一样构建自己的系统，轻松对其中某个模块进行替换或优化。
-我可以专注于研究交易逻辑，而不必重新造轮子处理仓位、画图、分析收益率。这种结构也使得策略迁移到实盘平台（如 Interactive Brokers、CCXT 等）变得更加自然。
-回测流程图与模块关系 下面是 Backtrader 在回测过程中各模块的交互流程图，展示了从数据流入、策略判断、订单生成、成交撮合，到结果展示和分析的全过程。
-如下是各部分的简要说明：
-数据流入：通过 DataFeed 加载行情数据（External Data）（CSV、Pandas、API 等）进入 Cerebro。 策略运行：Cerebro 在每个 bar 推进时调用 Strategy.next()，用技术指标（如 MA、RSI）判断； 下单撮合：策略中发出 self.buy() / self.sell() 指令，由 Broker 模拟撮合并更新账户状态； 分析观察：回测完成后，Analyzer 模块汇总指标（如收益率、回撤等），Observer 模块负责绘图。 这张图帮助理解 Backtrader 如何将策略、数据、订单、账户、指标和分析模块有机地组织起来，每一步都有明确的责任分工，而所有的调度都交由 Cerebro 统一管理，结构清晰、易于扩展。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script><script src=https://www.poloxue.com/js/main.js></script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=post><div class=post-header><div class=meta><div class=date><span class=day>03</span>
-<span class=rest>Jul 2025</span></div></div><div class=matter><h1 class=title>Backtrader 教程一：为什么选择 Backtrader？</h1></div></div><p>—— 从“策略实现”迈向“系统化开发”</p><p>在量化交易的执行过程中，策略开发只是开始，如果我们只是想回测一个交易策略，在 Python 上有很多框架可使用，如 backtesting.py、vectorbt 或者已经不维护的 zipline。不过，本文我想介绍的是 backtrader。</p><h2 id=为什么选择-backtrader>为什么选择 backtrader？</h2><p>真正构建起一个稳健的交易系统，还需要有结构化的架构支持、可扩展的功能设计以及模块化的实现能力。Backtrader，正是这样一款以策略回测为核心，同时具备系统构建能力的 Python 框架。</p><p>本文介绍一个著名的回测框架 backtrader，或者也可称作交易框架。我将尝试解释选择 backtrader 的原因，介绍它有哪些优势。</p><h2 id=backtrader-是什么>Backtrader 是什么？</h2><p>Backtrader 是一个用 Python 编写的量化交易回测框架，专为个人交易者与量化研究者设计，它提供了丰富的接口来支持策略开发、历史回测、结果可视化，甚至可以扩展到实盘接入。</p><p>与其说 Backtrader 是一个回测工具，不如说它是一个轻量级的交易系统骨架。</p><p>通过 Backtrader，可以把自己的策略逻辑、数据输入、订单执行、仓位管理、绩效分析等模块，有条不紊地组织起来。不再需要将所有的逻辑硬编码到一个脚本中，而是用清晰的类与对象去描述一个完整的交易系统流程。</p><p>还有，Backtrader 天然支持面向对象的设计思想，策略与数据、下单逻辑、资金账户是彼此解耦的。</p><p>接下来，先具体看看 Backtrader 的核心架构设计，为什么说它是一个轻量级的交易系统骨架吧！</p><h2 id=核心架构>核心架构</h2><p>Backtrader 的架构划分清晰，整个系统由多个独立但协同工作的模块构成：</p><p><strong>策略逻辑（Strategy）</strong></p><p>所有交易信号的生成逻辑都封装在 <code>Strategy</code> 类中。你只需要关注买卖条件的判断和信号的发出，完全不必关心订单执行的具体细节。</p><p><strong>数据输入（DataFeed）</strong></p><p>通过统一的数据接口（如 <code>PandasData</code>、<code>GenericCSVData</code>、或实时数据源），Backtrader 可以轻松接入不同来源的数据。无论是日线、分钟线，还是多个标的，都能在同一回测环境中运行。</p><p><strong>交易撮合与资金管理（Broker）</strong></p><p>模拟真实市场的成交环境，包括市价单、限价单、滑点模型、佣金结构等。所有下单操作（如 <code>self.buy()</code>、<code>self.sell()</code>）都会由 <code>Broker</code> 模拟执行，并自动更新账户状态。</p><p><strong>绩效分析（Analyzer）</strong></p><p>用于生成收益率、最大回撤、夏普比率等各类绩效指标。你可以组合多个分析器，一键获取回测表现的完整评估。</p><p><strong>图形展示（Observer）</strong></p><p>自动生成策略运行过程的图形，包括买卖点、资金曲线、技术指标等，便于快速理解策略行为。</p><p>这样的模块划分提升了策略开发的效率，也为后续的调试、测试、扩展提供了支撑。我可以像搭积木一样构建自己的系统，轻松对其中某个模块进行替换或优化。</p><p>我可以专注于研究交易逻辑，而不必重新造轮子处理仓位、画图、分析收益率。这种结构也使得策略迁移到实盘平台（如 Interactive Brokers、CCXT 等）变得更加自然。</p><h2 id=回测流程图与模块关系>回测流程图与模块关系</h2><p>下面是 Backtrader 在回测过程中各模块的交互流程图，展示了从数据流入、策略判断、订单生成、成交撮合，到结果展示和分析的全过程。</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@course-1-backtrader/why-choose-backtrader-01-v2.png alt></p><p>如下是各部分的简要说明：</p><ul><li><strong>数据流入</strong>：通过 <code>DataFeed</code> 加载行情数据（External Data）（CSV、Pandas、API 等）进入 <code>Cerebro</code>。</li><li><strong>策略运行</strong>：<code>Cerebro</code> 在每个 bar 推进时调用 <code>Strategy.next()</code>，用技术指标（如 MA、RSI）判断；</li><li><strong>下单撮合</strong>：策略中发出 <code>self.buy()</code> / <code>self.sell()</code> 指令，由 <code>Broker</code> 模拟撮合并更新账户状态；</li><li><strong>分析观察</strong>：回测完成后，<code>Analyzer</code> 模块汇总指标（如收益率、回撤等），<code>Observer</code> 模块负责绘图。</li></ul><p>这张图帮助理解 Backtrader 如何将策略、数据、订单、账户、指标和分析模块有机地组织起来，每一步都有明确的责任分工，而所有的调度都交由 <code>Cerebro</code> 统一管理，结构清晰、易于扩展。</p><h2 id=与其他框架的差异>与其他框架的差异</h2><p>当比较主流的回测框架，如 Zipline、QuantConnect、PyAlgoTrade 与 Backtrader 时，差异是非常显著的。</p><p><strong>Zipline</strong>：曾是 Quantopian 平台的核心回测引擎，适合静态历史数据回测，支持 Python。但目前已基本处于停滞状态，社区活跃度较低，安装环境较旧，兼容性和扩展性存在一定问题。</p><p><strong>QuantConnect</strong>：基于 Lean 引擎，功能强大，支持 C# 与 Python，多资产、多周期支持出色。但其主要为云端服务平台，策略需上传运行，且本地部署较复杂。</p><p><strong>PyAlgoTrade</strong>：轻量级框架，适合初学者快速构建简单策略逻辑，但功能上较为基础，不支持多策略叠加、复合周期或灵活的图形分析。</p><p>对比其他框架后，发现 Backtrader 所具备的一些核心优势：</p><p><strong>本地运行、轻松部署</strong>：Backtrader 完全支持本地运行，不依赖外部云服务或商业平台。这意味着你可以在自己的电脑上独立开发、调试和执行策略，避免了部署复杂、网络依赖和数据安全顾虑。</p><p><strong>支持多策略并行运行</strong>：在同一个回测环境中，可以同时加载并运行多个策略实例，便于对不同逻辑进行组合对比，适合构建策略组合与动态切换系统。</p><p><strong>多标的数据源叠加能力</strong>：不仅可加载多个品种，还能实现如“主图 + 指数”、“行业 + 个股”这样的多维分析场景，非常适合做策略过滤、择时辅助或跨品种联动研究。</p><p><strong>多时间周期原生支持</strong>：Backtrader 内部机制支持不同周期的数据源同步处理，你可以在策略中同时使用 1 分钟线、5 分钟线、日线等异步数据进行协同判断，满足复杂决策需求。</p><p><strong>Cerebro 引擎统一调度</strong>：无论是数据加载、策略调用、账户管理、分析输出，所有流程都由 Cerebro 引擎统一管理，大幅降低了开发者的系统整合成本。</p><p><strong>可视化能力强、无需额外绘图</strong>：Backtrader 原生支持图形输出功能，只需简单调用即可将买卖点、技术指标、资金曲线等绘制在图表中，省去了额外集成可视化工具的麻烦，极大提升了策略解释力。</p><p>Backtrader 同时兼顾“入门易用”和“系统化构建”的能力。</p><p>我们可以轻松跑通一个简单策略，而有经验的朋友则可以基于它构建包含多策略、多周期、多数据源、模块解耦的完整交易架构。</p><p>Backtrader 是一个非常理想的“个人量化实验室”，本地运行，自由组合，快速反馈。</p><h2 id=与传统手写回测对比>与传统手写回测对比</h2><p>最开始接触策略代码，很多人或许都是通过 pandas + CSV 数据开始的。写一个主循环，在里面判断买入、卖出条件，计算持仓和收益。</p><p>通常是下面这种伪代码形式：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+自动画出买卖点、资金曲线、技术指标，一眼看懂策略行为。
+这五个模块各司其职，而你只需要专注在策略逻辑上。
+🔄 一张图看懂回测流程 从数据加载 → 策略判断 → 订单生成 → 成交撮合 → 绩效分析 → 图形输出，整个过程都由一个叫Cerebro的引擎统一调度。你只需要写策略，其它交给Backtrader。
+📊 和其它框架比，Backtrader强在哪？ ✅ 完全本地运行，不依赖网络，数据更安全
+✅ 支持多策略并行运行，方便组合对比
+✅ 支持多股票、多周期数据一起分析
+✅ 自带可视化，不用另外画图
+✅ 结构清晰，组件解耦，易扩展维护
+💡 和手写回测的对比 很多人一开始学量化，会用Pandas写循环来回测，比如：
+1 2 3 4 for i in range(1, len(data)): if data['close'][i] > data['close'][i-1] and position == 0: # 买入... elif ... 这样写虽然直接，但策略一复杂，代码就变得又乱又难维护。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script><script src=https://www.poloxue.com/js/main.js></script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=post><div class=post-header><div class=meta><div class=date><span class=day>03</span>
+<span class=rest>Jul 2025</span></div></div><div class=matter><h1 class=title>Backtrader 教程一：为什么选择 Backtrader？</h1></div></div><p>今天想跟大家聊一个量化交易中非常实用的工具——Backtrader。</p><p>如果你对量化交易感兴趣，可能已经听说过策略回测。简单说，就是用历史数据去验证一个交易策略有没有效。在Python里，其实有不少回测框架可以用，比如backtesting.py、vectorbt，还有已经不更新的 zipline。</p><p>但今天，我要重点介绍的是——Backtrader。</p><h2 id=-为什么选backtrader><strong>🤔 为什么选Backtrader？</strong></h2><p>因为构建一个稳健的交易系统，光有策略还不够，还需要有清晰的架构、可扩展的功能，以及模块化的设计。而Backtrader，就是一个以策略回测为核心，同时帮你搭建交易系统骨架的Python框架。</p><p>它不只是回测工具，更是一个轻量级的“交易系统骨架”。</p><h2 id=-backtrader是什么><strong>🔍 Backtrader是什么？</strong></h2><p>Backtrader是一个用Python写的量化回测框架，专门为个人交易者和研究者设计。它支持策略开发、历史回测、可视化分析，甚至还能接入实盘交易。</p><p>更重要的是，它采用面向对象的设计，把策略、数据、订单、资金账户这些模块分得清清楚楚，你不用把所有代码都塞在一个脚本里，而是像搭积木一样，有条不紊地搭建系统。</p><h2 id=-核心架构五大模块><strong>🧱 核心架构：五大模块</strong></h2><p>Backtrader的架构非常清晰，主要由五个模块组成：</p><p><strong>策略逻辑（Strategy）</strong></p><p>你把买卖信号的判断写在这里，框架自动帮你执行订单，你不用操心具体怎么成交。</p><p><strong>数据输入（DataFeed）</strong></p><p>支持从CSV、Pandas、甚至实时API导入数据，不管是日线、分钟线，还是多个股票，都能一起回测。</p><p><strong>交易与资金管理（Broker）</strong></p><p>模拟真实市场的成交，支持市价单、限价单、滑点、佣金计算，自动更新你的账户余额和持仓。</p><p><strong>绩效分析（Analyzer）</strong></p><p>回测结束后，自动计算收益率、最大回撤、夏普比率等指标，帮你全面评估策略表现。</p><p><strong>图形展示（Observer）</strong></p><p>自动画出买卖点、资金曲线、技术指标，一眼看懂策略行为。</p><p>这五个模块各司其职，而你只需要专注在策略逻辑上。</p><h2 id=-一张图看懂回测流程><strong>🔄 一张图看懂回测流程</strong></h2><p>从数据加载 → 策略判断 → 订单生成 → 成交撮合 → 绩效分析 → 图形输出，整个过程都由一个叫Cerebro的引擎统一调度。你只需要写策略，其它交给Backtrader。</p><h2 id=-和其它框架比backtrader强在哪><strong>📊 和其它框架比，Backtrader强在哪？</strong></h2><p>✅ 完全本地运行，不依赖网络，数据更安全<br>✅ 支持多策略并行运行，方便组合对比<br>✅ 支持多股票、多周期数据一起分析<br>✅ 自带可视化，不用另外画图<br>✅ 结构清晰，组件解耦，易扩展维护</p><h2 id=-和手写回测的对比><strong>💡 和手写回测的对比</strong></h2><p>很多人一开始学量化，会用Pandas写循环来回测，比如：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>1</span>, len(data)):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i] <span style=color:#f92672>&gt;</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>] <span style=color:#f92672>and</span> position <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 买入...</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> <span style=color:#f92672>...</span>
+</span></span></code></pre></td></tr></table></div></div><p>这样写虽然直接，但策略一复杂，代码就变得又乱又难维护。</p><p>而用Backtrader，同样的策略可以这样写：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
 </span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">9
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>1</span>, len(data)):
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i] <span style=color:#f92672>&gt;</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>] <span style=color:#f92672>and</span> position <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>:
-</span></span><span style=display:flex><span>        position <span style=color:#f92672>=</span> cash <span style=color:#f92672>/</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i]
-</span></span><span style=display:flex><span>        cash <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
-</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;买入&#34;</span>, data[<span style=color:#e6db74>&#39;date&#39;</span>][i])
-</span></span><span style=display:flex><span>    <span style=color:#66d9ef>elif</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i] <span style=color:#f92672>&lt;</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>] <span style=color:#f92672>and</span> position <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>:
-</span></span><span style=display:flex><span>        cash <span style=color:#f92672>=</span> position <span style=color:#f92672>*</span> data[<span style=color:#e6db74>&#39;close&#39;</span>][i]
-</span></span><span style=display:flex><span>        position <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
-</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;卖出&#34;</span>, data[<span style=color:#e6db74>&#39;date&#39;</span>][i])
-</span></span></code></pre></td></tr></table></div></div><p>虽然这样写可以验证一些基本逻辑，但在面对复杂策略、多个标的、真实的仓位管理逻辑时，极其笨重难以维护。</p><p>将所有的逻辑都耦合在一起。没办法单独测试策略模块，也很难切换数据源，更不用说做绩效分析或图表展示了。</p><p>而 Backtrader 的模块化设计，将策略、数据、交易下单、评价分析、绘图等结构分离，让我更加专注策略本身，而让其它组件自动完成自己的职责。</p><p>作为对比，使用 Backtrader 实现一个类似的策略，只需构建如下结构：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
-</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> backtrader <span style=color:#66d9ef>as</span> bt
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyStrategy</span>(bt<span style=color:#f92672>.</span>Strategy):
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyStrategy</span>(bt<span style=color:#f92672>.</span>Strategy):
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>close[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>&gt;</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>close[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]:
 </span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>buy()
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>elif</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>close[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>&lt;</span> self<span style=color:#f92672>.</span>data<span style=color:#f92672>.</span>close[<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]:
 </span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>sell()
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>cerebro <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>Cerebro()
-</span></span><span style=display:flex><span>data <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>PandasData(dataname<span style=color:#f92672>=</span>df)
-</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>adddata(data)
-</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>addstrategy(MyStrategy)
-</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>run()
-</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>plot()
-</span></span></code></pre></td></tr></table></div></div><p>你会发现，数据读取、下单逻辑、资金账户管理、图形绘制全部被框架自动处理，代码更加清晰、职责明确，也更利于后期维护和扩展。</p><h2 id=总结>总结</h2><p>我用 Backtrader 的原因其实很简单：它省心，干净，能让我专注做真正重要的事情——写策略。</p><p>一开始只是想试试自己的想法，但很快我就发现，原来我可以用它搭建一整套完整的回测框架，不用担心下单逻辑、账户管理、画图这些繁琐的东西。</p><p>传统方式也能跑，但改一次策略或数据，常常要动很多地方。而 Backtrader 模块分得清楚，结构也直观，写起来就像拼积木。</p><p>如果你想快速验证一个交易逻辑，甚至以后想把它做成自己的交易系统，Backtrader 是一个很稳的起点。</p><p>下一节将开始正式安装 backtrader，并实现一个简单的买入持有策略。</p><div>本文来源于 <a href=https://www.poloxue.com>POLOXUE's BLOG</a>，地址： <a href=https://www.poloxue.com/posts/2025-07-03-backtrader-tutorial-p1/>Backtrader 教程一：为什么选择 Backtrader？</a><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post>欢迎关注我的公众号：<img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2025 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script></body></html>
+</span></span></code></pre></td></tr></table></div></div><p>清晰、干净，所有底层操作都被封装好了。</p><h2 id=-总结><strong>🎯 总结</strong></h2><p>我喜欢Backtrader，就是因为它让我更专注于策略本身，而不是重复造轮子。</p><p>它干净、模块化、易于扩展，不管你是刚入门，还是想搭建自己的交易系统，Backtrader都是一个非常理想的起点。</p><p>下一期，我会带大家安装Backtrader，并实现一个最简单的“买入持有”策略。如果你对量化交易感兴趣，别忘了关注我，我们下期见！</p><div>本文来源于 <a href=https://www.poloxue.com>POLOXUE's BLOG</a>，地址： <a href=https://www.poloxue.com/posts/2025-07-03-backtrader-tutorial-p1/>Backtrader 教程一：为什么选择 Backtrader？</a><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post>欢迎关注我的公众号：<img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2025 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script></body></html>
