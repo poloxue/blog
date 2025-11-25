@@ -42,9 +42,11 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; main()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;输出：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;Starting Portfolio Value: 100000.00
-Final Portfolio Value: 100000.00&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="设置交易费率佣金"&gt;设置交易费率（佣金）&lt;a class="anchor" href="#%e8%ae%be%e7%bd%ae%e4%ba%a4%e6%98%93%e8%b4%b9%e7%8e%87%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;在回测中，交易成本是影响最终收益的重要因素。Backtrader 允许您灵活配置各种佣金方案。&lt;/p&gt;</description></item><item><title>配置数据</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/03-datafeed/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/03-datafeed/</guid><description>&lt;h1 id="配置数据"&gt;配置数据&lt;a class="anchor" href="#%e9%85%8d%e7%bd%ae%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;初始资金: 100000.00
+最终资金: 100000.00&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="设置交易费率佣金"&gt;设置交易费率（佣金）&lt;a class="anchor" href="#%e8%ae%be%e7%bd%ae%e4%ba%a4%e6%98%93%e8%b4%b9%e7%8e%87%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;在回测中，交易成本是影响最终收益的重要因素。Backtrader 允许您灵活配置各种佣金方案。&lt;/p&gt;
+&lt;h3 id="按比例设置佣金"&gt;按比例设置佣金&lt;a class="anchor" href="#%e6%8c%89%e6%af%94%e4%be%8b%e8%ae%be%e7%bd%ae%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;对于股票等按交易金额比例收取佣金的品种，可以使用 &lt;code&gt;setcommission&lt;/code&gt; 方法：&lt;/p&gt;</description></item><item><title>配置数据</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/03-datafeed/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/03-datafeed/</guid><description>&lt;h1 id="配置数据"&gt;配置数据&lt;a class="anchor" href="#%e9%85%8d%e7%bd%ae%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;本文具体讲讲如何在 Backtrader 中配置数据源，也就是 DataFeed。&lt;/p&gt;
 &lt;p&gt;我会先演示如何给 Backtrader 添加 CSV 数据源。然后，再介绍 Backtrader 中最常用的两种 DataFeed 的使用。&lt;/p&gt;
 &lt;h2 id="添加数据"&gt;添加数据&lt;a class="anchor" href="#%e6%b7%bb%e5%8a%a0%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
