@@ -1,4 +1,78 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Wed, 19 Nov 2025 22:08:50 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>探索定投囤币方案之基于指标择时定投</title><link>https://www.poloxue.com/posts/2025-11-19-dca-stratey-in-cryptocurrency-part3/</link><pubDate>Wed, 19 Nov 2025 22:08:50 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-11-19-dca-stratey-in-cryptocurrency-part3/</guid><description>&lt;p&gt;&lt;a href="https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/"&gt;上篇文章&lt;/a&gt;测试了在加密货币市场上定期定额定投的表现，以求能囤到足够价码的加密货币。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 02 Dec 2025 02:11:23 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>用 backtrader 回测动量策略</title><link>https://www.poloxue.com/posts/2025-12-02-moment-strategy/</link><pubDate>Tue, 02 Dec 2025 02:11:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-12-02-moment-strategy/</guid><description>&lt;p&gt;在金融市场，有一种被称为 &amp;ldquo;动量&amp;rdquo; 的现象。其核心理念很简单：如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。这就像惯性一样。&lt;/p&gt;
+&lt;p&gt;本文将基于这个现象具体介绍下动量策略，并回测这个策略在 数字货币市场上的表现。&lt;/p&gt;
+&lt;h2 id="前言说明"&gt;前言说明&lt;/h2&gt;
+&lt;p&gt;我们先搞清楚为什么会出现动量。常见的说法有两个主要原因：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;信息传播需要时间&lt;/strong&gt;：当一条好消息或坏消息出现时，并非所有市场参与者都能立刻知晓并采取行动，价格的调整会随着信息的逐步扩散而持续一段时间。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;机构交易行为&lt;/strong&gt;：大型投资机构在买卖大量资产时，会不断执行买入操作，这个交易行为本身就会在市场上形成一个持续的趋势。&lt;/p&gt;
+&lt;p&gt;基于此，发展出了两种主要的动量策略思路：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;时间序列动量&lt;/strong&gt;：关注资产自身的历史表现。例如，买入过去一段时间表现&lt;strong&gt;绝对&lt;/strong&gt;好的资产，卖出表现&lt;strong&gt;绝对&lt;/strong&gt;差的资产。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;横截面动量&lt;/strong&gt;：关注资产之间的&lt;strong&gt;相对&lt;/strong&gt;表现。例如，在一个股票组合中，买入过去一段时间表现&lt;strong&gt;最好&lt;/strong&gt;的几支，同时卖出表现&lt;strong&gt;最差&lt;/strong&gt;的几支，形成一个“做多强势、做空弱势”的组合。&lt;/p&gt;
+&lt;p&gt;基于这个策略架构，我将用 backtrader 测试动量策略在币圈的表现情况。&lt;/p&gt;
+&lt;h2 id="策略定义"&gt;策略定义&lt;/h2&gt;
+&lt;p&gt;首先选择交易的池子，我将选择市值前 10 的加密货币作为交易标的，不包括 USDT 和其他的包装代币。&lt;/p&gt;
+&lt;p&gt;交易逻辑采用横截面动量思路，选择每周内表现好的币种做多，同时做空表现差的币种，比例是五五开。这其实是实现了对冲，算是个中性策略，要保证多仓和空仓的价值相等。&lt;/p&gt;
+&lt;p&gt;还有，即使每周的多空品种没有变化，也会再平衡，实现每个品种的风险暴露相同。&lt;/p&gt;
+&lt;p&gt;因为没找到按日期查询前十市值数字货币的方法，我就按当前时间固定了 10 个币种。这里其实是引入了未来信息了。&lt;/p&gt;
+&lt;p&gt;如果查看 &lt;a href="https://coinmarketcap.com/historical/"&gt;CoinMarketcap 的历史快照页面&lt;/a&gt;，历史上的前 10 市值的品种变化不算太大。&lt;/p&gt;
+&lt;h2 id="回测代码"&gt;回测代码&lt;/h2&gt;
+&lt;p&gt;策略代码实现起来非常简单，如下是策略的核心交易逻辑部分。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 2
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 3
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 4
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 5
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 6
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 7
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 8
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt; 9
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;10
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;11
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;12
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;13
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;14
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;15
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;16
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;17
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;18
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;19
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;20
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;21
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;22
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;23
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;24
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;25
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader.indicators &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; btind
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MomentumStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pchgs &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; data &lt;span style="color:#f92672"&gt;in&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pchgs[data] &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;ind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;PercentChange(data, period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;count &lt;span style="color:#f92672"&gt;=&lt;/span&gt; len(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;datas)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cut_pos &lt;span style="color:#f92672"&gt;=&lt;/span&gt; int(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;count &lt;span style="color:#f92672"&gt;/&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; sorted_datas &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sorted(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pchgs&lt;span style="color:#f92672"&gt;.&lt;/span&gt;keys(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; key&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;lambda&lt;/span&gt; k: self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;pchgs[k][&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;],
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; total_value &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getvalue()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; target_value &lt;span style="color:#f92672"&gt;=&lt;/span&gt; total_value &lt;span style="color:#f92672"&gt;/&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;count
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; data &lt;span style="color:#f92672"&gt;in&lt;/span&gt; sorted_datas[:self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cut_pos]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;order_target_value(data, &lt;span style="color:#f92672"&gt;-&lt;/span&gt;target_value)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; data &lt;span style="color:#f92672"&gt;in&lt;/span&gt; sorted_datas[&lt;span style="color:#f92672"&gt;-&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cut_pos:]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;order_target_value(data, target_value)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;指标是通过 backtrader 的 PercentChange 计算，period 设置为1。这样在我们加载周线数据到系统就行了。&lt;/p&gt;</description></item><item><title>探索定投囤币方案之基于指标择时定投</title><link>https://www.poloxue.com/posts/2025-11-19-dca-stratey-in-cryptocurrency-part3/</link><pubDate>Wed, 19 Nov 2025 22:08:50 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-11-19-dca-stratey-in-cryptocurrency-part3/</guid><description>&lt;p&gt;&lt;a href="https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/"&gt;上篇文章&lt;/a&gt;测试了在加密货币市场上定期定额定投的表现，以求能囤到足够价码的加密货币。&lt;/p&gt;
 &lt;p&gt;本文我们继续这个话题，尝试基于技术指标定投。&lt;/p&gt;
 &lt;p&gt;在币圈你会看到一些 KOL 喜欢推崇 DCA，定期定额投入不要考虑时机。于是，我就想实际测试，是不是择时真的无效，无法战胜定期定额的 DCA 呢？&lt;/p&gt;
 &lt;p&gt;注意：本文仅为个人随笔与思考，不构成任何投资建议。市场有风险，投资需谨慎，请务必独立研究。&lt;/p&gt;

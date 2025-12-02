@@ -1,0 +1,174 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>用 backtrader 回测动量策略 - POLOXUE's BLOG</title><meta name=viewport content="width=device-width,initial-scale=1"><meta itemprop=name content="用 backtrader 回测动量策略"><meta itemprop=description content="在金融市场，有一种被称为 动量 的现象。如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。"><meta itemprop=datePublished content="2025-12-02T02:11:23+08:00"><meta itemprop=dateModified content="2025-12-02T02:11:23+08:00"><meta itemprop=wordCount content="327"><meta property="og:url" content="https://www.poloxue.com/posts/2025-12-02-moment-strategy/"><meta property="og:site_name" content="POLOXUE's BLOG"><meta property="og:title" content="用 backtrader 回测动量策略"><meta property="og:description" content="在金融市场，有一种被称为 动量 的现象。如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-12-02T02:11:23+08:00"><meta property="article:modified_time" content="2025-12-02T02:11:23+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="用 backtrader 回测动量策略"><meta name=twitter:description content="在金融市场，有一种被称为 动量 的现象。如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。"><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/main.css><link rel=stylesheet type=text/css media=screen href=https://www.poloxue.com/css/extra.css><link id=dark-scheme rel=stylesheet type=text/css href=https://www.poloxue.com/css/dark.css><script src=https://www.poloxue.com/js/feather.min.js></script><script src=https://www.poloxue.com/js/main.js></script><script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js></script><script>MathJax={tex:{displayMath:[["[","]"],["$$","$$"]],inlineMath:[["(",")"],["$","$"]]}}</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body><div class="container wrapper"><div class=header><div class=avatar><a href=https://www.poloxue.com/><img src=/avatar.png alt="POLOXUE's BLOG"></a></div><h1 class=site-title><a href=https://www.poloxue.com/>POLOXUE's BLOG</a></h1><div class=site-description><nav class="nav social"><ul class=flat><li><a href=https://github.com/poloxue/ title=Github><i data-feather=github></i></a></li><li><a href=/posts/index.xml title=RSS><i data-feather=rss></i></a></li><li><a href=/ title=Wechat><i data-feather=message-circle></i></a></li><span class=scheme-toggle><a href=# id=scheme-toggle></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>文章列表</a></li><li><a href=/tags>分类标签</a></li><li><a href=/about/about>关于我</a></li></ul></nav></div><div class=post><div class=post-header><div class=meta><div class=date><span class=day>02</span>
+<span class=rest>Dec 2025</span></div></div><div class=matter><h1 class=title>用 backtrader 回测动量策略</h1></div></div><p>在金融市场，有一种被称为 &ldquo;动量&rdquo; 的现象。其核心理念很简单：如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。这就像惯性一样。</p><p>本文将基于这个现象具体介绍下动量策略，并回测这个策略在 数字货币市场上的表现。</p><h2 id=前言说明>前言说明</h2><p>我们先搞清楚为什么会出现动量。常见的说法有两个主要原因：</p><p><strong>信息传播需要时间</strong>：当一条好消息或坏消息出现时，并非所有市场参与者都能立刻知晓并采取行动，价格的调整会随着信息的逐步扩散而持续一段时间。</p><p><strong>机构交易行为</strong>：大型投资机构在买卖大量资产时，会不断执行买入操作，这个交易行为本身就会在市场上形成一个持续的趋势。</p><p>基于此，发展出了两种主要的动量策略思路：</p><p><strong>时间序列动量</strong>：关注资产自身的历史表现。例如，买入过去一段时间表现<strong>绝对</strong>好的资产，卖出表现<strong>绝对</strong>差的资产。</p><p><strong>横截面动量</strong>：关注资产之间的<strong>相对</strong>表现。例如，在一个股票组合中，买入过去一段时间表现<strong>最好</strong>的几支，同时卖出表现<strong>最差</strong>的几支，形成一个“做多强势、做空弱势”的组合。</p><p>基于这个策略架构，我将用 backtrader 测试动量策略在币圈的表现情况。</p><h2 id=策略定义>策略定义</h2><p>首先选择交易的池子，我将选择市值前 10 的加密货币作为交易标的，不包括 USDT 和其他的包装代币。</p><p>交易逻辑采用横截面动量思路，选择每周内表现好的币种做多，同时做空表现差的币种，比例是五五开。这其实是实现了对冲，算是个中性策略，要保证多仓和空仓的价值相等。</p><p>还有，即使每周的多空品种没有变化，也会再平衡，实现每个品种的风险暴露相同。</p><p>因为没找到按日期查询前十市值数字货币的方法，我就按当前时间固定了 10 个币种。这里其实是引入了未来信息了。</p><p>如果查看 <a href=https://coinmarketcap.com/historical/>CoinMarketcap 的历史快照页面</a>，历史上的前 10 市值的品种变化不算太大。</p><h2 id=回测代码>回测代码</h2><p>策略代码实现起来非常简单，如下是策略的核心交易逻辑部分。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">25
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> backtrader <span style=color:#66d9ef>as</span> bt
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> backtrader.indicators <span style=color:#66d9ef>as</span> btind
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MomentumStrategy</span>(bt<span style=color:#f92672>.</span>Strategy):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>__init__</span>(self):
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>pchgs <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> data <span style=color:#f92672>in</span> self<span style=color:#f92672>.</span>datas:
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>pchgs[data] <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>ind<span style=color:#f92672>.</span>PercentChange(data, period<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>count <span style=color:#f92672>=</span> len(self<span style=color:#f92672>.</span>datas)
+</span></span><span style=display:flex><span>        self<span style=color:#f92672>.</span>cut_pos <span style=color:#f92672>=</span> int(self<span style=color:#f92672>.</span>count <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
+</span></span><span style=display:flex><span>        sorted_datas <span style=color:#f92672>=</span> sorted(
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>pchgs<span style=color:#f92672>.</span>keys(),
+</span></span><span style=display:flex><span>            key<span style=color:#f92672>=</span><span style=color:#66d9ef>lambda</span> k: self<span style=color:#f92672>.</span>pchgs[k][<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>        )
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        total_value <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>getvalue()
+</span></span><span style=display:flex><span>        target_value <span style=color:#f92672>=</span> total_value <span style=color:#f92672>/</span> self<span style=color:#f92672>.</span>count
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> data <span style=color:#f92672>in</span> sorted_datas[:self<span style=color:#f92672>.</span>cut_pos]:
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>order_target_value(data, <span style=color:#f92672>-</span>target_value)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> data <span style=color:#f92672>in</span> sorted_datas[<span style=color:#f92672>-</span>self<span style=color:#f92672>.</span>cut_pos:]:
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>order_target_value(data, target_value)
+</span></span></code></pre></td></tr></table></div></div><p>指标是通过 backtrader 的 PercentChange 计算，period 设置为1。这样在我们加载周线数据到系统就行了。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>self<span style=color:#f92672>.</span>pchgs <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> data <span style=color:#f92672>in</span> self<span style=color:#f92672>.</span>datas:
+</span></span><span style=display:flex><span>    self<span style=color:#f92672>.</span>pchgs[data] <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>ind<span style=color:#f92672>.</span>PercentChange(data, period<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>)
+</span></span></code></pre></td></tr></table></div></div><p>因为这是一个组合策略，有多个标的，指标是通过字典，键是 backtrader 的 dataFeed 对象，代表的具体的某个品种。</p><p>在 next 策略逻辑方法中，按每周变化对各个标的排序。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>sorted_datas <span style=color:#f92672>=</span> sorted(
+</span></span><span style=display:flex><span>    self<span style=color:#f92672>.</span>pchgs<span style=color:#f92672>.</span>keys(),
+</span></span><span style=display:flex><span>    key<span style=color:#f92672>=</span><span style=color:#66d9ef>lambda</span> k: self<span style=color:#f92672>.</span>pchgs[k][<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></td></tr></table></div></div><p>接着就是每周定期按当前的持仓价值，在在平衡风险暴露，统一风险暴露。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>total_value <span style=color:#f92672>=</span> self<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>getvalue()
+</span></span><span style=display:flex><span>target_value <span style=color:#f92672>=</span> total_value <span style=color:#f92672>/</span> self<span style=color:#f92672>.</span>count
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> data <span style=color:#f92672>in</span> sorted_datas[:self<span style=color:#f92672>.</span>cut_pos]:
+</span></span><span style=display:flex><span>    self<span style=color:#f92672>.</span>order_target_value(data, <span style=color:#f92672>-</span>target_value)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> data <span style=color:#f92672>in</span> sorted_datas[<span style=color:#f92672>-</span>self<span style=color:#f92672>.</span>cut_pos:]:
+</span></span><span style=display:flex><span>    self<span style=color:#f92672>.</span>order_target_value(data, target_value)
+</span></span></code></pre></td></tr></table></div></div><p>到这里，就核心的策略部分，每个周期按当前组合总价值对组合进行平衡。</p><p>接下来是主函数部分。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">24
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>symbols <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;BTC/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;ETH/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;XRP/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;BNB/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;SOL/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;TRX/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;DOGE/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;ADA/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;BCH/USDT&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;LINK/USDT&#34;</span>,
+</span></span><span style=display:flex><span>]
+</span></span><span style=display:flex><span>cerebro <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>Cerebro(stdstats<span style=color:#f92672>=</span><span style=color:#66d9ef>False</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e># 只绘制 broker 资金和价值变化</span>
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>addobserver(bt<span style=color:#f92672>.</span>observers<span style=color:#f92672>.</span>Broker) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>setcash(<span style=color:#ae81ff>1e8</span>)
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>setcommission(commission<span style=color:#f92672>=</span><span style=color:#ae81ff>0.0005</span>)
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>set_slippage_perc(<span style=color:#ae81ff>0.0001</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>addanalyzer(bt<span style=color:#f92672>.</span>analyzers<span style=color:#f92672>.</span>drawdown<span style=color:#f92672>.</span>DrawDown, _name<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;drawdown&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> len(symbols) <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>raise</span> <span style=color:#a6e22e>ValueError</span>(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;标的个数是</span><span style=color:#e6db74>{</span>len(symbols)<span style=color:#e6db74>}</span><span style=color:#e6db74>, 要保证能匹配成对&#34;</span>)
+</span></span></code></pre></td></tr></table></div></div><p>选择了市值排名前十的标的，设置初始资金为1e8，费率为万五，滑点为万一，还加入了回撤 Drawdown 分析器。</p><p>如下加载数据和策略并运行回测代码。</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">20
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>for</span> symbol <span style=color:#f92672>in</span> symbols:
+</span></span><span style=display:flex><span>    df <span style=color:#f92672>=</span> download(
+</span></span><span style=display:flex><span>        symbol, start_date<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;2020-01-01&#34;</span>, end_date<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;2025-11-30&#34;</span>, interval<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;1w&#34;</span>
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    data <span style=color:#f92672>=</span> bt<span style=color:#f92672>.</span>feeds<span style=color:#f92672>.</span>PandasData(
+</span></span><span style=display:flex><span>        dataname<span style=color:#f92672>=</span>df,
+</span></span><span style=display:flex><span>        name<span style=color:#f92672>=</span>symbol,
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>    data<span style=color:#f92672>.</span>plotinfo<span style=color:#f92672>.</span>plot <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>adddata(data)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>addstrategy(MomentumStrategy)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;初始持仓价值：</span><span style=color:#e6db74>{</span>cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>getvalue()<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>strats <span style=color:#f92672>=</span> cerebro<span style=color:#f92672>.</span>run()
+</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;最终持仓价值：</span><span style=color:#e6db74>{</span>cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>getvalue()<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>max_drawdown <span style=color:#f92672>=</span> strats[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>.</span>analyzers<span style=color:#f92672>.</span>getbyname(<span style=color:#e6db74>&#34;drawdown&#34;</span>)<span style=color:#f92672>.</span>get_analysis()[<span style=color:#e6db74>&#39;max&#39;</span>][<span style=color:#e6db74>&#39;drawdown&#39;</span>]
+</span></span><span style=display:flex><span>print(<span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;最大回撤：</span><span style=color:#e6db74>{</span>max_drawdown<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>plot()
+</span></span></code></pre></td></tr></table></div></div><p>运行结果：</p><div class=highlight><div style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><table style=border-spacing:0;padding:0;margin:0;border:0><tr><td style=vertical-align:top;padding:0;margin:0;border:0><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
+</span></code></pre></td><td style=vertical-align:top;padding:0;margin:0;border:0;width:100%><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>初始持仓价值：100000000.0
+</span></span><span style=display:flex><span>最终持仓价值：605325844.8474668
+</span></span><span style=display:flex><span>最大回撤：17.627636120733097
+</span></span></code></pre></td></tr></table></div></div><p>绘图结果：</p><p><img src=https://cdn.jsdelivr.net/gh/poloxue/images@2025-12/2025-12-02-moment-strategy-01.png alt></p><p>看起来还不错，回撤 17% 也不是很大。不过这里用的周线数据，更细粒度的回撤没有被回测出来。</p><p>还有这里没有风险控制，可以用日线或小时线回测看看，这里应该还有优化空间。</p><p>数据下载函数 download 是我通过 ccxt 封装的函数，这里不暂时出来了。完整代码请查看地址 <a href=https://github.com/poloxue/strategy_backtest/blob/main/momentum.py>momentum.py</a>。</p><p>还有一点注意，加入的多个标的数据要保证日期对齐，否则会导致回测结果错乱。</p><h2 id=最后>最后</h2><p>本文是基于动量这个思路的策略回测，如果从周线上看，这个动量效应还是比较明显的，或许这和高杠杆有很大关系吧。</p><div>本文来源于 <a href=https://www.poloxue.com>POLOXUE's BLOG</a>，地址： <a href=https://www.poloxue.com/posts/2025-12-02-moment-strategy/>用 backtrader 回测动量策略</a><hr class=footer-separator><div class=tags></div><div class=back><a href=https://www.poloxue.com/><span aria-hidden=true>← Back</span></a></div><div class=back></div></div><div class=post>欢迎关注我的公众号：<img style=width:85% src=https://cdn.jsdelivr.net/gh/poloxue/images@main/wechat.png><div class=utterances></div><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></div><div class="footer wrapper"><nav class=nav><div>2025 Polo Xue All rights reserved</div></nav></div><script>feather.replace()</script></body></html>
