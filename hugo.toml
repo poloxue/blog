@@ -1,6 +1,6 @@
 baseURL = "https://www.poloxue.com/"
 languageCode = "zh-cn"
-title = "POLOXUE's BLOG"
+title = "菠萝学量化"
 copyright = "Polo Xue All rights reserved"
 
 [modules]
