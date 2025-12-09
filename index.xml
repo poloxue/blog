@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 02 Dec 2025 02:11:23 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>用 backtrader 回测动量策略</title><link>https://www.poloxue.com/posts/2025-12-02-moment-strategy/</link><pubDate>Tue, 02 Dec 2025 02:11:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-12-02-moment-strategy/</guid><description>&lt;p&gt;在金融市场，有一种被称为 &amp;ldquo;动量&amp;rdquo; 的现象。其核心理念很简单：如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。这就像惯性一样。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>POLOXUE's BLOG</title><link>https://www.poloxue.com/</link><description>Recent content on POLOXUE's BLOG</description><generator>Hugo</generator><language>zh-cn</language><copyright>Polo Xue All rights reserved</copyright><lastBuildDate>Tue, 09 Dec 2025 05:41:26 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/index.xml" rel="self" type="application/rss+xml"/><item><title>回测目标波动率策略</title><link>https://www.poloxue.com/posts/2025-12-09-volatility-target-strategy/</link><pubDate>Tue, 09 Dec 2025 05:41:26 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-12-09-volatility-target-strategy/</guid><description>&lt;p&gt;在做交易策略时，经常会碰到一个问题：&lt;strong&gt;同一种策略在不同阶段表现完全不一样&lt;/strong&gt;。有时候波动大，你的仓位可能重了点；波动小，你又觉得仓位太轻，收益跟不上。&lt;/p&gt;
+&lt;p&gt;为了让整体风险变得可控，很多机构会使用一种非常“实用主义”的方法——&lt;strong&gt;目标波动率（Target Volatility）&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;它的核心思想只有一句话：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;让你的组合一直保持在预设的年化波动率，不多也不少。&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;这个想法其实很接近我们做 CTA、趋势策略时常说的“风险平价”，但目标波动率策略通常更简单、更直接，比较适合作为一个基础仓位管理模块。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="为什么需要目标波动率"&gt;为什么需要目标波动率？&lt;/h2&gt;
+&lt;p&gt;做交易时，可能都有这种体验：&lt;/p&gt;
+&lt;p&gt;同一资产在不同年份的波动差距能大到离谱；震荡期仓位太重，会被洗到怀疑人生；单边大行情仓位太轻，看着涨但赚不到钱；策略性能的“稳定性”其实更多取决于仓位管理，而不是策略本身。&lt;/p&gt;
+&lt;p&gt;目标波动率的出发点就是：&lt;strong&gt;既然波动率影响收益和风险，那干脆用波动率来动态调整仓位。&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;波动高 → 仓位自动变轻
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;波动低 → 仓位自然变重
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这样不用每天纠结现在是不是应该加仓或减仓，只需要按照公式让仓位自动收缩或扩张。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="策略原理"&gt;策略原理&lt;/h2&gt;
+&lt;p&gt;策略其实只有一个核心公式：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;目标仓位权重 = 目标年化波动率 / 当前年化波动率
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;例如，想把策略控制在 15% 的年化波动率，当前计算出来的波动率是 30%，那么你就应该只拿：&lt;strong&gt;15% / 30% = 0.5 倍仓位。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果你允许最大杠杆为 1.5，那么这个权重会自动裁剪：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;权重 = min(目标仓位权重, 最大杠杆)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;整个策略就靠这个仓位调整来运行。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="使用-backtrader-回测"&gt;使用 Backtrader 回测&lt;/h2&gt;
+&lt;p&gt;我用了 SPY 这个品种回测了这个目标波动率的策略，策略的完整回测代码，请访问：&lt;a href="https://github.com/poloxue/strategy_backtest/blob/main/voltarget.py"&gt;voltarget.py&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;我这里讲解代码中的一些核心指标计算与交易逻辑。&lt;/p&gt;
+&lt;p&gt;首先，波动率指标的计算，以当前的实际年化波动率作为基准。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;
+&lt;table style="border-spacing:0;padding:0;margin:0;border:0;"&gt;&lt;tr&gt;&lt;td style="vertical-align:top;padding:0;margin:0;border:0;"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;1
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;2
+&lt;/span&gt;&lt;span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%"&gt;
+&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;returns &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;ind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;PercentChange(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close, period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;std_dev &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;ind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;StandardDeviation(returns, period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;period)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;volatility &lt;span style="color:#f92672"&gt;=&lt;/span&gt; std_dev &lt;span style="color:#f92672"&gt;*&lt;/span&gt; np&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sqrt(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;p&lt;span style="color:#f92672"&gt;.&lt;/span&gt;annual_factor)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;通过计算的是 20 日的收益率标准差，并年化（乘上 √252）。这就是当前市场的“真实波动”。&lt;/p&gt;</description></item><item><title>用 backtrader 回测动量策略</title><link>https://www.poloxue.com/posts/2025-12-02-moment-strategy/</link><pubDate>Tue, 02 Dec 2025 02:11:23 +0800</pubDate><guid>https://www.poloxue.com/posts/2025-12-02-moment-strategy/</guid><description>&lt;p&gt;在金融市场，有一种被称为 &amp;ldquo;动量&amp;rdquo; 的现象。其核心理念很简单：如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。这就像惯性一样。&lt;/p&gt;
 &lt;p&gt;本文将基于这个现象具体介绍下动量策略，并回测这个策略在 数字货币市场上的表现。&lt;/p&gt;
 &lt;h2 id="前言说明"&gt;前言说明&lt;/h2&gt;
 &lt;p&gt;我们先搞清楚为什么会出现动量。常见的说法有两个主要原因：&lt;/p&gt;
