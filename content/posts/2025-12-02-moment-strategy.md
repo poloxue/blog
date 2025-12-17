@@ -183,3 +183,13 @@ cerebro.plot()
 ## 最后
 
 本文是基于动量这个思路的策略回测，如果从周线上看，这个动量效应还是比较明显的，或许这和高杠杆有很大关系吧。
+
+---
+
+如果你还没有账户，可以通过以下链接注册。这些是我在交易和开发中常用的交易所：
+
+- OKX：https://www.bjwebptyiou.com/join/18465372
+- Bybit：https://www.bybit.com/invite?ref=EPMPL
+- Binance：https://accounts.maxweb.cab/register?ref=52142925
+
+使用邀请链接注册可能会根据各平台的政策获得一定的推荐权益。
