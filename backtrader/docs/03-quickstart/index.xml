@@ -47,6 +47,10 @@
 &lt;p&gt;在回测中，交易成本是影响最终收益的重要因素。Backtrader 允许您灵活配置各种佣金方案。&lt;/p&gt;
 &lt;h3 id="按比例设置佣金"&gt;按比例设置佣金&lt;a class="anchor" href="#%e6%8c%89%e6%af%94%e4%be%8b%e8%ae%be%e7%bd%ae%e4%bd%a3%e9%87%91"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;对于股票等按交易金额比例收取佣金的品种，可以使用 &lt;code&gt;setcommission&lt;/code&gt; 方法：&lt;/p&gt;</description></item><item><title>配置数据</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/03-datafeed/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/03-datafeed/</guid><description>&lt;h1 id="配置数据"&gt;配置数据&lt;a class="anchor" href="#%e9%85%8d%e7%bd%ae%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;
+ &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/XVIo4X8eUks?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
 &lt;p&gt;本文具体讲讲如何在 Backtrader 中配置数据源，也就是 DataFeed。&lt;/p&gt;
 &lt;p&gt;我会先演示如何给 Backtrader 添加 CSV 数据源。然后，再介绍 Backtrader 中最常用的两种 DataFeed 的使用。&lt;/p&gt;
 &lt;h2 id="添加数据"&gt;添加数据&lt;a class="anchor" href="#%e6%b7%bb%e5%8a%a0%e6%95%b0%e6%8d%ae"&gt;#&lt;/a&gt;&lt;/h2&gt;
@@ -55,15 +59,7 @@
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;{DataFeedClass}
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Backtrader 提供了种类繁多的 DataFeedClass，可用于对接处理不同的数据源，如 CSV 文件、Pandas DataFrame 或者其他自定义的数据类。&lt;/p&gt;
 &lt;p&gt;下面来个具体的案例，先用 CSV 数据文件作为演示案例。&lt;/p&gt;
-&lt;p&gt;先从 Backtrader 代码仓库中下载了 Oracle 从 1995 年到 2014 的行情数据文件&lt;a href="https://github.com/mementum/backtrader/blob/master/datas/orcl-1995-2014.txt"&gt;orcl-1995-2014.csv&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;开始编写代码吧。&lt;/p&gt;
-&lt;p&gt;首先是读取 csv 数据文件创建 DataFeed。Backtrader 内置的 &lt;code&gt;bt.feeds.GenericCSVData&lt;/code&gt; 类来读取 CSV 数据文件。&lt;/p&gt;
-&lt;p&gt;具体操作代码如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;GenericCSVData(
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;./orcl-1995-2014.txt&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; dtformat&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;%Y-%m-&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%d&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;指定数据文件的路径和设置日期格式。&lt;/p&gt;
-&lt;p&gt;GenericCSVData 能适应各种格式的 CSV 文件，是一个通用的读取 CSV 行情数据的 DataFeed 类。&lt;/p&gt;</description></item><item><title>第一个策略</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</guid><description>&lt;h1 id="第一个策略"&gt;第一个策略&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;先从 Backtrader 代码仓库中下载了 Oracle 从 1995 年到 2014 的行情数据文件&lt;a href="https://github.com/mementum/backtrader/blob/master/datas/orcl-1995-2014.txt"&gt;orcl-1995-2014.csv&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>第一个策略</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/04-first-strategy/</guid><description>&lt;h1 id="第一个策略"&gt;第一个策略&lt;a class="anchor" href="#%e7%ac%ac%e4%b8%80%e4%b8%aa%e7%ad%96%e7%95%a5"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;本节我们将学习如何开发策略。&lt;/p&gt;
 &lt;p&gt;第一个策略不涉及交易，我们将通过它打印每一天（bar）的 &amp;ldquo;收盘价（Close）&amp;rdquo; 。&lt;/p&gt;
 &lt;p&gt;策略类（Strategy）继承自 &lt;code&gt;bt.Strategy&lt;/code&gt;。&lt;/p&gt;
