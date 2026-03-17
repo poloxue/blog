@@ -167,6 +167,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;value,
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;executed&lt;span style="color:#f92672"&gt;.&lt;/span&gt;comm))&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="交易记录计算利润"&gt;交易记录计算利润&lt;a class="anchor" href="#%e4%ba%a4%e6%98%93%e8%ae%b0%e5%bd%95%e8%ae%a1%e7%ae%97%e5%88%a9%e6%b6%a6"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;对于利润的计算，使用交易记录会更简单，所谓成交记录，即成交撮合一笔记录一次。与订单类似，我们可通过 &lt;code&gt;notify_trade&lt;/code&gt; 获取成交记录。它的回调参数是 Trade 类对象，利润相关属性有 &lt;code&gt;trade.pnl&lt;/code&gt;（毛利润）和 &lt;code&gt;trade.pnlcomm&lt;/code&gt;（净利润）。&lt;/p&gt;</description></item><item><title>参数定义</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/08-parameters/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/08-parameters/</guid><description>&lt;h1 id="参数定义"&gt;参数定义&lt;a class="anchor" href="#%e5%8f%82%e6%95%b0%e5%ae%9a%e4%b9%89"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;
+ &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/L8NjD0eLkHc?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
 &lt;p&gt;前面的案例中，参数都是硬编码在策略中。本节将介绍如何在 backtrader 自定义参数。&lt;/p&gt;
 &lt;h2 id="定义参数"&gt;定义参数&lt;a class="anchor" href="#%e5%ae%9a%e4%b9%89%e5%8f%82%e6%95%b0"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;策略参数的定义非常简单，如在策略中定义两个参数：&lt;code&gt;myparam&lt;/code&gt; 和 &lt;code&gt;exitbars&lt;/code&gt;。&lt;/p&gt;
