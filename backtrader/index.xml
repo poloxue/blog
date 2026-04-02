@@ -3892,6 +3892,10 @@ Outputs:
 &lt;hr&gt;
 &lt;h4 id="csvdatabase"&gt;CSVDataBase&lt;a class="anchor" href="#csvdatabase"&gt;#&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;用于实现 CSV 数据源的基类。&lt;/p&gt;</description></item><item><title>策略优化</title><link>https://www.poloxue.com/backtrader/docs/03-quickstart/11-optimization/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/03-quickstart/11-optimization/</guid><description>&lt;h1 id="策略优化"&gt;策略优化&lt;a class="anchor" href="#%e7%ad%96%e7%95%a5%e4%bc%98%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;
+ &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/SxiNOUs2h00?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
 &lt;p&gt;许多交易书籍中提到，每个市场和每个交易的股票（或商品等）都有不同的节奏，没有一种适合所有的策略。&lt;/p&gt;
 &lt;p&gt;在绘图示例前，当策略开始使用一个指标，周期默认值为 15 个 bar。这是一个策略参数，可以用于优化，改变参数值以找出哪个更适合你的市场。&lt;/p&gt;
 &lt;blockquote class='book-hint '&gt;
