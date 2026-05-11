@@ -1,6 +1,6 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content='Writer#
-Writer类负责将以下内容写入流：
-数据源、策略、指标和观察者的CSV流。可以通过每个对象的csv属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Writer#
+Writer 类负责将以下内容写入输出流：
+数据源、策略、指标和观察者的 CSV 流。可通过每个对象的 csv 属性控制哪些对象输出到 CSV 流（数据源和观察者默认为 True，指标默认为 False）。
 属性摘要：
 
 数据源
@@ -8,15 +8,15 @@ Writer类负责将以下内容写入流：
 指标/观察者（线条和参数）
 分析器（参数和分析结果）
 
-系统中定义了一个名为WriterFile的Writer，可以通过以下方式添加：
+系统中定义了一个名为 WriterFile 的 Writer，可通过以下方式添加：
 
-设置Cerebro的writer参数为True，将实例化一个标准的WriterFile
-调用Cerebro.addwriter(writerclass, **kwargs)，在回测执行期间，使用给定的kwargs实例化writerclass
+将 Cerebro 的 writer 参数设为 True，会实例化一个标准的 WriterFile
+调用 Cerebro.addwriter(writerclass, **kwargs)，在回测执行期间使用给定的 kwargs 实例化 writerclass
 
-由于标准的WriterFile默认不输出CSV，以下调用可以处理这一点：
+由于标准 WriterFile 默认不输出 CSV，可使用如下方式启用：
 cerebro.addwriter(bt.WriterFile, csv=True)参考#
 class backtrader.WriterFile()#
-系统范围内的Writer类。
+系统范围内的 Writer 类。
 可以通过以下参数进行参数化：
 
   
@@ -30,27 +30,27 @@ class backtrader.WriterFile()#
       
           out
           sys.stdout
-          写入的输出流，如果传递的是字符串，将使用参数内容作为文件名。
+          写入的输出流。如果传递的是字符串，则将其作为文件名。
       
       
           close_out
           False
-          如果 out 是一个流，是否需要由Writer显式关闭。
+          如果 out 是流对象，是否需要由 Writer 显式关闭。
       
       
           csv
           False
-          在执行过程中，是否将数据源、策略、观察者和指标的CSV流写入输出流。可以通过每个对象的csv属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。
+          是否将数据源、策略、观察者和指标的 CSV 流写入输出。可通过每个对象的 csv 属性控制哪些对象输出到 CSV（数据源和观察者默认为 True，指标默认为 False）。
       
       
           csv_filternan
           True
-          CSV流中清除nan值（用空字段替换）。
+          在 CSV 输出中清除 NaN 值（替换为空字段）。
       
       
           csv_counter
           True
-          是否应保持并输出实际输出行的计数器。
+          是否记录并输出实际输出行的计数器。
       
       
           indent
@@ -59,7 +59,7 @@ class backtrader.WriterFile()#
       
       
           separators
-          &lsquo;=&rsquo;, &lsquo;-&rsquo;, &lsquo;+&rsquo;, &lsquo;*&rsquo;, &lsquo;.&rsquo;, &lsquo;~&rsquo;, &lsquo;"&rsquo;, &lsquo;^&rsquo;, &lsquo;#&rsquo;
+          '=', '-', '+', '*', '.', '~', '&#34;', '^', '#'
           用于分隔部分/子部分的行分隔符字符。
       
       
@@ -70,17 +70,17 @@ class backtrader.WriterFile()#
       
           rounding
           None
-          将浮点数舍入到的小数位数。如果为None，则不执行舍入。
+          浮点数保留的小数位数。如果为 None，则不做舍入。
       
   
-'><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/"><meta property="og:site_name" content="Backtrader 中文"><meta property="og:title" content="日志 Logging - Writter"><meta property="og:description" content='Writer# Writer类负责将以下内容写入流：
-数据源、策略、指标和观察者的CSV流。可以通过每个对象的csv属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。
+"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/"><meta property="og:site_name" content="Backtrader 中文"><meta property="og:title" content="日志 Logging - Writter"><meta property="og:description" content="Writer# Writer 类负责将以下内容写入输出流：
+数据源、策略、指标和观察者的 CSV 流。可通过每个对象的 csv 属性控制哪些对象输出到 CSV 流（数据源和观察者默认为 True，指标默认为 False）。
 属性摘要：
-数据源 策略（线条和参数） 指标/观察者（线条和参数） 分析器（参数和分析结果） 系统中定义了一个名为WriterFile的Writer，可以通过以下方式添加：
-设置Cerebro的writer参数为True，将实例化一个标准的WriterFile 调用Cerebro.addwriter(writerclass, **kwargs)，在回测执行期间，使用给定的kwargs实例化writerclass 由于标准的WriterFile默认不输出CSV，以下调用可以处理这一点：
-cerebro.addwriter(bt.WriterFile, csv=True)参考# class backtrader.WriterFile()# 系统范围内的Writer类。
+数据源 策略（线条和参数） 指标/观察者（线条和参数） 分析器（参数和分析结果） 系统中定义了一个名为 WriterFile 的 Writer，可通过以下方式添加：
+将 Cerebro 的 writer 参数设为 True，会实例化一个标准的 WriterFile 调用 Cerebro.addwriter(writerclass, **kwargs)，在回测执行期间使用给定的 kwargs 实例化 writerclass 由于标准 WriterFile 默认不输出 CSV，可使用如下方式启用：
+cerebro.addwriter(bt.WriterFile, csv=True)参考# class backtrader.WriterFile()# 系统范围内的 Writer 类。
 可以通过以下参数进行参数化：
-参数名 默认 说明 out sys.stdout 写入的输出流，如果传递的是字符串，将使用参数内容作为文件名。 close_out False 如果 out 是一个流，是否需要由Writer显式关闭。 csv False 在执行过程中，是否将数据源、策略、观察者和指标的CSV流写入输出流。可以通过每个对象的csv属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。 csv_filternan True CSV流中清除nan值（用空字段替换）。 csv_counter True 是否应保持并输出实际输出行的计数器。 indent 2 每个级别的缩进空格数。 separators ‘=’, ‘-’, ‘+’, ‘*’, ‘.’, ‘~’, ‘"’, ‘^’, ‘#’ 用于分隔部分/子部分的行分隔符字符。 seplen 79 包括缩进在内的行分隔符的总长度。 rounding None 将浮点数舍入到的小数位数。如果为None，则不执行舍入。'><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2024-12-31T18:07:36+08:00"><title>日志 Logging - Writter | Backtrader 中文</title><link rel=icon href=/backtrader/favicon.png><link rel=manifest href=/backtrader/manifest.json><link rel=canonical href=https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/><link rel=stylesheet href=/backtrader/book.min.f079ea268834b2e0459e63011be648e8a3cc0e4819a71206873f891528fbfdf6.css integrity="sha256-8HnqJog0suBFnmMBG+ZI6KPMDkgZpxIGhz+JFSj7/fY=" crossorigin=anonymous><script defer src=/backtrader/fuse.min.js></script><script defer src=/backtrader/en.search.min.f212634a67d5af64520d101ff6b7f38b2b0a0b7b7263b95c5d58db66d1888016.js integrity="sha256-8hJjSmfVr2RSDRAf9rfziysKC3tyY7lcXVjbZtGIgBY=" crossorigin=anonymous></script><script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
+参数名 默认 说明 out sys.stdout 写入的输出流。如果传递的是字符串，则将其作为文件名。 close_out False 如果 out 是流对象，是否需要由 Writer 显式关闭。 csv False 是否将数据源、策略、观察者和指标的 CSV 流写入输出。可通过每个对象的 csv 属性控制哪些对象输出到 CSV（数据源和观察者默认为 True，指标默认为 False）。 csv_filternan True 在 CSV 输出中清除 NaN 值（替换为空字段）。 csv_counter True 是否记录并输出实际输出行的计数器。 indent 2 每个级别的缩进空格数。 separators '=', '-', '+', '*', '.', '~', '&#34;', '^', '#' 用于分隔部分/子部分的行分隔符字符。 seplen 79 包括缩进在内的行分隔符的总长度。 rounding None 浮点数保留的小数位数。如果为 None，则不做舍入。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2026-05-12T00:38:48+08:00"><title>日志 Logging - Writter | Backtrader 中文</title><link rel=icon href=/backtrader/favicon.png><link rel=manifest href=/backtrader/manifest.json><link rel=canonical href=https://www.poloxue.com/backtrader/docs/05-cerebro/06-logging-writer/><link rel=stylesheet href=/backtrader/book.min.f079ea268834b2e0459e63011be648e8a3cc0e4819a71206873f891528fbfdf6.css integrity="sha256-8HnqJog0suBFnmMBG+ZI6KPMDkgZpxIGhz+JFSj7/fY=" crossorigin=anonymous><script defer src=/backtrader/fuse.min.js></script><script defer src=/backtrader/en.search.min.6f7e7665f60972a2f352e79a60b9ba9bd793efad1da1be8150f969b72458de28.js integrity="sha256-b352ZfYJcqLzUueaYLm6m9eT760dob6BUPlptyRY3ig=" crossorigin=anonymous></script><script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/backtrader/><img src=/backtrader/logo.png alt=Logo><span>Backtrader 中文</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/backtrader/docs/01-introduction/>介绍</a><ul></ul></li><li><a href=/backtrader/docs/02-installation/>安装指南</a><ul></ul></li><li><input type=checkbox id=section-ef1b0f3b48f1accf5a8e12976586a132 class=toggle>
 <label for=section-ef1b0f3b48f1accf5a8e12976586a132 class=flex><a href=/backtrader/docs/03-quickstart/>快速开始</a>
 <img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/03-quickstart/01-setup/>环境设置</a></li><li><a href=/backtrader/docs/03-quickstart/02-cash/>账户配置</a></li><li><a href=/backtrader/docs/03-quickstart/03-datafeed/>配置数据</a></li><li><a href=/backtrader/docs/03-quickstart/04-first-strategy/>第一个策略</a></li><li><a href=/backtrader/docs/03-quickstart/0401-basic-concept/>基础概念</a></li><li><a href=/backtrader/docs/03-quickstart/05-strategy-logic/>开始交易</a></li><li><a href=/backtrader/docs/03-quickstart/06-sell/>卖出操作</a></li><li><a href=/backtrader/docs/03-quickstart/07-commission/>交易监控</a></li><li><a href=/backtrader/docs/03-quickstart/08-parameters/>参数定义</a></li><li><a href=/backtrader/docs/03-quickstart/09-indicators/>技术指标</a></li><li><a href=/backtrader/docs/03-quickstart/10-plotting/>可视化</a></li><li><a href=/backtrader/docs/03-quickstart/11-optimization/>策略优化</a></li></ul></li><li><input type=checkbox id=section-8b6cc0ccf66e33ea233e54e3e1c71bd0 class=toggle>
@@ -113,7 +113,7 @@ cerebro.addwriter(bt.WriterFile, csv=True)参考# class backtrader.WriterFile()#
 <label for=section-b6e31488b3e951ce956583dfc7ccd8a2 class=flex><a role=button>日期时间</a>
 <img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/17-datetime/01-management/>管理</a></li><li><a href=/backtrader/docs/17-datetime/02-timer/>定时器</a></li><li><a href=/backtrader/docs/17-datetime/03-trading-calendars/>交易日历</a></li></ul></li><li><a href=/backtrader/docs/18-automated-running/>自动运行</a><ul></ul></li><li><input type=checkbox id=section-1c57bab4ff24bdea61d636c257658085 class=toggle>
 <label for=section-1c57bab4ff24bdea61d636c257658085 class=flex><a role=button>官方文章</a>
-<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/icons/menu.svg class=book-icon alt=Menu></label><h3>日志 Logging - Writter</h3><label for=toc-control><img src=/backtrader/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#参考>参考</a><ul><li><a href=#class-backtraderwriterfile><code>class backtrader.WriterFile()</code></a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=writer>Writer<a class=anchor href=#writer>#</a></h1><p>Writer类负责将以下内容写入流：</p><p>数据源、策略、指标和观察者的CSV流。可以通过每个对象的<code>csv</code>属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。</p><p>属性摘要：</p><ul><li>数据源</li><li>策略（线条和参数）</li><li>指标/观察者（线条和参数）</li><li>分析器（参数和分析结果）</li></ul><p>系统中定义了一个名为<code>WriterFile</code>的Writer，可以通过以下方式添加：</p><ol><li>设置Cerebro的<code>writer</code>参数为True，将实例化一个标准的<code>WriterFile</code></li><li>调用<code>Cerebro.addwriter(writerclass, **kwargs)</code>，在回测执行期间，使用给定的kwargs实例化<code>writerclass</code></li></ol><p>由于标准的<code>WriterFile</code>默认不输出CSV，以下调用可以处理这一点：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>addwriter(bt<span style=color:#f92672>.</span>WriterFile, csv<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)</span></span></code></pre></div><h2 id=参考>参考<a class=anchor href=#%e5%8f%82%e8%80%83>#</a></h2><h3 id=class-backtraderwriterfile><code>class backtrader.WriterFile()</code><a class=anchor href=#class-backtraderwriterfile>#</a></h3><p>系统范围内的Writer类。</p><p>可以通过以下参数进行参数化：</p><table><thead><tr><th>参数名</th><th>默认</th><th>说明</th></tr></thead><tbody><tr><td><code>out</code></td><td><code>sys.stdout</code></td><td>写入的输出流，如果传递的是字符串，将使用参数内容作为文件名。</td></tr><tr><td><code>close_out</code></td><td><code>False</code></td><td>如果 <code>out</code> 是一个流，是否需要由Writer显式关闭。</td></tr><tr><td><code>csv</code></td><td><code>False</code></td><td>在执行过程中，是否将数据源、策略、观察者和指标的CSV流写入输出流。可以通过每个对象的<code>csv</code>属性控制哪些对象实际进入CSV流（数据源和观察者默认为True，指标默认为False）。</td></tr><tr><td><code>csv_filternan</code></td><td><code>True</code></td><td>CSV流中清除nan值（用空字段替换）。</td></tr><tr><td><code>csv_counter</code></td><td><code>True</code></td><td>是否应保持并输出实际输出行的计数器。</td></tr><tr><td><code>indent</code></td><td>2</td><td>每个级别的缩进空格数。</td></tr><tr><td><code>separators</code></td><td>&lsquo;=&rsquo;, &lsquo;-&rsquo;, &lsquo;+&rsquo;, &lsquo;*&rsquo;, &lsquo;.&rsquo;, &lsquo;~&rsquo;, &lsquo;"&rsquo;, &lsquo;^&rsquo;, &lsquo;#&rsquo;</td><td>用于分隔部分/子部分的行分隔符字符。</td></tr><tr><td><code>seplen</code></td><td>79</td><td>包括缩进在内的行分隔符的总长度。</td></tr><tr><td><code>rounding</code></td><td>None</td><td>将浮点数舍入到的小数位数。如果为None，则不执行舍入。</td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/backtrader/docs/05-cerebro/05-exceptions/ class="flex align-center"><img src=/backtrader/icons/backward.svg class=book-icon alt=Previous title="异常 Exceptions">
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/icons/menu.svg class=book-icon alt=Menu></label><h3>日志 Logging - Writter</h3><label for=toc-control><img src=/backtrader/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#参考>参考</a><ul><li><a href=#class-backtraderwriterfile><code>class backtrader.WriterFile()</code></a></li></ul></li></ul></nav></aside></header><article class="markdown book-article"><h1 id=writer>Writer<a class=anchor href=#writer>#</a></h1><p>Writer 类负责将以下内容写入输出流：</p><p>数据源、策略、指标和观察者的 CSV 流。可通过每个对象的 <code>csv</code> 属性控制哪些对象输出到 CSV 流（数据源和观察者默认为 True，指标默认为 False）。</p><p>属性摘要：</p><ul><li>数据源</li><li>策略（线条和参数）</li><li>指标/观察者（线条和参数）</li><li>分析器（参数和分析结果）</li></ul><p>系统中定义了一个名为 <code>WriterFile</code> 的 Writer，可通过以下方式添加：</p><ol><li>将 Cerebro 的 <code>writer</code> 参数设为 True，会实例化一个标准的 <code>WriterFile</code></li><li>调用 <code>Cerebro.addwriter(writerclass, **kwargs)</code>，在回测执行期间使用给定的 kwargs 实例化 <code>writerclass</code></li></ol><p>由于标准 <code>WriterFile</code> 默认不输出 CSV，可使用如下方式启用：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>cerebro<span style=color:#f92672>.</span>addwriter(bt<span style=color:#f92672>.</span>WriterFile, csv<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)</span></span></code></pre></div><h2 id=参考>参考<a class=anchor href=#%e5%8f%82%e8%80%83>#</a></h2><h3 id=class-backtraderwriterfile><code>class backtrader.WriterFile()</code><a class=anchor href=#class-backtraderwriterfile>#</a></h3><p>系统范围内的 Writer 类。</p><p>可以通过以下参数进行参数化：</p><table><thead><tr><th>参数名</th><th>默认</th><th>说明</th></tr></thead><tbody><tr><td><code>out</code></td><td><code>sys.stdout</code></td><td>写入的输出流。如果传递的是字符串，则将其作为文件名。</td></tr><tr><td><code>close_out</code></td><td><code>False</code></td><td>如果 <code>out</code> 是流对象，是否需要由 Writer 显式关闭。</td></tr><tr><td><code>csv</code></td><td><code>False</code></td><td>是否将数据源、策略、观察者和指标的 CSV 流写入输出。可通过每个对象的 <code>csv</code> 属性控制哪些对象输出到 CSV（数据源和观察者默认为 True，指标默认为 False）。</td></tr><tr><td><code>csv_filternan</code></td><td><code>True</code></td><td>在 CSV 输出中清除 NaN 值（替换为空字段）。</td></tr><tr><td><code>csv_counter</code></td><td><code>True</code></td><td>是否记录并输出实际输出行的计数器。</td></tr><tr><td><code>indent</code></td><td>2</td><td>每个级别的缩进空格数。</td></tr><tr><td><code>separators</code></td><td><code>'=', '-', '+', '*', '.', '~', '"', '^', '#'</code></td><td>用于分隔部分/子部分的行分隔符字符。</td></tr><tr><td><code>seplen</code></td><td>79</td><td>包括缩进在内的行分隔符的总长度。</td></tr><tr><td><code>rounding</code></td><td>None</td><td>浮点数保留的小数位数。如果为 None，则不做舍入。</td></tr></tbody></table></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div></div><div></div></div><div class="flex flex-wrap justify-between"><span><a href=/backtrader/docs/05-cerebro/05-exceptions/ class="flex align-center"><img src=/backtrader/icons/backward.svg class=book-icon alt=Previous title="异常 Exceptions">
 <span>异常 Exceptions</span>
 </a></span><span><a href=/backtrader/docs/06-datafeed/01-datafeeds/ class="flex align-center"><span>Data Feeds</span>
 <img src=/backtrader/icons/forward.svg class=book-icon alt=Next title="Data Feeds"></a></span></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script><div class=book-comments><script src=https://utteranc.es/client.js repo=poloxue/blog issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></footer><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#参考>参考</a><ul><li><a href=#class-backtraderwriterfile><code>class backtrader.WriterFile()</code></a></li></ul></li></ul></nav></div></aside></main></body></html>

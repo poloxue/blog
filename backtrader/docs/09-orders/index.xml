@@ -3,17 +3,17 @@
  &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/nvim?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
  &lt;/div&gt;
 
-&lt;p&gt;Cerebro 是 backtrader 中的关键控制系统，而 Strategy（一个子类）是终端用户的关键控制点。后者需要一个连接系统其他部分的方法，这就是订单发挥关键作用的地方。&lt;/p&gt;
-&lt;p&gt;订单将策略中的逻辑决策转化为适合 Broker 执行操作的消息。这是通过以下方式完成的：&lt;/p&gt;
+&lt;p&gt;Cerebro 是 backtrader 的核心控制系统，而 Strategy（由用户子类化）是用户的主要操作入口。策略需要连接系统的其他部分，订单正是为此而生。&lt;/p&gt;
+&lt;p&gt;订单将策略的逻辑决策转化为 Broker 可执行的消息，通过以下方式完成：&lt;/p&gt;
 &lt;h2 id="创建"&gt;创建&lt;a class="anchor" href="#%e5%88%9b%e5%bb%ba"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;通过 Strategy 的方法：&lt;code&gt;buy&lt;/code&gt;、&lt;code&gt;sell&lt;/code&gt; 和 &lt;code&gt;close&lt;/code&gt;（Strategy），这些方法返回一个订单实例作为参考。&lt;/p&gt;
 &lt;h2 id="取消"&gt;取消&lt;a class="anchor" href="#%e5%8f%96%e6%b6%88"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;通过 Strategy 的方法：&lt;code&gt;cancel&lt;/code&gt;（Strategy），该方法需要一个订单实例来操作。&lt;/p&gt;
-&lt;p&gt;订单也作为一种通信方式反馈给用户，通知 Broker 中的执行情况。&lt;/p&gt;
+&lt;p&gt;订单也用于向用户反馈 Broker 中的执行情况。&lt;/p&gt;
 &lt;h2 id="通知"&gt;通知&lt;a class="anchor" href="#%e9%80%9a%e7%9f%a5"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;通过 Strategy 的方法：&lt;code&gt;notify_order&lt;/code&gt;（Strategy），该方法报告一个订单实例。&lt;/p&gt;
 &lt;h2 id="订单创建"&gt;订单创建&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e5%88%9b%e5%bb%ba"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;调用 &lt;code&gt;buy&lt;/code&gt;、&lt;code&gt;sell&lt;/code&gt; 和 &lt;code&gt;close&lt;/code&gt; 时，以下参数适用于创建：&lt;/p&gt;
+&lt;p&gt;调用 &lt;code&gt;buy&lt;/code&gt;、&lt;code&gt;sell&lt;/code&gt; 和 &lt;code&gt;close&lt;/code&gt; 时，可用以下参数：&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -66,14 +66,14 @@
  &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;h2 id="示例"&gt;示例&lt;a class="anchor" href="#%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;如果 backtrader 直接支持的 4 种订单执行类型不够，例如对于 Interactive Brokers，可以传递如下参数：&lt;/p&gt;</description></item><item><title>创建/执行</title><link>https://www.poloxue.com/backtrader/docs/09-orders/02-creation-execution/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/02-creation-execution/</guid><description>&lt;h1 id="订单管理和执行"&gt;订单管理和执行&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e7%ae%a1%e7%90%86%e5%92%8c%e6%89%a7%e8%a1%8c"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;如果 backtrader 默认的 4 种订单执行类型不够用，例如对接 Interactive Brokers 时，可以传递如下参数：&lt;/p&gt;</description></item><item><title>创建/执行</title><link>https://www.poloxue.com/backtrader/docs/09-orders/02-creation-execution/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/02-creation-execution/</guid><description>&lt;h1 id="订单管理和执行"&gt;订单管理和执行&lt;a class="anchor" href="#%e8%ae%a2%e5%8d%95%e7%ae%a1%e7%90%86%e5%92%8c%e6%89%a7%e8%a1%8c"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;对于订单管理，&lt;strong&gt;Backtrader&lt;/strong&gt; 提供了3种基本操作：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;buy&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;sell&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;cancel&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;：一个更新操作显然是合乎逻辑的，但常识告诉我们，这种方法主要用于使用判断性交易方法的手动操作员。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; 更新操作看起来合乎逻辑，但这种方式主要用于手动交易者。&lt;/p&gt;
 &lt;p&gt;对于订单执行逻辑，提供以下执行类型：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;市价订单（Market）&lt;/li&gt;
@@ -107,21 +107,20 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; plimit&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1.07&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 取消现有订单&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cancel(order)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;所有订单类型都可以通过创建一个订单实例（或其子类之一）并传递给 broker 来创建：&lt;/p&gt;</description></item><item><title>目标订单</title><link>https://www.poloxue.com/backtrader/docs/09-orders/03-target-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/03-target-orders/</guid><description>&lt;h1 id="目标订单"&gt;目标订单&lt;a class="anchor" href="#%e7%9b%ae%e6%a0%87%e8%ae%a2%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;broker&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cancel(order)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>目标订单</title><link>https://www.poloxue.com/backtrader/docs/09-orders/03-target-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/03-target-orders/</guid><description>&lt;h1 id="目标订单"&gt;目标订单&lt;a class="anchor" href="#%e7%9b%ae%e6%a0%87%e8%ae%a2%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;
  &lt;iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/7jhzx0NWKrk?autoplay=0&amp;amp;controls=1&amp;amp;end=0&amp;amp;loop=0&amp;amp;mute=0&amp;amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"&gt;&lt;/iframe&gt;
  &lt;/div&gt;
 
-&lt;p&gt;在 1.8.10.96 版本之前，策略方法 buy 和 sell 可通过 &lt;code&gt;sizer&lt;/code&gt; 实现智能持仓，&lt;code&gt;sizer&lt;/code&gt; 负责确定持仓的大小。然而，&lt;code&gt;Sizer&lt;/code&gt; 不能决定操作是买入还是卖出。这就需要一个新的概念，在决策中加入一个小的智能层。这就是策略中的order_target_xxx方法家族。&lt;/p&gt;
-&lt;p&gt;受 &lt;strong&gt;zipline&lt;/strong&gt; 的启发，这些方法提供了简单指定最终目标的机会，无论目标是：&lt;/p&gt;
+&lt;p&gt;1.8.10.96 版本之前，&lt;code&gt;buy&lt;/code&gt; 和 &lt;code&gt;sell&lt;/code&gt; 通过 &lt;code&gt;sizer&lt;/code&gt; 确定持仓大小。但 &lt;code&gt;sizer&lt;/code&gt; 无法决定操作方向（买入还是卖出），因此需要一个新的概念来加入智能决策层。这就是策略中的 &lt;code&gt;order_target_xxx&lt;/code&gt; 方法家族。&lt;/p&gt;
+&lt;p&gt;受 &lt;strong&gt;zipline&lt;/strong&gt; 启发，这些方法允许直接指定最终目标，目标类型包括：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;size -&amp;gt; 特定资产的股份或合约数量&lt;/li&gt;
-&lt;li&gt;value -&amp;gt; 资产在投资组合中的货币单位价值&lt;/li&gt;
-&lt;li&gt;percent -&amp;gt; 当前投资组合中资产的百分比值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;size&lt;/code&gt; -&amp;gt; 特定资产的股份或合约数量&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;value&lt;/code&gt; -&amp;gt; 资产在投资组合中的货币价值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;percent&lt;/code&gt; -&amp;gt; 资产占当前投资组合的百分比&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：这些方法的在 Strategy 类的参考文档中可以找到。简言之，这些方法使用与 &lt;code&gt;buy&lt;/code&gt; 和 &lt;code&gt;sell&lt;/code&gt; 相同的参数签名，只是将 &lt;code&gt;size&lt;/code&gt; 参数替换为 target 参数。&lt;/p&gt;
-&lt;p&gt;这些方法的核心在于指定最终目标，然后方法决定操作是买入还是卖出。所有三种方法的逻辑相同。以下是order_target_size的工作方式：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：这些方法的详细说明可在 Strategy 类的参考文档中找到。它们使用与 &lt;code&gt;buy&lt;/code&gt; 和 &lt;code&gt;sell&lt;/code&gt; 相同的参数签名，只是将 &lt;code&gt;size&lt;/code&gt; 替换为目标参数。&lt;/p&gt;
+&lt;p&gt;这些方法的核心是：指定最终目标，由方法自动决定买入或卖出。三种方法的逻辑相同。以下是 &lt;code&gt;order_target_size&lt;/code&gt; 的工作方式：&lt;/p&gt;
 &lt;p&gt;如果目标大于当前仓位，则发出买入指令，买入的数量为target - position_size。例如：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;仓位：0，目标：7 -&amp;gt; buy(size=7 - 0) -&amp;gt; buy(size=7)&lt;/li&gt;
@@ -130,91 +129,50 @@
 &lt;li&gt;仓位：-3，目标：-2 -&amp;gt; buy(size=-2 - -3) -&amp;gt; buy(size=1)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;如果目标小于当前仓位，则发出卖出指令，卖出的数量为position_size - target。例如：&lt;/p&gt;</description></item><item><title>OCO 订单</title><link>https://www.poloxue.com/backtrader/docs/09-orders/04-oco-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/04-oco-orders/</guid><description>&lt;h1 id="oco订单"&gt;OCO订单&lt;a class="anchor" href="#oco%e8%ae%a2%e5%8d%95"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;使用模式尽量保持简单。因此，如果策略中的逻辑决定是时候发布订单，可以像这样使用 OCO：&lt;/p&gt;
+&lt;p&gt;使用模式尽量保持简单。如果策略决定发布订单，可以像这样使用 OCO：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; o1 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy(&lt;span style="color:#f92672"&gt;...&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; o2 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy(&lt;span style="color:#f92672"&gt;...&lt;/span&gt;, oco&lt;span style="color:#f92672"&gt;=&lt;/span&gt;o1)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; o3 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy(&lt;span style="color:#f92672"&gt;...&lt;/span&gt;, oco&lt;span style="color:#f92672"&gt;=&lt;/span&gt;o1) &lt;span style="color:#75715e"&gt;# 甚至可以是oco=o2，o2已经在o1组中&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;很简单，第一个订单 o1 将成为组长。通过指定 oco 命名参数，o2 和 o3 成为 OCO 组的一部分。请注意，代码注释指出 o3 也可以通过指定 o2 成为组的一部分（o2已经是组的一部分）。&lt;/p&gt;
-&lt;p&gt;一旦成功组成组后，如果组中的任何订单被执行、取消或过期，其他订单将被取消。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; o3 &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy(&lt;span style="color:#f92672"&gt;...&lt;/span&gt;, oco&lt;span style="color:#f92672"&gt;=&lt;/span&gt;o1) &lt;span style="color:#75715e"&gt;# 甚至可以是oco=o2，o2已经在o1组中&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;第一个订单 o1 成为组长。通过 &lt;code&gt;oco&lt;/code&gt; 参数，o2 和 o3 成为 OCO 组的一部分。注意，o3 也可以通过指定 oco=o2 加入组（o2 已在组中）。&lt;/p&gt;
+&lt;p&gt;组建立后，如果其中任意订单被执行、取消或过期，其他订单将被取消。&lt;/p&gt;
 &lt;p&gt;下面的示例展示了OCO概念。一个标准执行并绘图：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ ./oco.py --broker cash&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;50000&lt;/span&gt; --plot&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;现金增加到50000，因为资产价值达到4000，3个订单的1个项目至少需要12000货币单位（经纪商默认值为10000）。&lt;/p&gt;
-&lt;p&gt;以下图表实际上没有提供太多信息（这是一个标准的SMA交叉策略）。&lt;/p&gt;
-&lt;p&gt;示例执行，当快速SMA上穿慢速SMA时，发布3个订单。&lt;/p&gt;
+&lt;p&gt;现金增加到 50000，因为资产价值约 4000，3 个订单各 1 份至少需要 12000（Broker 默认现金为 10000）。&lt;/p&gt;
+&lt;p&gt;以下图表基于一个标准的 SMA 交叉策略。&lt;/p&gt;
+&lt;p&gt;当快速 SMA 上穿慢速 SMA 时，发布 3 个订单：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;order1是一个限价订单，在limdays天后到期，限价为收盘价减少一个百分比。&lt;/li&gt;
-&lt;li&gt;order2是一个期限更长、限价更低的限价订单。&lt;/li&gt;
-&lt;li&gt;order3是一个限价更低的限价订单。&lt;/li&gt;
+&lt;li&gt;order1：限价订单，&lt;code&gt;limdays&lt;/code&gt; 天后到期，限价为收盘价减去一定百分比。&lt;/li&gt;
+&lt;li&gt;order2：限价订单，期限更长、限价更低。&lt;/li&gt;
+&lt;li&gt;order3：限价订单，限价更低。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;因此，order2 和 order3 不会执行，因为：&lt;/p&gt;
+&lt;p&gt;order2 和 order3 不会执行，因为：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;order1将首先执行，这将触发其他订单的取消。&lt;/li&gt;
-&lt;li&gt;或者order1将过期，这将触发其他订单的取消。&lt;/li&gt;
+&lt;li&gt;order1 会先执行，触发其他订单取消。&lt;/li&gt;
+&lt;li&gt;或者 order1 到期，触发其他订单取消。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;系统保存了3个订单的ref标识符，并且只有在notify_order中看到三个ref标识符分别为Completed、Cancelled、Margin或Expired时，才会发布新买单。&lt;/p&gt;
-&lt;p&gt;退出是在持有一段时间后后简单完成的。&lt;/p&gt;
-&lt;p&gt;为了跟踪实际执行，生成文本输出。部分内容如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-plaintext" data-lang="plaintext"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-28: Oref 1 / Buy at 2941.11055
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-28: Oref 2 / Buy at 2896.7722
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-28: Oref 3 / Buy at 2822.87495
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-31: Order ref: 1 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-31: Order ref: 2 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-31: Order ref: 3 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-31: Order ref: 1 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-31: Order ref: 2 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-01-31: Order ref: 3 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-02-01: Order ref: 1 / Type Buy / Status Expired
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-02-01: Order ref: 3 / Type Buy / Status Canceled
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2005-02-01: Order ref: 2 / Type Buy / Status Canceled
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;...
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-23: Oref 49 / Buy at 3532.39925
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-23: Oref 50 / Buy at 3479.147
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-23: Oref 51 / Buy at 3390.39325
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 49 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 50 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 51 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 49 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 50 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 51 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 49 / Type Buy / Status Completed
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 51 / Type Buy / Status Canceled
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-06-26: Order ref: 50 / Type Buy / Status Canceled
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;...
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-11-10: Order ref: 61 / Type Buy / Status Canceled
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-11: Oref 63 / Buy at 4032.62555
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-11: Oref 64 / Buy at 3971.8322
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-11: Oref 65 / Buy at 3870.50995
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-12: Order ref: 63 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-12: Order ref: 64 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-12: Order ref: 65 / Type Buy / Status Submitted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-12: Order ref: 63 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-12: Order ref: 64 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-12: Order ref: 65 / Type Buy / Status Accepted
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-15: Order ref: 63 / Type Buy / Status Expired
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-15: Order ref: 65 / Type Buy / Status Canceled
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;2006-12-15: Order ref: 64 / Type Buy / Status Canceled&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;以下情况发生：&lt;/p&gt;</description></item><item><title>Bracket Orders</title><link>https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/</guid><description>&lt;h1 id="bracket-orders"&gt;Bracket Orders&lt;a class="anchor" href="#bracket-orders"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;1.9.37.116版本增加了Bracket订单，为回测经纪商提供了广泛的订单支持（Market、Limit、Close、Stop、StopLimit、StopTrail、StopTrailLimit、OCO）。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，这是为回测和 Interactive Brokers 实现的。&lt;/p&gt;
-&lt;p&gt;Bracket订单不是单个订单，而是由3个订单组成。&lt;/p&gt;
+&lt;p&gt;系统保存 3 个订单的 ref 标识符，只有在 &lt;code&gt;notify_order&lt;/code&gt; 中看到三个 ref 全部变为 Completed、Cancelled、Margin 或 Expired 时，才会发布新买单。&lt;/p&gt;</description></item><item><title>Bracket Orders</title><link>https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/05-bracket-orders/</guid><description>&lt;h1 id="bracket-orders"&gt;Bracket Orders&lt;a class="anchor" href="#bracket-orders"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;1.9.37.116 版本增加了 Bracket 订单，为回测 Broker 提供了广泛的订单支持（Market、Limit、Close、Stop、StopLimit、StopTrail、StopTrailLimit、OCO）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，目前已在回测和 Interactive Brokers 中实现。&lt;/p&gt;
+&lt;p&gt;Bracket 订单不是单个订单，而是由 3 个订单组成。&lt;/p&gt;
 &lt;p&gt;以做多为例：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;一个主要的买单，通常设置为 Limit 或 StopLimit 订单。&lt;/li&gt;
-&lt;li&gt;一个低价卖单，通常设置为 Stop 订单以限制损失。&lt;/li&gt;
-&lt;li&gt;一个高价卖单，通常设置为 Limit 订单以获取利润。&lt;/li&gt;
+&lt;li&gt;主要买单，通常设置为 Limit 或 StopLimit 订单。&lt;/li&gt;
+&lt;li&gt;低价卖单，通常设置为 Stop 订单以限制损失。&lt;/li&gt;
+&lt;li&gt;高价卖单，通常设置为 Limit 订单以获取利润。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;做空也有对应的卖单和 2 个买单。&lt;/p&gt;
-&lt;p&gt;低价/高价卖单实际上形成了一个围绕主要订单的 Bracket。&lt;/p&gt;
-&lt;p&gt;为了使其合理，以下规则适用：&lt;/p&gt;
+&lt;p&gt;做空则相反：一个主要卖单加 2 个买单。&lt;/p&gt;
+&lt;p&gt;低价/高价卖单围绕主要订单形成一个 Bracket。&lt;/p&gt;
+&lt;p&gt;规则如下：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;3个订单一起提交，以避免其中任何一个独立触发。&lt;/li&gt;
+&lt;li&gt;3 个订单同时提交，避免任何订单独立触发。&lt;/li&gt;
 &lt;li&gt;低价/高价卖单被标记为主要订单的子订单。&lt;/li&gt;
-&lt;li&gt;子订单在主要订单执行之前不活跃。&lt;/li&gt;
-&lt;li&gt;取消主要订单会取消低价和高价卖单。&lt;/li&gt;
+&lt;li&gt;子订单在主要订单执行前不活跃。&lt;/li&gt;
+&lt;li&gt;取消主要订单会同时取消低价和高价卖单。&lt;/li&gt;
 &lt;li&gt;执行主要订单会激活低价和高价卖单。&lt;/li&gt;
-&lt;li&gt;一旦活跃，低价/高价卖单的执行或取消会自动取消另一个订单。&lt;/li&gt;
+&lt;li&gt;激活后，低价/高价卖单中任一执行或取消，会自动取消另一个。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="使用模式"&gt;使用模式&lt;a class="anchor" href="#%e4%bd%bf%e7%94%a8%e6%a8%a1%e5%bc%8f"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;有两种方式创建 Bracket 订单组：&lt;/p&gt;
@@ -222,41 +180,27 @@
 &lt;li&gt;单次发布3个订单。&lt;/li&gt;
 &lt;li&gt;手动发布3个订单。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id="单次发布bracket"&gt;单次发布Bracket&lt;a class="anchor" href="#%e5%8d%95%e6%ac%a1%e5%8f%91%e5%b8%83bracket"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;backtrader在Strategy中提供了两个新方法来控制Bracket订单：&lt;code&gt;buy_bracket&lt;/code&gt;和&lt;code&gt;sell_bracket&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;签名和信息见下文或Strategy参考部分。&lt;/p&gt;
-&lt;p&gt;通过单个语句完成3个订单的设置。示例如下：&lt;/p&gt;
+&lt;h3 id="单次发布-bracket"&gt;单次发布 Bracket&lt;a class="anchor" href="#%e5%8d%95%e6%ac%a1%e5%8f%91%e5%b8%83-bracket"&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;backtrader 在 Strategy 中提供了两个新方法：&lt;code&gt;buy_bracket&lt;/code&gt; 和 &lt;code&gt;sell_bracket&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：签名和信息见下文或 Strategy 参考部分。&lt;/p&gt;
+&lt;p&gt;通过单个语句完成 3 个订单的设置，示例如下：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;brackets &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy_bracket(limitprice&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;14.00&lt;/span&gt;, price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;13.50&lt;/span&gt;, stopprice&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;13.00&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;注意，&lt;code&gt;stopprice&lt;/code&gt;和&lt;code&gt;limitprice&lt;/code&gt;围绕&lt;code&gt;price&lt;/code&gt;设定。这应该足够了。&lt;/p&gt;
-&lt;p&gt;实际的目标数据将是 data0，大小将由默认的sizer自动确定。当然，可以指定其他参数来精细控制执行。&lt;/p&gt;
-&lt;p&gt;返回值是一个包含3个订单的列表：[主要订单，stop订单，limit订单]。&lt;/p&gt;
-&lt;p&gt;因为在发布 &lt;code&gt;sell_bracket&lt;/code&gt; 订单时，低价和高价将翻转，所以参数命名遵循约定：&lt;code&gt;stop&lt;/code&gt; 用于止损（在做多操作中是低价，在做空操作中是高价），&lt;code&gt;limit&lt;/code&gt; 用于获取利润（在做多操作中是高价，在做空操作中是低价）。&lt;/p&gt;
-&lt;h3 id="手动发布bracket"&gt;手动发布Bracket&lt;a class="anchor" href="#%e6%89%8b%e5%8a%a8%e5%8f%91%e5%b8%83bracket"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;这涉及生成3个订单，并处理&lt;code&gt;transmit&lt;/code&gt;和&lt;code&gt;parent&lt;/code&gt;参数。规则如下：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;必须首先创建主要订单并设置&lt;code&gt;transmit=False&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;低价/高价订单必须有&lt;code&gt;parent=main_side_order&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;第一个创建的低价/高价订单必须设置&lt;code&gt;transmit=False&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;最后一个创建的订单（无论是低价还是高价）设置&lt;code&gt;transmit=True&lt;/code&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;以下示例实现了与上述单次命令相同的效果：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mainside &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;buy(price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;13.50&lt;/span&gt;, exectype&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Limit, transmit&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;lowside &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell(price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;13.00&lt;/span&gt;, size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;mainside&lt;span style="color:#f92672"&gt;.&lt;/span&gt;size, exectype&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Stop, transmit&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;False&lt;/span&gt;, parent&lt;span style="color:#f92672"&gt;=&lt;/span&gt;mainside)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;highside &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell(price&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;14.00&lt;/span&gt;, size&lt;span style="color:#f92672"&gt;=&lt;/span&gt;mainside&lt;span style="color:#f92672"&gt;.&lt;/span&gt;size, exectype&lt;span style="color:#f92672"&gt;=&lt;/span&gt;bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Order&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Limit, transmit&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, parent&lt;span style="color:#f92672"&gt;=&lt;/span&gt;mainside)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;需要做更多的事情：&lt;/p&gt;</description></item><item><title>期货和现货补偿</title><link>https://www.poloxue.com/backtrader/docs/09-orders/06-future-spot-compensation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/06-future-spot-compensation/</guid><description>&lt;h1 id="期货和现货补偿"&gt;期货和现货补偿&lt;a class="anchor" href="#%e6%9c%9f%e8%b4%a7%e5%92%8c%e7%8e%b0%e8%b4%a7%e8%a1%a5%e5%81%bf"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;目标数据为 data0，大小由默认 sizer 自动确定。也可以指定其他参数来精细控制执行。&lt;/p&gt;
+&lt;p&gt;返回值是一个包含3个订单的列表：[主要订单，stop订单，limit订单]。&lt;/p&gt;</description></item><item><title>期货和现货补偿</title><link>https://www.poloxue.com/backtrader/docs/09-orders/06-future-spot-compensation/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/06-future-spot-compensation/</guid><description>&lt;h1 id="期货和现货补偿"&gt;期货和现货补偿&lt;a class="anchor" href="#%e6%9c%9f%e8%b4%a7%e5%92%8c%e7%8e%b0%e8%b4%a7%e8%a1%a5%e5%81%bf"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;p&gt;版本 1.9.32.116 增加了对社区提出的一个有趣用例的支持：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;用期货启动交易，包括实物交割；&lt;/li&gt;
+&lt;li&gt;用期货开仓交易，包括实物交割；&lt;/li&gt;
 &lt;li&gt;使用指标进行分析；&lt;/li&gt;
-&lt;li&gt;如有必要，通过操作现货价格来平仓，从而有效地取消实物交割，无论是收货还是交货（希望能获利）&lt;/li&gt;
-&lt;li&gt;期货在操作现货价格的当天到期&lt;/li&gt;
+&lt;li&gt;必要时通过操作现货价格来平仓，从而取消实物交割（收货或交货，希望能获利）；&lt;/li&gt;
+&lt;li&gt;期货在操作现货价格的当天到期。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;这意味着：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;平台接收来自两个不同资产的数据点&lt;/li&gt;
-&lt;li&gt;平台必须以某种方式理解这些资产是相关的，并且现货价格的操作将关闭在期货上开启的头寸&lt;/li&gt;
-&lt;li&gt;实际上，期货并未平仓，只是实物交割被补偿了&lt;/li&gt;
+&lt;li&gt;平台接收两个不同资产的数据；&lt;/li&gt;
+&lt;li&gt;平台需要理解这些资产相关，且现货操作将关闭期货头寸；&lt;/li&gt;
+&lt;li&gt;实际上期货并未平仓，只是实物交割被补偿了。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;利用这种补偿概念，backtrader 增加了一种方式，让用户告知平台一个数据流上的操作将对另一个数据流产生补偿效果。使用模式如下：&lt;/p&gt;
+&lt;p&gt;基于这一补偿概念，backtrader 允许用户告知平台：一个数据流上的操作会对另一个数据流产生补偿效果。使用方式如下：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Cerebro()
@@ -271,25 +215,25 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;...&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="综合示例"&gt;综合示例&lt;a class="anchor" href="#%e7%bb%bc%e5%90%88%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;一个示例胜过千言万语，所以让我们把所有的部分结合起来。&lt;/p&gt;
+&lt;p&gt;示例胜过千言万语，下面将所有部分结合起来。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;使用 backtrader 源代码中的一个标准示例数据源。这将是期货数据&lt;/li&gt;
-&lt;li&gt;通过重新使用相同的数据源并添加一个随机移动价格的过滤器来模拟一个类似但不同的价格，从而创建价差。如下简单地实现：&lt;/li&gt;
+&lt;li&gt;使用 backtrader 源码中的标准示例数据源作为期货数据。&lt;/li&gt;
+&lt;li&gt;复用同一数据源，添加一个随机移动价格的过滤器来模拟价差，实现如下：&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 更改收盘价的过滤器&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;close_changer&lt;/span&gt;(data, &lt;span style="color:#f92672"&gt;*&lt;/span&gt;args, &lt;span style="color:#f92672"&gt;**&lt;/span&gt;kwargs):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;+=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;50.0&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt; random&lt;span style="color:#f92672"&gt;.&lt;/span&gt;randint(&lt;span style="color:#f92672"&gt;-&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;False&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 数据流长度未变&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在同一轴上绘图会混淆默认包含的 BuyObserver 标记，因此将禁用标准观察者并手动重新添加以使用不同的数据标记。&lt;/p&gt;
-&lt;p&gt;头寸将随机进入并在 10 天后退出。&lt;/p&gt;
-&lt;p&gt;这并不匹配期货到期期限，但这只是为了实现功能，而不是检查交易日历。&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;False&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 数据流长度未变&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在同一轴上绘图会混淆默认的 BuyObserver 标记，因此禁用了标准观察者，手动重新添加并使用不同的数据标记。&lt;/p&gt;
+&lt;p&gt;头寸随机进入，10 天后退出。&lt;/p&gt;
+&lt;p&gt;这并不匹配期货的到期期限，但本例仅演示功能，而非交易日历。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;如果要在期货到期日模拟现货价格的执行，需要激活“cheat-on-close”以确保订单在期货到期时执行。这在本示例中不需要，因为到期是随机选择的。&lt;/li&gt;
+&lt;li&gt;如需在期货到期日模拟现货价格执行，需要激活 “cheat-on-close” 确保订单在期货到期时执行。本例不需要，因为到期是随机选择的。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;注意策略：&lt;/p&gt;
+&lt;p&gt;注意策略中的操作：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;买操作在 data0 上执行&lt;/li&gt;
-&lt;li&gt;卖操作在 data1 上执行&lt;/li&gt;
+&lt;li&gt;买入操作在 data0 上执行&lt;/li&gt;
+&lt;li&gt;卖出操作在 data1 上执行&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;St&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
@@ -306,26 +250,29 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; (len(self) &lt;span style="color:#f92672"&gt;-&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;entered) &lt;span style="color:#f92672"&gt;&amp;gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;:
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sell(data&lt;span style="color:#f92672"&gt;=&lt;/span&gt;self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data1)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="执行"&gt;执行：&lt;a class="anchor" href="#%e6%89%a7%e8%a1%8c"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;$ ./future-spot.py --no-comp&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;得到如下图形输出。&lt;/p&gt;</description></item><item><title>跟踪止损（限价）</title><link>https://www.poloxue.com/backtrader/docs/09-orders/07-stop-trails/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://www.poloxue.com/backtrader/docs/09-orders/07-stop-trails/</guid><description>&lt;h1 id="跟踪止损限价"&gt;跟踪止损（限价）&lt;a class="anchor" href="#%e8%b7%9f%e8%b8%aa%e6%ad%a2%e6%8d%9f%e9%99%90%e4%bb%b7"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;p&gt;版本 1.9.35.116 增加了跟踪止损和跟踪止损限价订单执行类型到回测工具中。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，这只在回测中实现，尚未在实时经纪商中实现&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，更新至版本 1.9.36.116。Interactive Brokers 支持跟踪止损、跟踪止损限价和 OCO。&lt;/p&gt;
-&lt;p&gt;OCO 始终将组中的第一个订单指定为参数 oco&lt;/p&gt;
-&lt;p&gt;跟踪止损限价：经纪商模拟和 IB 经纪商具有相同的行为。指定：price 作为初始止损触发价格（也指定 trailamount），然后 plimit 作为初始限价。两者之间的差值将决定 limitoffset（限价与止损触发价格之间的距离）&lt;/p&gt;
-&lt;p&gt;使用模式完全集成到策略实例的标准买、卖和平仓市场操作方法中。需要注意：&lt;/p&gt;
-&lt;p&gt;指明所需的执行类型，如 &lt;code&gt;exectype=bt.Order.StopTrail&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;以及跟踪价格是否需要用固定距离或百分比距离计算&lt;/p&gt;
-&lt;p&gt;固定距离：&lt;code&gt;trailamount=10&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;百分比距离：&lt;code&gt;trailpercent=0.02&lt;/code&gt;（即：2%）&lt;/p&gt;
-&lt;p&gt;如果通过发出买单进入市场多头，那么带有 &lt;code&gt;StopTrail&lt;/code&gt; 和 &lt;code&gt;trailamount&lt;/code&gt; 的卖单会这样做：&lt;/p&gt;
-&lt;p&gt;如果未指定价格，则使用最新的收盘价&lt;/p&gt;
-&lt;p&gt;从价格中减去 trailamount 以找到止损（或触发）价格&lt;/p&gt;
-&lt;p&gt;经纪商的下一次迭代检查是否触及触发价格&lt;/p&gt;
-&lt;p&gt;如果是：订单将以市场执行类型的方式执行&lt;/p&gt;
-&lt;p&gt;如果否，使用最新的收盘价重新计算止损价格，并减去 trailamount 距离&lt;/p&gt;
-&lt;p&gt;如果新价格上涨，则更新&lt;/p&gt;
-&lt;p&gt;如果新价格下跌（或不变），则忽略&lt;/p&gt;
-&lt;p&gt;也就是说：跟踪止损价格随着价格上涨而跟随，但如果价格开始下跌则保持不变，以潜在地确保利润。&lt;/p&gt;
-&lt;p&gt;如果进入市场时发出的是卖单，那么发出带 &lt;code&gt;StopTrail&lt;/code&gt; 的买单会执行相反的操作，即：价格会向下跟随。&lt;/p&gt;
+&lt;p&gt;版本 1.9.35.116 在回测工具中增加了跟踪止损和跟踪止损限价订单执行类型。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，最初只在回测中实现。1.9.36.116 版本起，Interactive Brokers 也支持跟踪止损、跟踪止损限价和 OCO。&lt;/p&gt;
+&lt;p&gt;OCO 始终将组中第一个订单指定为 &lt;code&gt;oco&lt;/code&gt; 参数。&lt;/p&gt;
+&lt;p&gt;跟踪止损限价：回测 Broker 和 IB Broker 行为一致。指定 &lt;code&gt;price&lt;/code&gt; 作为初始止损触发价格（同时指定 &lt;code&gt;trailamount&lt;/code&gt;），&lt;code&gt;plimit&lt;/code&gt; 作为初始限价。两者差值决定 &lt;code&gt;limitoffset&lt;/code&gt;（限价与止损触发价格之间的距离）。&lt;/p&gt;
+&lt;p&gt;使用模式已集成到策略的 &lt;code&gt;buy&lt;/code&gt;、&lt;code&gt;sell&lt;/code&gt; 和 &lt;code&gt;close&lt;/code&gt; 方法中，只需：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;指定执行类型，如 &lt;code&gt;exectype=bt.Order.StopTrail&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;设置跟踪距离：&lt;code&gt;trailamount=10&lt;/code&gt;（固定距离）或 &lt;code&gt;trailpercent=0.02&lt;/code&gt;（2% 百分比距离）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;多头场景&lt;/strong&gt;（先买入，后以 &lt;code&gt;StopTrail&lt;/code&gt; 卖出）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若未指定价格，使用最新收盘价。&lt;/li&gt;
+&lt;li&gt;从价格中减去 &lt;code&gt;trailamount&lt;/code&gt; 得到止损（触发）价格。&lt;/li&gt;
+&lt;li&gt;Broker 每次迭代检查是否触及触发价格：
+&lt;ul&gt;
+&lt;li&gt;是：订单以市价方式执行。&lt;/li&gt;
+&lt;li&gt;否：使用最新收盘价重新计算止损价格（减去 &lt;code&gt;trailamount&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;如果新价格更高，止损价格上移；如果新价格更低（或不变），止损价格保持不变。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;也就是说：止损价格随价格上涨而跟随，价格下跌时保持不变，以锁定利润。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;空头场景&lt;/strong&gt;（先卖出，后以 &lt;code&gt;StopTrail&lt;/code&gt; 买入）：逻辑相反，价格向下跟随。&lt;/p&gt;
 &lt;p&gt;一些使用模式&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 对于向下的跟踪止损&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 将使用最后价格作为参考&lt;/span&gt;

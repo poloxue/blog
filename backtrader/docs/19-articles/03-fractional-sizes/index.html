@@ -1,66 +1,63 @@
-<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="在 backtrader 中交易加密货币的分数仓位
-首先，让我们用两句话总结一下 backtrader 的工作方式：
-它像一个构建工具包，包含一个基本构建模块（Cerebro），可以将许多不同的模块插入其中。
-基本分发版包含许多模块，如指标、分析器、观察者、仓位大小计算器、过滤器、数据源、经纪商、佣金/资产信息方案等&mldr;
-可以轻松地从头开始构建新的模块，或者基于现有模块进行构建。
-基本模块（Cerebro）已经实现了一些自动“插拔”，使得用户可以更轻松地使用框架，而不需要关注所有细节。
-因此，该框架已预配置以提供默认行为，例如：
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="在 Backtrader 中交易加密货币的分数仓位#
+首先，用两句话总结 backtrader 的工作方式：
+它像一个构建工具包，核心模块（Cerebro）可以插入各种不同模块。
+基础发行版包含指标、分析器、观察器、仓位计算器、过滤器、数据源、经纪商、佣金/资产信息方案等模块。
+可以轻松从头创建新模块，或基于现有模块扩展。
+Cerebro 已实现自动”插拔”，使用户无需关注所有细节就能快速上手。
+框架预配置了默认行为，例如：
 
-使用单一的主数据源
-1天的时间框架/压缩组合
-10,000 单位的货币
+使用单一主数据源
+1 天时间框架/压缩
+10,000 单位货币
 股票交易
 
-这些设置可能并不适合每个人，但重要的是：它可以根据每个交易者/程序员的需求进行定制。
+这些设置不一定适合所有人，但重要的是：一切都可以根据需求定制。
 交易股票：整数
-如上所述，默认配置是用于股票交易，当交易股票时，买入/卖出的是完整的股票份额（即：1、2、50、1000 等，而不是像 1.5 或 1001.7589 这样的数量）。
-这意味着，当用户在默认配置下执行以下代码时：
+如上所述，默认配置用于股票交易，买入/卖出的是完整的股票份额（如 1、2、50、1000，而非 1.5 或 1001.7589）。
+在默认配置下执行以下代码时：
 def next(self):
     # 将投资组合的 50% 用于购买主资产
-    self.order_target_percent(target=0.5)发生的情况是：
-系统会计算出需要多少股票份额，以便该资产在投资组合中的价值尽可能接近 50%。
-但是，由于默认配置是与股票交易配合使用，结果股票的数量将是一个整数。
+    self.order_target_percent(target=0.5)系统会计算所需的股票数量，以使该资产在投资组合中的价值尽可能接近 50%。
+但由于默认配置针对股票交易，最终股票数量为整数。
 注意
 请注意，默认配置是使用单一的主数据源，因此在调用 order_target_percent 时，实际的数据并未指定。当使用多个数据源时，必须指定获取/卖出哪个数据（除非是主数据源）。
 交易加密货币：分数
-显然，在交易加密货币时，即使是小数点后有 20 位数字，也可以购买“半个比特币”。
-好消息是，你可以更改与资产相关的信息。这是通过 CommissionInfo 家族的可插拔模块实现的。
-一些文档：Docs - Commission Schemes
+显然，加密货币交易可以购买”半个比特币”，哪怕小数点后有 20 位数字。
+好消息是，可以通过 CommissionInfo 可插拔模块更改资产相关信息。
+文档：Docs - Commission Schemes
 注意
-不得不承认，名字不太合适，因为这些方案不仅仅包含佣金信息，还包含其他内容。
-在分数方案中，关注的是该方案的 getsize(price, cash) 方法，它有如下文档字符串：
-返回在给定价格下执行现金操作所需的仓位大小这些方案与经纪商密切相关，并且可以通过经纪商 API 将这些方案添加到系统中。
-经纪商文档在这里：Docs - Broker
-相关方法是：addcommissioninfo(comminfo, name=None)。当 name 为 None 时，方案会应用到所有资产；如果指定了名称，则方案仅应用于具有特定名称的资产。
+不得不承认，命名不太准确，因为这些方案不仅包含佣金信息。
+在分数方案中，关注的是 getsize(price, cash) 方法，其文档说明为：
+返回在给定价格下执行现金操作所需的仓位大小这些方案与经纪商紧密相关，可通过经纪商 API 添加到系统中。
+经纪商文档：Docs - Broker
+相关方法：addcommissioninfo(comminfo, name=None)。当 name 为 None 时，方案应用于所有资产；指定名称时仅应用于该资产。
 实现分数方案
-这可以通过扩展现有的基础方案（即 CommissionInfo）轻松实现。"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/19-articles/03-fractional-sizes/"><meta property="og:site_name" content="Backtrader 中文"><meta property="og:title" content="加密货币中的分位仓位"><meta property="og:description" content="在 backtrader 中交易加密货币的分数仓位
-首先，让我们用两句话总结一下 backtrader 的工作方式：
-它像一个构建工具包，包含一个基本构建模块（Cerebro），可以将许多不同的模块插入其中。
-基本分发版包含许多模块，如指标、分析器、观察者、仓位大小计算器、过滤器、数据源、经纪商、佣金/资产信息方案等…
-可以轻松地从头开始构建新的模块，或者基于现有模块进行构建。
-基本模块（Cerebro）已经实现了一些自动“插拔”，使得用户可以更轻松地使用框架，而不需要关注所有细节。
-因此，该框架已预配置以提供默认行为，例如：
-使用单一的主数据源 1天的时间框架/压缩组合 10,000 单位的货币 股票交易 这些设置可能并不适合每个人，但重要的是：它可以根据每个交易者/程序员的需求进行定制。
+通过扩展基础方案 CommissionInfo 即可轻松实现。"><meta name=theme-color media="(prefers-color-scheme: light)" content="#ffffff"><meta name=theme-color media="(prefers-color-scheme: dark)" content="#343a40"><meta name=color-scheme content="light dark"><meta property="og:url" content="https://www.poloxue.com/backtrader/docs/19-articles/03-fractional-sizes/"><meta property="og:site_name" content="Backtrader 中文"><meta property="og:title" content="加密货币中的分位仓位"><meta property="og:description" content="在 Backtrader 中交易加密货币的分数仓位# 首先，用两句话总结 backtrader 的工作方式：
+它像一个构建工具包，核心模块（Cerebro）可以插入各种不同模块。
+基础发行版包含指标、分析器、观察器、仓位计算器、过滤器、数据源、经纪商、佣金/资产信息方案等模块。
+可以轻松从头创建新模块，或基于现有模块扩展。
+Cerebro 已实现自动”插拔”，使用户无需关注所有细节就能快速上手。
+框架预配置了默认行为，例如：
+使用单一主数据源 1 天时间框架/压缩 10,000 单位货币 股票交易 这些设置不一定适合所有人，但重要的是：一切都可以根据需求定制。
 交易股票：整数
-如上所述，默认配置是用于股票交易，当交易股票时，买入/卖出的是完整的股票份额（即：1、2、50、1000 等，而不是像 1.5 或 1001.7589 这样的数量）。
-这意味着，当用户在默认配置下执行以下代码时：
-def next(self): # 将投资组合的 50% 用于购买主资产 self.order_target_percent(target=0.5)发生的情况是：
-系统会计算出需要多少股票份额，以便该资产在投资组合中的价值尽可能接近 50%。
-但是，由于默认配置是与股票交易配合使用，结果股票的数量将是一个整数。
+如上所述，默认配置用于股票交易，买入/卖出的是完整的股票份额（如 1、2、50、1000，而非 1.5 或 1001.7589）。
+在默认配置下执行以下代码时：
+def next(self): # 将投资组合的 50% 用于购买主资产 self.order_target_percent(target=0.5)系统会计算所需的股票数量，以使该资产在投资组合中的价值尽可能接近 50%。
+但由于默认配置针对股票交易，最终股票数量为整数。
 注意
 请注意，默认配置是使用单一的主数据源，因此在调用 order_target_percent 时，实际的数据并未指定。当使用多个数据源时，必须指定获取/卖出哪个数据（除非是主数据源）。
 交易加密货币：分数
-显然，在交易加密货币时，即使是小数点后有 20 位数字，也可以购买“半个比特币”。
-好消息是，你可以更改与资产相关的信息。这是通过 CommissionInfo 家族的可插拔模块实现的。
-一些文档：Docs - Commission Schemes
+显然，加密货币交易可以购买”半个比特币”，哪怕小数点后有 20 位数字。
+好消息是，可以通过 CommissionInfo 可插拔模块更改资产相关信息。
+文档：Docs - Commission Schemes
 注意
-不得不承认，名字不太合适，因为这些方案不仅仅包含佣金信息，还包含其他内容。
-在分数方案中，关注的是该方案的 getsize(price, cash) 方法，它有如下文档字符串：
-返回在给定价格下执行现金操作所需的仓位大小这些方案与经纪商密切相关，并且可以通过经纪商 API 将这些方案添加到系统中。
-经纪商文档在这里：Docs - Broker
-相关方法是：addcommissioninfo(comminfo, name=None)。当 name 为 None 时，方案会应用到所有资产；如果指定了名称，则方案仅应用于具有特定名称的资产。
+不得不承认，命名不太准确，因为这些方案不仅包含佣金信息。
+在分数方案中，关注的是 getsize(price, cash) 方法，其文档说明为：
+返回在给定价格下执行现金操作所需的仓位大小这些方案与经纪商紧密相关，可通过经纪商 API 添加到系统中。
+经纪商文档：Docs - Broker
+相关方法：addcommissioninfo(comminfo, name=None)。当 name 为 None 时，方案应用于所有资产；指定名称时仅应用于该资产。
 实现分数方案
-这可以通过扩展现有的基础方案（即 CommissionInfo）轻松实现。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2025-01-03T19:00:57+08:00"><title>加密货币中的分位仓位 | Backtrader 中文</title><link rel=icon href=/backtrader/favicon.png><link rel=manifest href=/backtrader/manifest.json><link rel=canonical href=https://www.poloxue.com/backtrader/docs/19-articles/03-fractional-sizes/><link rel=stylesheet href=/backtrader/book.min.f079ea268834b2e0459e63011be648e8a3cc0e4819a71206873f891528fbfdf6.css integrity="sha256-8HnqJog0suBFnmMBG+ZI6KPMDkgZpxIGhz+JFSj7/fY=" crossorigin=anonymous><script defer src=/backtrader/fuse.min.js></script><script defer src=/backtrader/en.search.min.f212634a67d5af64520d101ff6b7f38b2b0a0b7b7263b95c5d58db66d1888016.js integrity="sha256-8hJjSmfVr2RSDRAf9rfziysKC3tyY7lcXVjbZtGIgBY=" crossorigin=anonymous></script><script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
+通过扩展基础方案 CommissionInfo 即可轻松实现。"><meta property="og:locale" content="zh_cn"><meta property="og:type" content="article"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2026-05-12T00:38:48+08:00"><title>加密货币中的分位仓位 | Backtrader 中文</title><link rel=icon href=/backtrader/favicon.png><link rel=manifest href=/backtrader/manifest.json><link rel=canonical href=https://www.poloxue.com/backtrader/docs/19-articles/03-fractional-sizes/><link rel=stylesheet href=/backtrader/book.min.f079ea268834b2e0459e63011be648e8a3cc0e4819a71206873f891528fbfdf6.css integrity="sha256-8HnqJog0suBFnmMBG+ZI6KPMDkgZpxIGhz+JFSj7/fY=" crossorigin=anonymous><script defer src=/backtrader/fuse.min.js></script><script defer src=/backtrader/en.search.min.6f7e7665f60972a2f352e79a60b9ba9bd793efad1da1be8150f969b72458de28.js integrity="sha256-b352ZfYJcqLzUueaYLm6m9eT760dob6BUPlptyRY3ig=" crossorigin=anonymous></script><script defer src=/backtrader/sw.min.6e7f3387f593f3527ac4d321c3f23a8d1e0c070c219a9f97642913dc39d4b5ff.js integrity="sha256-bn8zh/WT81J6xNMhw/I6jR4MBwwhmp+XZCkT3DnUtf8=" crossorigin=anonymous></script><script data-goatcounter=https://poloxue.goatcounter.com/count async src=//gc.zgo.at/count.js></script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7019080091542951" crossorigin=anonymous></script></head><body dir=ltr class="book-kind-page book-type-docs"><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/backtrader/><img src=/backtrader/logo.png alt=Logo><span>Backtrader 中文</span></a></h2><div class="book-search hidden"><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><script>document.querySelector(".book-search").classList.remove("hidden")</script><ul><li><a href=/backtrader/docs/01-introduction/>介绍</a><ul></ul></li><li><a href=/backtrader/docs/02-installation/>安装指南</a><ul></ul></li><li><input type=checkbox id=section-ef1b0f3b48f1accf5a8e12976586a132 class=toggle>
 <label for=section-ef1b0f3b48f1accf5a8e12976586a132 class=flex><a href=/backtrader/docs/03-quickstart/>快速开始</a>
 <img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/03-quickstart/01-setup/>环境设置</a></li><li><a href=/backtrader/docs/03-quickstart/02-cash/>账户配置</a></li><li><a href=/backtrader/docs/03-quickstart/03-datafeed/>配置数据</a></li><li><a href=/backtrader/docs/03-quickstart/04-first-strategy/>第一个策略</a></li><li><a href=/backtrader/docs/03-quickstart/0401-basic-concept/>基础概念</a></li><li><a href=/backtrader/docs/03-quickstart/05-strategy-logic/>开始交易</a></li><li><a href=/backtrader/docs/03-quickstart/06-sell/>卖出操作</a></li><li><a href=/backtrader/docs/03-quickstart/07-commission/>交易监控</a></li><li><a href=/backtrader/docs/03-quickstart/08-parameters/>参数定义</a></li><li><a href=/backtrader/docs/03-quickstart/09-indicators/>技术指标</a></li><li><a href=/backtrader/docs/03-quickstart/10-plotting/>可视化</a></li><li><a href=/backtrader/docs/03-quickstart/11-optimization/>策略优化</a></li></ul></li><li><input type=checkbox id=section-8b6cc0ccf66e33ea233e54e3e1c71bd0 class=toggle>
@@ -93,13 +90,13 @@ def next(self): # 将投资组合的 50% 用于购买主资产 self.order_target
 <label for=section-b6e31488b3e951ce956583dfc7ccd8a2 class=flex><a role=button>日期时间</a>
 <img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/17-datetime/01-management/>管理</a></li><li><a href=/backtrader/docs/17-datetime/02-timer/>定时器</a></li><li><a href=/backtrader/docs/17-datetime/03-trading-calendars/>交易日历</a></li></ul></li><li><a href=/backtrader/docs/18-automated-running/>自动运行</a><ul></ul></li><li><input type=checkbox id=section-1c57bab4ff24bdea61d636c257658085 class=toggle checked>
 <label for=section-1c57bab4ff24bdea61d636c257658085 class=flex><a role=button>官方文章</a>
-<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/ class=active>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/icons/menu.svg class=book-icon alt=Menu></label><h3>加密货币中的分位仓位</h3><label for=toc-control><img src=/backtrader/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents></nav></aside></header><article class="markdown book-article"><p><strong>在 backtrader 中交易加密货币的分数仓位</strong></p><p>首先，让我们用两句话总结一下 backtrader 的工作方式：</p><p>它像一个构建工具包，包含一个基本构建模块（Cerebro），可以将许多不同的模块插入其中。</p><p>基本分发版包含许多模块，如指标、分析器、观察者、仓位大小计算器、过滤器、数据源、经纪商、佣金/资产信息方案等&mldr;</p><p>可以轻松地从头开始构建新的模块，或者基于现有模块进行构建。</p><p>基本模块（Cerebro）已经实现了一些自动“插拔”，使得用户可以更轻松地使用框架，而不需要关注所有细节。</p><p>因此，该框架已预配置以提供默认行为，例如：</p><ul><li>使用单一的主数据源</li><li>1天的时间框架/压缩组合</li><li>10,000 单位的货币</li><li>股票交易</li></ul><p>这些设置可能并不适合每个人，但重要的是：它可以根据每个交易者/程序员的需求进行定制。</p><p><strong>交易股票：整数</strong></p><p>如上所述，默认配置是用于股票交易，当交易股票时，买入/卖出的是完整的股票份额（即：1、2、50、1000 等，而不是像 1.5 或 1001.7589 这样的数量）。</p><p>这意味着，当用户在默认配置下执行以下代码时：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
+<img src=/backtrader/icons/chevron-right.svg class=book-icon></label><ul><li><a href=/backtrader/docs/19-articles/01-out-of-memory/>超大内存</a></li><li><a href=/backtrader/docs/19-articles/02-cross-backtesting-pitfalls/>跨平台回测的陷进</a></li><li><a href=/backtrader/docs/19-articles/03-fractional-sizes/ class=active>加密货币中的分位仓位</a></li><li><a href=/backtrader/docs/19-articles/04-beating-the-random-entry/>打败随机入场</a></li><li><a href=/backtrader/docs/19-articles/05-rebalancing-conserative/>保守型公式的再平衡</a></li><li><a href=/backtrader/docs/19-articles/06-mfi-generic/>MFI 通用版</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/backtrader/icons/menu.svg class=book-icon alt=Menu></label><h3>加密货币中的分位仓位</h3><label for=toc-control><img src=/backtrader/icons/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents></nav></aside></header><article class="markdown book-article"><h1 id=在-backtrader-中交易加密货币的分数仓位>在 Backtrader 中交易加密货币的分数仓位<a class=anchor href=#%e5%9c%a8-backtrader-%e4%b8%ad%e4%ba%a4%e6%98%93%e5%8a%a0%e5%af%86%e8%b4%a7%e5%b8%81%e7%9a%84%e5%88%86%e6%95%b0%e4%bb%93%e4%bd%8d>#</a></h1><p>首先，用两句话总结 backtrader 的工作方式：</p><p>它像一个构建工具包，核心模块（Cerebro）可以插入各种不同模块。</p><p>基础发行版包含指标、分析器、观察器、仓位计算器、过滤器、数据源、经纪商、佣金/资产信息方案等模块。</p><p>可以轻松从头创建新模块，或基于现有模块扩展。</p><p>Cerebro 已实现自动”插拔”，使用户无需关注所有细节就能快速上手。</p><p>框架预配置了默认行为，例如：</p><ul><li>使用单一主数据源</li><li>1 天时间框架/压缩</li><li>10,000 单位货币</li><li>股票交易</li></ul><p>这些设置不一定适合所有人，但重要的是：一切都可以根据需求定制。</p><p><strong>交易股票：整数</strong></p><p>如上所述，默认配置用于股票交易，买入/卖出的是完整的股票份额（如 1、2、50、1000，而非 1.5 或 1001.7589）。</p><p>在默认配置下执行以下代码时：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>next</span>(self):
 </span></span><span style=display:flex><span>    <span style=color:#75715e># 将投资组合的 50% 用于购买主资产</span>
-</span></span><span style=display:flex><span>    self<span style=color:#f92672>.</span>order_target_percent(target<span style=color:#f92672>=</span><span style=color:#ae81ff>0.5</span>)</span></span></code></pre></div><p>发生的情况是：</p><p>系统会计算出需要多少股票份额，以便该资产在投资组合中的价值尽可能接近 50%。</p><p>但是，由于默认配置是与股票交易配合使用，结果股票的数量将是一个整数。</p><p><strong>注意</strong></p><p>请注意，默认配置是使用单一的主数据源，因此在调用 <code>order_target_percent</code> 时，实际的数据并未指定。当使用多个数据源时，必须指定获取/卖出哪个数据（除非是主数据源）。</p><p><strong>交易加密货币：分数</strong></p><p>显然，在交易加密货币时，即使是小数点后有 20 位数字，也可以购买“半个比特币”。</p><p>好消息是，你可以更改与资产相关的信息。这是通过 <code>CommissionInfo</code> 家族的可插拔模块实现的。</p><p>一些文档：<a href=https://www.backtrader.com/docu/commission-schemes/commission-schemes/>Docs - Commission Schemes</a></p><p><strong>注意</strong></p><p>不得不承认，名字不太合适，因为这些方案不仅仅包含佣金信息，还包含其他内容。</p><p>在分数方案中，关注的是该方案的 <code>getsize(price, cash)</code> 方法，它有如下文档字符串：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>返回在给定价格下执行现金操作所需的仓位大小</span></span></code></pre></div><p>这些方案与经纪商密切相关，并且可以通过经纪商 API 将这些方案添加到系统中。</p><p>经纪商文档在这里：<a href=https://www.backtrader.com/docu/broker/>Docs - Broker</a></p><p>相关方法是：<code>addcommissioninfo(comminfo, name=None)</code>。当 <code>name</code> 为 None 时，方案会应用到所有资产；如果指定了名称，则方案仅应用于具有特定名称的资产。</p><p><strong>实现分数方案</strong></p><p>这可以通过扩展现有的基础方案（即 <code>CommissionInfo</code>）轻松实现。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CommInfoFractional</span>(bt<span style=color:#f92672>.</span>CommissionInfo):
+</span></span><span style=display:flex><span>    self<span style=color:#f92672>.</span>order_target_percent(target<span style=color:#f92672>=</span><span style=color:#ae81ff>0.5</span>)</span></span></code></pre></div><p>系统会计算所需的股票数量，以使该资产在投资组合中的价值尽可能接近 50%。</p><p>但由于默认配置针对股票交易，最终股票数量为整数。</p><p><strong>注意</strong></p><p>请注意，默认配置是使用单一的主数据源，因此在调用 <code>order_target_percent</code> 时，实际的数据并未指定。当使用多个数据源时，必须指定获取/卖出哪个数据（除非是主数据源）。</p><p><strong>交易加密货币：分数</strong></p><p>显然，加密货币交易可以购买”半个比特币”，哪怕小数点后有 20 位数字。</p><p>好消息是，可以通过 <code>CommissionInfo</code> 可插拔模块更改资产相关信息。</p><p>文档：<a href=https://www.backtrader.com/docu/commission-schemes/commission-schemes/>Docs - Commission Schemes</a></p><p><strong>注意</strong></p><p>不得不承认，命名不太准确，因为这些方案不仅包含佣金信息。</p><p>在分数方案中，关注的是 <code>getsize(price, cash)</code> 方法，其文档说明为：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>返回在给定价格下执行现金操作所需的仓位大小</span></span></code></pre></div><p>这些方案与经纪商紧密相关，可通过经纪商 API 添加到系统中。</p><p>经纪商文档：<a href=https://www.backtrader.com/docu/broker/>Docs - Broker</a></p><p>相关方法：<code>addcommissioninfo(comminfo, name=None)</code>。当 <code>name</code> 为 None 时，方案应用于所有资产；指定名称时仅应用于该资产。</p><p><strong>实现分数方案</strong></p><p>通过扩展基础方案 <code>CommissionInfo</code> 即可轻松实现。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>CommInfoFractional</span>(bt<span style=color:#f92672>.</span>CommissionInfo):
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>getsize</span>(self, price, cash):
 </span></span><span style=display:flex><span>        <span style=color:#e6db74>&#39;&#39;&#39;返回按价格执行现金操作所需的分数大小&#39;&#39;&#39;</span>
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> self<span style=color:#f92672>.</span>p<span style=color:#f92672>.</span>leverage <span style=color:#f92672>*</span> (cash <span style=color:#f92672>/</span> price)</span></span></code></pre></div><p>就是这样。通过子类化 <code>CommissionInfo</code> 并编写一行代码，目标就实现了。由于原始方案定义支持杠杆，因此杠杆也会被考虑进计算中，万一加密货币能够使用杠杆购买（默认值为 1.0，即无杠杆）。</p><p>稍后的代码中，方案将按如下方式添加（通过命令行参数控制）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>if</span> args<span style=color:#f92672>.</span>fractional:  <span style=color:#75715e># 如果需要使用分数方案</span>
-</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>addcommissioninfo(CommInfoFractional())</span></span></code></pre></div><p>即：添加一个子类化方案的实例（注意 <code>()</code> 用于实例化）。如上所述，<code>name</code> 参数未设置，这意味着它将应用于系统中的所有资产。</p><p><strong>测试效果</strong></p><p>下面是一个实现了简单的移动平均交叉策略（用于多头/空头仓位）的完整脚本，可以直接在 shell 中使用。测试的默认数据源来自 backtrader 仓库中的数据源之一。</p><p><strong>整数模式：没有分数 - 没有乐趣</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./fractional-sizes.py --plot
+</span></span><span style=display:flex><span>    cerebro<span style=color:#f92672>.</span>broker<span style=color:#f92672>.</span>addcommissioninfo(CommInfoFractional())</span></span></code></pre></div><p>即：添加一个子类化方案的实例（注意 <code>()</code> 用于实例化）。如上所述，<code>name</code> 参数未设置，这意味着它将应用于系统中的所有资产。</p><p><strong>测试效果</strong></p><p>以下是一个实现移动平均交叉策略（多空仓位）的完整脚本，可直接在 shell 中使用。默认数据源来自 backtrader 仓库。</p><p><strong>整数模式：没有分数</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./fractional-sizes.py --plot
 </span></span><span style=display:flex><span>2005-02-14,3079.93,3083.38,3065.27,3075.76,0.00
 </span></span><span style=display:flex><span>2005-02-15,3075.20,3091.64,3071.08,3086.95,0.00
 </span></span><span style=display:flex><span>...
@@ -165,9 +162,7 @@ def next(self): # 将投资组合的 50% 用于购买主资产 self.order_target
 </span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>loginfo(<span style=color:#e6db74>&#39;Trade Opened  - Size </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> @Price </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#39;</span>,
 </span></span><span style=display:flex><span>                         trade<span style=color:#f92672>.</span>size, trade<span style=color:#f92672>.</span>price)
 </span></span><span style=display:flex><span>        <span style=color:#66d9ef>elif</span> trade<span style=color:#f92672>.</span>isclosed:
-</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>loginfo(<span style=color:#e6db74>&#39;Trade Closed</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span> <span style=color:#f92672>-</span> Size {} <span style=color:#a6e22e>@Price</span> {} Comm: {:<span style=color:#ae81ff>.2</span>f}<span style=color:#e6db74>&#39;,</span>
+</span></span><span style=display:flex><span>            self<span style=color:#f92672>.</span>loginfo(<span style=color:#e6db74>&#39;Trade Closed - Size </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> @Price </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> Comm: </span><span style=color:#e6db74>{:.2f}</span><span style=color:#e6db74>&#39;</span>,
 </span></span><span style=display:flex><span>                         trade<span style=color:#f92672>.</span>size, trade<span style=color:#f92672>.</span>price, trade<span style=color:#f92672>.</span>commission)
 </span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>logdata</span>(self):
