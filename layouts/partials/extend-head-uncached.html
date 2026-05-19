@@ -24,4 +24,11 @@ footer.pt-8.max-w-prose {
   max-width: 100%;
   height: auto;
 }
+
+/* Utterances 评论与文章主体对齐（减去 TOC 宽度） */
+@media (min-width: 1024px) {
+  .utterances {
+    max-width: calc(100% - 16rem) !important;
+  }
+}
 </style>
