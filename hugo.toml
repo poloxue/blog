@@ -1,77 +1,77 @@
 baseURL = "https://www.poloxue.com/"
-languageCode = "zh-cn"
+defaultContentLanguage = "zh-cn"
 title = "菠萝学量化"
 copyright = "Polo Xue All rights reserved"
 
-[modules]
-[[module.imports]]
-  path = "github.com/chollinger93/ink-free"
+enableRobotsTXT = true
+summaryLength = 0
+hasCJKLanguage = true
+enableEmoji = true
+
+[pagination]
+  pagerSize = 9
+
+[imaging]
+  anchor = "Center"
 
 [taxonomies]
   tag = "tags"
   category = "categories"
-  course = "courses"
+  author = "authors"
+  series = "series"
 
-[params]
-  author = "POLO XUE"
-  email = "poloxue123@gmail.com"
-  avatar = "/avatar.png"
-  description = "技术生活随笔记录"
-  toc = "floating"
-  wpm = 250
-  maxTags = 7
-	mode = "dark"
-  math = true
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
-[menu]
-  [[menu.main]]
-    identifier = "home"
-    name = "文章列表"
-    url = "/"
-    weight = 1
-  [[menu.main]]
-    identifier = "about"
-    name = "关于我"
-    url = "/about/about"
-    weight = 3
-
-[[params.social]]
-name = "Github"
-icon = "github"
-url = "https://github.com/poloxue/"
-
-[[params.social]]
-name = "RSS"
-icon = "rss"
-url = "/posts/index.xml"
-
-[[params.social]]
-name = "Wechat"
-icon = "message-circle"
-url = "/"
+[related]
+  threshold = 0
+  toLower = false
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "categories"
+    weight = 100
 
 [markup]
   [markup.highlight]
     codeFences = true
     guessSyntax = true
-    hl_Lines = ""
-    lineNoStart = 1
-    lineNos = true
-    lineNumbersInTable = true
     noClasses = true
     tabWidth = 4
-
   [markup.tableOfContents]
     endLevel = 3
-    ordered = true
-    startLevel = 2 
-
+    ordered = false
+    startLevel = 2
   [markup.goldmark]
     [markup.goldmark.renderer]
-      unsafe = true # Allow HTML in md files
+      unsafe = true
     [markup.goldmark.extensions]
       [markup.goldmark.extensions.passthrough]
         enable = true
         [markup.goldmark.extensions.passthrough.delimiters]
-          block = [['\[', '\]'], ['$$', '$$']]
-          inline = [['\(', '\)']]
+          block = [['\\[', '\\]'], ['$$', '$$']]
+          inline = [['\\(', '\\)']]
+
+[params]
+  [params.Author]
+    name = "POLO XUE"
+    image = "avatar.png"
+    email = "poloxue123@gmail.com"
+    headline = "交易者 · 开发者"
+    bio = "专注量化交易与技术分析"
+    links = [
+      { github = "https://github.com/poloxue/" },
+    ]
+
+[languages]
+  [languages.zh-cn]
+    label = "中文"
+    locale = "zh-cn"
+    contentDir = "content"
+    weight = 1
+    title = "菠萝学量化"
+    [languages.zh-cn.params]
+      displayName = "中文"
+      isoCode = "zh-cn"
+      description = "技术、交易与量化"

@@ -9,7 +9,11 @@ html body {
 }
 
 html.dark body {
-  background-color: #282a35 !important;
+  background-image: url('/img/background.svg') !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-position: center !important;
+  background-color: #1a1a2e !important;
 }
 
 
@@ -102,4 +106,5 @@ html.dark td pre code {
   color: inherit;
   border: 1px solid #aaa;
 }
+
 
