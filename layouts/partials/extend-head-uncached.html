@@ -1,5 +1,6 @@
+{{ if not .IsPage }}
 <style>
-/* 全站背景图片 + 半透明遮罩 */
+/* 列表页背景图片 + 半透明遮罩 */
 html.dark body {
   background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('/img/background.webp') !important;
   background-size: cover !important;
@@ -7,7 +8,10 @@ html.dark body {
   background-position: center !important;
   background-color: #1a1a2e !important;
 }
+</style>
+{{ end }}
 
+<style>
 /* 文章主体加宽 */
 #single_header {
   max-width: 1024px !important;
