@@ -1,13 +1,19 @@
-<div id="utterances-container"></div>
+<div id="utterances-container" style="display:none"></div>
 <script>
   function getUtterancesTheme() {
-    var isDark = document.documentElement.classList.contains('dark');
-    return isDark ? 'github-dark' : 'github-light';
+    return document.documentElement.classList.contains('dark') ? 'github-dark' : 'github-light';
   }
 
   function loadUtterances() {
+    // 把容器移到文章主体内，精确对齐宽度
+    var target = document.querySelector('.article-content');
+    if (!target) return;
+
     var container = document.getElementById('utterances-container');
     if (!container) return;
+
+    container.style.display = '';
+    target.appendChild(container);
 
     var script = document.createElement('script');
     script.src = 'https://utteranc.es/client.js';
@@ -16,7 +22,6 @@
     script.setAttribute('theme', getUtterancesTheme());
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
-    container.innerHTML = '';
     container.appendChild(script);
   }
 
