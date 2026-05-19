@@ -52,6 +52,7 @@ defaultSocialImage = "/avatar.png"
   showCategories = true
   showTags = true
   showWordCount = true
+  showComments = true
 
 [list]
   showBreadcrumbs = true

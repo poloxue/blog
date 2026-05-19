@@ -1,0 +1,44 @@
+<div id="utterances-container"></div>
+<script>
+  function getUtterancesTheme() {
+    var isDark = document.documentElement.classList.contains('dark');
+    return isDark ? 'github-dark' : 'github-light';
+  }
+
+  function loadUtterances() {
+    var container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    var script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.setAttribute('repo', 'poloxue/blog');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('theme', getUtterancesTheme());
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    container.innerHTML = '';
+    container.appendChild(script);
+  }
+
+  function updateUtterancesTheme() {
+    var iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      iframe.contentWindow.postMessage({
+        type: 'set-theme',
+        theme: getUtterancesTheme()
+      }, 'https://utteranc.es');
+    }
+  }
+
+  // 监听 Blowfish 的 dark/light 切换
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.attributeName === 'class') {
+        updateUtterancesTheme();
+      }
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true });
+
+  loadUtterances();
+</script>
