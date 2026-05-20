@@ -1,4 +1,4 @@
-{{ if eq .Kind "section" }}
+{{ if not .IsPage }}
 <style>
 /* 列表页背景图片 + 半透明遮罩 */
 html.dark body {
@@ -38,15 +38,11 @@ footer.pt-8.max-w-prose {
   height: auto;
 }
 
-/* Utterances 评论 —— 有 TOC 时缩进对齐，无 TOC 时撑满 */
-.utterances {
-  max-width: 100% !important;
-  margin-left: 0 !important;
-}
-
+/* Utterances 评论与文章主体对齐（减去 TOC 宽度） */
 @media (min-width: 1024px) {
-  body:has(.toc) .utterances {
+  .utterances {
     max-width: calc(100% - 16rem) !important;
+    margin-left: 0 !important;
   }
 }
 </style>
