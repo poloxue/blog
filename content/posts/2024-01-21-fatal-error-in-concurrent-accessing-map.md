@@ -1,12 +1,11 @@
 ---
 title: "从 fatal 错误到 sync.Map：Go中 Map 的并发策略"
 date: 2024-01-21T15:34:16+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-21-fatal-error-in-concurrent-accessing-map-02.webp"
 draft: false
 comment: true
 description: "为什么 Go 语言在多个 goroutine 同时访问和修改同一个 map 时，会报出fatal错误而不是panic？这篇文章将带你一步步了解背后的原理，并引出解决 map 并发问题的方案。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-21-fatal-error-in-concurrent-accessing-map-02.png)
 
 > 嗨，大家好！本文是系列文章 Go 小技巧第二篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

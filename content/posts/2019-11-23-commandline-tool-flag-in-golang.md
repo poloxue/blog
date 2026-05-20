@@ -1,12 +1,11 @@
 ---
 title: "Go 命令行解析 flag 包之快速上手"
 date: 2019-11-23T16:21:33+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-23-commandline-tool-flag-in-golang-01.webp"
 draft: false
 comment: true
 tags: ["Golang"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-23-commandline-tool-flag-in-golang-01.png)
 
 本篇文章是 Go 标准库 flag 包的快速上手篇。
 

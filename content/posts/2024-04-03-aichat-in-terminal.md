@@ -1,12 +1,11 @@
 ---
 title: "我在终端上免费使用 GPT"
 date: 2024-04-03T18:21:36+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-03-aichat-in-terminal-01.webp"
 draft: false
 comment: true
 description: "最近尝试了一款内置 AI 能力的终端软件，名为 Warp，它的交互设计非常不错，很值得上手。但它的问题是中文不友好，且我也不希望 AI 的能力被限制在某款终端上。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-03-aichat-in-terminal-01.png)
 
 最近尝试了一款内置 AI 能力的终端软件，名为 Warp，它的交互设计非常不错，很值得上手。但它的主要问题是中文支持不够友好，且我也不希望 AI 的能力被限制在某款终端上。
 

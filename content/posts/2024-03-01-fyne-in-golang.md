@@ -1,12 +1,11 @@
 ---
 title: "一个 Go 实现的跨平台 GUI 框架 Fyne"
 date: 2024-03-07T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-01.webp"
 draft: false
 comment: true
 description: "Go 一直以来都没有一个标准 GUI 库，Go 官方也没有提供。在 Go 实现的几个 GUI 库中，Fyne 算是最出色的，它有着简洁的API、支持跨平台能力，且高度可扩展。这也就是说，Fyne 是用来开发 App。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-03/2024-03-01-fyne-in-golang-01.png)
 
 今天，推荐一个 Go 实现的 GUI 库 - fyne。
 

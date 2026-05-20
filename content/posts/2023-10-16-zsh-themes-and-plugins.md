@@ -1,13 +1,12 @@
 ---
 title: "终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件"
 date: "2023-10-16T15:00:06+08:00"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-17.webp"
 draft: false
 comment: true
 tags: ["zsh"]
 description: "本教程将主要介绍 zsh 的安装、主题，以及介绍 7 提升效率的 zsh 插件"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-16-zsh-themes-and-plugin-17.png)
 
 前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。
 

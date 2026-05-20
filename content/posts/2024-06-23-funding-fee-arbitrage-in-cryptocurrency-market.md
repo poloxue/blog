@@ -1,12 +1,11 @@
 ---
 title: "谈谈加密货币市场上的资金费率套利"
 date: 2024-06-23T20:15:17+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-06/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market-00.webp"
 draft: false
 comment: true
 description: "资金费率套利是一种基于加密货币市场特有的永续合约（Perpetual Contract）来实现的巧妙赚取收益的策略。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-06/2024-06-23-funding-fee-arbitrage-in-cryptocurrency-market-00.png)
 
 在加密货币市场中，我基本围绕一个思路展开交易：通过套利控制回撤，震荡行情赚些许收益，耐心等待益趋势追踪策略的高收益。于是，合适的低风险套利策略就变得很重要，这决定了我等待大趋势的耐心程度。
 

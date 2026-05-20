@@ -1,12 +1,11 @@
 ---
 title: "Go 如何实现 HTTP 文件上传"
 date: 2019-12-10T15:25:18+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-http-upload-file-in-golang-01.webp"
 draft: false
 tags: ["Golang"]
 comment: true
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-24-http-upload-file-in-golang-01.png)
 
 早前写过一篇文章，[Go HTTP 请求 QuickStart](https://www.poloxue.com/posts/2019-09-10-the-guide-for-go-http-client/)。当时，主要参考 Python 的 requests 大纲介绍 Go 的 net/http 如何发起 HTTP 请求。
 

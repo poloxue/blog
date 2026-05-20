@@ -1,13 +1,12 @@
 ---
 title: "用 exa/zoxide/bat 替换 ls/cd/cat 命令"
 date: 2023-10-27T15:01:19+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-28-high-productivity-shell-commands-part1-00.webp"
 draft: false
 comment: true
 description: "本篇是高效命令系列第一篇，介绍 exa、zoxide 、bat 替换 ls 和 cd、cat，为我们的终端增添色彩。"
 tags: ["zsh"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-28-high-productivity-shell-commands-part1-00.png)
 
 如下是视频版本，没有文章详细。
 

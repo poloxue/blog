@@ -1,12 +1,11 @@
 ---
 title: "我用 GitHub 作为存储开发了一个随机图片 API"
 date: 2023-11-17T15:35:36+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-17-build-a-random-image-api-using-github-01.webp"
 draft: false
 comment: true
 description: "本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-11/2023-11-17-build-a-random-image-api-using-github-01.png)
 
 本文介绍如何基于 GitHub 为图片存储，通过 API 随机返回可用的图片地址。
 

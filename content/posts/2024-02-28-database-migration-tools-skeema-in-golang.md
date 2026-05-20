@@ -1,12 +1,11 @@
 ---
 title: "一个基于差异同步数据库结构的工具 - Skeema"
 date: 2024-02-26T08:29:22+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-28-database-migration-tools-skeema-in-golang-01.webp"
 draft: false
 comment: true
 description: "本文将继续介绍数据库 schema 数据库同步工具。今天，推荐是的一个基于差异方式实现数据库 schema 迁移的工具库 - skeema，同样也是基于 Go 实现。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-28-database-migration-tools-skeema-in-golang-01.png)
 
 本文是 GO 三方库推荐的第 5 篇，继续介绍数据库 schema 同步工具，我前面已经写了两篇这个主题的文章。系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
 

@@ -1,12 +1,11 @@
 ---
 title: "一个基于增量同步数据库结构的工具 - Goose"
 date: 2024-02-25T16:15:01+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-27-database-migration-tools-goose-in-golang-01.webp"
 draft: false
 comment: true
 description: "我将以这个数据库结构迁移为基础，推荐两个 Go 实现的数据结构同步工具，它们基于的是两种完全不同的实现方式：增量和差异。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-27-database-migration-tools-goose-in-golang-01.png)
 
 嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第四篇，系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
 

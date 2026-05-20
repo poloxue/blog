@@ -1,13 +1,12 @@
 ---
 title: "终端环境：6 个强大的 zsh 提效插件"
 date: "2023-10-18T18:36:55+08:00"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-08.webp"
 draft: false
 comment: true
 tags: ["zsh"]
 description: "今天，将会在上文的基础上，再介绍 6 个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-19-zsh-6-powerful-plugins-08.png)
 
 本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：[我的终端环境](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3299748150420979713#wechat_redirect)
 

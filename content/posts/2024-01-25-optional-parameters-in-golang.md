@@ -1,12 +1,11 @@
 ---
 title: "Go 语言实现可选参数：重载？变长参数？"
 date: 2024-01-27T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-25-optional-parameters-in-golang-01.webp"
 draft: false
 comment: true
 description: "在编程时，常会遇到这样的情况：一个函数偶尔需要一些不固定的选项参数。一些语言中，通过重载或者支持可选参数解决这个问题。但在 Go 中，情况有所不同，因为 Go 不支持函数重载，也没有内置可选参数功能。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-25-optional-parameters-in-golang-01.png)
 
 > 嗨，大家好！本文是系列文章 Go 小技巧第八篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

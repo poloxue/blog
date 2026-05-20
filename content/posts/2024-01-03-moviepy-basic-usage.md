@@ -1,12 +1,11 @@
 ---
 title: "Python 视频剪辑库 - MoviePy 的基础使用"
 date: 2024-01-02T17:41:45+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-03-moviepy-basic-usage-01.webp"
 draft: false
 comment: true
 description: "本视频将讨论的内容，介绍一个名为 MoviePy 的 Python 库，希望它能简化一些流程化的视频创作过程。本文是起始篇。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-03-moviepy-basic-usage-01.png)
 
 短视频时代，有许多用户友好的剪辑软件可用。不过，对于某些模式比较固定的视频，如果能自动化简化视频制作对于提高效率实际很重要的。
 

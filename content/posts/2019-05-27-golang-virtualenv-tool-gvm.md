@@ -1,12 +1,11 @@
 ---
 title: "Go 虚拟环境管理工具 gvm"
 date: 2019-05-27T12:57:35+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-08-golang-virtualenv-tool-gvm-01.webp"
 draft: false
 comment: true
 tags: ["Golang"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-08-golang-virtualenv-tool-gvm-01.png)
 
 本文谈下我对 Go 版本管理的一些想法。让后，我将介绍一个小工具，gvm。这个话题说起来也很简单，但如果想用的爽，还是要稍微梳理下。
 

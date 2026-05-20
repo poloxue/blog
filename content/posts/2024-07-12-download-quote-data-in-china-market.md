@@ -1,12 +1,11 @@
 ---
 title: "使用 Akshare 下载国内的期货（主力连续）、股票和指数的历史行情数据"
 date: 2024-07-12T18:10:16+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-07/2024-07-12-download-quote-data-in-china-market-00.webp"
 draft: false
 comment: true
 description: "本文介绍如何使用 akshare 下载国内的期货、股票和指数的历史行情数据。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-07/2024-07-12-download-quote-data-in-china-market-00.webp)
 
 本文介绍如何使用 akshare 封装一个易用的下载国内期货、期货指数、股票和股票指数的历史行情数据接口。
 

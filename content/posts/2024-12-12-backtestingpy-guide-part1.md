@@ -1,12 +1,11 @@
 ---
 title: "Backtesting.py 快速上手"
 date: 2024-12-18T12:15:18+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-12-backtestingpy-guide-part1-00.webp"
 draft: false
 comment: true
 description: "本文将介绍 **Backtesting.py**，一个轻量级的 Python 的交易回测框架。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-12-backtestingpy-guide-part1-00.png)
 
 在算法交易中，验证一个策略是否有效至关重要，但该如何验证呢？
 

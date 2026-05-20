@@ -1,12 +1,11 @@
 ---
 title: "Go 命令行解析 flag 包之通过子命令实现看 go 命令源码"
 date: 2019-11-30T15:33:32+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-30-golang-flag-sub-commandline-01.webp"
 draft: false
 comment: true
 tags: ["Golang"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-11/2019-11-30-golang-flag-sub-commandline-01.png)
 
 [上篇文章](https://mp.weixin.qq.com/s/rzgYifoMzWOO_PD0-2UIpw) 介绍了 flag 中如何扩展一个新的类型支持。本篇介绍如何使用 `flag` 实现子命令，总的来说，这篇才是这个系列的核心，前两篇只是铺垫。
 

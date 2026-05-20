@@ -1,12 +1,11 @@
 ---
 title: "Python 视频剪辑库 - Moviepy 的混合剪辑 mixing clips"
 date: 2024-01-06T20:35:11+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-06-moviepy-mix-clips-07.webp"
 draft: false
 comment: true
 description: "今天我们来介绍 MoviePy 的混合剪辑 - mixing clips。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-06-moviepy-mix-clips-07.png)
 
 今天，介绍下 MoviePy 的混合剪辑 - mixing clips，即如何将多个 clip 合并为一个 clip 生成最终视频。
 

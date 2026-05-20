@@ -1,12 +1,11 @@
 ---
 title: "Go 中如何打印结构体？代码调试效率提升"
 date: 2024-02-01T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-01-print-struct-in-golang-01.webp"
 draft: false
 comment: true
 description: "不知道大家是否遇到打印结构体的需求呢？结构体就像是一个小盒子，里面可以放很多不同类型的东西，如数字、字符串、slice、map 或其他结构体。但，如果我们想看看盒子里都放了什么，该怎么办呢？"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-01-print-struct-in-golang-01.png)
 
 > 嗨，大家好！本文是系列文章 Go 技巧第十一篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

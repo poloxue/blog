@@ -1,12 +1,11 @@
 ---
 title: "如何有效获取 Go 变量类型？探索多种方法"
 date: 2024-01-22T15:22:53+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-22-get-the-type-of-object-in-golang-01.webp"
 draft: false
 comment: true
 description: "但在 Go 语言中，如何快速获取一个变量的类型？我相信很多 Go 语言初学者都会遇到这样的问题。本文将介绍 Go 中几种获取变量类型的方法，从基本到复杂。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-22-get-the-type-of-object-in-golang-01.png)
 
 > 嗨，大家好！本文是系列文章 Go 小技巧第九篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

@@ -1,12 +1,11 @@
 ---
 title: "我想用 Go 的 plugin 机制实现热更新，我失败了"
 date: 2024-04-09T15:12:11+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-09-try-hot-update-using-plugin-package-in-golang-01.webp"
 draft: false
 comment: true
 description: "昨天发了一篇名为 'entr 一个通用的热重启方案' 的文章，写完这个命令的简单使用后，我开始思考一个问题：如 Go 这样的静态编译型语言是否能实现热更新？如果能，该如何实现呢？"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-09-try-hot-update-using-plugin-package-in-golang-01.png)
 
 昨天发了一篇名为 "entr 一个通用的热重启方案" 的文章，写完这个命令的简单使用后，我开始思考一个问题：Go 这样的静态编译型语言是否能实现热更新？如果能，该如何实现呢？
 

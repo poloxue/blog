@@ -1,12 +1,11 @@
 ---
 title: "Go 中如何解析 json 内部结构不确定的情况"
 date: 2019-10-17T10:08:37+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2019-10/2019-10-17-parse-dynamic-json-into-a-structure-01.webp"
 draft: false
 comment: true
 tags: ["Golang"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-10/2019-10-17-parse-dynamic-json-into-a-structure-01.png)
 
 本文主要介绍的是关于 Go 如何解析 json 内部结构不确定的情况。
 
