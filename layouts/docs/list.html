@@ -1,0 +1,85 @@
+{{ define "main" }}
+  {{ .Scratch.Set "scope" "list" }}
+
+  {{ if or .Params.hero (eq .Params.view "tree") }}
+    {{ partial "hero/section" . }}
+  {{ else }}
+    {{ if site.Params.list.showHero | default false }}
+      {{ $heroStyle := print "hero/" site.Params.list.heroStyle ".html" }}
+      {{ if templates.Exists ( printf "partials/%s" $heroStyle ) }}
+        {{ partial $heroStyle . }}
+      {{ else }}
+        {{ partial "hero/basic.html" . }}
+      {{ end }}
+    {{ end }}
+    <header>
+      {{ if .Params.showBreadcrumbs | default (site.Params.list.showBreadcrumbs | default false) }}
+        {{ partial "breadcrumbs.html" . }}
+      {{ end }}
+      <h1 class="mt-5 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
+      {{ with .Params.description }}
+        <div class="mt-2 text-base text-neutral-500 dark:text-neutral-400">{{ . }}</div>
+      {{ end }}
+    </header>
+  {{ end }}
+
+  {{ if .Content }}
+    <section class="prose dark:prose-invert mt-6 max-w-full">
+      {{ .Content }}
+    </section>
+  {{ end }}
+
+  {{ if eq .Params.view "card" }}
+    {{/* === Card view === */}}
+    <section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3 mt-8">
+      {{ range .Params.docs }}
+        {{ $cover := .cover | default "/img/background.webp" }}
+        <article class="article-link--card relative min-h-full min-w-full overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600">
+          <div class="flex-none relative overflow-hidden thumbnail_card" style="--thumbnail-aspect-ratio: 1.5">
+            <img
+              src="{{ $cover }}"
+              role="presentation"
+              loading="lazy"
+              decoding="async"
+              class="not-prose absolute inset-0 w-full h-full object-cover">
+          </div>
+          <div class="p-4">
+            <header>
+              <a
+                href="{{ .url }}"
+                class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
+                <h2>
+                  {{ .title }}
+                  <span class="cursor-default align-top text-xs text-neutral-400 dark:text-neutral-500">
+                    <span class="rtl:hidden">&#8599;</span>
+                    <span class="ltr:hidden">&#8598;</span>
+                  </span>
+                </h2>
+              </a>
+            </header>
+            {{ with .desc }}
+              <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-2">{{ . }}</div>
+            {{ end }}
+          </div>
+        </article>
+      {{ end }}
+    </section>
+  {{ else if eq .Params.view "tree" }}
+    {{/* === Tree view === */}}
+    <section class="mt-4 tree-card-bg rounded-xl">
+      {{ partial "docs/tree" (dict "pages" .Pages "depth" 1 "parentNum" "") }}
+    </section>
+  {{ else }}
+    {{/* === Default: simple link list === */}}
+    <section class="mt-8 space-y-2">
+      {{ range .Pages.ByWeight }}
+        <a href="{{ .RelPermalink }}" class="block py-2 px-4 rounded-lg border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors">
+          <span class="font-medium text-neutral-800 dark:text-neutral-200">{{ .Title }}</span>
+          {{ with .Description }}
+            <span class="text-sm text-neutral-500 dark:text-neutral-400 ml-2">— {{ . }}</span>
+          {{ end }}
+        </a>
+      {{ end }}
+    </section>
+  {{ end }}
+{{ end }}
