@@ -13,6 +13,7 @@ smartTOC = true
 
 defaultBackgroundImage = "/img/background.webp"
 defaultFeaturedImage = "/img/default_article_cover.webp"
+hotlinkFeatureImage = true
 defaultSocialImage = "/avatar.png"
 
 [header]
@@ -61,4 +62,6 @@ defaultSocialImage = "/avatar.png"
   groupByYear = true
   cardView = true
   cardViewScreenWidth = false
+  showHero = true
+  heroStyle = "background"
 
