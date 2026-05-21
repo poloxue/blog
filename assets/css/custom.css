@@ -111,6 +111,10 @@ article.no-custom-cover #hero {
   flex-shrink: 0;
   margin-left: -260px;
   display: none;
+  box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.12);
+}
+.dark .docs-sidebar-sticky {
+  box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.3);
 }
 .max-w-6xl {
   position: relative;
@@ -119,6 +123,13 @@ article.no-custom-cover #hero {
   .docs-sidebar-sticky {
     display: block;
   }
+}
+
+.toc.article-card-bg {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.12);
+}
+.dark .toc.article-card-bg {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* --- Sidebar title --- */
