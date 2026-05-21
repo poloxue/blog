@@ -1,6 +1,7 @@
 ---
 title: "oh-my-zsh"
 weight: 3
+hideBreadcrumb: true
 ---
 
 # ohmyzsh

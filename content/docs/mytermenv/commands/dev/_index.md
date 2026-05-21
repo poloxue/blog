@@ -1,7 +1,7 @@
 ---
 title: "开发调试"
 weight: 3
-bookCollapseSection: true
+hideBreadcrumb: true
 ---
 
 # 开发调试

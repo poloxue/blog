@@ -1,6 +1,7 @@
 ---
 title: "高效命令"
 weight: 4
+hideBreadcrumb: true
 ---
 
 # 高效 Shell 命令

@@ -1,6 +1,7 @@
 ---
 title: "zsh"
 weight: 2
+hideBreadcrumb: true
 ---
 
 # zsh

@@ -1,6 +1,7 @@
 ---
 title: "iTerm2"
 weight: 1
+hideBreadcrumb: true
 ---
 
 # iTerm2

@@ -1,7 +1,7 @@
 ---
 title: "文件目录"
 weight: 1
-bookCollapseSection: true
+hideBreadcrumb: true
 ---
 
 # 文件目录
