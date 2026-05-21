@@ -156,3 +156,13 @@ article.no-custom-cover #hero {
 .dark .sidebar-item-active {
   background: rgba(59, 130, 246, 0.3);
 }
+
+/* --- Top nav bar background --- */
+.nav-header-bg {
+  background-color: rgba(250, 250, 250, 0.65);  /* neutral-50 ~65% */
+  border-bottom: 1px solid rgba(229, 231, 235, 0.4);  /* subtle bottom border */
+}
+.dark .nav-header-bg {
+  background-color: rgba(23, 23, 23, 0.8);  /* neutral-900 ~80% */
+  border-bottom: 1px solid rgba(64, 64, 64, 0.3);
+}
