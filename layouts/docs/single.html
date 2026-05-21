@@ -131,6 +131,10 @@
         </div>
       </section>
 
+    </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto">
       <footer class="pt-8 max-w-prose print:hidden">
         {{ partial "article-pagination.html" . }}
         {{ if .Params.showComments | default (site.Params.article.showComments | default false) }}
@@ -147,7 +151,6 @@
         {{ end }}
       </footer>
 
-    </div>
     </div>
   </article>
 {{ end }}
