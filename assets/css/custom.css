@@ -100,21 +100,22 @@ article.no-custom-cover #hero {
   object-fit: cover;
 }
 
-.docs-sidebar-fixed {
-  position: absolute;
-  top: 0;
-  left: -260px;
+.docs-sidebar-sticky {
+  position: sticky;
+  top: 96px;
   width: 260px;
-  max-height: calc(100vh - 96px);
+  max-height: calc(100vh - 96px - 32px);
   overflow-y: auto;
   z-index: 10;
+  flex-shrink: 0;
+  margin-left: -260px;
   display: none;
 }
 .max-w-6xl {
   position: relative;
 }
 @media (min-width: 1280px) {
-  .docs-sidebar-fixed {
+  .docs-sidebar-sticky {
     display: block;
   }
 }

@@ -42,10 +42,10 @@
       {{ $tutorialRoot = $section.Parent }}
     {{ end }}
 
-    <div class="max-w-6xl mx-auto">
-    {{/* Fixed sidebar — inside max-w-6xl so top:0 = content area top */}}
+    <div class="flex items-start max-w-6xl mx-auto">
+    {{/* Sidebar — sticky with negative margin to avoid squeezing content */}}
     {{ if $hasSidebar }}
-      <div class="docs-sidebar-fixed print:hidden article-card-bg rounded-r-xl p-4
+      <div class="docs-sidebar-sticky print:hidden article-card-bg rounded-r-xl p-4
         border border-neutral-200 dark:border-neutral-700 shadow-sm z-10">
         <nav>
           <div class="sidebar-title">{{ $tutorialRoot.Title }}</div>
@@ -55,6 +55,7 @@
       <script>(function(){var e=document.querySelector('.sidebar-item-active');if(e)e.scrollIntoView({block:'center',behavior:'auto'})})();</script>
     {{ end }}
 
+    <div class="min-w-0 flex-1">
       {{/* TOC card config */}}
       {{ $enableToc := site.Params.article.showTableOfContents | default false }}
       {{ $enableToc = .Params.showTableOfContents | default $enableToc }}
@@ -146,6 +147,7 @@
         {{ end }}
       </footer>
 
+    </div>
     </div>
   </article>
 {{ end }}
