@@ -1,4 +1,5 @@
 ---
+description: "iTerm2 终端模拟器使用指南"
 title: "iTerm2"
 weight: 1
 hideBreadcrumb: true

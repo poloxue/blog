@@ -1,4 +1,5 @@
 ---
+description: "高效 Shell 命令大全"
 title: "高效命令"
 weight: 4
 hideBreadcrumb: true

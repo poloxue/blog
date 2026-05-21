@@ -1,4 +1,5 @@
 ---
+description: "Zsh Shell 安装与配置"
 title: "zsh"
 weight: 2
 hideBreadcrumb: true

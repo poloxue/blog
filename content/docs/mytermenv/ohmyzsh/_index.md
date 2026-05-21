@@ -1,4 +1,5 @@
 ---
+description: "oh-my-zsh 配置与插件指南"
 title: "oh-my-zsh"
 weight: 3
 hideBreadcrumb: true

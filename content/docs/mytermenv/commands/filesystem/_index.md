@@ -1,5 +1,6 @@
 ---
 date: 2024-03-24
+description: "文件目录管理命令"
 title: "文件目录"
 weight: 1
 hideBreadcrumb: true

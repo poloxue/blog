@@ -1,5 +1,6 @@
 ---
 date: 2024-04-14
+description: "文件内容搜索命令"
 title: "搜索查找"
 weight: 2
 hideBreadcrumb: true
