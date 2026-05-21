@@ -28,11 +28,11 @@
         <a href="{{ $page.RelPermalink }}"
           class="flex items-center gap-2 py-1.5 px-2 rounded-md text-sm transition-colors duration-150
           {{ if $isActive }}
-            sidebar-item-active font-semibold text-primary-600 dark:text-primary-300
+            sidebar-item-active font-semibold text-primary-600 dark:text-primary-400
           {{ else }}
-            text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100
+            text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100
           {{ end }}">
-          <span class="shrink-0 w-1 h-1 rounded-full {{ if $isActive }}bg-primary-500{{ else }}bg-neutral-300 dark:bg-neutral-600{{ end }}"></span>
+          <span class="shrink-0 w-1 h-1 rounded-full {{ if $isActive }}bg-primary-500{{ else }}bg-neutral-300 dark:bg-neutral-500{{ end }}"></span>
           <span class="truncate">{{ $page.Title }}</span>
         </a>
       {{ end }}
