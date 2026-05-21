@@ -109,15 +109,17 @@ article.no-custom-cover #hero {
   overflow-y: auto;
   z-index: 10;
   flex-shrink: 0;
-  margin-left: -260px;
-  display: none;
   box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.12);
+  display: none;
 }
 .dark .docs-sidebar-sticky {
   box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.3);
 }
 .max-w-6xl {
   position: relative;
+}
+.max-w-8xl {
+  max-width: 1600px;
 }
 @media (min-width: 1280px) {
   .docs-sidebar-sticky {

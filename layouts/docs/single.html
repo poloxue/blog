@@ -1,6 +1,7 @@
 {{ define "main" }}
   {{ .Scratch.Set "scope" "single" }}
   {{ $hasCover := .Params.featureimage }}
+  <style>body { max-width: 1600px !important; }</style>
   <article class="{{ if not $hasCover }}no-custom-cover{{ end }}">
     {{ if $hasCover }}
       {{ $bgDefault := site.Store.Get "defaultBackgroundImage" }}
@@ -42,7 +43,7 @@
       {{ $tutorialRoot = $section.Parent }}
     {{ end }}
 
-    <div class="flex items-start max-w-6xl mx-auto">
+    <div class="flex items-start max-w-8xl mx-auto">
     {{/* Sidebar — sticky with negative margin to avoid squeezing content */}}
     {{ if $hasSidebar }}
       <div class="docs-sidebar-sticky print:hidden article-card-bg rounded-xl p-4
