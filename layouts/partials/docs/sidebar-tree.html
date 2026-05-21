@@ -3,7 +3,7 @@
 {{ $depth := .depth }}
 {{ $parentNum := .parentNum }}
 {{ $current := .currentPageRelPermalink }}
-<ul class="list-none pl-0{{ if gt $depth 1 }} ml-5 border-l border-neutral-200 dark:border-neutral-700 pl-3{{ end }}">
+<ul class="list-none pl-0{{ if gt $depth 1 }} sidebar-indent border-l border-neutral-200 dark:border-neutral-700{{ end }}">
   {{ range $index, $page := .pages.ByWeight }}
     {{ $num := printf "%d" (add $index 1) }}
     {{ if $parentNum }}
