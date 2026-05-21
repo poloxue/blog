@@ -1,9 +1,8 @@
 ---
-title: "04. 复选框 Choices"
+date: 2025-03-06
+title: "复选框 Choices"
 weight: 4
 ---
-
-# 复选框 Choices
 
 有各种控件可用于向用户展示选择，包括复选框、单选按钮组和下拉选择框。
 

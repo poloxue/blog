@@ -1,9 +1,8 @@
 ---
-title: "01. 标签 Label "
+date: 2025-02-25
+title: "标签 Label "
 weight: 1
 ---
-
-# 标签 Label 
 
 Widgets 是 Fyne 应用程序 GUI 的主要组件，它们可以被用在任何一个基本的 `fyne.CanvasObject` 可以使用的地方。它们管理用户交互，并且总是与当前主题相匹配。
 

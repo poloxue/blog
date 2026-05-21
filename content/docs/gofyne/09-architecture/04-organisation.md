@@ -1,9 +1,8 @@
 ---
-title: "04. 包组织 Package"
+date: 2025-05-20
+title: "包组织 Package"
 weight: 4
 ---
-
-# 包的组织
 
 Fyne 项目分为许多包，每个包提供不同类型的功能，如下所示：
 

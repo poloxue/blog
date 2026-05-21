@@ -99,3 +99,22 @@ article.no-custom-cover #hero {
   height: 100%;
   object-fit: cover;
 }
+
+.docs-sidebar-fixed {
+  position: absolute;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  z-index: 10;
+  display: none;
+}
+.max-w-6xl {
+  position: relative;
+}
+@media (min-width: 1280px) {
+  .docs-sidebar-fixed {
+    display: block;
+  }
+}

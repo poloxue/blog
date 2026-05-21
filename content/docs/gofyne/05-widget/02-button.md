@@ -1,9 +1,8 @@
 ---
-title: "02. 按钮 Button"
+date: 2025-02-28
+title: "按钮 Button"
 weight: 2
 ---
-
-# 按钮 Button
 
 按钮控件可以包含文本、图标或两者，构造函数是 `widget.NewButton()` 和 `widget.NewButtonWithIcon()`。要创建一个文本按钮，只有两个参数，`string` 内容和一个没有参数的 `func()`，当按钮被点击时将调用此函数。参见示例以了解如何创建它。
 

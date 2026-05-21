@@ -1,9 +1,9 @@
 ---
-title: 04. 圆 Circle
+date: 2025-01-11
+title: "圆 Circle"
 weight: 4
 ---
 
-## 圆 Circle
 
 `canvas.Circle` 定义了一个由指定颜色填充的圆形。您还可以设置 `StrokeWidth`，因此显示不同的 `StrokeColor`，如此示例中所示。
 

@@ -1,9 +1,8 @@
 ---
-title: "03. 内置控件 Widget"
+date: 2024-12-03
+title: "内置控件 Widget"
 weight: 3
 ---
-
-# 标准 Widget (在 `widget` 包中）
 
 ### 手风琴（Accordion）
 

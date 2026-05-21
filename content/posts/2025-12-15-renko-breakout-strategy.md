@@ -3,7 +3,7 @@ title: "策略1 - Renko ATR 突破"
 date: 2025-12-15T05:24:19+08:00
 draft: true
 comment: true
-description: ""
+description: "基于 Renko 图表和 ATR 砖块大小的趋势突破策略，通过连续砖块突破判断开平仓信号，在 BTC 1小时和4小时上进行了全参数回测优化。"
 ---
 
 本策略是从 Renko 图表类型得到的灵感，一个非常简单的趋势突破策略。核心参数的只有两个，还有三个参数是于仓位管理相关。

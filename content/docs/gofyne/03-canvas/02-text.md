@@ -1,9 +1,9 @@
 ---
-title: "02. 文本 Text"
+date: 2025-01-05
+title: "文本 Text"
 weight: 2
 ---
 
-## 文本 Text
 
 `canvas.Text` 用于 Fyne 内的所有文本渲染。它通过指定文本和文本颜色来创建。文本使用当前主题指定的默认字体渲染。
 

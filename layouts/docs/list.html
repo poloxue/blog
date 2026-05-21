@@ -30,10 +30,10 @@
   {{ end }}
 
   {{ if eq .Params.view "card" }}
-    {{/* === Card view === */}}
+    {{/* === Card view — child sections === */}}
     <section class="w-full grid gap-4 sm:grid-cols-2 md:grid-cols-3 mt-8">
-      {{ range .Params.docs }}
-        {{ $cover := .cover | default "/img/background.webp" }}
+      {{ range .Pages.ByTitle }}
+        {{ $cover := .Params.cover | default "/img/background.webp" }}
         <article class="article-link--card relative min-h-full min-w-full overflow-hidden rounded-lg border border-neutral-300 dark:border-neutral-600">
           <div class="flex-none relative overflow-hidden thumbnail_card" style="--thumbnail-aspect-ratio: 1.5">
             <img
@@ -46,10 +46,10 @@
           <div class="p-4">
             <header>
               <a
-                href="{{ .url }}"
+                href="{{ .RelPermalink }}"
                 class="not-prose before:absolute before:inset-0 decoration-primary-500 dark:text-neutral text-xl font-bold text-neutral-800 hover:underline hover:underline-offset-2">
                 <h2>
-                  {{ .title }}
+                  {{ .Title }}
                   <span class="cursor-default align-top text-xs text-neutral-400 dark:text-neutral-500">
                     <span class="rtl:hidden">&#8599;</span>
                     <span class="ltr:hidden">&#8598;</span>
@@ -57,7 +57,7 @@
                 </h2>
               </a>
             </header>
-            {{ with .desc }}
+            {{ with .Description }}
               <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-2">{{ . }}</div>
             {{ end }}
           </div>

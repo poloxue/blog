@@ -1,9 +1,8 @@
 ---
-title: "08. Tab 布局 AppTabs"
+date: 2025-02-19
+title: "Tab 布局 AppTabs"
 weight: 8
 ---
-
-# Tab 布局 AppTabs
 
 AppTabs 容器用于允许用户在不同的内容面板之间切换。标签页要么只有文本，要么是文本和图标。建议不要混合使用一些标签页有图标而另一些没有图标的情况。使用 `container.NewAppTabs(...)` 创建标签容器，并传递 `container.TabItem` 项（可以使用 `container.NewTabItem(...)` 创建）。
 

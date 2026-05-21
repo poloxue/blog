@@ -1,9 +1,9 @@
 ---
-title: "01. 自定义布局 Layout"
+date: 2025-04-20
+title: "自定义布局 Layout"
 weight: 1
 ---
 
-## 自定义布局 Layout
 
 在Fyne应用程序中，每个`Container`都使用一个简单的布局算法来排列其子元素。Fyne在`fyne.io/fyne/v2/layout`包中定义了许多可用的布局。如果你查看代码，你会看到它们都实现了`Layout`接口。
 

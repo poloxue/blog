@@ -28,10 +28,6 @@ defaultSocialImage = "/avatar.png"
 
 [homepage]
   layout = "background"
-  showRecent = true
-  showRecentItems = 9
-  showMoreLink = true
-  showMoreLinkDest = "/posts/"
   cardView = true
   cardViewScreenWidth = false
 

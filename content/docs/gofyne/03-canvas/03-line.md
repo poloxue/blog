@@ -1,9 +1,9 @@
 ---
-title: "03. 线条 Line"
+date: 2025-01-08
+title: "线条 Line"
 weight: 3
 ---
 
-## 线条 Line
 
 `canvas.Line` 对象从 `Position1`（默认是左上角）画到 `Position2`（默认是右下角）。你可以指定它的颜色，并且可以改变笔触宽度，否则默认为 `1`。
 

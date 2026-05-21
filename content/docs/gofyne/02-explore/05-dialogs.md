@@ -1,9 +1,8 @@
 ---
-title: "05. Dialog 对话框"
+date: 2024-12-09
+title: "Dialog 对话框"
 weight: 5
 ---
-
-# 对话框列表
 
 ### 颜色
 

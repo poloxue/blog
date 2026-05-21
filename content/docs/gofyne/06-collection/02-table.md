@@ -1,5 +1,6 @@
 ---
-title: "02. 表格 Table"
+date: 2025-03-24
+title: "表格 Table"
 weight: 2
 --- 
 

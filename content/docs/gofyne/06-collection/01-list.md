@@ -1,9 +1,8 @@
 ---
-title: "01. 列表 List"
+date: 2025-03-21
+title: "列表 List"
 weight: 1
 ---
-
-# 列表 List
 
 `List` 集合控件是工具包中的集合控件之一。这些控件旨在帮助构建在呈现大量数据时性能非常高的界面。你还可以看到具有类似 API 的 [Table](/docs/gofyne/06-collection/02-table) 和 [Tree](/docs/gofyne/06-collection/03-tree) 控件。由于这种设计，它们使用起来稍微复杂一些。
 

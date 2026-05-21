@@ -1,9 +1,8 @@
 ---
-title: "06. 窗口 Window 处理"
+date: 2024-10-31
+title: "窗口 Window 处理"
 weight: 6
 ---
-
-# 窗口 Window 处理
 
 窗口是使用`App.NewWindow()`创建的，并需要使用`Show()`函数来显示。`fyne.Window`上的辅助方法`ShowAndRun()`允许你同时显示窗口并运行应用程序。
 

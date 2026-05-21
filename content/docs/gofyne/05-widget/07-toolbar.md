@@ -1,9 +1,8 @@
 ---
-title: "07. 工具栏 Toolbar"
+date: 2025-03-15
+title: "工具栏 Toolbar"
 weight: 7
 ---
-
-# 工具栏 Toolbar
 
 工具栏控件使用图标创建一行动作按钮来表示每个操作。`widget.NewToolbar(...)` 构造函数接受一系列 `widget.ToolbarItem` 参数。内置的工具栏项目类型有动作，分隔符和空格器。
 

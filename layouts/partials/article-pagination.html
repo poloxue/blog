@@ -1,0 +1,58 @@
+{{ if .Params.showPagination | default (.Site.Params.article.showPagination | default true) }}
+  {{/* Build ordered page list by traversing sections then articles by weight */}}
+  {{ $orderedPages := slice }}
+  {{ $parent := .CurrentSection.Parent }}
+  {{ if $parent }}
+    {{ range $parent.Sections.ByWeight }}
+      {{ $sectionPages := .RegularPages.ByWeight }}
+      {{ range $sectionPages }}
+        {{ $orderedPages = $orderedPages | append . }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{/* Fallback: single section, use its own pages */}}
+    {{ $orderedPages = .CurrentSection.RegularPages.ByWeight }}
+  {{ end }}
+  
+  {{ $index := -1 }}
+  {{ range $i, $p := $orderedPages }}
+    {{ if eq $p.RelPermalink $.RelPermalink }}
+      {{ $index = $i }}
+    {{ end }}
+  {{ end }}
+  
+  {{ $prev := index $orderedPages (sub $index 1) }}
+  {{ $next := index $orderedPages (add $index 1) }}
+  {{ if or $prev $next }}
+    {{ if .Params.invertPagination | default (.Site.Params.article.invertPagination | default false) }}
+      {{ $tmp := $prev }}{{ $prev = $next }}{{ $next = $tmp }}
+    {{ end }}
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600">
+      <div class="flex justify-between pt-3">
+        <span class="flex flex-col">
+          {{ if $prev }}
+            <a
+              class="flex text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+              href="{{ $prev.RelPermalink }}">
+              <span class="leading-6">
+                <span class="inline-block rtl:rotate-180">&larr;</span>&ensp;{{ $prev.Title | emojify }}
+              </span>
+            </a>
+          {{ end }}
+        </span>
+        <span class="flex flex-col items-end">
+          {{ if $next }}
+            <a
+              class="flex text-right text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+              href="{{ $next.RelPermalink }}">
+              <span class="leading-6">
+                {{ $next.Title | emojify }}&ensp;<span class="inline-block rtl:rotate-180">&rarr;</span>
+              </span>
+            </a>
+          {{ end }}
+        </span>
+      </div>
+    </div>
+  {{ end }}
+{{ end }}

@@ -1,9 +1,8 @@
 ---
-title: "01. 几何 Geometry"
+date: 2025-05-11
+title: "几何 Geometry"
 weight: 1
 ---
-
-# 几何 Geometry
 
 Fyne 应用基于每个窗口有一个画布。每个画布有一个根 CanvasObject，它可以是一个单独的控件或一个容器，用于控制多个子对象的大小和位置，这些子对象由布局控制。
 

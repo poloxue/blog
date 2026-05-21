@@ -1,9 +1,8 @@
 ---
-title: "03. 输入框 Entry"
+date: 2025-03-03
+title: "输入框 Entry"
 weight: 3
 ---
-
-# 输入框 Entry
 
 输入控件（Entry widget）用于用户输入简单文本内容。可以通过`widget.NewEntry()`构造函数简单地创建一个输入控件。创建控件时，保留一个引用，以便以后可以访问其`Text`字段。还可以使用`OnChanged`回调函数，每当内容变化时都会收到通知。
 

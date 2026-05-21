@@ -1,5 +1,6 @@
 ---
-title: "03. 资源包 Bundle"
+date: 2025-04-26
+title: "资源包 Bundle"
 weight: 3
 ---
 

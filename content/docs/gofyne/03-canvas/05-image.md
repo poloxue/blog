@@ -1,9 +1,9 @@
 ---
-title: "05. 图片 Image"
+date: 2025-01-14
+title: "图片 Image"
 weight: 5
 ---
 
-## 图片 Image
 
 `canvas.Image` 在 Fyne 中代表一个可缩放的图像资源。它可以从资源（如示例所示）、图像文件、包含图像的 URI 位置、`io.Reader` 或内存中的 Go `image.Image` 加载。
 

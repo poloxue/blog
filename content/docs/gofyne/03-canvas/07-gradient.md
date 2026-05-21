@@ -1,9 +1,8 @@
 ---
-title: "07. 渐变 Gradient"
+date: 2025-01-20
+title: "渐变 Gradient"
 weight: 7
 ---
-
-# 渐变 Gradient
 
 最后一个画布原始类型是 Gradient，可用作 `canvas.LinearGradient` 和 `canvas.RadialGradient`，用于绘制从一种颜色到另一种颜色的渐变，有多种模式。你可以使用 `NewHorizontalGradient()`、`NewVerticalGradient()` 或 `NewRadialGradient()` 创建渐变。
 

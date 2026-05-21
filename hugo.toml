@@ -7,6 +7,7 @@ enableRobotsTXT = true
 summaryLength = 0
 hasCJKLanguage = true
 enableEmoji = true
+enableGitInfo = true
 
 [pagination]
   pagerSize = 9
@@ -72,6 +73,7 @@ enableEmoji = true
     weight = 1
     title = "菠萝学量化"
     [languages.zh-cn.params]
+      dateFormat = "2006-01-02"
       displayName = "中文"
       isoCode = "zh-cn"
       description = "技术、交易与量化"

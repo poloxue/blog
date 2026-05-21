@@ -1,9 +1,9 @@
 ---
-title: "01. 矩形 Rectangle"
+date: 2025-01-02
+title: "矩形 Rectangle"
 weight: 1
 ---
 
-## 矩形 Rectangle
 
 `canvas.Rectangle` 是 Fyne 中最简单的画布对象。它显示指定颜色的区块。您也可以使用 `FillColor` 字段设置颜色。
 

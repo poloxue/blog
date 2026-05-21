@@ -1,9 +1,8 @@
 ---
-title: "04. App 和 RunLoop"
+date: 2024-10-25
+title: "App 和 RunLoop"
 weight: 4
 ---
-
-# App 和 RunLoop
 
 对于一个图形用户界面（GUI）应用程序来说，它需要运行一个事件循环（有时被称为运行循环），来处理用户交互和绘图事件。在Fyne中，这是通过使用`App.Run()`或`Window.ShowAndRun()`函数启动的。这些函数中的一个必须在你的`main()`函数的设置代码末尾被调用。
 

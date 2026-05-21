@@ -1,9 +1,8 @@
 ---
-title: "06. 主题 Icon 小图标"
+date: 2024-12-12
+title: "主题 Icon 小图标"
 weight: 6
 ---
-
-# 主题 Icon 小图标
 
 以下每个图标都可以通过`theme`包作为一个函数获得。例如`theme.InfoIcon()`。
 

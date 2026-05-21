@@ -1,9 +1,8 @@
 ---
-title: "06. 进度条 ProgressBar"
+date: 2025-03-12
+title: "进度条 ProgressBar"
 weight: 6
 ---
-
-# 进度条 ProgressBar
 
 进度条控件有两种形式，标准进度条向用户显示已达到的 `Value`，从 `Min` 到 `Max`。默认最小值是 `0.0`，最大值默认为 `1.0`。要使用默认值，只需调用 `widget.NewProgressBar()`。创建后，你可以设置 `Value` 字段。
 

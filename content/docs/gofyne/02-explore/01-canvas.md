@@ -1,9 +1,9 @@
 ---
-title: "01. Canvas 和 CanvasObject"
+date: 2024-11-27
+title: "Canvas 和 CanvasObject"
 weight: 1
 ---
 
-## Canvas 和 CanvasObject
 
 在Fyne中，画布（Canvas）是应用程序绘制的区域。每个窗口都有一个画布，你可以通过`Window.Canvas()`访问它，但通常你会发现`Window`上的函数可以避免直接访问画布。
 

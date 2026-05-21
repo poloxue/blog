@@ -1,9 +1,8 @@
 ---
-title: "04. 边框布局 Border"
+date: 2025-02-07
+title: "边框布局 Border"
 weight: 4
 ---
-
-# 边框布局 Border
 
 边框布局可能是构建用户界面时使用最广泛的布局之一，因为它允许围绕一个将扩展以填充空间的中心元素定位项目。要创建一个边框容器，你需要将应该在边框位置定位的 `fyne.CanvasObject` 作为构造函数的前四个参数传递。这个语法基本上就是 `container.NewBorder(top, bottom, left, right, center)`，如示例所示。
 

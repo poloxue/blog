@@ -1,9 +1,8 @@
 ---
-title: "03. 运行 Fyne Demo"
+date: 2024-10-22
+title: "运行 Fyne Demo"
 weight: 3
 ---
-
-# 运行 Fyne Demo
 
 如果你想在开始编写自己的应用程序之前看到Fyne工具包的实际效果，你可以查看我们的演示应用程序。
 

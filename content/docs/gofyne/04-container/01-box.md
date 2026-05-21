@@ -1,9 +1,8 @@
 ---
-title: "01. 盒子 Box"
+date: 2025-01-29
+title: "盒子 Box"
 weight: 1
 ---
-
-# 盒子 Box
 
 如在[容器和布局](/docs/gofyne/02-explore/02-container)中讨论的，容器中的元素可以使用布局来排列。本节探讨内置布局及其使用方法。
 

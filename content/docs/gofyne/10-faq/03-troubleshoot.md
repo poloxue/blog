@@ -1,9 +1,8 @@
 ---
-title: "03. 故障排查"
+date: 2025-06-01
+title: "故障排查"
 weight: 3
 ---
-
-# 故障排查
 
 在设置过程中或编译第一个应用程序时，可能会遇到一些意外情况。我们在这里尝试解决这些问题。记住，你也可以使用 [Fyne Setup](https://geoffrey-artefacts.fynelabs.com/github/andydotxyz/fyne-io/setup/latest/) 工具检查你的配置。
 
