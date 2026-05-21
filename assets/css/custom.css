@@ -118,3 +118,28 @@ article.no-custom-cover #hero {
     display: block;
   }
 }
+
+/* --- Sidebar title --- */
+.sidebar-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #737373;
+}
+.dark .sidebar-title {
+  color: #a3a3a3;
+  border-bottom-color: #404040;
+}
+
+/* --- Sidebar active item --- */
+.sidebar-item-active {
+  background: rgba(59, 130, 246, 0.08);
+  border-radius: 6px;
+}
+.dark .sidebar-item-active {
+  background: rgba(59, 130, 246, 0.12);
+}

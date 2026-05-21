@@ -48,12 +48,11 @@
       <div class="docs-sidebar-fixed print:hidden article-card-bg rounded-r-xl p-4
         border border-neutral-200 dark:border-neutral-700 shadow-sm z-10">
         <nav>
-          <div class="font-bold text-sm text-neutral-500 dark:text-neutral-400 mb-3 uppercase tracking-wider">
-            {{ $tutorialRoot.Title }}
-          </div>
-          {{ partial "docs/sidebar-tree" (dict "pages" $tutorialRoot.Pages "depth" 1 "parentNum" "") }}
+          <div class="sidebar-title">{{ $tutorialRoot.Title }}</div>
+          {{ partial "docs/sidebar-tree" (dict "pages" $tutorialRoot.Pages "depth" 1 "parentNum" "" "currentPageRelPermalink" .RelPermalink) }}
         </nav>
       </div>
+      <script>(function(){var e=document.querySelector('.sidebar-item-active');if(e)e.scrollIntoView({block:'center',behavior:'auto'})})();</script>
     {{ end }}
 
       {{/* TOC card config */}}
