@@ -131,12 +131,7 @@ article.no-custom-cover #hero {
 .dark .toc.article-card-bg {
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
 }
-
-.sidebar-indent {
-  margin-left: 0.25rem;
-  padding-left: 0.25rem;
-}
-
+ 
 /* --- Sidebar title --- */
 .sidebar-title {
   font-size: 0.75rem;

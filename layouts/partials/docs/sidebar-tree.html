@@ -3,7 +3,7 @@
 {{ $depth := .depth }}
 {{ $parentNum := .parentNum }}
 {{ $current := .currentPageRelPermalink }}
-<ul class="list-none pl-0{{ if gt $depth 1 }} sidebar-indent border-l border-neutral-200 dark:border-neutral-700{{ end }}">
+<ul class="list-none pl-0">
   {{ range $index, $page := .pages.ByWeight }}
     {{ $num := printf "%d" (add $index 1) }}
     {{ if $parentNum }}
@@ -11,7 +11,7 @@
     {{ end }}
     {{ $isSection := gt (len $page.Pages) 0 }}
     {{ $isActive := eq $page.RelPermalink $current }}
-    <li class="mb-0">
+    <li class="mb-0{{ if and $isSection (eq $depth 1) (gt $index 0) }} border-t border-neutral-200 dark:border-neutral-700 pt-2 mt-2{{ end }}">
       {{ if $isSection }}
         <div class="flex items-center gap-2 py-1.5 px-2">
           <span class="shrink-0 w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-400"></span>
