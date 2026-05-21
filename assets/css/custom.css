@@ -150,9 +150,9 @@ article.no-custom-cover #hero {
 
 /* --- Sidebar active item --- */
 .sidebar-item-active {
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(59, 130, 246, 0.15);
   border-radius: 6px;
 }
 .dark .sidebar-item-active {
-  background: rgba(59, 130, 246, 0.12);
+  background: rgba(59, 130, 246, 0.2);
 }
