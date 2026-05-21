@@ -3,7 +3,7 @@
 {{ $depth := .depth }}
 {{ $parentNum := .parentNum }}
 {{ $current := .currentPageRelPermalink }}
-<ul class="list-none pl-0{{ if gt $depth 1 }} ml-3 border-l border-neutral-200 dark:border-neutral-700 pl-2.5{{ end }}">
+<ul class="list-none pl-0{{ if gt $depth 1 }} ml-5 border-l border-neutral-200 dark:border-neutral-700 pl-3{{ end }}">
   {{ range $index, $page := .pages.ByWeight }}
     {{ $num := printf "%d" (add $index 1) }}
     {{ if $parentNum }}
@@ -16,7 +16,7 @@
         <div class="flex items-center gap-2 py-1.5 px-2">
           <span class="shrink-0 w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-400"></span>
           <h{{ if eq $depth 1 }}3{{ else }}4{{ end }} class="
-            {{ if eq $depth 1 }}text-sm font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-100
+            {{ if eq $depth 1 }}text-base font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-100
             {{ else }}text-xs font-medium text-neutral-500 dark:text-neutral-400{{ end }}">
             {{ $page.Title }}
           </h{{ if eq $depth 1 }}3{{ else }}4{{ end }}>
