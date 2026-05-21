@@ -102,7 +102,7 @@ article.no-custom-cover #hero {
 
 .docs-sidebar-sticky {
   position: sticky;
-  top: 96px;
+  top: 120px;
   margin-top: 24px;
   width: 260px;
   max-height: calc(100vh - 96px - 32px);
