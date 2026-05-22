@@ -4,7 +4,6 @@ title: "高级插件"
 weight: 4
 ---
 
-# 高级插件
 
 我们再来了解 4 个非 oh-my-zsh 内置插件，它们分别是 zsh-syntax-highlighting、zsh-autosuggestions、zsh-history-substring-search 和 you-should-use。这些插件由 zsh 社区开发。
 

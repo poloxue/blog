@@ -5,7 +5,6 @@ weight: 1
 hideBreadcrumb: true
 ---
 
-# iTerm2
 
 终端是程序员日常必不可少的工具之一，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。
 

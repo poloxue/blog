@@ -5,7 +5,6 @@ weight: 2
 description: ""
 ---
 
-# 搜索查找
 
 本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。fd 和 ripgrep 对标的是传统 grep 和 find，它们在性能和体验上有大幅提升。如果你想成为 10x 程序员，强烈推荐使用它们。
 

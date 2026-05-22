@@ -5,7 +5,6 @@ weight: 2
 hideBreadcrumb: true
 ---
 
-# zsh
 
 上节中，我们对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。本章将主要介绍 zsh  的安装和简单介绍。
 
