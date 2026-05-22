@@ -1,12 +1,11 @@
 ---
 title: "借助 OpenAI 开发一个效率小工具监控油管频道"
 date: 2024-12-15T17:17:48+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-15-monitor-youtube-channel-00.webp"
 draft: false
 comment: true
 description: "油管提供了获取知识和资讯的渠道，有很多有价值的信息。本文介绍如何借助 Python 和 AI 开发一个工具，监控油管频道，提升我们的日常学习和工作效率。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-15-monitor-youtube-channel-00.webp)
 
 油管是很多人获取知识和资讯的渠道，有很多有价值的信息。对于要深入学习的内容，肯定要看完整个视频，而如果你只是关注一些资讯或分析视频，跟进热点事件，比如我平时回看一些财经币圈资讯，花时间看完每个视频，效率低下。油管上有不少高质量的英文视频，看起来有点吃力，转为中文，理解起来更容易。
 

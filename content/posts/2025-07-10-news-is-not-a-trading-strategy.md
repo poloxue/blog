@@ -3,6 +3,7 @@ title: "交易这条路上，资讯是工具，但不是答案"
 date: 2025-07-10T14:00:53+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-07/2025-07-10-news-is-not-a-trading-strategy-cover.webp"
 description: "你看到的资讯，并不等于你能做出正确决策的依据"
 ---
 

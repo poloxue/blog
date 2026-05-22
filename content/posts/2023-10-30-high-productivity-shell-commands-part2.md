@@ -1,13 +1,12 @@
 ---
 title: "推荐 3 个高效搜索命令"
 date: 2023-10-30T20:13:53+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-30-high-productivity-shell-commands-part2-00.webp"
 draft: false
 comment: true
 description: "本文将介绍一些高效的查找搜索命令，分别是 fd、ripgrep 与 fzf，提升命令内容的查找效率"
 tags: ["zsh"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-30-high-productivity-shell-commands-part2-00.png)
 
 本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。
 

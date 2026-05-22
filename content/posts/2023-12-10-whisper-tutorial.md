@@ -26,14 +26,14 @@ description: "本文介绍如何使用 OpenAI whisper 进行语音文字识别�
 
 ## 如何安装
 
-Whipser 的安装非常简单。如果是 Mac 用户，且系统已经安装了 Python 环境，可通过如下两个命令安装。
+Whisper 的安装非常简单。如果是 Mac 用户，且系统已经安装了 Python 环境，可通过如下两个命令安装。
 
 ```bash
 pip install whisper
-brew install ffempg
+brew install ffmpeg
 ```
 
-其他系统 whisper 的安装命令相同，ffempg 的安装方法，通过系统内置的包管理器即可安装。
+其他系统 whisper 的安装命令相同，ffmpeg 的安装方法，通过系统内置的包管理器即可安装。
 
 命令如下所示：
 
@@ -62,13 +62,13 @@ Whisper 是免费开源模型，它是基于从网络上收集的 680,000 小时
 
 如下是模型的大小，参数量和内存要求等信息的一览表。
 
-Size	 | Parameters	| English-only model	| Multilingual model	| Required VRAM	| Relative speed
------- | ----------- | ------------------- | ------------------- | ------------- | ----------------
-base	 | 74 M	      | base.en	            | base	              | ~1 GB         | ~16x 
-tiny	 | 39 M	      | tiny.en	            | tiny	              | ~1 GB	        | ~32x
-small	 | 244 M	    | small.en	          | small	              | ~2 GB	        | ~6x
-medium | 769 M	    | medium.en	          | medium	            | ~5 GB	        | ~2x
-large	 | 1550 M	    | N/A	                | large	              | ~10 GB        | 1x
+| Size   | Parameters | English-only model | Multilingual model | Required VRAM | Relative speed |
+|--------|-----------|-------------------|-------------------|--------------|---------------|
+| tiny   | 39 M      | tiny.en           | tiny              | ~1 GB        | ~32x          |
+| base   | 74 M      | base.en           | base              | ~1 GB        | ~16x          |
+| small  | 244 M     | small.en          | small             | ~2 GB        | ~6x           |
+| medium | 769 M     | medium.en         | medium            | ~5 GB        | ~2x           |
+| large  | 1550 M    | N/A               | large             | ~10 GB       | 1x            |
 
 whisper 的默认模型是 small，如果语音的质量较高，不同模型的识别差异并不大，但如果语音质量较低，如有噪音、发音不清晰等，亦或希望高质量的断句，则需要切换为 medium 或 large 模型。
 
@@ -117,7 +117,7 @@ audio.json  audio.srt  audio.tsv  audio.txt  audio.vtt  audio.wav
 
 ### 代码库
 
-从前面的安装步骤可知，whipser 其实提供了 python 代码库，我们可以直接通过调用它的函数实现语言识别。
+从前面的安装步骤可知，whisper 其实提供了 python 代码库，我们可以直接通过调用它的函数实现语言识别。
 
 接下来，具体演示下它的使用。演示案例代码，如下所示：
 
@@ -173,7 +173,7 @@ whisper 还可以利用开始的 30 秒的语音识别出它的语言。
 具体代码如下所示：
 
 ```python
-import whipser
+import whisper
 
 model = whisper.load_model("base")
 
@@ -207,7 +207,7 @@ model.transcribe('audio.wav', word_timestamps=True, language='en')
 
 ## 配置选项
 
-本小节介绍 whisper 的配置项。whipser 提供了众多配置选项，在命令行和代码中，我们均可设置。
+本小节介绍 whisper 的配置项。whisper 提供了众多配置选项，在命令行和代码中，我们均可设置。
 
 想了解它的所有选项，可通过 `--help` 选项自行查看。
 
@@ -256,7 +256,7 @@ whisper 支持的语言种类众多，可在源码文件 [tokenizer.py](https://
 
 ### 任务选项
 
-前面提到 whipser 支持两种类型的任务，转录 transcribe 和翻译 translate，默认行为是 transcribe。要改变这个默认行为，可通过选项 `--task` 改变。
+前面提到 whisper 支持两种类型的任务，转录 transcribe 和翻译 translate，默认行为是 transcribe。要改变这个默认行为，可通过选项 `--task` 改变。
 
 命令如下所示：
 
@@ -286,15 +286,15 @@ whisper audio.wav --model medium
 代码实现，如下所示：
 
 ```python
-model = whipser.load('meidum')
-mode.transcribe('audio.wav')
+model = whisper.load_model('medium')
+model.transcribe('audio.wav')
 ```
 
 ### 初始提示
 
 whisper 支持提供初始提示 initial-prompt 优化模型，提高识别效果。
 
-initial prompt 的常见使用场景，有如模型中有一些专业术语，即可通过提示告诉模型，还有如断句，如希望将转录的句子翻译，最后是一句完整的话，也可通过提示告诉 whipser。
+initial prompt 的常见使用场景，有如模型中有一些专业术语，即可通过提示告诉模型，还有如断句，如希望将转录的句子翻译，最后是一句完整的话，也可通过提示告诉 whisper。
 
 如没有带上提示的效果如下：
 
@@ -305,7 +305,7 @@ initial prompt 的常见使用场景，有如模型中有一些专业术语，�
 [00:23.680 --> 00:28.240]  Take, for example, an array of orders from our online store. Our goal is to calculate the total
 ```
 
-带上提示的效果入校：
+带上提示的效果如下：
 
 ```bash
 $ whisper audio.wav --initial_prompt "Hi, guys. This tutorial will explain Array Reduce in 100 seconds."
@@ -346,7 +346,7 @@ whisper audio.wav --output_format  srt
 
 whisper 代码库的中输出文件有不同的 Writer 实现，如 SRT 文件的写入实现类是 WriteSRT，JSON 有  WriteJSON 等。
 
-whipser 中提供了一个函数 get_writer，按 output_format 返回相应格式的 Writer。
+whisper 中提供了一个函数 get_writer，按 output_format 返回相应格式的 Writer。
 
 实现写入 SRT 文件，代码示例如下所示：
 
@@ -355,7 +355,7 @@ from whisper.utils import get_writer
 
 audio_path = 'audio.wav'
 
-model = model.load(audio_path)
+model = whisper.load_model('medium')
 result = model.transcribe(audio_path)
 
 writer = get_writer(output_format='srt', output_dir='.')
@@ -390,7 +390,7 @@ writer(result, audio_path, max_words_per_line=10)
 writer(result, audio_path, max_line_width=50, max_line_count=2)
 ```
 
-这个配置项只对输出文件有效果，查看如 audio.srt 产看效果。
+这个配置项只对输出文件有效果，查看如 audio.srt 查看效果。
 
 限制字幕的单词水量的的效果如下所示：
 
@@ -423,9 +423,9 @@ client = OpenAI()
 result = client.audio.transcriptions.create(file=open("audio.wav"), response_format='srt')
 ```
 
-> 注：使用 OpenAI 的 API 的前提，你得有个 OpenAI 的账号，且已经设置好了 OPNEAI_API_KEY 的环境变量。
+> 注：使用 OpenAI 的 API 的前提，你得有个 OpenAI 的账号，且已经设置好了 OPENAI_API_KEY 的环境变量。
 
-result 即使我们要的文本，直接写入文件即可。
+result 即是我们要的文本，直接写入文件即可。
 
 在使用 OpenAI 的接口时，遇到了一些的问题。
 
@@ -470,12 +470,163 @@ result = client.audio.transcriptions.create(
 
 但其实问题还没有根本解决，因为 mp3 格式压缩大小，但大文件依然还是会超过大小限制。
 
-永久解决方式是，通过 pydub 切分语音文件，如切分为十分钟一个文件，再上传。
+永久解决方式是，通过 pydub 切分语音文件，如切分为十分钟一个文件，再逐个上传。
 
 示例代码，如下所示：
 
 ```python
 from pydub import AudioSegment
+
+# 加载音频文件
+audio = AudioSegment.from_file("long_audio.wav")
+
+# 切分时长：10 分钟 = 600000 毫秒
+chunk_length_ms = 10 * 60 * 1000
+
+for i, start in enumerate(range(0, len(audio), chunk_length_ms)):
+    chunk = audio[start:start + chunk_length_ms]
+    chunk.export(f"chunk_{i:03d}.mp3", format="mp3")
 ```
 
+切分完成后，循环上传每个分片即可：
+
+```python
+chunks = [f"chunk_{i:03d}.mp3" for i in range((len(audio) + chunk_length_ms - 1) // chunk_length_ms)]
+
+for chunk_path in chunks:
+    with open(chunk_path, "rb") as f:
+        result = client.audio.transcriptions.create(
+            file=f,
+            response_format="srt",
+        )
+    # 保存每个分片的识别结果
+    with open(f"{chunk_path}.srt", "w") as out:
+        out.write(result)
+```
+
+这样即使很长的录音文件也能完整转录，再无大小限制的烦恼。
+
 ## 实时转录
+
+前面在「使用场景」中提到，如果是课堂或会议场景，实时转录会比事后处理更有价值。Whisper 虽然本身不是流式设计，但通过逐段录音并即时识别，也能实现接近实时的转录效果。
+
+### 准备工作
+
+需要安装音频录制的依赖库：
+
+```bash
+pip install sounddevice numpy
+```
+
+### 实时转录脚本
+
+以下是一个完整的实时转录示例，它会从麦克风采集音频，每隔 5 秒进行一次识别并输出结果：
+
+```python
+import whisper
+import sounddevice as sd
+import numpy as np
+import queue
+import threading
+import time
+
+# 加载模型（tiny 最快，medium 更准）
+model = whisper.load_model("tiny")
+
+# 音频参数
+SAMPLE_RATE = 16000        # 16kHz 采样率
+CHUNK_SECONDS = 5           # 每 5 秒转录一次
+CHUNK_SAMPLES = SAMPLE_RATE * CHUNK_SECONDS
+
+audio_queue = queue.Queue()
+
+def audio_callback(indata, frames, time_info, status):
+    """麦克风回调函数，将音频数据放入队列"""
+    audio_queue.put(indata.copy())
+
+def transcribe_loop():
+    """后台转录线程"""
+    buffer = np.array([], dtype=np.float32)
+    while True:
+        data = audio_queue.get()
+        buffer = np.concatenate([buffer, data.flatten()])
+
+        while len(buffer) >= CHUNK_SAMPLES:
+            chunk = buffer[:CHUNK_SAMPLES]
+            buffer = buffer[CHUNK_SAMPLES:]
+
+            result = model.transcribe(chunk, language="en")
+            text = result["text"].strip()
+            if text:
+                print(f"[{time.strftime('%H:%M:%S')}] {text}")
+
+# 启动转录线程
+transcribe_thread = threading.Thread(target=transcribe_loop, daemon=True)
+transcribe_thread.start()
+
+# 开始录音
+print("实时转录已启动，按 Ctrl+C 停止...")
+stream = sd.InputStream(
+    samplerate=SAMPLE_RATE,
+    channels=1,
+    callback=audio_callback
+)
+
+with stream:
+    try:
+        while True:
+            time.sleep(0.1)
+    except KeyboardInterrupt:
+        print("\n转录已停止。")
+```
+
+### 效果演示
+
+运行脚本后，对着麦克风说话，会看到类似下面的输出：
+
+```
+实时转录已启动，按 Ctrl+C 停止...
+[19:23:15] Hi everyone, today we're going to talk about the basics of Python programming.
+[19:23:20] It's a great language for beginners and it's widely used in data science.
+[19:23:25] Let's start with variables and data types.
+```
+
+### 注意事项
+
+1. **模型选择**：`tiny` 模型最快但准确率一般，`base` 或 `small` 是较好的平衡点。如果硬件够好（有 GPU），`medium` 的效果更佳。
+2. **分段时长**：5 秒一段适合正常语速的对话。如果讲话速度较慢可调到 8-10 秒，追求更低延迟可调至 2-3 秒。
+3. **语言指定**：默认自动检测语言，如果明确知道语言，指定 `language="zh"` 或 `language="en"` 能提升准确率。
+4. **段落衔接**：上述示例每次转录是独立的，实际使用时可传入 `initial_prompt` 携带上一段内容，让识别结果更连贯。
+5. **中文支持**：Whisper 对中文识别效果也不错，只需将 `language` 参数改为 `"zh"`。
+
+### 无麦克风环境测试方案
+
+如果没有麦克风（如服务器环境），也可以用提前录好的音频文件来模拟实时转录：
+
+```python
+import whisper
+import numpy as np
+
+model = whisper.load_model("tiny")
+
+# 加载已有的音频文件
+audio = whisper.load_audio("lecture.mp3")
+SAMPLE_RATE = 16000
+CHUNK_SECONDS = 5
+CHUNK_SAMPLES = SAMPLE_RATE * CHUNK_SECONDS
+
+# 模拟逐段转录
+for i, start in enumerate(range(0, len(audio), CHUNK_SAMPLES)):
+    chunk = audio[start:start + CHUNK_SAMPLES]
+    result = model.transcribe(chunk, language="en")
+    if result["text"].strip():
+        print(f"第 {i+1} 段 [{start//SAMPLE_RATE}秒-{(start+CHUNK_SAMPLES)//SAMPLE_RATE}秒]: {result['text'].strip()}")
+```
+
+这个方式不需要麦克风，直接拿已有的录音文件测试 Whisper 的分段识别效果。
+
+## 总结
+
+Whisper 是一个强大且免费的语音识别工具，无论是通过命令行一键生成字幕，还是通过 Python 代码库集成到自己的项目中，都非常方便。本文覆盖了从安装、模型选型到常用配置选项的完整流程，同时也介绍了 OpenAI API 的使用及大文件处理的实用技巧。
+
+如果你有视频加字幕、会议录音转录或实时语音识别的需求，Whisper 都是一个值得尝试的解决方案。

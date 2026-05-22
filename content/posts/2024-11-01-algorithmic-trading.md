@@ -1,12 +1,11 @@
 ---
 title: "浅谈算法交易"
 date: 2024-11-01T14:50:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-11/2024-11-01-algorithmic-trading-00.webp"
 draft: false
 comment: true
 description: "本文想基于我的理解浅谈下算法交易，或者说是量化交易。"
 ---
-
-![](http://cdn.jsdelivr.net/gh/poloxue/images@2024-11/2024-11-01-algorithmic-trading-00.webp)
 
 本文想基于我的简单理解说说什么是算法交易，或者说是量化交易。
 

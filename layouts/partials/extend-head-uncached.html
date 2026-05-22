@@ -1,0 +1,57 @@
+<script data-goatcounter="https://poloxue.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+<style>
+/* 文章主体加宽 */
+#single_header {
+  max-width: 1024px !important;
+}
+
+.article-content {
+  max-width: 1024px !important;
+}
+
+.article-content.prose {
+  max-width: 1024px !important;
+}
+
+footer.pt-8.max-w-prose {
+  max-width: 1024px !important;
+}
+
+.article-content {
+  margin-bottom: 2rem !important;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 评论框：文章页也重置左边距，不继承默认偏移 */
+.utterances {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* docs 页面评论区域覆盖 */
+.is-docs-page .utterances {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* 有侧边栏：偏移侧边栏宽度 + 卡片内边距 */
+@media (min-width: 1280px) {
+  .is-docs-page.has-docs-sidebar .utterances {
+    margin-left: 284px !important;
+  }
+}
+
+/* docs 页面的 footer 容器宽度和上面三栏 flex 容器一致 */
+.is-docs-page {
+  max-width: 1600px !important;
+}
+
+.is-docs-page footer.pt-8.max-w-prose {
+  max-width: none !important;
+}
+</style>

@@ -3,6 +3,7 @@ title: "期货回测避坑-基于 tushare 计算期货复权价格"
 date: 2025-03-08T17:16:49+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-08-adj-data-using-tushare-in-china-future-market-cover.webp"
 description: "本文介绍如何计算期货的复权数据，以 Tushare 作为数据源。"
 ---
 

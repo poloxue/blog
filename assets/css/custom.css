@@ -1,0 +1,170 @@
+/* ============================================
+   Custom styles for poloxue.com
+   Supplement Tailwind classes not compiled by Blowfish
+   ============================================ */
+
+/* --- Flexbox alignment --- */
+.items-start { align-items: flex-start; }
+.items-baseline { align-items: baseline; }
+
+/* --- Spacing (half-steps) --- */
+.ml-1\.5 { margin-left: 0.375rem; }
+.mt-0\.5 { margin-top: 0.125rem; }
+.mt-2\.5 { margin-top: 0.625rem; }
+
+/* --- Layout --- */
+.w-1\.5 { width: 0.375rem; }
+.h-1\.5 { height: 0.375rem; }
+.border-l-2 { border-left-width: 2px; }
+.pl-4 { padding-left: 1rem; }
+
+/* --- Responsive utilities --- */
+@media (min-width: 640px) {
+  .sm\:inline { display: inline; }
+}
+
+/* --- Dark mode --- */
+.dark .dark\:text-neutral-500 { color: #737373; }
+
+/* --- Interactive --- */
+.hover\\:underline:hover { text-decoration-line: underline; }
+
+/* --- Tree/section card backgrounds --- */
+.tree-card-bg {
+  background-color: rgba(243, 244, 246, 0.5);
+  padding: 2rem;
+  padding-top: 2.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+.dark .tree-card-bg {
+  background-color: rgba(75, 85, 99, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Blog post card backgrounds --- */
+/* Blowfish built-in cards (posts list, docs list) */
+.article-link--card {
+  background-color: rgba(243, 244, 246, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+.dark .article-link--card {
+  background-color: rgba(75, 85, 99, 0.6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Dark mode: list markers --- */
+/* Default Tailwind Typography dark mode makes markers too dim */
+.dark .article-content ul li::marker,
+.dark .article-content ol li::marker {
+  color: #d4d4d8;  /* zinc-300 - brighter than default prose-dark body */
+}
+
+/* --- Article card backgrounds --- */
+/* Blowfish pre-compiled CSS has no dark:bg-* utilities, so we define them here */
+.article-card-bg {
+  background-color: rgba(243, 244, 246, 0.5);  /* neutral-100 ~50%, shows white page through */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+.dark .article-card-bg {
+  background-color: rgba(75, 85, 99, 0.6);  /* neutral-600 ~60%, shows darker page through */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* --- No custom cover: smaller hero height --- */
+article.no-custom-cover #hero {
+  height: 75px !important;
+}
+@media (min-width: 768px) {
+  article.no-custom-cover #hero {
+    height: 100px !important;
+  }
+}
+
+/* --- Full-width cover image --- */
+.post-cover-full {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  height: 600px;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .post-cover-full {
+    height: 600px;
+  }
+}
+.post-cover-full img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.docs-sidebar-sticky {
+  position: sticky;
+  top: 140px;
+  margin-top: 24px;
+  width: 260px;
+  max-height: calc(100vh - 140px - 32px);
+  overflow-y: auto;
+  z-index: 10;
+  flex-shrink: 0;
+  box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.12);
+  display: none;
+}
+.dark .docs-sidebar-sticky {
+  box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.3);
+}
+.max-w-6xl {
+  position: relative;
+}
+.max-w-8xl {
+  max-width: 1600px;
+}
+@media (min-width: 1280px) {
+  .docs-sidebar-sticky {
+    display: block;
+  }
+}
+
+.toc.article-card-bg {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.12);
+}
+.dark .toc.article-card-bg {
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+}
+ 
+/* --- Sidebar title --- */
+.sidebar-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #737373;
+}
+.dark .sidebar-title {
+  color: #a3a3a3;
+  border-bottom-color: #404040;
+}
+
+/* --- Sidebar active item --- */
+.sidebar-item-active {
+  background: rgba(59, 130, 246, 0.15);
+  border-radius: 6px;
+}
+.dark .sidebar-item-active {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+/* --- Top nav bar background --- */
+.nav-header-bg {
+  background-color: rgba(250, 250, 250, 0.65);  /* neutral-50 ~65% */
+  border-bottom: 1px solid rgba(229, 231, 235, 0.4);  /* subtle bottom border */
+}
+.dark .nav-header-bg {
+  background-color: rgba(23, 23, 23, 0.8);  /* neutral-900 ~80% */
+  border-bottom: 1px solid rgba(64, 64, 64, 0.3);
+}

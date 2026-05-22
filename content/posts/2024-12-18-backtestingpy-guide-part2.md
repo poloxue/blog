@@ -1,12 +1,11 @@
 ---
 title: "Backtesting.py 参数优化入门"
 date: 2024-12-24T12:15:18+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-18-backtestingpy-guide-part2-00.webp"
 draft: false
 comment: true
 description: "本文介绍 Backtesting.py 的参数优化，快速上手 **Backtesting.py** 参数优化。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-12/2024-12-18-backtestingpy-guide-part2-00.jpeg)
 
 上篇文章介绍了如何使用 **Backetsting.py** 快速上手。今天继续介绍另一个策略回测时非常重要的点，参数优化。参数优化是提升策略表现的重要步骤，而 **Backtesting.py** 内置了参数优化功能，使用起来还是很方便的。
 

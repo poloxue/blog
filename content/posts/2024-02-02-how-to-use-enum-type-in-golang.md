@@ -1,12 +1,11 @@
 ---
 title: "Go语言中 enum 实现方式有哪些？一定要绝对类型安全吗？"
 date: 2024-02-02T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-02-how-to-use-enums-type-in-golang-01.webp"
 draft: false
 comment: true
 description: "Go 语言中，枚举的表达方式并不像在一些其他语言中那样直接。要想在 GO 中用好枚举，需要我们了解 Go 中枚举的不同表示形式。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-02-how-to-use-enums-type-in-golang-01.png)
 
 > 嗨，大家好！本文是系列文章 Go 技巧第十二篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

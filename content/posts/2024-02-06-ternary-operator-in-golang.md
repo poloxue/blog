@@ -1,12 +1,11 @@
 ---
 title: "Go 是否有三元运算符？Rust 和 Python 是怎么做的？"
 date: 2024-02-06T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-06-ternary-operator-in-golang-01.webp"
 draft: false
 comment: true
 description: "什么是三元运算符？在其他一些编程语言中，如 C 语言，三元运算符是一种可以用一行代码实现条件选择的简便方法。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-06-ternary-operator-in-golang-01.png)
 
 > 嗨，大家好！本文是系列文章 Go 技巧第十四篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

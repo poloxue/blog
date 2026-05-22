@@ -1,12 +1,11 @@
 ---
 title: "使用 Streamlit 打造一个股票筛选分析工具"
 date: 2025-01-13T16:20:35+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-01/2025-01-13-create-a-stock-screener-using-streamlit-00.webp"
 draft: false
 comment: true
 description: "本文将通过 Python、Streamlit 和 Tushare，搭建一个简单易用的股票筛选器，它不仅可以筛选股票，还能查看详细数据并生成动态 K 线图，让你对股票市场有更全面的了解。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2025-01/2025-01-13-create-a-stock-screener-using-streamlit-00.png)
 
 本文将介绍如何通过 Python、Streamlit 和 Tushare，搭建一个简单易用的股票筛选器，它不仅可以筛选股票，还能查看某个股票的详细数据生成动态 K 线图，让你对股票市场有更全面的了解。
 

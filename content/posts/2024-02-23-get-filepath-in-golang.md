@@ -1,12 +1,11 @@
 ---
 title: "如何正确处理 Go 项目中关于文件路径的问题"
 date: 2024-02-23T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-23-get-filepath-in-golang-01.webp"
 draft: false
 comment: true
 description: "在使用 Go 开发项目时，估计有不少人遇到过无法正确处理文件路径的问题，特别是刚从如 PHP、python 这类动态语言转向 Go 的朋友，已经习惯了通过相对源码文件找到其他文件。这个问题能否合理解决，不仅关系到程序的可移植性，还直接影响到程序的稳定性和安全性。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-23-get-filepath-in-golang-01.png)
 
 > 嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十九篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
 

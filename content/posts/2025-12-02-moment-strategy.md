@@ -4,6 +4,7 @@ date: 2025-12-02T02:11:23+08:00
 draft: false
 comment: true
 description: "在金融市场，有一种被称为 动量 的现象。如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-12/moment-strategy-cover.webp"
 ---
 
 在金融市场，有一种被称为 "动量" 的现象。其核心理念很简单：如果一个资产（如股票）的价格正在上涨，那么它短期内更有可能继续上涨；同样，如果一个资产的价格正在下跌，它也更有可能继续下跌。这就像惯性一样。
@@ -183,3 +184,13 @@ cerebro.plot()
 ## 最后
 
 本文是基于动量这个思路的策略回测，如果从周线上看，这个动量效应还是比较明显的，或许这和高杠杆有很大关系吧。
+
+---
+
+如果你还没有账户，可以通过以下链接注册。这些是我在交易和开发中常用的交易所：
+
+- OKX：https://www.bjwebptyiou.com/join/18465372
+- Bybit：https://www.bybit.com/invite?ref=EPMPL
+- Binance：https://accounts.maxweb.cab/register?ref=52142925
+
+使用邀请链接注册可能会根据各平台的政策获得一定的推荐权益。

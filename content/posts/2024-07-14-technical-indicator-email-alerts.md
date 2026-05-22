@@ -1,12 +1,11 @@
 ---
 title: "Python 实现技术指标邮件告警通知"
 date: 2024-07-14T18:53:16+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-07/2024-07-14-technical-indicator-email-alerts-00.webp"
 draft: false
 comment: true
 description: "在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是非常重要的。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-07/2024-07-14-technical-indicator-email-alerts-00.webp)
 
 在交易中，如果你有一套人工配合机器人的交易思路，即希望人工确认而不直接下单，那么及时获取关键位置的通知信息，如一些特征明显的技术指标的告警信息，是很有帮助的。
 

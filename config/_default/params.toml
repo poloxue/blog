@@ -1,0 +1,63 @@
+# -- Blowfish 全面配置 --
+
+colorScheme = "slate"
+defaultAppearance = "dark"
+autoSwitchAppearance = false
+
+enableSearch = true
+enableCodeCopy = true
+enableStructuredBreadcrumbs = true
+
+highlightCurrentMenuArea = true
+smartTOC = true
+
+defaultBackgroundImage = "/img/background.webp"
+defaultFeaturedImage = "/img/default_article_cover.webp"
+hotlinkFeatureImage = true
+defaultSocialImage = "/avatar.png"
+
+[header]
+  layout = "fixed"
+
+[footer]
+  showMenu = true
+  showCopyright = true
+  showThemeAttribution = false
+  showAppearanceSwitcher = true
+  showScrollToTop = true
+
+[homepage]
+  layout = "background"
+  cardView = true
+  cardViewScreenWidth = false
+
+[article]
+  showDate = true
+  showDateUpdated = false
+  showAuthor = true
+  showHero = true
+  heroStyle = "background"
+  layoutBackgroundBlur = false
+  layoutBackgroundHeaderSpace = true
+  showBreadcrumbs = true
+  showDraftLabel = true
+  showHeadingAnchors = true
+  showPagination = true
+  showReadingTime = true
+  showTableOfContents = true
+  showTaxonomies = true
+  showCategories = true
+  showTags = true
+  showWordCount = true
+  showComments = true
+
+[list]
+  showBreadcrumbs = true
+  showSummary = false
+  showCards = true
+  groupByYear = true
+  cardView = true
+  cardViewScreenWidth = false
+  showHero = true
+  heroStyle = "background"
+

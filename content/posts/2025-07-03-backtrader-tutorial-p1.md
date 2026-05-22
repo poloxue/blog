@@ -3,6 +3,7 @@ title: "Backtrader 教程一：为什么选择 Backtrader？"
 date: 2025-07-03T15:18:08+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-07/2025-07-03-backtrader-tutorial-p1-cover.webp"
 ---
 
 今天想跟大家聊一个量化交易中非常实用的工具——Backtrader。

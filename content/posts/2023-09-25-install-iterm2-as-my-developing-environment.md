@@ -1,13 +1,12 @@
 ---
 title: "终端环境：iTerm2"
 date: "2023-09-28T19:23:22+08:00"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-15.webp"
 draft: false
 comment: true
 tags: ["zsh", "iterm2"]
 description: "本系列的目标是介绍如何基于 iTerm2、zsh、Tmux 和 Neovim 搭建我的日常开发环境"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-09/2023-09-25-install-iterm2-as-my-developing-environment-15.png)
 
 视频版本，没有文章详细：
 

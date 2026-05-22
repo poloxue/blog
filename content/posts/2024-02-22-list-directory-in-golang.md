@@ -1,12 +1,11 @@
 ---
 title: "Go 中如何高效遍历目录？探索几种方法"
 date: 2024-02-20T19:39:22+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-22-list-directory-in-golang-01.webp"
 draft: false
 comment: true
 description: "遍历目录文件是一个常见的操作，它的使用场景有如文件目录产看（ls 命令）、文件系统清理、日志分析、项目构建等多种任务。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-22-list-directory-in-golang-01.png)
 
 > 嗨，大家好！我是波罗学。本文是系列文章 Go 技巧第十八篇，系列文章查看：[Go 语言技巧](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3291066778475053060#wechat_redirect)。
 

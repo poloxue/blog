@@ -1,12 +1,11 @@
 ---
 title: "Go 如何按行读取（大）文件？尝试 bufio 包提供的几种方式"
 date: 2024-02-21T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-01.webp"
 draft: false
 comment: true
 description: "在编程时，按行读取文件是一个很常规的需求，它相较于一次性读出整个文件，有着诸如内存效率高、处理速度快、实时性高、可扩展性强等优势。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-21-readline-in-golang-01.png)
 
 > 嗨，大家好！我是波罗学。
 >

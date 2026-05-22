@@ -4,6 +4,7 @@ date: 2025-12-09T05:41:26+08:00
 draft: false
 comment: true
 description: "在做交易策略时，经常会碰到一个问题：**同一种策略在不同阶段表现完全不一样**。有时候波动大，你的仓位可能重了点；波动小，你又觉得仓位太轻，收益跟不上"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-12/vol-target-cover.webp"
 ---
 
 在做交易策略时，经常会碰到一个问题：**同一种策略在不同阶段表现完全不一样**。有时候波动大，你的仓位可能重了点；波动小，你又觉得仓位太轻，收益跟不上。

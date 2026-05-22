@@ -3,10 +3,9 @@ title: "我用 Python 为 iTerm2 开发一个类似 tmuxifier 的工具"
 date: 2024-02-25T08:00:00+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-26-build-an-itermifier-01.webp"
 description: "我在思考如何提高终端工作效率时，想到了在 iTerm2 中实现一个类似于 tmuxifier 布局管理工具。如果你不了解 tmuxifier，简单来说，它是 tmux 的布局管理工具。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-26-build-an-itermifier-01.png)
 
 我在思考如何提高终端工作效率时，想到了是否能给予 iTerm2 实现一个类似于 tmuxifier 布局管理工具。如果你不了解 tmuxifier，简单来说，它是 tmux 的布局管理工具。
 

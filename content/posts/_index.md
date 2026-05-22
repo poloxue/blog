@@ -1,4 +1,5 @@
 ---
-title: "Posts"
+title: "文章"
+hero: true
 ---
 

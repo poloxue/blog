@@ -1,0 +1,30 @@
+<ol class="text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+  {{- $current := . -}}
+  {{- /* Walk up ancestors and collect */ -}}
+  {{- $crumbs := slice -}}
+  {{- $page := $current -}}
+  {{- range seq 50 -}}
+    {{- if $page.Params.hideBreadcrumb -}}
+      {{- /* skip */ -}}
+    {{- else -}}
+      {{- $crumbs = $crumbs | append $page -}}
+    {{- end -}}
+    {{- if $page.Parent -}}
+      {{- $page = $page.Parent -}}
+    {{- else if not $page.IsHome -}}
+      {{- $page = $page.Site.Home -}}
+    {{- else -}}
+      {{- break -}}
+    {{- end -}}
+  {{- end -}}
+  {{- /* Render from oldest to newest */ -}}
+  {{- $len := len $crumbs -}}
+  {{- range $i := seq $len -}}
+    {{- $p := index $crumbs (sub $len $i) -}}
+    <li class="{{ if or (eq $p $current) $p.IsHome }}hidden{{ else }}inline{{ end }}">
+      <a class="hover:underline decoration-neutral-300 dark:underline-neutral-600" href="{{ $p.RelPermalink }}"
+        >{{ if $p.Title }}{{ $p.Title }}{{ else }}{{ $p.Section }}{{ end }}</a
+      ><span class="px-1 text-primary-500">/</span>
+    </li>
+  {{- end -}}
+</ol>

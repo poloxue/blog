@@ -1,12 +1,11 @@
 ---
 title: "通过 python 获取金融数据-akshare"
 date: 2024-11-01T16:36:56+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-11/2024-11-02-financial-market-data-00.webp"
 draft: false
 comment: true
 description: "本文将介绍如何获取金融数据，我将基于 Python 开源数据包实现免费数据的下载。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-11/2024-11-02-financial-market-data-00.webp)
 
 研究交易策略时，高质量数据是分析和构建交易策略的根本。你可能会遇到如下的一些问题。
 

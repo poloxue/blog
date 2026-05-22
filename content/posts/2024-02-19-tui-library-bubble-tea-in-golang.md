@@ -1,12 +1,11 @@
 ---
 title: "推荐一个可用于快速创建 TUI 应用的框架 - Bubble Tea"
 date: 2024-02-19T08:00:00+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-19-tui-library-bubble-tea-in-golang-01.webp"
 draft: false
 comment: true
 description: "今天介绍一个 TUI 库 - Bubble Tea，一个小巧但强大的文本用户界面（TUI）框架，基于 Go 语言开发。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-02/2024-02-19-tui-library-bubble-tea-in-golang-01.png)
 
 嗨！大家好，我是波罗学。本文是 Golang 三方库推荐第二篇，系列查看：[Golang 三方库](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&action=getalbum&album_id=3302384940181110785#wechat_redirect)。
 

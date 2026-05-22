@@ -1,12 +1,11 @@
 ---
 title: "entry，一个语言无关的热重启方案"
 date: 2024-04-08T17:06:30+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-08-hot-restart-service-01.webp"
 draft: false
 comment: true
 description: "在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-04/2024-04-08-hot-restart-service-01.png)
 
 在开发类似于 web 或其他常驻服务时，我们在修改代码后，要手动重启才能更新服务。如果你不是这种情况，或许框架默认支持热重启或是你集成了其他工具。
 

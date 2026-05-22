@@ -1,12 +1,11 @@
 ---
 title: "一个 Python 轻量级交易图表库 - lightweight-charts-python"
 date: 2024-05-13T16:23:09+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-05/2024-05-10-lightweight-charts-python-01.webp"
 draft: false
 comment: true
 description: "这两天发现一个可在 Python 显示交易图表的库，名为 lightweight-charts-python。顾名思义，它是基于 tradingview 轻量级库 lightweight-charts 开发而来。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-05/2024-05-10-lightweight-charts-python-01.png)
 
 今天这篇可能有点跨域了，其实这段时间，我一直在做交易。如果大家对自动化交易感兴趣，我也有很多内容可以写。
 

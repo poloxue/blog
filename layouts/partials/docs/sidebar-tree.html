@@ -1,0 +1,41 @@
+{{/* Compact sidebar tree — max 2 levels, no dates/descriptions */}}
+{{/* Parameters: pages, depth, parentNum, currentPageRelPermalink */}}
+{{ $depth := .depth }}
+{{ $parentNum := .parentNum }}
+{{ $current := .currentPageRelPermalink }}
+<ul class="list-none pl-0">
+  {{ range $index, $page := .pages.ByWeight }}
+    {{ $num := printf "%d" (add $index 1) }}
+    {{ if $parentNum }}
+      {{ $num = printf "%s.%d" $parentNum (add $index 1) }}
+    {{ end }}
+    {{ $isSection := gt (len $page.Pages) 0 }}
+    {{ $isActive := eq $page.RelPermalink $current }}
+    <li class="mb-0{{ if and $isSection (eq $depth 1) (gt $index 0) }} border-t border-neutral-200 dark:border-neutral-700 pt-2 mt-2{{ end }}">
+      {{ if $isSection }}
+        <div class="flex items-center gap-2 py-1.5 px-2">
+          <span class="shrink-0 w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-400"></span>
+          <h{{ if eq $depth 1 }}3{{ else }}4{{ end }} class="
+            {{ if eq $depth 1 }}text-base font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-100
+            {{ else }}text-xs font-medium text-neutral-500 dark:text-neutral-400{{ end }}">
+            {{ $page.Title }}
+          </h{{ if eq $depth 1 }}3{{ else }}4{{ end }}>
+        </div>
+        {{ if lt $depth 3 }}
+          {{ partial "docs/sidebar-tree" (dict "pages" $page.Pages "depth" (add $depth 1) "parentNum" $num "currentPageRelPermalink" $current) }}
+        {{ end }}
+      {{ else }}
+        <a href="{{ $page.RelPermalink }}"
+          class="flex items-center gap-2 py-1.5 px-2 rounded-md text-sm transition-colors duration-150
+          {{ if $isActive }}
+            sidebar-item-active font-semibold text-primary-600 dark:text-white
+          {{ else }}
+            text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100
+          {{ end }}">
+          <span class="shrink-0 w-1 h-1 rounded-full {{ if $isActive }}bg-primary-500 dark:bg-white{{ else }}bg-neutral-300 dark:bg-neutral-500{{ end }}"></span>
+          <span class="truncate">{{ $page.Title }}</span>
+        </a>
+      {{ end }}
+    </li>
+  {{ end }}
+</ul>

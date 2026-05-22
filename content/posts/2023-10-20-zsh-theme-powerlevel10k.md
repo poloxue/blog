@@ -1,13 +1,12 @@
 ---
 title: '终端环境：zsh 主题自定义 powerlevel10k'
 date: "2023-10-20T10:25:36+08:00"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-15.webp"
 draft: false
 comment: true
 description: "本教程介绍如何安装 zsh 主题 powerlevel10k 的安装与配置。"
 tags: ["zsh"]
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2023-10/2023-10-20-zsh-theme-powerlevel10k-15.png)
 
 不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？
 

@@ -1,12 +1,11 @@
 ---
 title: "GO 中高效 int 转换 string 的方法与源码剖析"
 date: 2024-01-20T16:11:18+08:00
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-04.webp"
 draft: false
 comment: true
 description: "本文将从逐步介绍几种在 Go 中将 int 转换为 string 的常见方法，并重点分析这几种方法在性能上的特点。"
 ---
-
-![](https://cdn.jsdelivr.net/gh/poloxue/images@2024-01/2024-01-20-int-to-string-in-golang-04.png)
 
 > 嗨，大家好！本文是系列文章 Go 小技巧第一篇，系列文章查看：[Go 语言小技巧](https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=3291066778475053060)。
 

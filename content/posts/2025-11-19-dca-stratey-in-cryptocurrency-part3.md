@@ -4,6 +4,7 @@ date: 2025-11-19T22:08:50+08:00
 draft: false
 comment: true
 description: "上文测试了基于定期定额进行定投的表现，我们继续这个话题，看看基于技术指标定投是否有机会带来超额收益呢？"
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-11/dca-part3-cover.webp"
 ---
  
 [上篇文章](https://www.poloxue.com/posts/2025-05-30-dca-stratey-in-cryptocurrency-part2/)测试了在加密货币市场上定期定额定投的表现，以求能囤到足够价码的加密货币。

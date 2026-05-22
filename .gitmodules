@@ -7,3 +7,4 @@
 [submodule "backtrader"]
 	path = backtrader
 	url = https://github.com/poloxue/docs.backtrader.git
+	branch = main
