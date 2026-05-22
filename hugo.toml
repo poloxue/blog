@@ -1,6 +1,6 @@
 baseURL = "https://www.poloxue.com/"
 defaultContentLanguage = "zh-cn"
-title = "菠萝学量化"
+title = "菠萝学"
 copyright = "Polo Xue All rights reserved"
 
 enableRobotsTXT = true
@@ -59,8 +59,8 @@ enableGitInfo = true
     name = "POLO XUE"
     image = "avatar.png"
     email = "poloxue123@gmail.com"
-    headline = "交易者 · 开发者"
-    bio = "专注量化交易与技术分析"
+    headline = "开发者 · 交易者"
+    bio = "技术探索与学习记录"
     links = [
       { github = "https://github.com/poloxue/" },
     ]
@@ -71,9 +71,9 @@ enableGitInfo = true
     locale = "zh-cn"
     contentDir = "content"
     weight = 1
-    title = "菠萝学量化"
+    title = "菠萝学"
     [languages.zh-cn.params]
       dateFormat = "2006-01-02"
       displayName = "中文"
       isoCode = "zh-cn"
-      description = "技术、交易与量化"
+      description = "技术、交易与学习"
