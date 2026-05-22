@@ -28,13 +28,13 @@ tags: ["golang"]
 
 先看看时间线上的表现，历史的变化趋势：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-08-why-learn-go-01.png)
 
 可以看出，从2015年到2019年golang的发展趋势一直处在稳定上升阶段；
 
 不过我们会想，这只能说明golang在世界上整体趋势表现较好，但在中国是否一样火热。这个大可不必担心，google趋势中也有区域的统计信息：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-08-why-learn-go-02.png)
 
 可以看出，Golang在世界区域的分布情况，前五名分别是，中国、新加坡、圣赫勒拿、韩国、香港。其中，Golang在中国的流行程度简直就是一骑绝尘、遥遥领先。
 
@@ -42,7 +42,7 @@ tags: ["golang"]
 
 除了google趋势，还可以来看看在TIOBE语言排行榜上的表现。点击链接
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-08-why-learn-go-03.png)
 
 额？怎么才十六名，好紧张、好难过，难道学错语言了吗？不对，得找几个理由安慰下自己。
 
@@ -162,7 +162,7 @@ Golang早起的讨论由前面介绍的三位大牛发起，针对性分析了�
 当前的两个主流区块链框架，分布式记账本框架hyperledger和以太坊合约框架go-ethereum都是使用Golang开发；下图是某招聘网站关于区块链职位要求技能的分析。
 
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-04-08-why-learn-go-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-08-why-learn-go-04.png)
 
 ### 微服务
 
