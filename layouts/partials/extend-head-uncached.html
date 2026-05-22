@@ -27,7 +27,13 @@ footer.pt-8.max-w-prose {
   height: auto;
 }
 
-/* 评论区域：靠左对齐，不居中 */
+/* 评论框：文章页也重置左边距，不继承默认偏移 */
+.utterances {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* docs 页面评论区域覆盖 */
 .is-docs-page .utterances {
   margin-left: 0 !important;
   margin-right: auto !important;
