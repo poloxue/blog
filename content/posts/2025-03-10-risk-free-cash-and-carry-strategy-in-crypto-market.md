@@ -3,6 +3,7 @@ title: "加密货币市场的低风险套利策略-期现套利"
 date: 2025-03-09T19:37:59+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-10-risk-free-cash-and-carry-strategy-in-crypto-market-cover.webp"
 description: "本文介绍加密货币市场上的又一个低风险套利策略，期现套利策略。"
 ---
 
