@@ -5,7 +5,7 @@
 &lt;h3 id="构建__init__"&gt;构建：&lt;code&gt;__init__&lt;/code&gt;&lt;a class="anchor" href="#%e6%9e%84%e5%bb%ba__init__"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;在实例化时调用：在此创建指标和其他所需属性。&lt;/p&gt;
 &lt;p&gt;示例代码：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; btind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SimpleMovingAverage(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;15&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="启动start"&gt;启动：&lt;code&gt;start&lt;/code&gt;&lt;a class="anchor" href="#%e5%90%af%e5%8a%a8start"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Cerebro 通知策略开始运行。默认有一个空方法。&lt;/p&gt;
 &lt;h3 id="初期prenext"&gt;初期：&lt;code&gt;prenext&lt;/code&gt;&lt;a class="anchor" href="#%e5%88%9d%e6%9c%9fprenext"&gt;#&lt;/a&gt;&lt;/h3&gt;
@@ -19,7 +19,7 @@
 &lt;h3 id="结束stop"&gt;结束：&lt;code&gt;stop&lt;/code&gt;&lt;a class="anchor" href="#%e7%bb%93%e6%9d%9fstop"&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;系统通知策略重置并清理。默认有一个空方法。&lt;/p&gt;
 &lt;p&gt;常规用法如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sma &lt;span style="color:#f92672"&gt;=&lt;/span&gt; btind&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SimpleMovingAverage(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;15&lt;/span&gt;)
@@ -38,7 +38,7 @@
 &lt;li&gt;添加信号（信号本质上也是指标），其余部分由后台自动处理。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="快速示例"&gt;快速示例：&lt;a class="anchor" href="#%e5%bf%ab%e9%80%9f%e7%a4%ba%e4%be%8b"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;OneOfTheFeeds(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;mydataname&amp;#39;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
@@ -51,7 +51,7 @@
 &lt;li&gt;如果收盘价低于 SMA，则发出空头信号。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;定义如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MySignal&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MySignal&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;signal&amp;#39;&lt;/span&gt;,)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;period&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;),)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;

@@ -14,7 +14,7 @@
 &lt;li&gt;即：生成 100 个文件，总共 200 万根 K线。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;生成数据的脚本如下：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; numpy &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; np
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; numpy &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; np
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; pandas &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; pd
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;COLUMNS &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [&lt;span style="color:#e6db74"&gt;&amp;#39;open&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;high&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;low&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;close&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;volume&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;openinterest&amp;#39;&lt;/span&gt;]
@@ -59,7 +59,7 @@
 &lt;p&gt;&lt;strong&gt;交易股票：整数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;如上所述，默认配置用于股票交易，买入/卖出的是完整的股票份额（如 1、2、50、1000，而非 1.5 或 1001.7589）。&lt;/p&gt;
 &lt;p&gt;在默认配置下执行以下代码时：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;next&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 将投资组合的 50% 用于购买主资产&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;order_target_percent(target&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;0.5&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;系统会计算所需的股票数量，以使该资产在投资组合中的价值尽可能接近 50%。&lt;/p&gt;
 &lt;p&gt;但由于默认配置针对股票交易，最终股票数量为整数。&lt;/p&gt;
@@ -72,7 +72,7 @@
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;不得不承认，命名不太准确，因为这些方案不仅包含佣金信息。&lt;/p&gt;
 &lt;p&gt;在分数方案中，关注的是 &lt;code&gt;getsize(price, cash)&lt;/code&gt; 方法，其文档说明为：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;返回在给定价格下执行现金操作所需的仓位大小&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这些方案与经纪商紧密相关，可通过经纪商 API 添加到系统中。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;返回在给定价格下执行现金操作所需的仓位大小&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这些方案与经纪商紧密相关，可通过经纪商 API 添加到系统中。&lt;/p&gt;
 &lt;p&gt;经纪商文档：&lt;a href="https://www.backtrader.com/docu/broker/"&gt;Docs - Broker&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;相关方法：&lt;code&gt;addcommissioninfo(comminfo, name=None)&lt;/code&gt;。当 &lt;code&gt;name&lt;/code&gt; 为 None 时，方案应用于所有资产；指定名称时仅应用于该资产。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;实现分数方案&lt;/strong&gt;&lt;/p&gt;
@@ -143,7 +143,7 @@
 2001-12-31, 1.0, 1.0, 1.0, 1.0, 0.5, 3.0
 2002-01-31, 2.0, 2.5, 1.1, 1.2, 3.0, 5.0
 ...&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;每行表示一个月的数据。通过 Backtrader 的 CSV 数据加载引擎创建扩展类：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;NetPayOutData&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;GenericCSVData):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;NetPayOutData&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;GenericCSVData):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;npy&amp;#39;&lt;/span&gt;,) &lt;span style="color:#75715e"&gt;# 增加一行，用于存储净派息收益率&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dict(
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; npy&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;6&lt;/span&gt;, &lt;span style="color:#75715e"&gt;# npy字段位于第6列（基于0的索引）&lt;/span&gt;
@@ -155,7 +155,7 @@
 &lt;p&gt;虽然该实现按传统方式开发，但仍有改进空间，可以做得更通用。&lt;/p&gt;
 &lt;p&gt;先关注实现的前几行——计算典型价格的部分。&lt;/p&gt;
 &lt;h3 id="canonical-mfi---典型价格和原始资金流"&gt;Canonical MFI - 典型价格和原始资金流&lt;a class="anchor" href="#canonical-mfi---%e5%85%b8%e5%9e%8b%e4%bb%b7%e6%a0%bc%e5%92%8c%e5%8e%9f%e5%a7%8b%e8%b5%84%e9%87%91%e6%b5%81"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MFI_Canonical&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MFI_Canonical&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Indicator):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; lines &lt;span style="color:#f92672"&gt;=&lt;/span&gt; (&lt;span style="color:#e6db74"&gt;&amp;#39;mfi&amp;#39;&lt;/span&gt;,)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dict(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;14&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
@@ -164,13 +164,13 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; mfraw &lt;span style="color:#f92672"&gt;=&lt;/span&gt; tprice &lt;span style="color:#f92672"&gt;*&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;volume
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;...&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;典型的实例化方式：&lt;/p&gt;
 &lt;h3 id="mfi-典型实例化"&gt;MFI 典型实例化&lt;a class="anchor" href="#mfi-%e5%85%b8%e5%9e%8b%e5%ae%9e%e4%be%8b%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyMFIStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyMFIStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; mfi &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;MFI_Canonical(self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这里的问题很明显：需要为指标提供包含收盘价、最低价、最高价和成交量的输入（即 backtrader 生态中的 lines）。&lt;/p&gt;
 &lt;p&gt;当然，可能有人希望使用来自不同数据源的组件来创建 MFI（例如来自数据源或其他指标的线）。比如想给收盘价更多权重，而不必开发特定指标。考虑到行业标准的 OHLCV 数据字段顺序，支持多输入并给收盘价加权的实例化可以是：&lt;/p&gt;
 &lt;h3 id="mfi-多输入实例化"&gt;MFI 多输入实例化&lt;a class="anchor" href="#mfi-%e5%a4%9a%e8%be%93%e5%85%a5%e5%ae%9e%e4%be%8b%e5%8c%96"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyMFIStrategy2&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyMFIStrategy2&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;__init__&lt;/span&gt;(self):
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; wclose &lt;span style="color:#f92672"&gt;=&lt;/span&gt; self&lt;span style="color:#f92672"&gt;.&lt;/span&gt;data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;5.0&lt;/span&gt;

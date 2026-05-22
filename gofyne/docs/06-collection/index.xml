@@ -2,7 +2,7 @@
 &lt;p&gt;&lt;code&gt;List&lt;/code&gt; 集合控件是工具包中的集合控件之一。这些控件旨在帮助构建在呈现大量数据时性能非常高的界面。你还可以看到具有类似 API 的 &lt;a href="https://www.poloxue.com/gofyne/docs/06-collection/02-table/"&gt;Table&lt;/a&gt; 和 &lt;a href="https://www.poloxue.com/gofyne/docs/06-collection/03-tree/"&gt;Tree&lt;/a&gt; 控件。由于这种设计，它们使用起来稍微复杂一些。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;List&lt;/code&gt; 使用回调函数来在需要数据时请求数据。有三个主要的回调函数：&lt;code&gt;Length&lt;/code&gt;、&lt;code&gt;CreateItem&lt;/code&gt; 和 &lt;code&gt;UpdateItem&lt;/code&gt;。&lt;code&gt;Length&lt;/code&gt; 回调（首先传递）是最简单的，它返回要展示的数据中有多少项。其他回调与模板相关 - 如何创建、缓存和重用图形元素。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;CreateItem&lt;/code&gt; 回调返回一个新的模板对象。当控件呈现时，这将使用真实数据重新使用。此对象的 &lt;code&gt;MinSize&lt;/code&gt; 将影响 &lt;code&gt;List&lt;/code&gt; 的最小尺寸。最后，&lt;code&gt;UpdateItem&lt;/code&gt; 被调用来将一个数据项应用于缓存的模板。使用这个来设置准备显示的内容。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; (
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#e6db74"&gt;&amp;#34;fyne.io/fyne/v2&amp;#34;&lt;/span&gt;
@@ -33,7 +33,7 @@
 &lt;p&gt;&lt;code&gt;Table&lt;/code&gt;集合控件类似于&lt;a href="https://www.poloxue.com/gofyne/docs/06-collection/01-list/"&gt;List&lt;/a&gt;控件（工具包的另一个集合控件），它具有二维索引。像&lt;code&gt;List&lt;/code&gt;一样，这旨在帮助构建性能非常高的接口，当展示大量数据时。因此，控件不是用所有数据创建的，而是在需要时调用数据源。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Table&lt;/code&gt;使用回调函数在需要数据时请求数据。有3个主要的回调，&lt;code&gt;Length&lt;/code&gt;、&lt;code&gt;CreateCell&lt;/code&gt;和&lt;code&gt;UpdateCell&lt;/code&gt;。&lt;code&gt;Length&lt;/code&gt;回调（首先传递）是最简单的，它返回要展示的数据中有多少项，它返回的两个int分别代表行数和列数。其他两个与内容模板相关。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;CreateCell&lt;/code&gt;回调返回一个新的模板对象，就像列表一样。不同之处在于&lt;code&gt;MinSize&lt;/code&gt;将定义每个单元格的标准大小，以及表格的最小大小（它至少显示一个单元格）。如前所述，&lt;code&gt;UpdateCell&lt;/code&gt;被调用来将数据应用于单元格模板。传入的索引是相同的&lt;code&gt;(row, col)&lt;/code&gt;int对。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; (
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#e6db74"&gt;&amp;#34;fyne.io/fyne/v2&amp;#34;&lt;/span&gt;
@@ -68,7 +68,7 @@
 例如，如果你正在构建一个文件管理器，ID 应该是文件路径而不是其名称。&lt;/p&gt;
 &lt;p&gt;其他两个回调与内容模板相关。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;CreateNode&lt;/code&gt; 回调返回一个新的模板对象，就像列表一样，尽管有一个额外的 &lt;code&gt;bool&lt;/code&gt; 参数，如果节点可以有子元素（是一个分支），则为 &lt;code&gt;true&lt;/code&gt;。如前所述，&lt;code&gt;UpdateNode&lt;/code&gt; 被调用以将数据应用于单元格模板。你应该根据 &lt;code&gt;TreeNodeID&lt;/code&gt; 和 &lt;code&gt;isBranch&lt;/code&gt; 参数更新内容。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; (
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;	&lt;span style="color:#e6db74"&gt;&amp;#34;fyne.io/fyne/v2&amp;#34;&lt;/span&gt;
