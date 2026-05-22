@@ -2,6 +2,8 @@
 title: "Backtrader 教程二：安装与快速开始"
 date: 2025-07-05T10:02:36+08:00
 draft: false
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-07/2025-07-05-backtrader-tutorial-p2-cover.webp"
+description: "本文介绍 Backtrader 的安装方法，并通过买入持有与均线交叉两个简单策略快速上手"
 ---
 
 本文将一步步完成 Backtrader 的安装，并通过两个简单策略——买入持有与均线交叉策略，带你快速熟悉 Backtrader 的结构与用法。
