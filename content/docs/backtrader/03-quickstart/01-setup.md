@@ -1,11 +1,14 @@
 ---
-title: "Python 开发环境设置"
+title: "Cerebro 初始配置"
 date: 2026-05-20
 weight: 2
+showTableOfContents: true
 ---
 {{< youtube Li6h94v3zYg >}}
 
 在写复杂策略前，先搭好运行环境很重要。Backtrader 的核心是 Cerebro，它负责管理数据、策略和资金。
+
+## 最小化示例
 
 如下是最简单的初始配置代码：
 
@@ -20,7 +23,9 @@ if __name__ == '__main__':
     print(f'最终资金: {cerebro.broker.getvalue()}')
 ```
 
-先导入 backtrader 模块并命名为 bt，然后基于 `bt.Cerebro` 实例化引擎。
+## 代码说明
+
+先导入 backtrader 模块并命名为 `bt`，然后基于 `bt.Cerebro` 实例化引擎。
 
 ```python
 import backtrader as bt
@@ -35,12 +40,14 @@ cerebro.run()
 print(f'最终资金: {cerebro.broker.getvalue()}')
 ```
 
-输出如下：
+## 输出结果
 
-```
+```text
 初始资金: 10000.00
 最终资金: 10000.00
 ```
+
+## 小结
 
 这个简单示例中，Cerebro 引擎在后台自动创建了 broker 实例并分配了初始资金。如未明确设置 broker，系统会使用默认配置，初始资金为 10,000 货币单位。
 
