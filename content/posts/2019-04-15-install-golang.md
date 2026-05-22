@@ -26,13 +26,13 @@ tags: ["golang"]
 
 在windows下，软件安装通常可通过下载类似 setup.exe/msi 软件包来操作。按照导航的提示，不断执行 "下一步" "下一步" 即可完成。访问 [下地地址](https://zhuanlan.zhihu.com/p/62148085) 将看到如下内容：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/install-golang-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-15-install-golang-01.png)
 
 选择其中的 "Microsoft Windows" 下载 windows 安装包。现在的系统基本都是64位的了，一般情况下不用考虑 32/64 位系统的问题。
 
 下载好了安装包，点击启动执行，接下来的步骤就是按导航提示一步步操作即可。有一点要注意的是，GO的默认安装在 C:\GO，如果要修改默认安装路径，在见到如下界面时重新选择。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/install-golang-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-15-install-golang-02.png)
 
 **ubuntu/debian**
 
@@ -84,7 +84,7 @@ $ brew install go
 
 再次进入到下载页面，在列表可如下内容。因为我用的32位windows虚拟机，下载i386的包。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/install-golang-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-15-install-golang-03.png)
 
 接着把下载的压缩包解压到某个文件夹，比如 c:\Program Files 下，进入查看，会发现其中已经包含了新的名为go的文件夹。
 
@@ -169,7 +169,7 @@ GOROOT="/usr/local/go"
 再简单介绍下go的目录结构。以windows为例，进入C:\Program Files\go将看到如下内容。
 
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/install-golang-04.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-04/2019-04-15-install-golang-04.png)
 
 介绍几个比较主要的目录：
 
