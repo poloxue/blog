@@ -3,6 +3,7 @@ title: "开发了一个加密货币跨市场价差监控工具"
 date: 2025-03-03T11:16:08+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-03-crypto-spread-monitor-using-python-cover.webp"
 description: "我开发了一个加密货币跨交易所价差的监控工具。"
 ---
 

@@ -3,6 +3,7 @@ title: "通过 Hummingbot 运行一个做市机器人"
 date: 2025-02-22T16:21:45+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-02/2025-02-22-cross-exchange-arbitrage-using-humming-cover.webp"
 description: "最近在研究了下一个叫 Hummingbot 的 Python 加密货币机器人，它其中提供了高频做市、跨市场套利和资金费率套利等策略。"
 ---
 
