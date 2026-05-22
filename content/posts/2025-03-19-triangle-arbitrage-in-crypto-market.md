@@ -3,6 +3,7 @@ title: "实时监控加密货币现货市场的三角套利机会"
 date: 2025-03-19T17:04:44+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-03/2025-03-19-triangle-arbitrage-in-crypto-market-cover.webp"
 description: "本文继续介绍一个常见的套利策略，三角套利策略。"
 ---
 
