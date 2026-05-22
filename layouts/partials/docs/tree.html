@@ -29,9 +29,11 @@
                   <a href="{{ $page.RelPermalink }}" class="hover:underline decoration-primary-500 underline-offset-2">{{ $page.Title }}</a>
                 </h{{ if eq $depth 1 }}2{{ else }}3{{ end }}>
               {{ end }}
-              {{ with $page.Description }}
+
+              {{ with $page.Params.description }}
                 <span class="text-xs text-neutral-500 dark:text-neutral-400 hidden sm:inline truncate">— {{ . }}</span>
               {{ end }}
+
             </span>
             {{ if not $isSection }}
               {{ with $page.Date }}
@@ -40,7 +42,7 @@
             {{ end }}
           </div>
 
-          {{ if and $isSection (lt $depth 2) }}
+          {{ if and $isSection (lt $depth 3) }}
             {{ partial "docs/tree" (dict "pages" $page.Pages "depth" (add $depth 1) "parentNum" $num) }}
           {{ end }}
         </div>
