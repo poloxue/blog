@@ -3,6 +3,7 @@ title: "配对交易基础教程"
 date: 2025-04-04T15:24:11+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-04/2025-04-04-pairtrading-for-begginers-cover.webp"
 description: "本文是翻译自 QuantInsti 的配对交易基础教程。"
 ---
 
