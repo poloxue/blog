@@ -39,7 +39,7 @@ GIT是一种版本控制软件，那就首先了解一下什么是 “版本控�
 
 代表有 RCS(Revision Control System)，Linux下面的可用来作为配置文件管理的版本控制工具，工作使用不多；
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-03-18-git-architecture-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-03/2019-03-18-git-architecture-01.png)
 
 关于其优缺点，简述如下：
 
@@ -58,7 +58,7 @@ GIT是一种版本控制软件，那就首先了解一下什么是 “版本控�
 
 代表如CVS，SVN(Subversion)，SVN是曾经最流行的版本管理系统，很多人都有用过，因而对于集中式版本控制系统很多人都很了解它。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-03-18-git-architecture-02.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-03/2019-03-18-git-architecture-02.png)
 
 #### 优点
 
@@ -81,7 +81,7 @@ GIT是一种版本控制软件，那就首先了解一下什么是 “版本控�
 
 代表就是今天要说的GIT了。想知道GIT有多流行吗？看看GITHUB就知道了，现在很多公司都已经把自己的代码库迁移到了GIT。可见GIT在如今的流行程度，也说明分布式版本控制系统是如今的趋势。如下基本架构图：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-03-18-git-architecture-03.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-03/2019-03-18-git-architecture-03.png)
 
 关于分布式版本控制系统，这里只说优点：
 
@@ -136,7 +136,7 @@ GIT的架构，可以分为几个部分：
 
 如下图：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-03-18-git-architecture-04.webp)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-03/2019-03-18-git-architecture-04.webp)
 
 上图展示了git的整体架构，以及和各部分相关的主要命令。先说明下其中涉及的各部分。
 
@@ -164,7 +164,7 @@ GIT的架构，可以分为几个部分：
 
 看看.git这个目录的下文件结构，如下图：
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-03-18-git-architecture-05.webp)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-03/2019-03-18-git-architecture-05.webp)
 
 简要说明一下各个文件中所存放的内容信息：
 
