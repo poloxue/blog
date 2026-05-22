@@ -3,6 +3,7 @@ title: "掌握 backtrader 策略回测：均线交叉交易系统"
 date: 2025-04-15T17:59:11+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-04/2025-04-16-macross-using-backtrader-cover.webp"
 ---
 
 我花了一个星期通读了 backtrader 的官方文档，順便还通过 AI 整理出了它的中文文档，我不想写 backtrader 的基础入门教程，还不如直接用 backtrader 逐步展开回测这一个策略，或许更加容易掌握它的使用。

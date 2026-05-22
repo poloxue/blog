@@ -3,6 +3,7 @@ title: "对加密货币市场定投一些粗浅思考"
 date: 2025-05-26T10:00:00+08:00
 draft: false
 comment: true
+featureimage: "https://cdn.jsdelivr.net/gh/poloxue/images@2025-05/2025-05-26-dca-stratey-in-cryptocurrency-cover.webp"
 description: "最近在研究定投策略在数字货币上的表现，计划实际回测下不同的定投策略的表现。"
 ---
 
