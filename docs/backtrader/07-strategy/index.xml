@@ -1,1 +1,63 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Strategy on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/</link><description>Recent content in Strategy on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/07-strategy/index.xml" rel="self" type="application/rss+xml"/><item><title>Strategy 策略基类详解</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/01-strategy/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/07-strategy/01-strategy/</guid><description/></item><item><title>信号驱动的策略模式</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/02-strategy-with-signals/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/07-strategy/02-strategy-with-signals/</guid><description/></item><item><title>策略 API 参考文档</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/03-strategy-references/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/07-strategy/03-strategy-references/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Strategy on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/</link><description>Recent content in Strategy on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/07-strategy/index.xml" rel="self" type="application/rss+xml"/><item><title>Strategy 策略基类详解</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/01-strategy/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/07-strategy/01-strategy/</guid><description>&lt;p&gt;backtrader 中，Cerebro 是系统的核心，Strategy 是用户的核心。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;Strategy 的生命周期方法
+ &lt;div id="strategy-的生命周期方法" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#strategy-%e7%9a%84%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f%e6%96%b9%e6%b3%95" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;策略可在创建时抛出 &lt;code&gt;backtrader.errors&lt;/code&gt; 模块的 &lt;code&gt;StrategySkipError&lt;/code&gt; 异常来中断，从而避免在回测中处理该策略。详情请参见”异常”部分。&lt;/p&gt;</description></item><item><title>信号驱动的策略模式</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/02-strategy-with-signals/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/07-strategy/02-strategy-with-signals/</guid><description>&lt;p&gt;使用 backtrader 不一定要编写策略类。虽然这是推荐方式，但由于对象层级结构，使用信号也是一种可行方案。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;快速总结：
+ &lt;div id="快速总结" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%bf%ab%e9%80%9f%e6%80%bb%e7%bb%93" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;不需要编写策略类、实例化指标、编写买卖逻辑等。&lt;/li&gt;
+&lt;li&gt;添加信号（信号本质上也是指标），其余部分由后台自动处理。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 class="relative group"&gt;快速示例：
+ &lt;div id="快速示例" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%bf%ab%e9%80%9f%e7%a4%ba%e4%be%8b" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h3&gt;
+&lt;div class="highlight-wrapper"&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; backtrader &lt;span style="color:#66d9ef"&gt;as&lt;/span&gt; bt
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;feeds&lt;span style="color:#f92672"&gt;.&lt;/span&gt;OneOfTheFeeds(dataname&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;mydataname&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;adddata(data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;add_signal(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;SIGNAL_LONGSHORT, MySignal)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cerebro&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run()&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;这就完成了。信号本身还没有定义。&lt;/p&gt;</description></item><item><title>策略 API 参考文档</title><link>https://www.poloxue.com/docs/backtrader/07-strategy/03-strategy-references/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/07-strategy/03-strategy-references/</guid><description>&lt;h2 class="relative group"&gt;内置策略参考
+ &lt;div id="内置策略参考" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%86%85%e7%bd%ae%e7%ad%96%e7%95%a5%e5%8f%82%e8%80%83" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+
+&lt;h2 class="relative group"&gt;MA_CrossOver
+ &lt;div id="ma_crossover" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#ma_crossover" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;别名：SMA_CrossOver。这是一个仅做多的策略，基于移动平均线交叉。&lt;/p&gt;</description></item></channel></rss>

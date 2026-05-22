@@ -1,1 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iTerm2 on 菠萝学</title><link>https://www.poloxue.com/docs/mytermenv/terminal/</link><description>Recent content in iTerm2 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/mytermenv/terminal/index.xml" rel="self" type="application/rss+xml"/><item><title>简要介绍</title><link>https://www.poloxue.com/docs/mytermenv/terminal/hello/</link><pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/hello/</guid><description/></item><item><title>安装与主题</title><link>https://www.poloxue.com/docs/mytermenv/terminal/install/</link><pubDate>Sun, 14 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/install/</guid><description/></item><item><title>开始使用</title><link>https://www.poloxue.com/docs/mytermenv/terminal/usage/</link><pubDate>Sun, 21 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/usage/</guid><description/></item><item><title>Python API</title><link>https://www.poloxue.com/docs/mytermenv/terminal/pyapi/</link><pubDate>Sun, 28 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/pyapi/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>iTerm2 on 菠萝学</title><link>https://www.poloxue.com/docs/mytermenv/terminal/</link><description>Recent content in iTerm2 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/mytermenv/terminal/index.xml" rel="self" type="application/rss+xml"/><item><title>简要介绍</title><link>https://www.poloxue.com/docs/mytermenv/terminal/hello/</link><pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/hello/</guid><description>&lt;p&gt;iTerm2 是一款终端软件，它是 macOS 下默认终端 Terminal 的替代品。每次拿到新电脑，或者因某种原因重装系统，我首先要做的就是下载 iTerm2 来替换默认的终端 terminal。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;iTerm2 vs 默认 Terminal
+ &lt;div id="iterm2-vs-默认-terminal" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#iterm2-vs-%e9%bb%98%e8%ae%a4-terminal" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;为什么要用 iTerm2 而不是 Mac 自带的 Terminal？一句话总结：&lt;strong&gt;默认 Terminal 能用，但 iTerm2 更好用。&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>安装与主题</title><link>https://www.poloxue.com/docs/mytermenv/terminal/install/</link><pubDate>Sun, 14 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/install/</guid><description>&lt;p&gt;本节介绍 iTerm2 安装与主题。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;安装
+ &lt;div id="安装" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%ae%89%e8%a3%85" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;安装 iTerm2 很简单，直接去官网 &lt;a href="https://iterm2.com" target="_blank" rel="noreferrer"&gt;iterm2.com&lt;/a&gt; 下载安装包，或者用 Homebrew：&lt;/p&gt;</description></item><item><title>开始使用</title><link>https://www.poloxue.com/docs/mytermenv/terminal/usage/</link><pubDate>Sun, 21 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/usage/</guid><description>&lt;p&gt;打开 iTerm2，快速使用体验一下吧。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;分屏功能
+ &lt;div id="分屏功能" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%88%86%e5%b1%8f%e5%8a%9f%e8%83%bd" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;iTerm2 最实用的功能之一就是分屏。不同于在多个窗口间来回切换，分屏让你在一个标签页里同时查看多个终端。&lt;/p&gt;</description></item><item><title>Python API</title><link>https://www.poloxue.com/docs/mytermenv/terminal/pyapi/</link><pubDate>Sun, 28 Jan 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/terminal/pyapi/</guid><description>&lt;p&gt;这部分主要介绍 iTerm2 提供的 Python API，利用它，带你实现一些不一样的能力。我将演示两个案例，分别是背景图自动更换和分屏创建自动化。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;环境准备
+ &lt;div id="环境准备" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e7%8e%af%e5%a2%83%e5%87%86%e5%a4%87" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;iTerm2 的 Python API 需要先启用脚本支持。打开 &lt;code&gt;Preferences &amp;gt; General &amp;gt; Magic &amp;gt; Enable Python API&lt;/code&gt;。&lt;/p&gt;</description></item></channel></rss>

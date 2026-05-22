@@ -1,1 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Commission on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/</link><description>Recent content in Commission on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/11-commission-schemes/index.xml" rel="self" type="application/rss+xml"/><item><title>佣金方案详解</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/01-commission-schemes/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/01-commission-schemes/</guid><description/></item><item><title>自定义佣金方案扩展</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/02-commission-schemes-extending/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/02-commission-schemes-extending/</guid><description/></item><item><title>高级佣金定制指南</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/03-customization/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/03-customization/</guid><description/></item><item><title>信用利息与融资融券</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/04-credit-interests/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/04-credit-interests/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Commission on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/</link><description>Recent content in Commission on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/11-commission-schemes/index.xml" rel="self" type="application/rss+xml"/><item><title>佣金方案详解</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/01-commission-schemes/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/01-commission-schemes/</guid><description>&lt;h2 class="relative group"&gt;中立性
+ &lt;div id="中立性" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e4%b8%ad%e7%ab%8b%e6%80%a7" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;backtrader 对数据所代表的内容保持中立。不同的佣金方案可以应用于同一数据集。下面来看看如何实现。&lt;/p&gt;</description></item><item><title>自定义佣金方案扩展</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/02-commission-schemes-extending/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/02-commission-schemes-extending/</guid><description>&lt;p&gt;佣金及相关功能由一个单一的类 &lt;code&gt;CommissionInfo&lt;/code&gt; 管理，通常通过调用 &lt;code&gt;broker.setcommission&lt;/code&gt; 实例化。&lt;/p&gt;
+&lt;p&gt;这个概念仅限于带有保证金和每份合约固定佣金的期货，以及基于价格/数量百分比佣金的股票。虽然不是最灵活的方案，但它已经发挥了作用。&lt;/p&gt;</description></item><item><title>高级佣金定制指南</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/03-customization/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/03-customization/</guid><description>&lt;p&gt;当前版本重新设计 &lt;code&gt;CommInfo&lt;/code&gt; 对象，核心目标包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留原始 &lt;code&gt;CommissionInfo&lt;/code&gt; 类和行为&lt;/li&gt;
+&lt;li&gt;为用户轻松创建自定义佣金方案提供支持&lt;/li&gt;
+&lt;li&gt;将 &lt;code&gt;xx%&lt;/code&gt; 格式作为新佣金方案的默认值，而不是 &lt;code&gt;0.xx&lt;/code&gt;（这只是个人偏好），同时保持行为可配置&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;定义佣金方案
+ &lt;div id="定义佣金方案" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%ae%9a%e4%b9%89%e4%bd%a3%e9%87%91%e6%96%b9%e6%a1%88" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;这需要 1 到 2 个步骤：&lt;/p&gt;</description></item><item><title>信用利息与融资融券</title><link>https://www.poloxue.com/docs/backtrader/11-commission-schemes/04-credit-interests/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/11-commission-schemes/04-credit-interests/</guid><description>&lt;p&gt;在某些情况下，由于资产操作涉及利率，经纪商的实际现金金额可能会减少。例如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;股票卖空&lt;/li&gt;
+&lt;li&gt;ETF 的多头和空头操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;该费用直接从经纪账户的现金余额中扣除，但仍可视为佣金方案的一部分。因此，&lt;code&gt;backtrader&lt;/code&gt; 对此进行了建模。&lt;/p&gt;</description></item></channel></rss>

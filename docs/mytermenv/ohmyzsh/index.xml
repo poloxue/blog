@@ -1,1 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>oh-my-zsh on 菠萝学</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/</link><description>Recent content in oh-my-zsh on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/mytermenv/ohmyzsh/index.xml" rel="self" type="application/rss+xml"/><item><title>安装与主题</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/install/</link><pubDate>Sun, 18 Feb 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/install/</guid><description/></item><item><title>基础插件</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins/</link><pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins/</guid><description/></item><item><title>基础插件 2</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins2/</link><pubDate>Sun, 03 Mar 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins2/</guid><description/></item><item><title>高级插件</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/advancedplugins/</link><pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/advancedplugins/</guid><description/></item><item><title>自定义提示主题</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/powerlevel10k/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/powerlevel10k/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>oh-my-zsh on 菠萝学</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/</link><description>Recent content in oh-my-zsh on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/mytermenv/ohmyzsh/index.xml" rel="self" type="application/rss+xml"/><item><title>安装与主题</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/install/</link><pubDate>Sun, 18 Feb 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/install/</guid><description>&lt;p&gt;本节介绍 oh-my-zsh 的安装与主题。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;安装
+ &lt;div id="安装" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%ae%89%e8%a3%85" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;oh-my-zsh 是 zsh 最流行的配置管理框架，安装极其简单：&lt;/p&gt;
+&lt;div class="highlight-wrapper"&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# curl 安装&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sh -c &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 或者用 wget&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;sh -c &lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;$(&lt;/span&gt;wget -O- https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh&lt;span style="color:#66d9ef"&gt;)&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;安装脚本会自动备份你当前的 &lt;code&gt;~/.zshrc&lt;/code&gt; 为 &lt;code&gt;~/.zshrc.pre-oh-my-zsh&lt;/code&gt;，然后创建一份新的 &lt;code&gt;~/.zshrc&lt;/code&gt;。&lt;/p&gt;</description></item><item><title>基础插件</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins/</link><pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins/</guid><description>&lt;p&gt;重点来了，接下来我们一起来看看 zsh 的效率神器 - 插件能力吧。本文先给大家推荐 5 款常用的插件。oh-my-zsh 提供的所有内置插件，都可以在仓库 &lt;a href="https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins" target="_blank" rel="noreferrer"&gt;ohmyzsh/ohmyzsh/plugins&lt;/a&gt; 中找到，每个插件都有相应的介绍文档。&lt;/p&gt;</description></item><item><title>基础插件 2</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins2/</link><pubDate>Sun, 03 Mar 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/basicplugins2/</guid><description>&lt;p&gt;本文是基础篇插件的第二篇，继续介绍 4 个常用的 oh-my-zsh 插件。&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;插件&lt;/th&gt;
+ &lt;th&gt;作用&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;copypath&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;拷贝当前目录路径到剪贴板&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;copyfile&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;拷贝文件内容到剪贴板&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;dirhistory&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;用方向键在目录历史中导航&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;history&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;更好的历史命令查看方式&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;在 &lt;code&gt;~/.zshrc&lt;/code&gt; 中加上：&lt;/p&gt;</description></item><item><title>高级插件</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/advancedplugins/</link><pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/advancedplugins/</guid><description>&lt;p&gt;我们再来了解 4 个非 oh-my-zsh 内置插件，它们分别是 zsh-syntax-highlighting、zsh-autosuggestions、zsh-history-substring-search 和 you-should-use。这些插件由 zsh 社区开发。&lt;/p&gt;</description></item><item><title>自定义提示主题</title><link>https://www.poloxue.com/docs/mytermenv/ohmyzsh/powerlevel10k/</link><pubDate>Sun, 17 Mar 2024 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/mytermenv/ohmyzsh/powerlevel10k/</guid><description>&lt;p&gt;不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强工作效率呢？&lt;/p&gt;
+&lt;p&gt;在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选项，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 Powerlevel10k，包括它的安装和配置自定义。&lt;/p&gt;</description></item></channel></rss>

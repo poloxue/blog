@@ -1,1 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>常见问题 on 菠萝学</title><link>https://www.poloxue.com/docs/gofyne/10-faq/</link><description>Recent content in 常见问题 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Thu, 21 May 2026 19:07:14 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/docs/gofyne/10-faq/index.xml" rel="self" type="application/rss+xml"/><item><title>布局与控件大小</title><link>https://www.poloxue.com/docs/gofyne/10-faq/01-layout/</link><pubDate>Mon, 26 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/10-faq/01-layout/</guid><description/></item><item><title>主题与自定义</title><link>https://www.poloxue.com/docs/gofyne/10-faq/02-theme/</link><pubDate>Thu, 29 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/10-faq/02-theme/</guid><description/></item><item><title>故障排查</title><link>https://www.poloxue.com/docs/gofyne/10-faq/03-troubleshoot/</link><pubDate>Sun, 01 Jun 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/10-faq/03-troubleshoot/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>常见问题 on 菠萝学</title><link>https://www.poloxue.com/docs/gofyne/10-faq/</link><description>Recent content in 常见问题 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Thu, 21 May 2026 19:07:14 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/docs/gofyne/10-faq/index.xml" rel="self" type="application/rss+xml"/><item><title>布局与控件大小</title><link>https://www.poloxue.com/docs/gofyne/10-faq/01-layout/</link><pubDate>Mon, 26 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/10-faq/01-layout/</guid><description>&lt;h3 class="relative group"&gt;移动和调整大小
+ &lt;div id="移动和调整大小" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e7%a7%bb%e5%8a%a8%e5%92%8c%e8%b0%83%e6%95%b4%e5%a4%a7%e5%b0%8f" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;问：我如何将我的控件移动到不同的位置或调整其大小？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答：&lt;/strong&gt; Fyne 应用中元素的位置和大小由它们所在的容器的布局控制。如果你的 UI 元素太小，请考虑使用不同的&lt;a href="https://www.poloxue.com/docs/gofyne/02-explore/04-layouts/" &gt;布局&lt;/a&gt;或容器。&lt;/p&gt;</description></item><item><title>主题与自定义</title><link>https://www.poloxue.com/docs/gofyne/10-faq/02-theme/</link><pubDate>Thu, 29 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/10-faq/02-theme/</guid><description>&lt;p&gt;在这个页面上，我们回答了一些关于Fyne主题和控件设计的常见问题。&lt;/p&gt;
+
+&lt;h3 class="relative group"&gt;自定义
+ &lt;div id="自定义" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e8%87%aa%e5%ae%9a%e4%b9%89" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;问：如何更改&lt;code&gt;Label&lt;/code&gt;控件文本的颜色？&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>故障排查</title><link>https://www.poloxue.com/docs/gofyne/10-faq/03-troubleshoot/</link><pubDate>Sun, 01 Jun 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/10-faq/03-troubleshoot/</guid><description>&lt;p&gt;在设置过程中或编译第一个应用程序时，可能会遇到一些意外情况。我们在这里尝试解决这些问题。记住，你也可以使用 &lt;a href="https://geoffrey-artefacts.fynelabs.com/github/andydotxyz/fyne-io/setup/latest/" target="_blank" rel="noreferrer"&gt;Fyne Setup&lt;/a&gt; 工具检查你的配置。&lt;/p&gt;
+
+&lt;h3 class="relative group"&gt;编译器问题
+ &lt;div id="编译器问题" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e7%bc%96%e8%af%91%e5%99%a8%e9%97%ae%e9%a2%98" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;问：命令未找到：fyne&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>

@@ -1,1 +1,81 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Broker on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/10-broker/</link><description>Recent content in Broker on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/10-broker/index.xml" rel="self" type="application/rss+xml"/><item><title>Broker 经纪商详解</title><link>https://www.poloxue.com/docs/backtrader/10-broker/01-broker/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/01-broker/</guid><description/></item><item><title>滑点模拟与参数配置</title><link>https://www.poloxue.com/docs/backtrader/10-broker/02-slippage/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/02-slippage/</guid><description/></item><item><title>开盘价作弊模式详解</title><link>https://www.poloxue.com/docs/backtrader/10-broker/03-cheat-on-open/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/03-cheat-on-open/</guid><description/></item><item><title>成交量填充器 Filler</title><link>https://www.poloxue.com/docs/backtrader/10-broker/04-volume-filling-filler/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/04-volume-filling-filler/</guid><description/></item><item><title>Position 持仓管理</title><link>https://www.poloxue.com/docs/backtrader/10-broker/05-position/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/05-position/</guid><description/></item><item><title>Trade 交易记录详解</title><link>https://www.poloxue.com/docs/backtrader/10-broker/06-trade/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/06-trade/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Broker on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/10-broker/</link><description>Recent content in Broker on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/10-broker/index.xml" rel="self" type="application/rss+xml"/><item><title>Broker 经纪商详解</title><link>https://www.poloxue.com/docs/backtrader/10-broker/01-broker/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/01-broker/</guid><description>&lt;h2 class="relative group"&gt;类 &lt;code&gt;backtrader.brokers.BackBroker()&lt;/code&gt;
+ &lt;div id="类-backtraderbrokersbackbroker" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e7%b1%bb-backtraderbrokersbackbroker" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;Broker 经纪商模拟器，支持不同的订单类型，检查订单现金需求，跟踪每次 Cerebro 迭代的现金和价值，并维护各数据的当前头寸。&lt;/p&gt;</description></item><item><title>滑点模拟与参数配置</title><link>https://www.poloxue.com/docs/backtrader/10-broker/02-slippage/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/02-slippage/</guid><description>&lt;p&gt;回测无法完全模拟真实市场条件。无论模拟多好，真实市场中滑点仍可能发生，即请求的价格可能无法匹配。&lt;/p&gt;
+&lt;p&gt;集成的回测 Broker 支持滑点，可通过以下参数配置：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;参数名&lt;/th&gt;
+ &lt;th&gt;默认值&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_perc&lt;/td&gt;
+ &lt;td&gt;0.0&lt;/td&gt;
+ &lt;td&gt;应用于买卖订单的价格上下滑动的绝对百分比（且为正值），注意：0.01 是 1%，0.001 是 0.1%；&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_fixed&lt;/td&gt;
+ &lt;td&gt;0.0&lt;/td&gt;
+ &lt;td&gt;应用于买卖订单的价格上下滑动的单位百分比（且为正值），注意：如果 &lt;code&gt;slip_perc&lt;/code&gt; 非零，则优先于此。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_open&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;是否为专门使用下一个柱的开盘价执行的订单滑动价格。例如，市场订单将在下一个可用tick执行，即柱的开盘价。这也适用于其他一些执行，因为逻辑尝试检测开盘价是否会匹配请求的价格/执行类型在移动到新柱时。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_match&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;- 如果为 True，经纪商将通过在高/低价位封顶滑点来提供匹配，以防它们超出。&lt;br/&gt;- 如果为 False，经纪商将不会使用当前价格匹配订单，并将在下一次迭代中尝试执行&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_limit&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;- 限价订单，给定确切的匹配价格请求，即使 &lt;code&gt;slip_match&lt;/code&gt; 为 False，也会被匹配。&lt;br/&gt;- 此选项控制该行为。&lt;br/&gt;- 如果为 True，那么限价订单将通过在限价/高低价位封顶价格进行匹配。&lt;br/&gt;- 如果为 False 且滑点超出上限，则不会有匹配&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;slip_out&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;即使价格超出高-低范围，也提供滑点。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 class="relative group"&gt;工作原理
+ &lt;div id="工作原理" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;滑点应用逻辑取决于订单执行类型：&lt;/p&gt;</description></item><item><title>开盘价作弊模式详解</title><link>https://www.poloxue.com/docs/backtrader/10-broker/03-cheat-on-open/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/03-cheat-on-open/</guid><description>&lt;p&gt;版本 1.9.44.116 添加了 Cheat-On-Open 支持。满足了在收盘价计算后全仓操作的用户需求，他们希望订单与开盘价匹配。&lt;/p&gt;
+&lt;p&gt;当开盘价跳空（方向取决于买入或卖出）且现金不足时，全仓操作会失败，导致 Broker 拒绝订单。&lt;/p&gt;</description></item><item><title>成交量填充器 Filler</title><link>https://www.poloxue.com/docs/backtrader/10-broker/04-volume-filling-filler/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/04-volume-filling-filler/</guid><description>&lt;p&gt;Backtrader 的 Broker 模拟在订单执行时有一个默认策略：忽略成交量。这是基于两个假设：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;交易在流动性足够高的市场中进行，可一次性完全吸收买卖订单。&lt;/li&gt;
+&lt;li&gt;实际的成交量匹配需要真实市场环境。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一个简单的例子是”立即成交或取消”（Fill or Kill）订单。即使逐笔细化且有足够的成交量，Backtrader 的 Broker 模拟也无法知道市场中有多少其他参与者，无法判断这样的订单是否能立即成交或应取消。&lt;/p&gt;</description></item><item><title>Position 持仓管理</title><link>https://www.poloxue.com/docs/backtrader/10-broker/05-position/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/05-position/</guid><description>&lt;p&gt;在策略中检查资产的头寸（Position），可通过 &lt;code&gt;position&lt;/code&gt; 属性或 &lt;code&gt;getposition(data=None, broker=None)&lt;/code&gt; 方法。这会返回策略在 Cerebro 默认 Broker 中 &lt;code&gt;datas[0]&lt;/code&gt; 的头寸。&lt;/p&gt;
+&lt;p&gt;头寸仅表示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;持有数量（size）&lt;/li&gt;
+&lt;li&gt;平均价格（price）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;它用作状态指示，例如决定是否需要发出订单（如仅在没有持仓时开仓）。&lt;/p&gt;</description></item><item><title>Trade 交易记录详解</title><link>https://www.poloxue.com/docs/backtrader/10-broker/06-trade/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/10-broker/06-trade/</guid><description>&lt;p&gt;交易的定义：当某个工具的头寸从 0 变为 X（正数为多头，负数为空头）时，交易开启；当头寸从 X 变为 0 时，交易关闭。&lt;/p&gt;
+&lt;p&gt;以下两种情况：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从正变负&lt;/li&gt;
+&lt;li&gt;从负变正&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实际上被视为：关闭一个交易（头寸从 X 到 0），同时开启一个新交易（头寸从 0 到 Y）。&lt;/p&gt;</description></item></channel></rss>

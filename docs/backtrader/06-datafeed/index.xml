@@ -1,1 +1,120 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DataFeed on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/</link><description>Recent content in DataFeed on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/06-datafeed/index.xml" rel="self" type="application/rss+xml"/><item><title>数据源 DataFeed 详解</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/01-datafeeds/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/01-datafeeds/</guid><description/></item><item><title>自定义扩展数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/02-datafeed-extending/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/02-datafeed-extending/</guid><description/></item><item><title>开发 CSV 格式数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/03-datafeed-development-csv/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/03-datafeed-development-csv/</guid><description/></item><item><title>开发 Binary 二进制数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/04-datafeed-development-general/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/04-datafeed-development-general/</guid><description/></item><item><title>多时间框架数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/05-datafeed-multiple-timeframes/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/05-datafeed-multiple-timeframes/</guid><description/></item><item><title>数据重采样与周期转换</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/06-datafeed-resampling/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/06-datafeed-resampling/</guid><description/></item><item><title>Tick 级数据回放机制</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/07-datafeed-replay/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/07-datafeed-replay/</guid><description/></item><item><title>数据滚动与窗口管理</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/08-datafeed-rollover/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/08-datafeed-rollover/</guid><description/></item><item><title>数据过滤器 Filter 详解</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/09-datafeed-filters/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/09-datafeed-filters/</guid><description/></item><item><title>过滤器参数参考文档</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/10-datafeed-filters-referrence/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/10-datafeed-filters-referrence/</guid><description/></item><item><title>Yahoo 数据源接入说明</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/11-datafeed-yahoo/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/11-datafeed-yahoo/</guid><description/></item><item><title>Pandas 数据源使用示例</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/12-datafeed-pandas/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/12-datafeed-pandas/</guid><description/></item><item><title>数据源 API 参考文档</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/13-datafeed-reference/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/13-datafeed-reference/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DataFeed on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/</link><description>Recent content in DataFeed on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/06-datafeed/index.xml" rel="self" type="application/rss+xml"/><item><title>数据源 DataFeed 详解</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/01-datafeeds/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/01-datafeeds/</guid><description>&lt;p&gt;&lt;strong&gt;Backtrader&lt;/strong&gt; 提供了一组数据源解析器（目前都是基于 CSV 的），用于从不同来源加载数据。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Yahoo（在线或已保存到文件）&lt;/li&gt;
+&lt;li&gt;VisualChart（参见 &lt;a href="https://www.visualchart.com" target="_blank" rel="noreferrer"&gt;www.visualchart.com&lt;/a&gt;）&lt;/li&gt;
+&lt;li&gt;Backtrader CSV（自定义格式用于测试）&lt;/li&gt;
+&lt;li&gt;通用 CSV 支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如快速入门指南所示，将数据源添加到 Cerebro 实例后，可在策略中通过以下方式访问：&lt;/p&gt;</description></item><item><title>自定义扩展数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/02-datafeed-extending/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/02-datafeed-extending/</guid><description>&lt;p&gt;能否轻松扩展现有机制，添加额外字段并与价格数据（如开盘价、最高价等）一起传递？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;正在解析一个 CSV 格式的数据源&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;GenericCSVData&lt;/code&gt; 加载数据&lt;/li&gt;
+&lt;li&gt;通用 CSV 支持是为响应 Issue #6 开发的&lt;/li&gt;
+&lt;li&gt;需要将 P/E 字段与解析的 CSV 数据一起传递&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面基于 CSV 数据源开发和 &lt;code&gt;GenericCSVData&lt;/code&gt; 示例来演示。&lt;/p&gt;</description></item><item><title>开发 CSV 格式数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/03-datafeed-development-csv/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/03-datafeed-development-csv/</guid><description>&lt;p&gt;&lt;strong&gt;Backtrader&lt;/strong&gt; 已经提供了一些通用和特定的 CSV 数据源。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GenericCSVData&lt;/li&gt;
+&lt;li&gt;VisualChartCSVData&lt;/li&gt;
+&lt;li&gt;YahooFinanceData（用于在线下载）&lt;/li&gt;
+&lt;li&gt;YahooFinanceCSVData（用于已下载的数据）&lt;/li&gt;
+&lt;li&gt;BacktraderCSVData（内部用于测试，但也可以使用）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;即使如此，你可能仍需要开发对特定 CSV 数据源的支持。&lt;/p&gt;</description></item><item><title>开发 Binary 二进制数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/04-datafeed-development-general/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/04-datafeed-development-general/</guid><description>&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：示例中使用的 Binary 文件 &lt;code&gt;goog.fd&lt;/code&gt; 属于 VisualChart，不能与 backtrader 一起分发。&lt;/p&gt;
+&lt;p&gt;对于那些有兴趣直接使用 Binary 文件的人，可以免费下载 VisualChart。&lt;/p&gt;
+&lt;p&gt;CSV 数据源开发展示了如何添加基于 CSV 的数据源。基类 &lt;code&gt;CSVDataBase&lt;/code&gt; 提供了框架，子类只需执行：&lt;/p&gt;</description></item><item><title>多时间框架数据源</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/05-datafeed-multiple-timeframes/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/05-datafeed-multiple-timeframes/</guid><description>&lt;p&gt;实际交易中常需要结合多个时间框架来制定决策，如在周线评估趋势、在日线执行入场，或基于 5 分钟与 60 分钟数据的对比进行交易。在 &lt;strong&gt;Backtrader&lt;/strong&gt; 中需要将不同时间框架的数据组合在一起。&lt;/p&gt;</description></item><item><title>数据重采样与周期转换</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/06-datafeed-resampling/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/06-datafeed-resampling/</guid><description>&lt;p&gt;当只有单一时间框架的数据可用，而分析需要在不同时间框架上进行时，就需要重采样。&amp;ldquo;重采样&amp;rdquo; 实际应称为 &amp;ldquo;上采样&amp;rdquo;，因为它是从源时间框架转换到更大的时间框架（如从天到周）。&lt;/p&gt;</description></item><item><title>Tick 级数据回放机制</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/07-datafeed-replay/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/07-datafeed-replay/</guid><description>&lt;p&gt;仅对已完成的 Bar 进行策略测试已不够，数据回放应运而生。假设策略在时间框架 X（如每日）上操作，而数据在更小的时间框架 Y（如 1 分钟）上可用。&lt;/p&gt;
+&lt;p&gt;数据回放正如其名，使用 1 分钟数据来重建每日 Bar。虽然不能完全再现市场发展，但比观察已完成的每日 Bar 要好得多。这可以近似模拟策略在每日 Bar 形成过程中的实际表现。&lt;/p&gt;</description></item><item><title>数据滚动与窗口管理</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/08-datafeed-rollover/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/08-datafeed-rollover/</guid><description>&lt;p&gt;并非所有提供商都提供连续期货合约数据。有时提供的是仍在交易中的到期合约数据，这使得回测很不方便，因为数据分散在多个合约上，且合约在时间上重叠。&lt;/p&gt;</description></item><item><title>数据过滤器 Filter 详解</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/09-datafeed-filters/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/09-datafeed-filters/</guid><description>&lt;p&gt;该功能是较晚加入到 &lt;strong&gt;Backtrader&lt;/strong&gt; 中的，为适应已有的内部结构做了一些调整。因此它在灵活性和功能完备性上可能不如预期，但在许多情况下仍然够用。&lt;/p&gt;
+&lt;p&gt;尽管实现时尝试支持即插即用的过滤器链，但受限于原有内部结构，无法始终保证。因此，有些过滤器可以链式使用，有些则不能。&lt;/p&gt;</description></item><item><title>过滤器参数参考文档</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/10-datafeed-filters-referrence/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/10-datafeed-filters-referrence/</guid><description>&lt;h2 class="relative group"&gt;SessionFilter
+ &lt;div id="sessionfilter" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#sessionfilter" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.SessionFilter(data)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;过滤掉常规交易时间外的日内数据（即盘前/盘后数据）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这是一个”非简单”过滤器，必须管理数据栈。&lt;/li&gt;
+&lt;li&gt;不需要 “last” 方法，因为没有需要推送的数据。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;SessionFilterSimple
+ &lt;div id="sessionfiltersimple" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#sessionfiltersimple" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;class backtrader.filters.SessionFilterSimple(data)&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>Yahoo 数据源接入说明</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/11-datafeed-yahoo/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/11-datafeed-yahoo/</guid><description>&lt;p&gt;2017 年 5 月，Yahoo 停用了原有的 CSV 格式历史数据下载 API。随后新的 API（这里称为 v7）被标准化并已实现，也带来了 CSV 下载格式的变化。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;使用 v7 API/格式
+ &lt;div id="使用-v7-api格式" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e4%bd%bf%e7%94%a8-v7-api%e6%a0%bc%e5%bc%8f" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;从 1.9.49.116 版本开始，这是默认行为。直接使用：&lt;/p&gt;</description></item><item><title>Pandas 数据源使用示例</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/12-datafeed-pandas/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/12-datafeed-pandas/</guid><description>&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，需要安装 pandas 及其依赖项。支持 Pandas Dataframe 很重要，许多人依赖 Pandas 提供的解析功能来处理不同数据源（包括 CSV）。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;参数声明
+ &lt;div id="参数声明" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%8f%82%e6%95%b0%e5%a3%b0%e6%98%8e" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>数据源 API 参考文档</title><link>https://www.poloxue.com/docs/backtrader/06-datafeed/13-datafeed-reference/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/06-datafeed/13-datafeed-reference/</guid><description>&lt;h2 class="relative group"&gt;AbstractDataBase
+ &lt;div id="abstractdatabase" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#abstractdatabase" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;数据行（Lines）:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;close&lt;/li&gt;
+&lt;li&gt;low&lt;/li&gt;
+&lt;li&gt;high&lt;/li&gt;
+&lt;li&gt;open&lt;/li&gt;
+&lt;li&gt;volume&lt;/li&gt;
+&lt;li&gt;openinterest&lt;/li&gt;
+&lt;li&gt;datetime&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;参数（Params）:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dataname (None)&lt;/li&gt;
+&lt;li&gt;name ()&lt;/li&gt;
+&lt;li&gt;compression (1)&lt;/li&gt;
+&lt;li&gt;timeframe (5)&lt;/li&gt;
+&lt;li&gt;fromdate (None)&lt;/li&gt;
+&lt;li&gt;todate (None)&lt;/li&gt;
+&lt;li&gt;sessionstart (None)&lt;/li&gt;
+&lt;li&gt;sessionend (None)&lt;/li&gt;
+&lt;li&gt;filters ([])&lt;/li&gt;
+&lt;li&gt;tz (None)&lt;/li&gt;
+&lt;li&gt;tzinput (None)&lt;/li&gt;
+&lt;li&gt;qcheck (0.0)&lt;/li&gt;
+&lt;li&gt;calendar (None)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+
+&lt;h2 class="relative group"&gt;BacktraderCSVData
+ &lt;div id="backtradercsvdata" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#backtradercsvdata" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;解析用于测试的自定义 CSV 数据。&lt;/p&gt;</description></item></channel></rss>

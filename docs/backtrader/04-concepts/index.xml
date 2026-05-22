@@ -1,1 +1,77 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>核心概念 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/</link><description>Recent content in 核心概念 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/04-concepts/index.xml" rel="self" type="application/rss+xml"/><item><title>DataFeed 数据源详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/01-datafeed/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/01-datafeed/</guid><description/></item><item><title>策略参数系统详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/02-params/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/02-params/</guid><description/></item><item><title>Line 数据序列详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/03-line/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/03-line/</guid><description/></item><item><title>索引与切片操作详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/04-index/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/04-index/</guid><description/></item><item><title>内置运算符与数据计算</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/05-operator/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/05-operator/</guid><description/></item><item><title>Line 迭代器与循环机制</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/06-iteration/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/06-iteration/</guid><description/></item><item><title>策略启动与运行流程</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/07-startup/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/07-startup/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>核心概念 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/</link><description>Recent content in 核心概念 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/04-concepts/index.xml" rel="self" type="application/rss+xml"/><item><title>DataFeed 数据源详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/01-datafeed/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/01-datafeed/</guid><description>&lt;p&gt;本节介绍 &lt;code&gt;backtrader&lt;/code&gt; 中数据源的配置与使用，以及一些数据访问的技巧。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;数据配置
+ &lt;div id="数据配置" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e6%95%b0%e6%8d%ae%e9%85%8d%e7%bd%ae" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，数据源 &lt;code&gt;DataFeed&lt;/code&gt; 通过 &lt;code&gt;Cerebro&lt;/code&gt; 配置。&lt;/p&gt;</description></item><item><title>策略参数系统详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/02-params/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/02-params/</guid><description>&lt;p&gt;策略通常都需要&lt;strong&gt;参数&lt;/strong&gt;，在 &lt;code&gt;backtrader&lt;/code&gt; 中，参数可作为类属性声明，通过元组或字典的形式定义。&lt;/p&gt;
+&lt;p&gt;元组：&lt;/p&gt;
+&lt;div class="highlight-wrapper"&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; ((&lt;span style="color:#e6db74"&gt;&amp;#39;period&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;),)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;字典：&lt;/p&gt;
+&lt;div class="highlight-wrapper"&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;class&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyStrategy&lt;/span&gt;(bt&lt;span style="color:#f92672"&gt;.&lt;/span&gt;Strategy):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; params &lt;span style="color:#f92672"&gt;=&lt;/span&gt; dict(period&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;20&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;无论使用元组还是字典，声明后均可通过 &lt;code&gt;self.params&lt;/code&gt; 或 &lt;code&gt;self.p&lt;/code&gt; 访问参数值。&lt;/p&gt;</description></item><item><title>Line 数据序列详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/03-line/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/03-line/</guid><description>&lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，许多对象都会生成 &lt;code&gt;Line&lt;/code&gt; 对象，每个 &lt;code&gt;Line&lt;/code&gt; 代表一个时间序列数据，可以是价格、指标或其他数据。策略逻辑基本都离不开 &lt;code&gt;Line&lt;/code&gt; 对象的操作。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;&lt;code&gt;Line&lt;/code&gt; 的访问
+ &lt;div id="line-的访问" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#line-%e7%9a%84%e8%ae%bf%e9%97%ae" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+
+&lt;h3 class="relative group"&gt;数据源中的 &lt;code&gt;Line&lt;/code&gt;
+ &lt;div id="数据源中的-line" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e6%95%b0%e6%8d%ae%e6%ba%90%e4%b8%ad%e7%9a%84-line" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h3&gt;
+&lt;p&gt;数据源中包含多个 &lt;code&gt;Line&lt;/code&gt;，如 &lt;code&gt;close&lt;/code&gt;、&lt;code&gt;open&lt;/code&gt;、&lt;code&gt;high&lt;/code&gt;、&lt;code&gt;low&lt;/code&gt;，通过 &lt;code&gt;self.data.lines&lt;/code&gt; 访问它们。&lt;/p&gt;</description></item><item><title>索引与切片操作详解</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/04-index/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/04-index/</guid><description>&lt;h2 class="relative group"&gt;索引：0 和 -1
+ &lt;div id="索引0-和--1" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e7%b4%a2%e5%bc%950-%e5%92%8c--1" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，&lt;code&gt;Line&lt;/code&gt; 代表一组按时间顺序排列的点。这些点在策略执行期间动态生成，可通过索引访问。&lt;/p&gt;</description></item><item><title>内置运算符与数据计算</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/05-operator/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/05-operator/</guid><description>&lt;p&gt;在 &lt;code&gt;Backtrader&lt;/code&gt; 中，运算符不仅用于常规数学运算，还能构建复杂的策略逻辑。自定义运算符让策略的数学和逻辑运算更自然简洁。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;如何使用运算符
+ &lt;div id="如何使用运算符" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%a6%82%e4%bd%95%e4%bd%bf%e7%94%a8%e8%bf%90%e7%ae%97%e7%ac%a6" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;backtrader&lt;/code&gt; 支持用运算符创建新对象，如在 &lt;code&gt;__init__&lt;/code&gt; 中通过运算符计算多个指标，得到一个新的操作对象。&lt;/p&gt;</description></item><item><title>Line 迭代器与循环机制</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/06-iteration/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/06-iteration/</guid><description>&lt;p&gt;&lt;code&gt;Backtrader&lt;/code&gt; 引入了一个独特的概念——&lt;strong&gt;&lt;code&gt;Line&lt;/code&gt; 迭代器&lt;/strong&gt;（Line Iterator）。其核心思想是通过迭代数据来驱动策略和指标的运作。它和 Python 的普通迭代器有些表面相似，但专为金融数据处理量身定制。&lt;/p&gt;</description></item><item><title>策略启动与运行流程</title><link>https://www.poloxue.com/docs/backtrader/04-concepts/07-startup/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/04-concepts/07-startup/</guid><description>&lt;p&gt;&lt;code&gt;Backtrader&lt;/code&gt; 的启动和运行过程主要依赖于三个核心组件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;数据源&lt;/strong&gt;：提供市场数据，用于回测或实时交易。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;策略&lt;/strong&gt;：定义交易逻辑（基于类继承实现）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cerebro&lt;/strong&gt;：核心管理器，负责整合数据源、策略，并启动回测或实时交易。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+
+&lt;h2 class="relative group"&gt;数据源
+ &lt;div id="数据源" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e6%95%b0%e6%8d%ae%e6%ba%90" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;数据源是回测和策略运行的基础，为策略提供价格数据（如开盘价、最高价、最低价、收盘价）及其他市场信息。&lt;/p&gt;</description></item></channel></rss>

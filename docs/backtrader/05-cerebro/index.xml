@@ -1,1 +1,179 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cerebro on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/</link><description>Recent content in Cerebro on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/05-cerebro/index.xml" rel="self" type="application/rss+xml"/><item><title>Cerebro 回测引擎详解</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/01-cerebro/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/01-cerebro/</guid><description/></item><item><title>Cerebro 参数配置说明</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/02-reference/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/02-reference/</guid><description/></item><item><title>内存优化与节省技巧</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/03-saving-memory/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/03-saving-memory/</guid><description/></item><item><title>参数优化性能改进</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/04-optimization-improvements/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/04-optimization-improvements/</guid><description/></item><item><title>异常处理与错误管理</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/05-exceptions/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/05-exceptions/</guid><description/></item><item><title>日志记录与 Writer 输出</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/06-logging-writer/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/06-logging-writer/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cerebro on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/</link><description>Recent content in Cerebro on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/05-cerebro/index.xml" rel="self" type="application/rss+xml"/><item><title>Cerebro 回测引擎详解</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/01-cerebro/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/01-cerebro/</guid><description>&lt;p&gt;&lt;code&gt;Cerebro&lt;/code&gt; 是 Backtrader 的核心类，负责整个系统的运行。&lt;/p&gt;
+&lt;p&gt;它的功能包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;管理数据源、策略、观察者、分析器和编写器，确保系统正常运行。&lt;/li&gt;
+&lt;li&gt;执行回测或实时数据供给和交易。&lt;/li&gt;
+&lt;li&gt;返回回测结果。&lt;/li&gt;
+&lt;li&gt;提供策略绘图功能。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;创建 &lt;code&gt;Cerebro&lt;/code&gt; 实例
+ &lt;div id="创建-cerebro-实例" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%88%9b%e5%bb%ba-cerebro-%e5%ae%9e%e4%be%8b" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;创建 &lt;code&gt;Cerebro&lt;/code&gt; 实例时，可以通过传递一些控制参数：&lt;/p&gt;</description></item><item><title>Cerebro 参数配置说明</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/02-reference/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/02-reference/</guid><description>&lt;p&gt;&lt;code&gt;Cerebro&lt;/code&gt; 类的详细说明如下。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;实例化参数
+ &lt;div id="实例化参数" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%ae%9e%e4%be%8b%e5%8c%96%e5%8f%82%e6%95%b0" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;参数&lt;/th&gt;
+ &lt;th&gt;默认值&lt;/th&gt;
+ &lt;th&gt;说明&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;preload&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;是否预加载传递给策略的数据源。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;runonce&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;以矢量化模式计算指标，提升系统性能。&lt;br&gt;&lt;strong&gt;注：&lt;/strong&gt; 策略和观察者始终基于事件运行。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;live&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;如果没有数据通过 &lt;code&gt;islive&lt;/code&gt; 方法报告为实时，但用户仍希望以实时模式运行，可将此参数设为 True。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;maxcpus&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;None&lt;/td&gt;
+ &lt;td&gt;优化时使用的 CPU 核心数，默认 None（启用所有可用核心）。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;stdstats&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;如果为 True，将添加默认观察者：经纪人（现金和价值）、交易和买卖。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;oldbuysell&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;当 &lt;code&gt;stdstats&lt;/code&gt; 为 True 且自动添加观察者时，此开关控制买卖观察者的具体行为。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;oldtrades&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;当 &lt;code&gt;stdstats&lt;/code&gt; 为 True 且自动添加观察者时，此开关控制交易观察者的具体行为。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;exactbars&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;&lt;ul style="list-style-type: none;padding-left: 0; margin-left: 0;"&gt;&lt;li&gt;- &lt;code&gt;False&lt;/code&gt;：默认值，将 &lt;code&gt;Line&lt;/code&gt; 中存储的值都保存到内存。&lt;/li&gt;&lt;li&gt;- &lt;code&gt;True&lt;/code&gt; 或 &lt;code&gt;1&lt;/code&gt;：所有 &lt;code&gt;Line&lt;/code&gt; 对象的内存使用减少至计算所需的最小周期。&lt;ul&gt;&lt;li&gt;如果简单移动平均线的周期为 30，则底层数据将始终有一个 30 条的运行缓冲区，以允许计算 SMA。&lt;/li&gt;&lt;li&gt;此设置将停用 &lt;code&gt;preload&lt;/code&gt; 和 &lt;code&gt;runonce&lt;/code&gt;。&lt;/li&gt;&lt;li&gt;使用此设置还将停用绘图。&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;li&gt; &lt;code&gt;-1&lt;/code&gt;：策略级别的数据源和指标/操作将保留所有数据在内存中。&lt;ul&gt;&lt;li&gt;如 &lt;code&gt;RSI&lt;/code&gt; 通过指标 &lt;code&gt;UpDay&lt;/code&gt; 计算，&lt;code&gt;UpDay&lt;/code&gt; 不保留所有数据在内存中。&lt;/li&gt;&lt;li&gt;这允许保持绘图和预加载功能。&lt;/li&gt;&lt;li&gt;&lt;code&gt;runonce&lt;/code&gt; 将被停用。&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;&lt;code&gt;-2&lt;/code&gt;：作为策略属性的数据源和指标将保留所有点在内存中。&lt;ul&gt;&lt;li&gt;例如：&lt;code&gt;RSI&lt;/code&gt; 内部使用指标 &lt;code&gt;UpDay&lt;/code&gt; 进行计算，此子指标不保留所有数据在内存中。&lt;/li&gt;&lt;li&gt;如果在 &lt;code&gt;__init__&lt;/code&gt; 中定义了 &lt;code&gt;a = self.data.close - self.data.high&lt;/code&gt;，那么 &lt;code&gt;a&lt;/code&gt; 不保留所有数据在内存中。&lt;/li&gt;&lt;li&gt;这允许保持绘图和预加载功能。&lt;/li&gt;&lt;li&gt;&lt;code&gt;runonce&lt;/code&gt; 将被停用。&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;objcache&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;实验选项，用于缓存 &lt;code&gt;Line&lt;/code&gt; 对象并减少其数量。示例来自 &lt;code&gt;UltimateOscillator&lt;/code&gt;：&lt;div&gt;&lt;pre&gt;&lt;code class="language-python" data-lang="python"&gt;bp = self.data.close - TrueLow(self.data) &lt;br/&gt;# -&amp;gt; 创建另一个 TrueLow(self.data)&lt;br/&gt;&lt;span&gt;tr = TrueRange(self.data)&lt;/span&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;如果为 True，&lt;code&gt;TrueRange&lt;/code&gt; 内部的第二个 &lt;code&gt;TrueLow(self.data)&lt;/code&gt; 将匹配 bp 计算中的签名并被重用。极端情况下可能使线对象超出其最小周期而导致问题，因此该功能默认禁用。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;writer&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;如果为 True，将创建一个默认的 &lt;code&gt;WriterFile&lt;/code&gt;，输出到标准输出。除用户代码添加的编写器外，这个编写器也会添加到策略中。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;tradehistory&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;如果为 True，将激活所有策略中每个交易的更新事件日志。也可通过策略方法 &lt;code&gt;set_tradehistory&lt;/code&gt; 按策略单独设置。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;optdatas&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;如果为 True 且在优化时（且系统可预加载并使用 runonce），则数据预加载仅在主进程中完成，以节省时间和资源。测试显示，执行时间从 83 秒减少到 66 秒，提升约 20%。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;optreturn&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;如果为 True，优化结果不是完整的策略对象（包括所有数据、指标、观察者等），而是只包含以下属性的对象（与策略一致）：&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;params&lt;/code&gt;（或 &lt;code&gt;p&lt;/code&gt;）&lt;/td&gt;
+ &lt;td&gt;无&lt;/td&gt;
+ &lt;td&gt;策略执行时的参数。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;analyzers&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;无&lt;/td&gt;
+ &lt;td&gt;策略所执行的分析器。多数情况下只需分析器和参数即可评估策略性能。如需详细分析生成的值（如指标值），可关闭此选项。测试显示，执行时间提升了 13%-15%，结合 &lt;code&gt;optdatas&lt;/code&gt; 总提升达 32%。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;oldsync&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;从版本 1.9.0.99 开始，多个数据（相同或不同时间框架）的同步方式已变更，以支持不同长度的数据。如需恢复以数据 0 作为系统主控的旧行为，请将此参数设为 True。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;tz&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;None&lt;/td&gt;
+ &lt;td&gt;为策略添加全局时区。&lt;code&gt;tz&lt;/code&gt; 可以是：&lt;ul&gt;&lt;li&gt;&lt;code&gt;None&lt;/code&gt;：策略显示的日期时间将为 UTC，此为标准行为。&lt;/li&gt;&lt;li&gt;&lt;code&gt;pytz&lt;/code&gt; 实例：用于将 UTC 转换为所选时区。&lt;/li&gt;&lt;li&gt;&lt;code&gt;字符串&lt;/code&gt;：将尝试实例化 &lt;code&gt;pytz&lt;/code&gt; 实例。&lt;/li&gt;&lt;li&gt;&lt;code&gt;整数&lt;/code&gt;：使用 &lt;code&gt;self.datas&lt;/code&gt; 中对应数据的时区（0 表示使用 &lt;code&gt;data0&lt;/code&gt; 的时区）。&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;cheat_on_open&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;调用策略的 &lt;code&gt;next_open&lt;/code&gt; 方法。&lt;br/&gt;&lt;br/&gt;该方法在 &lt;code&gt;next&lt;/code&gt; 之前触发，且早于经纪人评估订单的时机。此时指标尚未重新计算，允许在开盘价上进行股数计算时参考前一天的指标发布订单。&lt;br/&gt;&lt;br/&gt;要启用 &lt;code&gt;cheat_on_open&lt;/code&gt; 订单执行，还需调用 &lt;code&gt;cerebro.broker.set_coo(True)&lt;/code&gt;、实例化 &lt;code&gt;BackBroker(coo=True)&lt;/code&gt;（coo 表示 &lt;code&gt;cheat-on-open&lt;/code&gt;），或将 &lt;code&gt;broker_coo&lt;/code&gt; 参数设为 True。除非在下文中禁用，否则 Cerebro 会自动执行此操作。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;broker_coo&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;自动调用经纪人的 &lt;code&gt;set_coo&lt;/code&gt; 方法并设为 True，以激活 &lt;code&gt;cheat_on_open&lt;/code&gt; 执行。仅在 &lt;code&gt;cheat_on_open&lt;/code&gt; 也为 True 时生效。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;code&gt;quicknotify&lt;/code&gt;&lt;/td&gt;
+ &lt;td&gt;False&lt;/td&gt;
+ &lt;td&gt;在传递下一价格之前立即传递经纪人通知。对回测无影响，但对实时经纪人，通知可能在条传递之前很久就已发生。设为 True 时将尽快传递通知（参见实时数据源中的 &lt;code&gt;qcheck&lt;/code&gt;）。出于兼容性，默认为 False，未来可能改为 True。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 class="relative group"&gt;成员方法
+ &lt;div id="成员方法" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e6%88%90%e5%91%98%e6%96%b9%e6%b3%95" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;addstorecb(callback)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;添加回调函数，接收将由 &lt;code&gt;notify_store&lt;/code&gt; 方法处理的消息。回调的签名必须支持以下内容：&lt;/p&gt;</description></item><item><title>内存优化与节省技巧</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/03-saving-memory/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/03-saving-memory/</guid><description>&lt;p&gt;&lt;strong&gt;Backtrader&lt;/strong&gt; 的开发是在大内存机器上进行的，加上绘图可视化反馈非常有用（几乎是必需品），这使得设计决策变得简单：将所有数据保存在内存中。但这一决定有一些缺点：&lt;/p&gt;</description></item><item><title>参数优化性能改进</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/04-optimization-improvements/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/04-optimization-improvements/</guid><description>&lt;p&gt;&lt;strong&gt;Backtrader&lt;/strong&gt; 通过引入两个新的 Cerebro 参数，优化了在多进程环境下管理数据源和结果的方式。&lt;/p&gt;
+&lt;p&gt;参数说明：&lt;/p&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;参数名&lt;/th&gt;
+ &lt;th&gt;默认值&lt;/th&gt;
+ &lt;th&gt;描述&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;optdatas&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;如果为True并进行优化（系统可以预加载并使用runonce），则数据预加载将仅在主进程中进行一次，以节省时间和资源。&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;optreturn&lt;/td&gt;
+ &lt;td&gt;True&lt;/td&gt;
+ &lt;td&gt;如果为True，优化结果将不是完整的策略对象（包括所有数据、指标、观察者等），而是带有以下属性的对象（与策略中相同）：&lt;ul style="list-style-type: none; padding-left: 0;"&gt;&lt;li&gt;- params（或p）：策略执行时的参数&lt;/li&gt;&lt;li&gt;- analyzers：策略执行的分析器&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;通常只需查看策略参数组合的最终表现（如收益率）。如需查看运行过程中的详细数据（如每个时间点的指标值），请关闭此选项。&lt;/p&gt;</description></item><item><title>异常处理与错误管理</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/05-exceptions/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/05-exceptions/</guid><description>&lt;p&gt;设计目标之一是尽早退出，让用户清楚地了解错误发生的位置。这迫使我们在异常情况下编写会中断的代码，从而必须重新审视受影响的部分。&lt;/p&gt;
+&lt;p&gt;但时机已到，平台开始逐步引入一些异常类型。&lt;/p&gt;</description></item><item><title>日志记录与 Writer 输出</title><link>https://www.poloxue.com/docs/backtrader/05-cerebro/06-logging-writer/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/05-cerebro/06-logging-writer/</guid><description>&lt;p&gt;Writer 类负责将以下内容写入输出流：&lt;/p&gt;
+&lt;p&gt;数据源、策略、指标和观察者的 CSV 流。可通过每个对象的 &lt;code&gt;csv&lt;/code&gt; 属性控制哪些对象输出到 CSV 流（数据源和观察者默认为 True，指标默认为 False）。&lt;/p&gt;</description></item></channel></rss>

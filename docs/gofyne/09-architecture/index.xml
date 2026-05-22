@@ -1,1 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>架构 on 菠萝学</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/</link><description>Recent content in 架构 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Thu, 21 May 2026 19:07:14 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/docs/gofyne/09-architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>几何 Geometry</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/01-geometry/</link><pubDate>Sun, 11 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/01-geometry/</guid><description/></item><item><title>缩放 Scaling</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/02-scaling/</link><pubDate>Wed, 14 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/02-scaling/</guid><description/></item><item><title>控件 Widget</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/03-widgets/</link><pubDate>Sat, 17 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/03-widgets/</guid><description/></item><item><title>包组织 Package</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/04-organisation/</link><pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/04-organisation/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>架构 on 菠萝学</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/</link><description>Recent content in 架构 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Thu, 21 May 2026 19:07:14 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/docs/gofyne/09-architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>几何 Geometry</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/01-geometry/</link><pubDate>Sun, 11 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/01-geometry/</guid><description>&lt;p&gt;Fyne 应用基于每个窗口有一个画布。每个画布有一个根 CanvasObject，它可以是一个单独的控件或一个容器，用于控制多个子对象的大小和位置，这些子对象由布局控制。&lt;/p&gt;</description></item><item><title>缩放 Scaling</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/02-scaling/</link><pubDate>Wed, 14 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/02-scaling/</guid><description>&lt;p&gt;Fyne 完全使用矢量图形构建，这意味着用 Fyne 编写的应用程序可以美观地缩放到任何大小（不仅仅是整数增量）。这对于移动设备和高端计算机上越来越受欢迎的高密度显示屏是一个巨大的好处。默认的缩放值是根据你的操作系统计算出来的 - 在一些系统上，这是用户配置，在其他系统上则来自于你的屏幕像素密度（DPI - 每英寸点数）。如果一个 Fyne 窗口被移动到另一个屏幕上，它将重新缩放并相应地调整窗口大小！我们称之为“自动缩放”，旨在在更换显示器时保持应用程序用户界面的相同大小。&lt;/p&gt;</description></item><item><title>控件 Widget</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/03-widgets/</link><pubDate>Sat, 17 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/03-widgets/</guid><description>&lt;p&gt;Fyne 工具包中的控件旨在提供干净愉快的用户交互体验，遵循标准主题，并支持快速应用开发、稳定测试和易于维护。这里有一些促进这一目标的设计考虑，我们将在本页探讨它们。&lt;/p&gt;</description></item><item><title>包组织 Package</title><link>https://www.poloxue.com/docs/gofyne/09-architecture/04-organisation/</link><pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/gofyne/09-architecture/04-organisation/</guid><description>&lt;p&gt;Fyne 项目分为许多包，每个包提供不同类型的功能，如下所示：&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;这个导入提供了所有 Fyne 代码共有的基本定义，包括数据类型和接口。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/app&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;app 包提供启动新应用的 API。&lt;/dd&gt;
+&lt;dd&gt;通常你只需要 &lt;code&gt;app.New()&lt;/code&gt; 或 &lt;code&gt;app.NewWithID()&lt;/code&gt;。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/canvas&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;canvas 包提供 Fyne 中所有的绘图 API。&lt;/dd&gt;
+&lt;dd&gt;完整的 Fyne 工具包由这些原始图形类型组成。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/container&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;container 包提供用于布局和组织应用的容器。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/data/binding&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;binding 包包含将数据源绑定到控件的方法。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/data/validation&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;validation 包提供工具用于验证控件内的数据。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/dialog&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;dialog 包包含确认、错误和文件保存/打开等对话框。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/layout&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;layout 包提供用于容器的各种布局实现（在后续教程中讨论）。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/storage&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;storage 包提供存储访问和管理功能。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/test&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;使用 test 包内的工具可以更容易地测试应用。&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;fyne.io/fyne/v2/widget&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;大多数图形应用是使用一系列控件创建的。&lt;/dd&gt;
+&lt;dd&gt;Fyne 中的所有控件和交互元素都在这个包中。&lt;/dd&gt;
+&lt;/dl&gt;</description></item></channel></rss>

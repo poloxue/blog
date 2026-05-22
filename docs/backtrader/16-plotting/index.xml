@@ -1,1 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>绘图 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/</link><description>Recent content in 绘图 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/16-plotting/index.xml" rel="self" type="application/rss+xml"/><item><title>绘图系统详解</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/01-plotting/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/16-plotting/01-plotting/</guid><description/></item><item><title>指定日期范围的绘图</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/02-ploting-date-ranges/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/16-plotting/02-ploting-date-ranges/</guid><description/></item><item><title>多指标同轴绘图技术</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/03-plotting-same-axis/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/16-plotting/03-plotting-same-axis/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>绘图 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/</link><description>Recent content in 绘图 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/16-plotting/index.xml" rel="self" type="application/rss+xml"/><item><title>绘图系统详解</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/01-plotting/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/16-plotting/01-plotting/</guid><description>&lt;p&gt;回测虽然是基于计算的自动化过程，但可视化仍然非常重要。无论是已有算法的回测结果，还是数据产生的各种指标，绘图都能帮助你理解发生了什么，进而优化或产生新想法。&lt;/p&gt;</description></item><item><title>指定日期范围的绘图</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/02-ploting-date-ranges/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/16-plotting/02-ploting-date-ranges/</guid><description>&lt;p&gt;在 1.9.31.x 版本中，backtrader 增加了部分绘图功能。&lt;/p&gt;
+&lt;p&gt;可以使用策略实例中保存的时间戳数组索引来指定绘图范围，&lt;/p&gt;
+&lt;p&gt;也可以使用 &lt;code&gt;datetime.date&lt;/code&gt; 或 &lt;code&gt;datetime.datetime&lt;/code&gt; 实例来限制范围。&lt;/p&gt;
+&lt;p&gt;仍通过标准 &lt;code&gt;cerebro.plot&lt;/code&gt; 调用。例如：&lt;/p&gt;</description></item><item><title>多指标同轴绘图技术</title><link>https://www.poloxue.com/docs/backtrader/16-plotting/03-plotting-same-axis/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/16-plotting/03-plotting-same-axis/</guid><description>&lt;p&gt;在之前的一篇文章中，我们在同一空间上绘制了原始数据和随机修改后的数据，但它们并不在同一轴上。&lt;/p&gt;
+&lt;p&gt;回顾该文章的第一张图片：&lt;/p&gt;
+&lt;p&gt;&lt;figure&gt;&lt;img
+ class="my-0 rounded-md"
+ loading="lazy"
+ decoding="async"
+ fetchpriority="low"
+ alt="图表示例"
+ src="image"
+ &gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;我们可以看到：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;图表左右两侧刻度不同。&lt;/li&gt;
+&lt;li&gt;摆动的红线（随机化数据）在原始数据周围上下波动约 50 点。&lt;/li&gt;
+&lt;li&gt;视觉上，随机化数据似乎大部分时间在原始数据上方，这只是刻度不同造成的错觉。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;1.9.32.116 版本初步支持同轴绘图，但图例标签会重复（仅标签，非数据），容易造成困惑。&lt;/p&gt;</description></item></channel></rss>

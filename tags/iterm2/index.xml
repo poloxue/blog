@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ITerm2 on 菠萝学</title><link>https://www.poloxue.com/tags/iterm2/</link><description>Recent content in ITerm2 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Wed, 20 May 2026 20:39:42 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/iterm2/index.xml" rel="self" type="application/rss+xml"/><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description/></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Iterm2 on 菠萝学</title><link>https://www.poloxue.com/tags/iterm2/</link><description>Recent content in Iterm2 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Wed, 20 May 2026 20:39:42 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/iterm2/index.xml" rel="self" type="application/rss+xml"/><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>&lt;p&gt;视频版本，没有文章详细：&lt;/p&gt;
+
+&lt;div id="video-619786097vNX_sReGZ5E" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-619786097vNX_sReGZ5E')
+ data = JSON.parse(this.responseText)
+ bb_id = "619786097"
+ yt_id = "vNX_sReGZ5E"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。&lt;/p&gt;</description></item><item><title>iTerm2 启动时进入 Tmux 模式</title><link>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</link><pubDate>Fri, 15 Sep 2023 15:06:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-15-autostart-tmux-in-iterm2/</guid><description>&lt;p&gt;介绍一个最快速的方式使 iTerm2 启动默认进入 Tmux 模式。默认情况下，每次启动 iTerm2，还需要一步输入 tmux attach 进入到 tmux 模式下。&lt;/p&gt;
+&lt;p&gt;我用 Tmux 是为了管理不同项目的工作区，常见的 IDE 一般够提供了打开提供给用户一个选择项目的界面。自然而然，iTerm2 + Tmux 是否也能实现类似的能力呢？&lt;/p&gt;</description></item></channel></rss>

@@ -1,1 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>日期时间 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/</link><description>Recent content in 日期时间 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/17-datetime/index.xml" rel="self" type="application/rss+xml"/><item><title>日期时间管理详解</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/01-management/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/17-datetime/01-management/</guid><description/></item><item><title>定时器与周期任务</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/02-timer/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/17-datetime/02-timer/</guid><description/></item><item><title>交易日历配置与应用</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/03-trading-calendars/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/17-datetime/03-trading-calendars/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>日期时间 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/</link><description>Recent content in 日期时间 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/17-datetime/index.xml" rel="self" type="application/rss+xml"/><item><title>日期时间管理详解</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/01-management/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/17-datetime/01-management/</guid><description>&lt;p&gt;在 1.5.0 版本之前，backtrader 对时间管理采用直接方式，即使用数据源计算的日期时间。用户输入的参数（如 &lt;code&gt;fromdate&lt;/code&gt; 或 &lt;code&gt;sessionstart&lt;/code&gt;）也可传递给数据源。&lt;/p&gt;</description></item><item><title>定时器与周期任务</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/02-timer/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/17-datetime/02-timer/</guid><description>&lt;p&gt;在版本 1.9.44.116 中，backtrader 添加了定时器功能，可以在特定时间点调用 &lt;code&gt;notify_timer&lt;/code&gt;（在 Cerebro 和 Strategy 中可用），支持精细控制。&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;选项
+ &lt;div id="选项" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e9%80%89%e9%a1%b9" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;基于绝对时间或相对于会话开始/结束时间的定时器。&lt;/li&gt;
+&lt;li&gt;时区指定，可通过 pytz 兼容对象或数据源会话时间指定。&lt;/li&gt;
+&lt;li&gt;相对于指定时间的起始偏移量。&lt;/li&gt;
+&lt;li&gt;重复间隔。&lt;/li&gt;
+&lt;li&gt;工作日过滤器（支持结转）。&lt;/li&gt;
+&lt;li&gt;月份天数过滤器（支持结转）。&lt;/li&gt;
+&lt;li&gt;自定义回调过滤器。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;使用模式
+ &lt;div id="使用模式" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e4%bd%bf%e7%94%a8%e6%a8%a1%e5%bc%8f" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;在 Cerebro 和 Strategy 子类中，定时器回调通过以下方法接收：&lt;/p&gt;</description></item><item><title>交易日历配置与应用</title><link>https://www.poloxue.com/docs/backtrader/17-datetime/03-trading-calendars/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/17-datetime/03-trading-calendars/</guid><description>&lt;p&gt;版本 1.9.42.116 增加了对交易日历的支持，在以下重采样场景中非常有用：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从每日到每周的重采样：每周 K 线可以与本周最后一根 K 线一起交付。&lt;/li&gt;
+&lt;li&gt;交易日历能识别下一个交易日，从而提前判断本周的最后一个交易日。&lt;/li&gt;
+&lt;li&gt;当交易会话结束时间非常规（可通过数据源指定）时，仍可正常进行日内到每日的重采样。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;交易日历接口
+ &lt;div id="交易日历接口" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e4%ba%a4%e6%98%93%e6%97%a5%e5%8e%86%e6%8e%a5%e5%8f%a3" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;有一个基类 &lt;code&gt;TradingCalendarBase&lt;/code&gt; 用作任何交易日历的基类。它定义了两个必须被重写的方法：&lt;/p&gt;</description></item></channel></rss>

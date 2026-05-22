@@ -1,1 +1,165 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zsh on 菠萝学</title><link>https://www.poloxue.com/tags/zsh/</link><description>Recent content in Zsh on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Wed, 20 May 2026 20:39:42 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description/></item><item><title>提效开发调试的三个命令</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description/></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description/></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description/></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description/></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description/></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description/></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description/></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description/></item><item><title>从 0 开始：教你如何配置 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zsh on 菠萝学</title><link>https://www.poloxue.com/tags/zsh/</link><description>Recent content in Zsh on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><lastBuildDate>Wed, 20 May 2026 20:39:42 +0800</lastBuildDate><atom:link href="https://www.poloxue.com/tags/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>我的终端环境：高效 shell 命令（四）之 20+1 个 modern-unix 命令</title><link>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</link><pubDate>Mon, 06 Nov 2023 15:40:41 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-11-07-high-productivity-shell-commands-part4/</guid><description>&lt;div id="video-875737608d6YlNM6aMHo" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-875737608d6YlNM6aMHo')
+ data = JSON.parse(this.responseText)
+ bb_id = "875737608"
+ yt_id = "d6YlNM6aMHo"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;本篇文章是介绍 &lt;a href="https://github.com/ibraheemdev/modern-unix" target="_blank" rel="noreferrer"&gt;modern-unix&lt;/a&gt; 仓库剩余的 20 个命令的上篇，外加 1 比 modern-unix 中更易于使用的命令。&lt;/p&gt;</description></item><item><title>提效开发调试的三个命令</title><link>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</link><pubDate>Thu, 02 Nov 2023 17:43:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-11-02-high-productivity-shell-commands-part3/</guid><description>&lt;p&gt;本文将介绍的 3 命令，用于提高 Web 开发人员们的日常工作效率。&lt;/p&gt;
+
+&lt;div id="video-748039783XLlYFat4chE" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-748039783XLlYFat4chE')
+ data = JSON.parse(this.responseText)
+ bb_id = "748039783"
+ yt_id = "XLlYFat4chE"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+
+&lt;h2 class="relative group"&gt;前言
+ &lt;div id="前言" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e5%89%8d%e8%a8%80" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;对 Web 开发而言，除了基本的框架外，日常开发过程中，还常用的必然就是调试工具。本文将要介绍的三个命令分别是 entr、httpie、jq，变主要是为了这个目的而生的。&lt;/p&gt;</description></item><item><title>推荐 3 个高效搜索命令</title><link>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</link><pubDate>Mon, 30 Oct 2023 20:13:53 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-30-high-productivity-shell-commands-part2/</guid><description>&lt;p&gt;本文将介绍三个高效搜索命令，分别是 fd、ripgrep 与 fzf。&lt;/p&gt;
+&lt;p&gt;我将介绍的 fd 和 ripgreap 对标的是传统 grep 和 find，它们在性能和使用体验上都有大幅提升。如果你成为 10x 程序员，强烈推荐使用它们。&lt;/p&gt;</description></item><item><title>用 exa/zoxide/bat 替换 ls/cd/cat 命令</title><link>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</link><pubDate>Fri, 27 Oct 2023 15:01:19 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-28-high-productivity-shell-commands-part1/</guid><description>&lt;p&gt;如下是视频版本，没有文章详细。&lt;/p&gt;
+
+&lt;div id="video-2351792200yAP6ER8oGE" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-2351792200yAP6ER8oGE')
+ data = JSON.parse(this.responseText)
+ bb_id = "235179220"
+ yt_id = "0yAP6ER8oGE"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;类 Unix 系统发展多年，不少古董命令还在占据终端的绝大部分时间，但它们的使用体验上却是差强人意。最能说明问题的就是那个 cd 命令，无论是多么丝滑的操作，一旦遇到需要 change directory 就会变得磕磕绊绊。&lt;/p&gt;</description></item><item><title>终端环境：zsh 主题自定义 powerlevel10k</title><link>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</link><pubDate>Fri, 20 Oct 2023 10:25:36 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-20-zsh-theme-powerlevel10k/</guid><description>&lt;p&gt;不知道你是否想过自定义 Shell 提示符主题能带来的不仅是终端美观度的提升，还能通过视觉优化增强了工作效率呢？&lt;/p&gt;
+&lt;p&gt;在众多 shell 提示符主题中，Powerlevel10k 因为支持高度可定制和丰富的功能选，非常值得推荐。本文基于这个主题介绍 zsh 主题插件 powerlevel10k，包括它的安装和配置自定义。&lt;/p&gt;</description></item><item><title>终端环境：6 个强大的 zsh 提效插件</title><link>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</link><pubDate>Wed, 18 Oct 2023 18:36:55 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-19-zsh-6-powerful-plugins/</guid><description>&lt;p&gt;本文是高效终端环境第三篇，介绍 6 个可用于提效 zsh 效率的插件。系列查看：&lt;a href="https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI0MzE2NTY2MA==&amp;amp;action=getalbum&amp;amp;album_id=3299748150420979713#wechat_redirect" target="_blank" rel="noreferrer"&gt;我的终端环境&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;视频教程：&lt;/p&gt;
+
+&lt;div id="video-322450976RSaiddMI6Ns" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-322450976RSaiddMI6Ns')
+ data = JSON.parse(this.responseText)
+ bb_id = "322450976"
+ yt_id = "RSaiddMI6Ns"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;今天，将会在 &lt;a href="https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/" target="_blank" rel="noreferrer"&gt;上文&lt;/a&gt; 的基础上，再介绍六个插件，其中 4 个是 oh-my-zsh 的内置插件，还有两个第三方插件。&lt;/p&gt;</description></item><item><title>终端环境：zsh 、oh-my-zsh、提示主题与 7 效率插件</title><link>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</link><pubDate>Mon, 16 Oct 2023 15:00:06 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-10-16-zsh-themes-and-plugins/</guid><description>&lt;p&gt;前文中，对 iTerm2 已经有了一个大概认识。但一个高效的终端环境，离不开一个优秀 shell 解释器。&lt;/p&gt;
+&lt;p&gt;视频版本，没有文章详细：&lt;/p&gt;
+
+&lt;div id="video-6197860971zJcH4hZW4o" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-6197860971zJcH4hZW4o')
+ data = JSON.parse(this.responseText)
+ bb_id = "619786097"
+ yt_id = "1zJcH4hZW4o"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;本篇文章将主要介绍 zsh + oh-my-zsh 的安装、提示符主题配置，以及介绍 7 提升效率的 zsh 插件。&lt;/p&gt;</description></item><item><title>终端环境：iTerm2</title><link>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</link><pubDate>Thu, 28 Sep 2023 19:23:22 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-25-install-iterm2-as-my-developing-environment/</guid><description>&lt;p&gt;视频版本，没有文章详细：&lt;/p&gt;
+
+&lt;div id="video-619786097vNX_sReGZ5E" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;"&gt;&lt;/div&gt;
+&lt;script&gt;
+ var r = new XMLHttpRequest();
+ r.addEventListener('load', function () {
+ container = document.getElementById('video-619786097vNX_sReGZ5E')
+ data = JSON.parse(this.responseText)
+ bb_id = "619786097"
+ yt_id = "vNX_sReGZ5E"
+ if (data.country_code == "CN" || yt_id == 0 &amp;&amp; bb_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://player.bilibili.com/player.html?aid=' + bb_id + '&amp;amp;page=1" ' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen ' +
+ 'title="Bilibili Video" &gt;&lt;/iframe &gt; '
+ } else if (yt_id != 0) {
+ container.innerHTML = '&lt;iframe src="https://www.youtube.com/embed/' + yt_id + '"' +
+ 'style="position:absolute;top:0;left:0;width:100%;height:100%; border:0;" ' +
+ 'title="YouTube video player" frameborder="0" allow="accelerometer;autoplay;' +
+ 'clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share"allowfullscreen&gt;&lt;/iframe&gt;'
+ }
+ })
+ r.open("GET", "https://ipapi.co/json/")
+ r.send()
+&lt;/script&gt;
+
+&lt;p&gt;我想大部分程序员在平时的工作中都是离不开终端，特别是如果你的系统是 MacOS 或 Linux 的话，终端的地位更是遥遥领先。&lt;/p&gt;</description></item><item><title>什么是 zsh？我是否应该使用 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</link><pubDate>Mon, 18 Sep 2023 14:06:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-16-what-how-to-use-zsh/</guid><description>&lt;p&gt;我们知道，在所有的 Linux/Unix 中 shell，Bash 是最流行的，它是多数 Linux 发行版的默认 shell。除了 bazh，zsh 是另外一款非常流行的 shell。它功能更强大，而且还是 macOS 中的默认 Shell。&lt;/p&gt;</description></item><item><title>从 0 开始：教你如何配置 zsh</title><link>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</link><pubDate>Sun, 17 Sep 2023 15:06:02 +0800</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/posts/2023-09-16-how-to-use-zsh-a-beginner-guide/</guid><description>&lt;p&gt;本文将介绍如何使用 zsh 来提升命令行的操作效率。&lt;/p&gt;
+&lt;p&gt;你是否每天都在与命令行打交道？&lt;/p&gt;
+&lt;p&gt;如果答案是 &amp;ldquo;Yes&amp;rdquo;，那你肯定想拥有一个强大可定制的 Shell。 而 zsh 就是为这个目标而生，它运行于诸如 Linux 、MacOS 等类 Unix 系统下，可替换默认的 bash。&lt;/p&gt;</description></item></channel></rss>

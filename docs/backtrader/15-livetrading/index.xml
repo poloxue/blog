@@ -1,1 +1,56 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>实盘 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/</link><description>Recent content in 实盘 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/15-livetrading/index.xml" rel="self" type="application/rss+xml"/><item><title>Interactive Brokers 实盘接入</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/01-interactive-brokers/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/15-livetrading/01-interactive-brokers/</guid><description/></item><item><title>OANDA 实盘接入指南</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/02-qanda-v1-0/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/15-livetrading/02-qanda-v1-0/</guid><description/></item><item><title>Visual Chart 实盘接入</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/03-visual-chart/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/15-livetrading/03-visual-chart/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>实盘 on 菠萝学</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/</link><description>Recent content in 实盘 on 菠萝学</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>poloxue123@gmail.com (POLO XUE)</managingEditor><webMaster>poloxue123@gmail.com (POLO XUE)</webMaster><copyright>© 2026 POLO XUE</copyright><atom:link href="https://www.poloxue.com/docs/backtrader/15-livetrading/index.xml" rel="self" type="application/rss+xml"/><item><title>Interactive Brokers 实盘接入</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/01-interactive-brokers/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/15-livetrading/01-interactive-brokers/</guid><description>&lt;p&gt;与盈透（Interactive Brokers）的集成支持以下功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实时数据馈送&lt;/li&gt;
+&lt;li&gt;实时交易&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：虽然已尽力测试了各种错误条件，但代码（像任何软件一样）仍可能包含错误。上线前，请使用模拟交易账户或 TWS 演示账户充分测试策略。&lt;/p&gt;</description></item><item><title>OANDA 实盘接入指南</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/02-qanda-v1-0/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/15-livetrading/02-qanda-v1-0/</guid><description>&lt;p&gt;Oanda 的集成支持以下功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实时数据馈送&lt;/li&gt;
+&lt;li&gt;实时交易&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;要求
+ &lt;div id="要求" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e8%a6%81%e6%b1%82" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;oandapy&lt;/strong&gt;：安装命令：&lt;code&gt;pip install git+https://github.com/oanda/oandapy.git&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;pytz&lt;/strong&gt;（可选，不推荐）：由于外汇市场 24x7 全球交易，默认使用 UTC 时间。如有需要，仍可指定输出时区。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 class="relative group"&gt;示例代码
+ &lt;div id="示例代码" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e7%a4%ba%e4%be%8b%e4%bb%a3%e7%a0%81" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;p&gt;源代码中包含完整示例：&lt;/p&gt;</description></item><item><title>Visual Chart 实盘接入</title><link>https://www.poloxue.com/docs/backtrader/15-livetrading/03-visual-chart/</link><pubDate>Wed, 20 May 2026 00:00:00 +0000</pubDate><author>poloxue123@gmail.com (POLO XUE)</author><guid>https://www.poloxue.com/docs/backtrader/15-livetrading/03-visual-chart/</guid><description>&lt;p&gt;Visual Chart 的集成支持以下功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;实时数据馈送&lt;/li&gt;
+&lt;li&gt;实时交易&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Visual Chart 是一个集图表、数据馈送和经纪功能于一体的完整交易平台。&lt;/p&gt;
+&lt;p&gt;更多信息请访问：&lt;a href="http://www.visualchart.com" target="_blank" rel="noreferrer"&gt;www.visualchart.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 class="relative group"&gt;要求
+ &lt;div id="要求" class="anchor"&gt;&lt;/div&gt;
+ 
+ &lt;span
+ class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none"&gt;
+ &lt;a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#%e8%a6%81%e6%b1%82" aria-label="锚点"&gt;#&lt;/a&gt;
+ &lt;/span&gt;
+ 
+&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;VisualChart 6&lt;/strong&gt;（运行在 Windows 上）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;comtypes fork&lt;/strong&gt;： &lt;a href="https://github.com/mementum/comtypes" target="_blank" rel="noreferrer"&gt;https://github.com/mementum/comtypes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以通过以下命令安装：&lt;/p&gt;</description></item></channel></rss>
