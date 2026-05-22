@@ -4,7 +4,7 @@ title = "菠萝学"
 copyright = "Polo Xue All rights reserved"
 
 enableRobotsTXT = true
-summaryLength = 0
+summaryLength = 70
 hasCJKLanguage = true
 enableEmoji = true
 enableGitInfo = true
