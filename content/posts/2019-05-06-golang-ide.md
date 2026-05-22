@@ -98,7 +98,7 @@ vim-go提供了诸如代码的编译、执行、测试、代码重构、错误�
 
 说明一点，虽然 vim 支持插件扩展，但它要集成出 VS Code 的体验还是非常困难的。
 
-![](https://cdn.jsdelivr.net/gh/poloxue/images@main/2019-05-06-golang-ide-01.png)
+![](https://cdn.jsdelivr.net/gh/poloxue/images@2019-05/2019-05-06-golang-ide-01.png)
 
 当前我用的主要就是这三款IDE，Goland VSC 和 vim。当然，还有很多其他IDE，下面也简单介绍下，但因为没怎么使用过，所以很难有经验之谈了。
 
